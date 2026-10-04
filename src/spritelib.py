@@ -36,7 +36,10 @@ import os.path
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data.common.utils import get_reggiedata_folder
+from data.level.area import Area as AreaType
+from data.level.items.location import LocationItem
 from data.level.items.sprite import SpriteItem
+from data.level.items.zone import ZoneItem
 from data.tileset.tile.tileset_tile import TilesetTile
 
 Qt = QtCore.Qt
@@ -46,11 +49,11 @@ OutlinePen: QtGui.QPen | None = None
 OutlineBrush: QtGui.QBrush | None = None
 ImageCache: dict[str, QtGui.QPixmap] = {}
 Tiles: dict[int, TilesetTile | None] = {}
-SpriteImagesLoaded = set()
+SpriteImagesLoaded: set[int] = set()
 
-SpritesFolders = []
-RealViewEnabled = False
-Area = None
+SpritesFolders: list[str] = []
+RealViewEnabled: bool = False
+Area: AreaType | None = None
 
 
 ################################################################
@@ -58,7 +61,7 @@ Area = None
 ################################################################
 ########################## Functions ###########################
 
-def main():
+def main() -> None:
     """
     Resets Sprites.py to its original settings
     """
@@ -134,7 +137,7 @@ def GetTile(tile_id: int) -> QtGui.QPixmap:
 
     return tile.getCurrentTile()
 
-def loadIfNotInImageCache(name: str, filename: str):
+def loadIfNotInImageCache(name: str, filename: str) -> None:
     """
     If name is not in ImageCache, loads the image
     referenced by 'filename' and puts it there
@@ -143,7 +146,7 @@ def loadIfNotInImageCache(name: str, filename: str):
         ImageCache[name] = GetPixmap(filename)
 
 
-def MapPositionToZoneID(zones: list, x: int, y: int, get_id=False):
+def MapPositionToZoneID(zones: list, x: int, y: int, get_id: bool = False) -> int:
     """
     Returns the index of the zone containing or nearest the specified position
     by default. Set 'get_id' to True to get the actual zone id. Returns -1 on
@@ -186,7 +189,7 @@ class SpriteImage:
     Class that contains information about a sprite image
     """
 
-    def __init__(self, parent: SpriteItem, scale=1.5):
+    def __init__(self, parent: SpriteItem, scale: float = 1.5) -> None:
         """
         Intializes the sprite image
         """
@@ -203,27 +206,27 @@ class SpriteImage:
         self.aux: list[AuxiliaryItem] = []
 
     @staticmethod
-    def loadImages():
+    def loadImages() -> None:
         """
         Loads all images needed by the sprite
         """
 
-    def dataChanged(self):
+    def dataChanged(self) -> None:
         """
         Called whenever the sprite data changes
         """
 
-    def positionChanged(self):
+    def positionChanged(self) -> None:
         """
         Called whenever the sprite position changes
         """
 
-    def paint(self, painter: QtGui.QPainter):
+    def paint(self, painter: QtGui.QPainter) -> None:
         """
         Paints the sprite
         """
 
-    def remove(self):
+    def remove(self) -> None:
         """
         Called whenever the parent is removed
         """
@@ -232,10 +235,10 @@ class SpriteImage:
     def getOffset(self) -> tuple[float, float]:
         return (self.xOffset, self.yOffset)
 
-    def setOffset(self, new: tuple[float, float]):
+    def setOffset(self, new: tuple[float, float]) -> None:
         self.xOffset, self.yOffset = new[0], new[1]
 
-    def delOffset(self):
+    def delOffset(self) -> None:
         self.xOffset, self.yOffset = 0, 0
 
     offset = property(
@@ -247,10 +250,10 @@ class SpriteImage:
     def getSize(self) -> tuple[float, float]:
         return (self.width, self.height)
 
-    def setSize(self, new: tuple[float, float]):
+    def setSize(self, new: tuple[float, float]) -> None:
         self.width, self.height = new[0], new[1]
 
-    def delSize(self):
+    def delSize(self) -> None:
         self.width, self.height = 16, 16
 
     size = property(
@@ -262,10 +265,10 @@ class SpriteImage:
     def getDimensions(self) -> tuple[float, float, float, float]:
         return (self.xOffset, self.yOffset, self.width, self.height)
 
-    def setDimensions(self, new: tuple[float, float, float, float]):
+    def setDimensions(self, new: tuple[float, float, float, float]) -> None:
         self.xOffset, self.yOffset, self.width, self.height = new[0], new[1], new[2], new[3]
 
-    def delDimensions(self):
+    def delDimensions(self) -> None:
         self.xOffset, self.yOffset, self.width, self.height = 0, 0, 16, 16
 
     dimensions = property(
@@ -279,7 +282,7 @@ class SpriteImage_Static(SpriteImage):
     A simple class for drawing a static sprite image
     """
 
-    def __init__(self, parent: SpriteItem, scale=1.5, image: QtGui.QPixmap | None = None, offset: tuple[float, float] | None = None):
+    def __init__(self, parent: SpriteItem, scale: float = 1.5, image: QtGui.QPixmap | None = None, offset: tuple[float, float] | None = None) -> None:
         super().__init__(parent, scale)
         self.image = image
         self.spritebox.shown = False
@@ -291,7 +294,7 @@ class SpriteImage_Static(SpriteImage):
             self.xOffset = offset[0]
             self.yOffset = offset[1]
 
-    def dataChanged(self):
+    def dataChanged(self) -> None:
         if self.image is not None:
             self.size = (
                 (self.image.width() / self.scale),
@@ -300,7 +303,7 @@ class SpriteImage_Static(SpriteImage):
         else:
             del self.size
 
-    def paint(self, painter):
+    def paint(self, painter: QtGui.QPainter) -> None:
         if self.image is None:
             return
 
@@ -317,7 +320,7 @@ class SpriteImage_StaticMultiple(SpriteImage_Static):
     the image with the dataChanged() function
     """
 
-    def __init__(self, parent, scale=1.5, image=None, offset=None):
+    def __init__(self, parent: SpriteItem, scale: float = 1.5, image: QtGui.QPixmap | None = None, offset: tuple[float, float] | None = None) -> None:
         super().__init__(parent, scale, image, offset)
         # no other changes needed yet
 
@@ -332,7 +335,7 @@ class Spritebox:
     Contains size and other information for a spritebox
     """
 
-    def __init__(self, scale=1.5):
+    def __init__(self, scale: float = 1.5) -> None:
         super().__init__()
         self.shown: bool = True
         self.xOffset: float = 0
@@ -345,10 +348,10 @@ class Spritebox:
     def getOffset(self) -> tuple[float, float]:
         return self.xOffset, self.yOffset
 
-    def setOffset(self, new: tuple[float, float]):
+    def setOffset(self, new: tuple[float, float]) -> None:
         self.xOffset, self.yOffset = new[0], new[1]
 
-    def delOffset(self):
+    def delOffset(self) -> None:
         self.xOffset, self.yOffset = 0, 0
 
     offset = property(
@@ -360,10 +363,10 @@ class Spritebox:
     def getSize(self) -> tuple[float, float]:
         return self.width, self.height
 
-    def setSize(self, new: tuple[float, float]):
+    def setSize(self, new: tuple[float, float]) -> None:
         self.width, self.height = new[0], new[1]
 
-    def delSize(self):
+    def delSize(self) -> None:
         self.width, self.height = 16, 16
 
     size = property(
@@ -375,10 +378,10 @@ class Spritebox:
     def getDimensions(self) -> tuple[float, float, float, float]:
         return self.xOffset, self.yOffset, self.width, self.height
 
-    def setDimensions(self, new: tuple[float, float, float, float]):
+    def setDimensions(self, new: tuple[float, float, float, float]) -> None:
         self.xOffset, self.yOffset, self.width, self.height = new[0], new[1], new[2], new[3]
 
-    def delDimensions(self):
+    def delDimensions(self) -> None:
         self.xOffset, self.yOffset, self.width, self.height = 0, 0, 16, 16
 
     dimensions = property(
@@ -388,7 +391,7 @@ class Spritebox:
     )
 
     # RoundedRect property
-    def getRR(self):
+    def getRR(self) -> QtCore.QRectF:
         return QtCore.QRectF(
             (self.xOffset * self.scale) + 1,
             (self.yOffset * self.scale) + 1,
@@ -396,7 +399,7 @@ class Spritebox:
             (self.height * self.scale) - 2,
         )
 
-    def setRR(self, new: QtCore.QRectF):
+    def setRR(self, new: QtCore.QRectF) -> None:
         self.dimensions = (
             (new.x() / self.scale) - 1,
             (new.y() / self.scale) - 1,
@@ -404,7 +407,7 @@ class Spritebox:
             (new.height() / self.scale) + 2,
         )
 
-    def delRR(self):
+    def delRR(self) -> None:
         self.dimensions = 0, 0, 16, 16
 
     RoundedRect = property(
@@ -413,7 +416,7 @@ class Spritebox:
     )
 
     # BoundingRect property
-    def getBR(self):
+    def getBR(self) -> QtCore.QRectF:
         return QtCore.QRectF(
             self.xOffset * self.scale,
             self.yOffset * self.scale,
@@ -421,7 +424,7 @@ class Spritebox:
             self.height * self.scale,
         )
 
-    def setBR(self, new: QtCore.QRectF):
+    def setBR(self, new: QtCore.QRectF) -> None:
         self.dimensions = (
             new.x() * self.scale,
             new.y() * self.scale,
@@ -429,7 +432,7 @@ class Spritebox:
             new.height() * self.scale,
         )
 
-    def delBR(self):
+    def delBR(self) -> None:
         self.dimensions = 0, 0, 16, 16
 
     BoundingRect = property(
@@ -455,7 +458,7 @@ class AuxiliarySpriteItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
     Base class for auxiliary objects that accompany specific sprite types
     """
 
-    def __init__(self, parent):
+    def __init__(self, parent: QtWidgets.QGraphicsItem) -> None:
         """
         Generic constructor for auxiliary items
         """
@@ -469,7 +472,7 @@ class AuxiliarySpriteItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
 
         self.BoundingRect = QtCore.QRectF(0, 0, 24, 24)
 
-    def setIsBehindSprite(self, behind):
+    def setIsBehindSprite(self, behind: bool) -> None:
         """
         This allows you to choose whether the auiliary item will display
         behind the sprite or in front of it. Default is for the item to
@@ -477,7 +480,7 @@ class AuxiliarySpriteItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
         """
         self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemStacksBehindParent, behind)
 
-    def boundingRect(self):
+    def boundingRect(self) -> QtCore.QRectF:
         """
         Required for Qt
         """
@@ -491,7 +494,7 @@ class AuxiliaryTrackObject(AuxiliarySpriteItem):
     Horizontal = 1
     Vertical = 2
 
-    def __init__(self, parent: QtWidgets.QGraphicsItem, width: float, height: float, direction: int):
+    def __init__(self, parent: QtWidgets.QGraphicsItem, width: float, height: float, direction: int) -> None:
         """
         Constructor
         """
@@ -504,16 +507,13 @@ class AuxiliaryTrackObject(AuxiliarySpriteItem):
         self.direction = direction
         self.hover: bool = False
 
-    def setSize(self, width, height):
+    def setSize(self, width: float, height: float) -> None:
         self.prepareGeometryChange()
         self.BoundingRect = QtCore.QRectF(0, 0, width * 1.5, height * 1.5)
         self.width = width
         self.height = height
 
-    def paint(self, painter, option, widget=None):
-        if painter is None:
-            return
-
+    def paint(self, painter: QtGui.QPainter, option: QtWidgets.QStyleOptionGraphicsItem, widget: QtWidgets.QWidget | None = None) -> None:
         if option is not None:
             painter.setClipRect(option.exposedRect)
             painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
@@ -534,7 +534,7 @@ class AuxiliaryTrackObject(AuxiliarySpriteItem):
 
 
 class AuxiliaryCircleOutline(AuxiliarySpriteItem):
-    def __init__(self, parent: QtWidgets.QGraphicsItem, width: float, alignMode=Qt.AlignmentFlag.AlignHCenter):
+    def __init__(self, parent: QtWidgets.QGraphicsItem, width: float, alignMode: Qt.AlignmentFlag = Qt.AlignmentFlag.AlignHCenter) -> None:
         """
         Constructor
         """
@@ -545,7 +545,7 @@ class AuxiliaryCircleOutline(AuxiliarySpriteItem):
         self.alignMode = alignMode
         self.setSize(width)
 
-    def setSize(self, width: float):
+    def setSize(self, width: float) -> None:
         self.prepareGeometryChange()
         self.BoundingRect = QtCore.QRectF(0, 0, width * 1.5, width * 1.5)
 
@@ -567,10 +567,7 @@ class AuxiliaryCircleOutline(AuxiliarySpriteItem):
         self.setPos(xval, yval)
         self.width = width
 
-    def paint(self, painter, option, widget=None):
-        if painter is None:
-            return
-
+    def paint(self, painter: QtGui.QPainter, option: QtWidgets.QStyleOptionGraphicsItem, widget: QtWidgets.QWidget | None = None) -> None:
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
         if OutlinePen is not None:
             painter.setPen(OutlinePen)
@@ -582,7 +579,7 @@ class AuxiliaryCircleOutline(AuxiliarySpriteItem):
 
 
 class AuxiliaryRotationAreaOutline(AuxiliarySpriteItem):
-    def __init__(self, parent: QtWidgets.QGraphicsItem, width: float):
+    def __init__(self, parent: QtWidgets.QGraphicsItem, width: float) -> None:
         """
         Constructor
         """
@@ -595,14 +592,11 @@ class AuxiliaryRotationAreaOutline(AuxiliarySpriteItem):
         self.spanAngle: float = 0
         self.hover: bool = False
 
-    def SetAngle(self, startAngle, spanAngle):
+    def SetAngle(self, startAngle: float, spanAngle: float) -> None:
         self.startAngle = startAngle * 16
         self.spanAngle = spanAngle * 16
 
-    def paint(self, painter, option, widget=None):
-        if painter is None:
-            return
-
+    def paint(self, painter: QtGui.QPainter, option: QtWidgets.QStyleOptionGraphicsItem, widget: QtWidgets.QWidget | None = None) -> None:
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
         if OutlinePen is not None:
             painter.setPen(OutlinePen)
@@ -612,7 +606,7 @@ class AuxiliaryRotationAreaOutline(AuxiliarySpriteItem):
 
 
 class AuxiliaryRectOutline(AuxiliarySpriteItem):
-    def __init__(self, parent: QtWidgets.QGraphicsItem, width: float, height: float, xoff: float = 0, yoff: float = 0):
+    def __init__(self, parent: QtWidgets.QGraphicsItem, width: float, height: float, xoff: float = 0, yoff: float = 0) -> None:
         """
         Constructor
         """
@@ -624,20 +618,17 @@ class AuxiliaryRectOutline(AuxiliarySpriteItem):
         self.color: QtGui.QColor | None = None
         self.fillFlag: bool = True
 
-    def setSize(self, width: float, height: float, xoff: float = 0, yoff: float = 0):
+    def setSize(self, width: float, height: float, xoff: float = 0, yoff: float = 0) -> None:
         self.BoundingRect = QtCore.QRectF(0, 0, width, height)
         self.setPos(xoff, yoff)
 
-    def setColor(self, color: str | None):
+    def setColor(self, color: str | None) -> None:
         if color is None:
             self.color = None
         else:
             self.color = QtGui.QColor(color)
 
-    def paint(self, painter, option, widget=None):
-        if painter is None:
-            return
-
+    def paint(self, painter: QtGui.QPainter, option: QtWidgets.QStyleOptionGraphicsItem, widget: QtWidgets.QWidget | None = None) -> None:
         if option is not None:
             painter.setClipRect(option.exposedRect)
             painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
@@ -663,7 +654,7 @@ class AuxiliaryRectOutline(AuxiliarySpriteItem):
 
 
 class AuxiliaryPainterPath(AuxiliarySpriteItem):
-    def __init__(self, parent: QtWidgets.QGraphicsItem, path: QtGui.QPainterPath, width: float, height: float, xoff: float = 0, yoff: float = 0):
+    def __init__(self, parent: QtWidgets.QGraphicsItem, path: QtGui.QPainterPath, width: float, height: float, xoff: float = 0, yoff: float = 0) -> None:
         """
         Constructor
         """
@@ -676,17 +667,14 @@ class AuxiliaryPainterPath(AuxiliarySpriteItem):
         self.BoundingRect = QtCore.QRectF(0, 0, width, height)
         self.hover: bool = False
 
-    def setPath(self, path: QtGui.QPainterPath):
+    def setPath(self, path: QtGui.QPainterPath) -> None:
         self.PainterPath = path
 
-    def setSize(self, width: float, height: float, xoff: float = 0, yoff: float = 0):
+    def setSize(self, width: float, height: float, xoff: float = 0, yoff: float = 0) -> None:
         self.BoundingRect = QtCore.QRectF(0, 0, width, height)
         self.setPos(xoff, yoff)
 
-    def paint(self, painter, option, widget=None):
-        if painter is None:
-            return
-
+    def paint(self, painter: QtGui.QPainter, option: QtWidgets.QStyleOptionGraphicsItem | None, widget: QtWidgets.QWidget | None = None) -> None:
         if option is not None:
             painter.setClipRect(option.exposedRect)
             painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
@@ -699,7 +687,7 @@ class AuxiliaryPainterPath(AuxiliarySpriteItem):
 
 
 class AuxiliaryImage(AuxiliarySpriteItem):
-    def __init__(self, parent: QtWidgets.QGraphicsItem, width: float, height: float):
+    def __init__(self, parent: QtWidgets.QGraphicsItem, width: float, height: float) -> None:
         """
         Constructor
         """
@@ -711,17 +699,14 @@ class AuxiliaryImage(AuxiliarySpriteItem):
         self.hover: bool = True
         self.alpha: float = 1
 
-    def setSize(self, width: float, height: float, xoff: float = 0, yoff: float = 0):
+    def setSize(self, width: float, height: float, xoff: float = 0, yoff: float = 0) -> None:
         self.prepareGeometryChange()
         self.BoundingRect = QtCore.QRectF(0, 0, width, height)
         self.setPos(xoff, yoff)
         self.width = width
         self.height = height
 
-    def paint(self, painter: QtGui.QPainter | None, option: QtWidgets.QStyleOptionGraphicsItem | None, widget: QtWidgets.QWidget | None = None):
-        if painter is None:
-            return
-
+    def paint(self, painter: QtGui.QPainter, option: QtWidgets.QStyleOptionGraphicsItem | None, widget: QtWidgets.QWidget | None = None) -> None:
         if option is not None:
             painter.setClipRect(option.exposedRect)
 
@@ -732,7 +717,7 @@ class AuxiliaryImage(AuxiliarySpriteItem):
 
 
 class AuxiliaryImage_FollowsRect(AuxiliaryImage):
-    def __init__(self, parent: QtWidgets.QGraphicsItem, width: float, height: float):
+    def __init__(self, parent: QtWidgets.QGraphicsItem, width: float, height: float) -> None:
         """
         Constructor
         """
@@ -744,13 +729,13 @@ class AuxiliaryImage_FollowsRect(AuxiliaryImage):
         # Doing it this way may provide a slight speed boost?
         self.flagPresent = lambda flags, flag: flags | flag == flags
 
-    def setSize(self, width: float, height: float, xoff: float = 0, yoff: float = 0):
+    def setSize(self, width: float, height: float, xoff: float = 0, yoff: float = 0) -> None:
         super().setSize(width, height, xoff, yoff)
 
         self.realwidth = width
         self.realheight = height
 
-    def paint(self, painter, option, widget=None):
+    def paint(self, painter: QtGui.QPainter, option: QtWidgets.QStyleOptionGraphicsItem | None, widget: QtWidgets.QWidget | None = None) -> None:
         if not RealViewEnabled:
             return
         super().paint(painter, option, widget)
@@ -758,7 +743,7 @@ class AuxiliaryImage_FollowsRect(AuxiliaryImage):
         if self.realimage is None:
             self.realimage = self.image
 
-    def move(self, x: float | None, y: float | None, w: float | None, h: float | None):
+    def move(self, x: float | None, y: float | None, w: float | None, h: float | None) -> None:
         """
         Repositions the auxiliary image
         """
@@ -837,7 +822,7 @@ class AuxiliaryZoneItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
     An auxiliary item that can have a zone as its parent
     """
 
-    def __init__(self, parent, imageObj):
+    def __init__(self, parent: ZoneItem, imageObj: QtGui.QPixmap) -> None:
         """
         Generic constructor for auxiliary zone items
         """
@@ -855,7 +840,7 @@ class AuxiliaryZoneItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
 
         self.BoundingRect = QtCore.QRectF(0, 0, 24, 24)
 
-    def setIsBehindZone(self, behind: bool):
+    def setIsBehindZone(self, behind: bool) -> None:
         """
         This allows you to choose whether the auiliary item will display
         behind the zone or in front of it. Default is for the item to
@@ -863,7 +848,7 @@ class AuxiliaryZoneItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
         """
         self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemStacksBehindParent, behind)
 
-    def setZoneID(self, id: int):
+    def setZoneID(self, id: int) -> None:
         """
         Changes this aux item's parent to zone with the given id.
         Raises ValueError if no zone with this id exists.
@@ -885,7 +870,7 @@ class AuxiliaryZoneItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
         self.parent = z
         z.aux.add(self)
 
-    def alignToZone(self):
+    def alignToZone(self) -> None:
         """
         Resets the position and size of the AuxiliaryZoneItem to that of the zone
         """
@@ -896,12 +881,12 @@ class AuxiliaryZoneItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
             self.BoundingRect = QtCore.QRectF(0, 0, 24, 24)
 
     @staticmethod
-    def zoneRepositioned():
+    def zoneRepositioned() -> None:
         """
         Called when the zone is repositioned or resized
         """
 
-    def boundingRect(self):
+    def boundingRect(self) -> QtCore.QRectF:
         """
         Required for Qt
         """
@@ -913,7 +898,7 @@ class AuxiliaryLocationItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
     An auxiliary item that can have a location as its parent
     """
 
-    def __init__(self, parent, imageObj: QtGui.QPixmap):
+    def __init__(self, parent: LocationItem, imageObj: QtGui.QPixmap) -> None:
         """
         Generic constructor for auxiliary items
         """
@@ -926,7 +911,7 @@ class AuxiliaryLocationItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
         self.setParentItem(parent)
         self.hover = False
 
-    def setIsBehindLocation(self, behind: bool):
+    def setIsBehindLocation(self, behind: bool) -> None:
         """
         This allows you to choose whether the auiliary item will display
         behind the location or in front of it. Default is for the item to
@@ -934,24 +919,24 @@ class AuxiliaryLocationItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
         """
         self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemStacksBehindParent, behind)
 
-    def alignToLocation(self):
+    def alignToLocation(self) -> None:
         """
         Resets the position and size of the AuxiliaryLocationItem to that of the
         location.
         """
         self.setPos(0, 0)
 
-    def paint(self, painter, option, widget=None):
+    def paint(self, painter: QtGui.QPainter, option: QtWidgets.QStyleOptionGraphicsItem, widget: QtWidgets.QWidget | None = None) -> None:
         """
         Paints the image, tiled to fill the bounding rect of the location it
         belongs to.
         """
-        if self.imageObj is None or painter is None:
+        if self.imageObj is None:
             return
 
         painter.drawTiledPixmap(self.boundingRect(), self.imageObj)
 
-    def remove(self):
+    def remove(self) -> None:
         """
         Removes the auxiliary item.
         """
@@ -960,7 +945,7 @@ class AuxiliaryLocationItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
         # this is an auxiliary item to, which causes it to be deleted properly.
         self.setParentItem(None)
 
-    def boundingRect(self):
+    def boundingRect(self) -> QtCore.QRectF:
         """
         Required for Qt
         """
