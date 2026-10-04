@@ -152,7 +152,7 @@ class EntranceItem(LevelEditorItem):
             """
             return self.BoundingRect
 
-    def __init__(self, x: float | None, y: float | None, id: int, destarea: int, destentrance: int, type: int, zone: int, layer: int, path: int, settings: int, leave_level_val: int, cpd: int) -> None:
+    def __init__(self, x: int, y: int, id: int, destarea: int, destentrance: int, type: int, zone: int, layer: int, path: int, settings: int, leave_level_val: int, cpd: int) -> None:
         """
         Creates an entrance with specific data
         """

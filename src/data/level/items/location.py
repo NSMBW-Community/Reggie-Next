@@ -19,10 +19,10 @@ class InstanceDefinition_LocationItem(InstanceDefinition):
     )
 
     @staticmethod
-    def itemList():
+    def itemList() -> list['LocationItem']:
         return globals_.Area.locations
 
-    def createNew(self):
+    def createNew(self) -> 'LocationItem':
         return LocationItem(self.objx, self.objy, *(field for field in self.fields))
 
 
@@ -32,9 +32,10 @@ class LocationItem(LevelEditorItem):
     """
     instanceDef = InstanceDefinition_LocationItem
     sizeChanged = None  # Callback: sizeChanged(SpriteItem obj, int width, int height)
-    dragstartx, dragstarty = None, None
+    dragstartx: int = -1
+    dragstarty: int = -1
 
-    def __init__(self, x, y, width, height, id):
+    def __init__(self, x: int, y: int, width: int, height: int, id: int) -> None:
         """
         Creates a location with specific data
         """
@@ -58,14 +59,14 @@ class LocationItem(LevelEditorItem):
         self.setFlag(self.GraphicsItemFlag.ItemIsSelectable, not globals_.LocationsFrozen)
 
         globals_.DirtyOverride += 1
-        self.setPos(int(x * 1.5), int(y * 1.5))
+        self.setPos(int(self.objx * 1.5), int(self.objy * 1.5))
         globals_.DirtyOverride -= 1
 
         self.dragging = False
         self.setZValue(24000)
 
     @staticmethod
-    def CreateLocation(x, y, width = 16, height = 16, id_ = None, add_to_scene = True):
+    def CreateLocation(x: int, y: int, width: int = 16, height: int = 16, id_: int | None = None, add_to_scene: bool = True) -> 'LocationItem | None':
         """
         Creates and returns a new location and makes sure it's added to the
         right lists, unless 'add_to_scene' is set to False. If 'id' is None, the
@@ -79,7 +80,7 @@ class LocationItem(LevelEditorItem):
         if id_ is None:
             # This can be done more efficiently, but 255 is not that big, so it
             # does not really matter.
-            all_ids = set(loc.id for loc in globals_.Area.locations)
+            all_ids = {loc.id for loc in globals_.Area.locations if loc.id is not None}
             id_ = find_first_available_id(all_ids, 256, 1)
 
             if id_ is None:
@@ -109,7 +110,7 @@ class LocationItem(LevelEditorItem):
         return loc
 
     @staticmethod
-    def MergeLocations():
+    def MergeLocations() -> None:
         """
         Merges selected locations into a single one
         """
@@ -139,11 +140,11 @@ class LocationItem(LevelEditorItem):
             return
 
         loc_rect = new_rect.getRect()
-        loc = LocationItem.CreateLocation(loc_rect[0], loc_rect[1], int(loc_rect[2]), int(loc_rect[3]))
+        loc = LocationItem.CreateLocation(loc_rect[0], loc_rect[1], int(loc_rect[2] or 0), int(loc_rect[3] or 0))
         if loc is not None:
             loc.setSelected(True)
 
-    def position_changed(self, oldx: int, oldy: int, x: int, y: int):
+    def position_changed(self, oldx: int, oldy: int, x: int, y: int) -> None:
         """
         Handle the location being dragged
         """
@@ -159,7 +160,7 @@ class LocationItem(LevelEditorItem):
         self.UpdateListItem()
         globals_.mainWindow.level_overview.update()
 
-    def size_changed(self, width: int, height: int):
+    def size_changed(self, width: int, height: int) -> None:
         """
         Handle the location being resized
         """
@@ -173,14 +174,14 @@ class LocationItem(LevelEditorItem):
         self.UpdateListItem()
         globals_.mainWindow.level_overview.update()
 
-    def ListString(self):
+    def ListString(self) -> str | None:
         """
         Returns a string that can be used to describe the location in a list
         """
         return globals_.trans.string('Locations', 2, '[id]', self.id, '[width]', int(self.width), '[height]', int(self.height),
                             '[x]', int(self.objx), '[y]', int(self.objy))
 
-    def UpdateTitle(self):
+    def UpdateTitle(self) -> None:
         """
         Updates the location's title
         """
@@ -195,10 +196,10 @@ class LocationItem(LevelEditorItem):
 
         self.UpdateRects()
 
-    def __lt__(self, other):
+    def __lt__(self, other: 'LocationItem') -> bool:
         return self.id < other.id
 
-    def UpdateRects(self):
+    def UpdateRects(self) -> None:
         """
         Updates the location's bounding rectangle
         """
@@ -213,7 +214,7 @@ class LocationItem(LevelEditorItem):
         self.BoundingRect = self.BoundingRectWithoutTitleRect.united(self.TitleRect).united(self.GrabberRect)
         self.UpdateListItem()
 
-    def shape(self):
+    def shape(self) -> QtGui.QPainterPath:
         """
         self.BoundingRect is big enough to include self.TitleRect (so
         the ID text can be painted), but that makes the hit-detection
@@ -227,7 +228,7 @@ class LocationItem(LevelEditorItem):
         qpp.addRect(self.TitleRect)
         return qpp
 
-    def paint(self, painter, option, widget = ...):
+    def paint(self, painter: QtGui.QPainter | None, option: QtWidgets.QStyleOptionGraphicsItem | None, widget: QtWidgets.QWidget | None = None) -> None:
         """
         Paints the location on screen
         """
@@ -267,7 +268,7 @@ class LocationItem(LevelEditorItem):
             if color is not None:
                 painter.fillRect(self.GrabberRect, color)
 
-    def mousePressEvent(self, event):
+    def mousePressEvent(self, event: QtWidgets.QGraphicsSceneMouseEvent | None) -> None:
         """
         Overrides mouse pressing events if needed for resizing
         """
@@ -278,21 +279,20 @@ class LocationItem(LevelEditorItem):
             event.ignore()
             return
 
-        if event.button() == QtCore.Qt.MouseButton.LeftButton:
-            if QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.KeyboardModifier.ControlModifier:
-                new_item = self.CreateLocation(
-                    self.objx, self.objy, self.width, self.height, self.id
-                )
+        if event.button() == QtCore.Qt.MouseButton.LeftButton and QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.KeyboardModifier.ControlModifier:
+            new_item = self.CreateLocation(
+                self.objx, self.objy, self.width, self.height, self.id
+            )
 
-                if new_item is not None:
-                    # Swap the Z values so it doesn't look like the
-                    # cloned item is the old one
-                    new_z = new_item.zValue()
-                    new_item.setZValue(self.zValue())
-                    self.setZValue(new_z)
+            if new_item is not None:
+                # Swap the Z values so it doesn't look like the
+                # cloned item is the old one
+                new_z = new_item.zValue()
+                new_item.setZValue(self.zValue())
+                self.setZValue(new_z)
 
-                    globals_.mainWindow.scene.clearSelection()
-                    self.setSelected(True)
+                globals_.mainWindow.scene.clearSelection()
+                self.setSelected(True)
 
         if self.isSelected() and self.GrabberRect.contains(event.pos()):
             # start dragging
@@ -304,7 +304,7 @@ class LocationItem(LevelEditorItem):
             LevelEditorItem.mousePressEvent(self, event)
             self.dragging = False
 
-    def mouseMoveEvent(self, event):
+    def mouseMoveEvent(self, event: QtWidgets.QGraphicsSceneMouseEvent | None) -> None:
         """
         Overrides mouse movement events if needed for resizing
         """
@@ -336,7 +336,7 @@ class LocationItem(LevelEditorItem):
         else:
             LevelEditorItem.mouseMoveEvent(self, event)
 
-    def dragResize(self, clicked, dsx, dsy):
+    def dragResize(self, clicked: QtCore.QPointF, dsx: int, dsy: int) -> bool:
         """
         Handles resizing the location and returns whether the location was
         changed.
@@ -390,7 +390,7 @@ class LocationItem(LevelEditorItem):
 
         return change
 
-    def delete(self):
+    def delete(self) -> None:
         """
         Delete the location from the level
         """
@@ -412,7 +412,7 @@ class LocationItem(LevelEditorItem):
             scene.update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
         setOverrideCursor(None)
 
-    def mouseReleaseEvent(self, event):
+    def mouseReleaseEvent(self, event: QtWidgets.QGraphicsSceneMouseEvent | None) -> None:
         """
         Overrides releasing the mouse after a move
         """
@@ -421,7 +421,7 @@ class LocationItem(LevelEditorItem):
         self.dragging = False
         self.update()
 
-    def hoverMoveEvent(self, event):
+    def hoverMoveEvent(self, event: QtWidgets.QGraphicsSceneHoverEvent | None) -> None:
         if event is None:
             return
 
@@ -434,6 +434,6 @@ class LocationItem(LevelEditorItem):
         elif self.isSelected() or globals_.CursorMode == 2:
             setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
 
-    def hoverLeaveEvent(self, event):
+    def hoverLeaveEvent(self, event: QtWidgets.QGraphicsSceneHoverEvent | None) -> None:
         LevelEditorItem.hoverLeaveEvent(self, event)
         setOverrideCursor(None)

@@ -1,4 +1,5 @@
 import base64
+from collections.abc import Callable
 from typing import Any, cast
 
 from PyQt6 import QtCore, QtGui, QtWidgets
@@ -24,8 +25,8 @@ class InstanceDefinition:
         Initializes it
         """
         self.fields = [[name, None] for name in self.fieldNames]
-        self.objx: float | None = None
-        self.objy: float | None = None
+        self.objx: int = -1
+        self.objy: int = -1
 
         if other:
             self.setFrom(other)
@@ -43,8 +44,8 @@ class InstanceDefinition:
         """
         Clears all data and position data
         """
-        self.objx = None
-        self.objy = None
+        self.objx = -1
+        self.objy = -1
         self.clearData()
 
     def clearData(self) -> None:
@@ -129,7 +130,7 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
     Class for any type of item that can show up in the level editor control
     """
     instanceDef = InstanceDefinition
-    positionChanged = None  # Callback: positionChanged(LevelEditorItem obj, int oldx, int oldy, int x, int y)
+    positionChanged: Callable | None = None  # Callback: positionChanged(LevelEditorItem obj, int oldx, int oldy, int x, int y)
     autoPosChange = False
     dragoffsetx = 0
     dragoffsety = 0

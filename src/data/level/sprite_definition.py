@@ -1,3 +1,5 @@
+from xml.etree.ElementTree import Element
+
 from data import globals_
 from data.common.list_property import ListPropertyModel
 from data.sprite.spritefield.check_box import CheckBoxSpriteField
@@ -15,7 +17,7 @@ class SpriteDefinition:
     Stores and manages the data info for a specific sprite
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.id: int = -1
         self.name: str | None = None
         self.notes: str | None = None
@@ -31,7 +33,7 @@ class SpriteDefinition:
         self.fields: list[SpriteField] = []
 
 
-    def loadFrom(self, elem):
+    def loadFrom(self, elem: Element) -> None:
         """
         Loads in all the field data from an XML node
         """
@@ -44,9 +46,7 @@ class SpriteDefinition:
 
             attribs = field.attrib
 
-            if field.tag == 'dualbox':
-                title = attribs['title1'] + " / " + attribs['title2']
-            elif field.tag == 'multidualbox':
+            if field.tag == 'dualbox' or field.tag == 'multidualbox':
                 title = attribs['title1'] + " / " + attribs['title2']
             elif 'title' in attribs:
                 title = attribs['title']
@@ -192,7 +192,7 @@ class SpriteDefinition:
                 self.layer_title = title
                 self.layer_comment = comment
 
-    def parseBits(self, nybble_val) -> tuple[list[tuple[int, int]], int]:
+    def parseBits(self, nybble_val: str | None) -> tuple[list[tuple[int, int]], int]:
         """
         Parses a description of the bits a setting affects into a tuple of a
         list of ranges and the number of possible values. Ranges include the

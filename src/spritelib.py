@@ -146,7 +146,7 @@ def loadIfNotInImageCache(name: str, filename: str) -> None:
         ImageCache[name] = GetPixmap(filename)
 
 
-def MapPositionToZoneID(zones: list, x: int, y: int, get_id: bool = False) -> int:
+def MapPositionToZoneID(zones: list, x: float, y: float, get_id: bool = False) -> int:
     """
     Returns the index of the zone containing or nearest the specified position
     by default. Set 'get_id' to True to get the actual zone id. Returns -1 on

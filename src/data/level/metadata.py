@@ -23,7 +23,7 @@ class Metadata:
     # 2+ = undefined as of now - future Reggies can use them
     # Theoretical limit to type values is 4,294,967,296
 
-    def __init__(self, data=None):
+    def __init__(self, data: bytes | None = None) -> None:
         """
         Creates a metadata object with the data given
         """
@@ -41,7 +41,7 @@ class Metadata:
 
                 for k, v in info.items():
                     self.setStrData(k, v)
-            except Exception:
+            except ValueError:
                 pass
 
             return
@@ -91,13 +91,13 @@ class Metadata:
                 # Add it to typeData
                 self.setOtherData(key, type, entryData)
 
-    def binData(self, key):
+    def binData(self, key: str) -> bytes | None:
         """
         Returns the binary data associated with key
         """
         return self.otherData(key, 0)
 
-    def strData(self, key):
+    def strData(self, key: str) -> str | None:
         """
         Returns the string data associated with key
         """
@@ -105,7 +105,7 @@ class Metadata:
         if data is None: return
         return data.decode('utf-8')
 
-    def otherData(self, key, type):
+    def otherData(self, key: str, type: int) -> bytes | None:
         """
         Returns unknown data, with the given type value, associated with key (as binary data)
         """
@@ -113,26 +113,26 @@ class Metadata:
         if type not in self.DataDict[key]: return
         return self.DataDict[key][type]
 
-    def setBinData(self, key, value):
+    def setBinData(self, key: str, value: bytes) -> None:
         """
         Sets binary data, overwriting any existing binary data with that key
         """
         self.setOtherData(key, 0, value)
 
-    def setStrData(self, key, value):
+    def setStrData(self, key: str, value: str) -> None:
         """
         Sets string data, overwriting any existing string data with that key
         """
         self.setOtherData(key, 1, value.encode('utf-8'))
 
-    def setOtherData(self, key, type, value):
+    def setOtherData(self, key: str, type: int, value: bytes) -> None:
         """
         Sets other (binary) data, overwriting any existing data with that key and type
         """
         if key not in self.DataDict: self.DataDict[key] = {}
         self.DataDict[key][type] = value
 
-    def save(self):
+    def save(self) -> bytes:
         """
         Returns a bytes object that can later be loaded from
         """

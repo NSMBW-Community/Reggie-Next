@@ -1,5 +1,7 @@
 import os
 import random
+from collections.abc import Sequence
+from typing import Any
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
@@ -27,13 +29,13 @@ class InstanceDefinition_ObjectItem(InstanceDefinition):
     )
 
     @staticmethod
-    def itemList():
+    def itemList() -> list['ObjectItem']:
         # List concatenation here
         return (
             globals_.Area.layers[0] + globals_.Area.layers[1] + globals_.Area.layers[2]
         )
 
-    def createNew(self):
+    def createNew(self) -> 'ObjectItem':
         if not self.objx or not self.objy:
             self.objx = 0
             self.objy = 0
@@ -56,7 +58,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
     """
     instanceDef = InstanceDefinition_ObjectItem
 
-    def __init__(self, tileset: int, object_num: int, layer: int, x: int, y: int, width: int, height: int, z: int):
+    def __init__(self, tileset: int, object_num: int, layer: int, x: int, y: int, width: int, height: int, z: int) -> None:
         """
         Creates an object with specific data
         """
@@ -86,7 +88,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
         self.dragging = False
         self.dragstartx = -1
         self.dragstarty = -1
-        self.objsDragging = {}
+        self.objsDragging: dict[ObjectItem, list[int]] = {}
 
         globals_.DirtyOverride += 1
         self.setPos(x * 24, y * 24)
@@ -106,7 +108,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
 
     @staticmethod
     def CreateObject(tileset: int, object_num: int, layer: int, x: int, y: int,
-                     width: int = 0, height: int = 0, add_to_scene = True) -> "ObjectItem":
+                     width: int = 0, height: int = 0, add_to_scene: bool = True) -> "ObjectItem":
         """
         Creates and returns a new object and makes sure it's added to
         the right lists.
@@ -130,7 +132,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
         if not layer_list:
             z = (2 - layer) * 8192
         else:
-            z = layer_list[-1].zValue() + 1
+            z = int(layer_list[-1].zValue() + 1)
 
         obj = ObjectItem(tileset, object_num, layer, x, y, width, height, z)
 
@@ -144,7 +146,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
         return obj
 
     @staticmethod
-    def change_layer(new_layer_id):
+    def change_layer(new_layer_id: int) -> None:
         """
         Changes the layer of the selected objects to the new layer
         """
@@ -194,7 +196,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
         SetDirty()
 
     @staticmethod
-    def object_replaced(object_num):
+    def object_replaced(object_num: int) -> None:
         """
         Handles a new object being chosen to replace the selected objects
         """
@@ -213,7 +215,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
         if changed:
             SetDirty()
 
-    def position_changed(self, oldx: int, oldy: int, x: int, y: int):
+    def position_changed(self, oldx: int, oldy: int, x: int, y: int) -> None:
         """
         Handle the object being dragged
         """
@@ -226,7 +228,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
             SetDirty()
         globals_.mainWindow.level_overview.update()
 
-    def SetType(self, tileset, object_num):
+    def SetType(self, tileset: int, object_num: int) -> None:
         """
         Sets the type of the object
         """
@@ -237,7 +239,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
 
         self.UpdateTooltip()
 
-    def UpdateTooltip(self):
+    def UpdateTooltip(self) -> None:
         """
         Updates the tooltip
         """
@@ -245,14 +247,14 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
             globals_.trans.string('Objects', 0, '[tileset]', self.tileset + 1, '[obj]', self.object_num, '[width]', self.width,
                          '[height]', self.height, '[layer]', self.layer))
 
-    def updateObjCache(self):
+    def updateObjCache(self) -> None:
         """
         Updates the rendered object data
         """
         self.objdata = RenderObject(self.tileset, self.object_num, self.width, self.height)
         self.randomise()
 
-    def isBottomRowSpecial(self):
+    def isBottomRowSpecial(self) -> bool:
         """
         Returns whether the bottom row of self.objdata contains the special
         vdouble top tile.
@@ -272,7 +274,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
         for x in range(self.width):
             # Get the special data for this tile
             if self.objdata is None:
-                return
+                return False
 
             tile = self.objdata[-1][x] & 0xFF
 
@@ -286,7 +288,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
 
         return False
 
-    def randomise(self, startx=0, starty=0, width=None, height=None):
+    def randomise(self, startx: int = 0, starty: int = 0, width: int | None = None, height: int | None = None) -> None:
         """
         Randomises (a part of) the self.objdata according to the loaded tileset
         info
@@ -393,7 +395,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
                         # tl;dr: A lot of work to properly implement this.
                         pass
 
-    def get_tileset_base_name(self):
+    def get_tileset_base_name(self) -> str | None:
         """
         Returns the bare file name of the tileset file this object uses. This
         file name has all extensions ('.arc' or '.arc.LH') removed.
@@ -410,7 +412,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
 
         return filename
 
-    def updateObjCacheWH(self, width, height):
+    def updateObjCacheWH(self, width: int, height: int) -> None:
         """
         Updates the rendered object data with custom width and height
         """
@@ -474,7 +476,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
                 self.objdata[y] += new[y]
             self.randomise(self.width, 0, width - self.width, height)
 
-    def UpdateRects(self):
+    def UpdateRects(self) -> None:
         """
         Recreates the bounding and selection rects
         """
@@ -509,7 +511,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
 
         self.LevelRect = QtCore.QRectF(self.objx, self.objy, self.width, self.height)
 
-    def itemChange(self, change, value):
+    def itemChange(self, change: QtWidgets.QGraphicsItem.GraphicsItemChange, value: Any) -> QtCore.QVariant | None:
         """
         Makes sure positions don't go out of bounds and updates them as necessary
         """
@@ -557,7 +559,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
 
         return QtWidgets.QGraphicsItem.itemChange(self, change, value)
 
-    def paint(self, painter, option, widget = ...):
+    def paint(self, painter: QtGui.QPainter | None, option: QtWidgets.QStyleOptionGraphicsItem | None, widget: QtWidgets.QWidget | None = None) -> None:
         """
         Paints the object
         """
@@ -600,7 +602,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
 
             painter.fillRect(rect, color)
 
-    def mousePressEvent(self, event):
+    def mousePressEvent(self, event: QtWidgets.QGraphicsSceneMouseEvent) -> None:
         """
         Overrides mouse pressing events if needed for resizing
         """
@@ -611,21 +613,20 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
             event.ignore()
             return
 
-        if event.button() == QtCore.Qt.MouseButton.LeftButton:
-            if QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.KeyboardModifier.ControlModifier:
-                new_item = self.CreateObject(
-                    self.tileset, self.object_num, self.layer, self.objx,
-                    self.objy, self.width, self.height
-                )
+        if event.button() == QtCore.Qt.MouseButton.LeftButton and QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.KeyboardModifier.ControlModifier:
+            new_item = self.CreateObject(
+                self.tileset, self.object_num, self.layer, self.objx,
+                self.objy, self.width, self.height
+            )
 
-                # Swap the Z values so it doesn't look like the
-                # cloned item is the old one
-                newZ = new_item.zValue()
-                new_item.setZValue(self.zValue())
-                self.setZValue(newZ)
+            # Swap the Z values so it doesn't look like the
+            # cloned item is the old one
+            newZ = new_item.zValue()
+            new_item.setZValue(self.zValue())
+            self.setZValue(newZ)
 
-                globals_.mainWindow.scene.clearSelection()
-                self.setSelected(True)
+            globals_.mainWindow.scene.clearSelection()
+            self.setSelected(True)
 
         self.TLGrabbed = self.GrabberRectTL.contains(event.pos())
         self.TRGrabbed = self.GrabberRectTR.contains(event.pos())
@@ -668,12 +669,12 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
         self.UpdateTooltip()
         self.update()
 
-    def hoverEnterEvent(self, event):
+    def hoverEnterEvent(self, event: QtWidgets.QGraphicsSceneHoverEvent) -> None:
         LevelEditorItem.hoverEnterEvent(self, event)
         if (self.isSelected() or globals_.CursorMode == 2) and not globals_.ObjectsFrozen:
             setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
 
-    def hoverMoveEvent(self, event):
+    def hoverMoveEvent(self, event: QtWidgets.QGraphicsSceneHoverEvent) -> None:
         LevelEditorItem.hoverMoveEvent(self, event)
         if globals_.ObjectsFrozen or not event:
             return
@@ -701,11 +702,11 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
         elif globals_.CursorMode == 2:
             setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
 
-    def hoverLeaveEvent(self, event):
+    def hoverLeaveEvent(self, event: QtWidgets.QGraphicsSceneHoverEvent) -> None:
         LevelEditorItem.hoverLeaveEvent(self, event)
         setOverrideCursor(None)
 
-    def UpdateObj(self, oldX, oldY, newSize):
+    def UpdateObj(self, oldX: int, oldY: int, newSize: Sequence[int]) -> None:
         """
         Updates the object if the width/height/position has been changed
         """
@@ -722,7 +723,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
         if scene is not None:
             scene.update(updaterect)
 
-    def mouseMoveEvent(self, event):
+    def mouseMoveEvent(self, event: QtWidgets.QGraphicsSceneMouseEvent) -> None:
         """
         Overrides mouse movement events if needed for resizing
         """
@@ -790,8 +791,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
                     SetDirty()
 
             elif self.TRGrabbed:
-                if clickedx < 0:
-                    clickedx = 0
+                clickedx = max(clickedx, 0)
 
                 if clickedx != dsx or clickedy != dsy:
                     self.dragstartx = clickedx
@@ -810,8 +810,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
                             newSize = [obj.width, obj.height]
 
                             newWidth = self.objsDragging[obj][0]
-                            if newWidth < 1:
-                                newWidth = 1
+                            newWidth = max(newWidth, 1)
 
                             newHeight = self.objsDragging[obj][1]
 
@@ -831,8 +830,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
                     SetDirty()
 
             elif self.BLGrabbed:
-                if clickedy < 0:
-                    clickedy = 0
+                clickedy = max(clickedy, 0)
 
                 if clickedx != dsx or clickedy != dsy:
                     self.dragstarty = clickedy
@@ -852,8 +850,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
                             newHeight = self.objsDragging[obj][1]
                             newSize = [obj.width, obj.height]
 
-                            if newHeight < 1:
-                                newHeight = 1
+                            newHeight = max(newHeight, 1)
 
                             if newX >= 0 and newX + newWidth == obj.objx + obj.width:
                                 obj.objx = newX
@@ -869,8 +866,8 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
                     SetDirty()
 
             elif self.BRGrabbed:
-                if clickedx < 0: clickedx = 0
-                if clickedy < 0: clickedy = 0
+                clickedx = max(clickedx, 0)
+                clickedy = max(clickedy, 0)
 
                 if clickedx != dsx or clickedy != dsy:
                     self.dragstartx = clickedx
@@ -883,11 +880,9 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
                         newWidth = self.objsDragging[obj][0]
                         newHeight = self.objsDragging[obj][1]
 
-                        if newWidth < 1:
-                            newWidth = 1
+                        newWidth = max(newWidth, 1)
 
-                        if newHeight < 1:
-                            newHeight = 1
+                        newHeight = max(newHeight, 1)
 
                         newSize = [newWidth, newHeight]
 
@@ -951,8 +946,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
                     SetDirty()
 
             elif self.MBGrabbed:
-                if clickedy < 0:
-                    clickedy = 0
+                clickedy = max(clickedy, 0)
 
                 if clickedy != dsy:
                     self.dragstarty = clickedy
@@ -961,8 +955,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
                         self.objsDragging[obj][1] += clickedy - dsy
 
                         newHeight = self.objsDragging[obj][1]
-                        if newHeight < 1:
-                            newHeight = 1
+                        newHeight = max(newHeight, 1)
 
                         newSize = [obj.width, newHeight]
                         obj.UpdateObj(cx, cy, newSize)
@@ -970,8 +963,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
                     SetDirty()
 
             elif self.MRGrabbed:
-                if clickedx < 0:
-                    clickedx = 0
+                clickedx = max(clickedx, 0)
 
                 if clickedx != dsx:
                     self.dragstartx = clickedx
@@ -980,8 +972,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
                         self.objsDragging[obj][0] += clickedx - dsx
 
                         newWidth = self.objsDragging[obj][0]
-                        if newWidth < 1:
-                            newWidth = 1
+                        newWidth = max(newWidth, 1)
 
                         newSize = (newWidth, obj.height)
                         obj.UpdateObj(cx, cy, newSize)
@@ -995,7 +986,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
 
         self.UpdateTooltip()
 
-    def delete(self):
+    def delete(self) -> None:
         """
         Delete the object from the level
         """
@@ -1005,7 +996,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
             scene.update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
         setOverrideCursor(None)
 
-    def mouseReleaseEvent(self, event):
+    def mouseReleaseEvent(self, event: QtWidgets.QGraphicsSceneMouseEvent) -> None:
         """
         Overrides releasing the mouse after a move
         """

@@ -1,6 +1,7 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data import globals_
+from data.level.abstract_path import AbstractPath
 
 
 class PathEditorLineItem(QtWidgets.QGraphicsPathItem):
@@ -9,7 +10,7 @@ class PathEditorLineItem(QtWidgets.QGraphicsPathItem):
     same path.
     """
 
-    def __init__(self, path):
+    def __init__(self, path: AbstractPath) -> None:
         """
         Creates a path line that belongs to a given path.
         """
@@ -27,7 +28,7 @@ class PathEditorLineItem(QtWidgets.QGraphicsPathItem):
         self.update_path()
         self.setZValue(25002)
 
-    def update_path(self):
+    def update_path(self) -> None:
         """
         Updates the path. This should be called whenever at least one of the
         nodes of the path moves, is added or is deleted.

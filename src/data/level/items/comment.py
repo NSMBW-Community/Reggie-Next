@@ -1,4 +1,4 @@
-from typing import Callable
+from collections.abc import Callable
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
@@ -34,7 +34,7 @@ class CommentItem(LevelEditorItem):
     SelectionRect = QtCore.QRectF(-4, -4, 4, 4)
     Circle = QtCore.QRectF(0, 0, 32, 32)
 
-    def __init__(self, x: float | None, y: float | None, text: str = '') -> None:
+    def __init__(self, x: int, y: int, text: str = '') -> None:
         """
         Creates a in-level comment
         """
@@ -46,8 +46,8 @@ class CommentItem(LevelEditorItem):
 
         self.text = text
 
-        self.objx = x or 0
-        self.objy = y or 0
+        self.objx = x
+        self.objy = y
         self.listitem = None
         self.LevelRect = (QtCore.QRectF(self.objx / 16, self.objy / 16, 2.25, 2.25))
 

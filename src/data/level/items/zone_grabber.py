@@ -1,4 +1,4 @@
-from PyQt6 import QtCore, QtGui
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data import globals_
 from data.level.items.basic import LevelEditorItem
@@ -10,7 +10,7 @@ class ZoneGrabberItem(LevelEditorItem):
     Level editor item that visually represents a Zone's resize grabbers.
     These are separate to allow for hover events
     """
-    def __init__(self, parent, corner):
+    def __init__(self, parent: LevelEditorItem | None, corner: int) -> None:
         """
         Creates a zone grabber with specific data
         """
@@ -24,14 +24,14 @@ class ZoneGrabberItem(LevelEditorItem):
         self.BoundingRect = None
         self.corner = corner
 
-    def UpdateRects(self, rect):
+    def UpdateRects(self, rect: QtCore.QRectF) -> None:
         """
         Updates the grabber's bounding rectangle
         """
         self.prepareGeometryChange()
         self.BoundingRect = QtCore.QRectF(rect)
 
-    def paint(self, painter, option, widget = ...):
+    def paint(self, painter: QtGui.QPainter | None, option: QtWidgets.QStyleOptionGraphicsItem | None, widget: QtWidgets.QWidget | None = None) -> None:
         """
         Paints the grabber on screen
         """
@@ -45,12 +45,12 @@ class ZoneGrabberItem(LevelEditorItem):
         if color is not None and self.BoundingRect is not None:
             painter.fillRect(self.BoundingRect, color)
 
-    def hoverMoveEvent(self, event):
+    def hoverMoveEvent(self, event: QtWidgets.QGraphicsSceneHoverEvent) -> None:
         # Zones cannot be selected, so the cursor will always be shown for these
         if self.corner in (1, 4):
             setOverrideCursor(QtCore.Qt.CursorShape.SizeFDiagCursor)
         elif self.corner in (2, 3):
             setOverrideCursor(QtCore.Qt.CursorShape.SizeBDiagCursor)
 
-    def hoverLeaveEvent(self, event):
+    def hoverLeaveEvent(self, event: QtWidgets.QGraphicsSceneHoverEvent) -> None:
         setOverrideCursor(None)

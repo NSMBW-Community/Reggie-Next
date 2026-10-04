@@ -1,12 +1,13 @@
 import os
 import pickletools
 import sys
+from collections.abc import Iterable
 from pathlib import Path
 
 from data import globals_
 
 
-def align(x, boundary):
+def align(x: int, boundary: int) -> int:
     rem = x % boundary
 
     if rem != 0:
@@ -15,11 +16,11 @@ def align(x, boundary):
     return x
 
 
-def clamp(var: int, min_value: int, max_value: int):
+def clamp(var: int, min_value: int, max_value: int) -> int:
     return min(max_value, max(min_value, var))
 
 
-def find_first_available_id(used: set[int], maximum: int, minimum: int = 0):
+def find_first_available_id(used: set[int], maximum: int, minimum: int = 0) -> int | None:
     """
     Returns the smallest integer in the range [minimum = 0, maximum) that is
     not in the given set. If there is no such integer, None is returned.
@@ -31,7 +32,7 @@ def find_first_available_id(used: set[int], maximum: int, minimum: int = 0):
     return None
 
 
-def DecodeOldReggieInfo(data, validKeys):
+def DecodeOldReggieInfo(data: bytes, validKeys: Iterable[str]) -> dict[str, str]:
     """
     Decode the provided level info data into a dictionary, which will
     have only the keys specified. Raises an exception if the data can't
@@ -85,7 +86,7 @@ def DecodeOldReggieInfo(data, validKeys):
     return levelinfo
 
 
-def SetGamePaths(new_stage_path, new_texture_path):
+def SetGamePaths(new_stage_path: str, new_texture_path: str) -> None:
     """
     Sets the NSMBW game path
     """

@@ -1,8 +1,9 @@
-from data import globals_
 from PyQt6 import QtWidgets
 
+from data import globals_
 
-def SetDirty(noautosave=False):
+
+def SetDirty(noautosave: bool = False) -> None:
     if globals_.DirtyOverride > 0:
         return
 
@@ -12,13 +13,10 @@ def SetDirty(noautosave=False):
         return
 
     globals_.Dirty = True
-    try:
-        if globals_.mainWindow is not None:
-            globals_.mainWindow.UpdateTitle()
-    except Exception:
-        pass
+    if globals_.mainWindow is not None:
+        globals_.mainWindow.UpdateTitle()
 
-def CheckDirty():
+def CheckDirty() -> bool:
     """
     Checks if the level is unsaved and attempts to save it if so.
     Returns whether the level still contains unsaved changes.
@@ -26,7 +24,7 @@ def CheckDirty():
     if not globals_.Dirty:
         return False
     if globals_.mainWindow is None:
-        return
+        return False
 
     msg = QtWidgets.QMessageBox()
     msg.setText(globals_.trans.string('AutoSaveDlg', 2))

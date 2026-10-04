@@ -1,4 +1,5 @@
-from typing import cast
+from collections.abc import Callable
+from typing import Any, cast
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
@@ -8,6 +9,7 @@ from data.common.utils import clamp
 from data.level.dirty import SetDirty
 from data.level.items.basic import InstanceDefinition, LevelEditorItem
 from data.level.items.object import ObjectItem
+from data.level.items.zone import ZoneItem
 from data.sprite.spritefield.list import ListSpriteField
 from data.sprite.spritefield.sprite_field import SpriteField
 from data.sprite.spritefield.value import ValueSpriteField
@@ -26,10 +28,10 @@ class InstanceDefinition_SpriteItem(InstanceDefinition):
     )
 
     @staticmethod
-    def itemList():
+    def itemList() -> list['SpriteItem']:
         return globals_.Area.sprites
 
-    def createNew(self):
+    def createNew(self) -> 'SpriteItem':
         return SpriteItem(self.fields[0][1], self.objx, self.objy, self.fields[1][1])
 
 
@@ -41,7 +43,7 @@ class SpriteItem(LevelEditorItem):
     BoundingRect = QtCore.QRectF(0, 0, 24, 24)
     SelectionRect = QtCore.QRectF(0, 0, 23, 23)
 
-    def __init__(self, sprite_num, x, y, data):
+    def __init__(self, sprite_num: int, x: float, y: float, data: bytes) -> None:
         """
         Creates a sprite with specific data
         """
@@ -85,7 +87,7 @@ class SpriteItem(LevelEditorItem):
         globals_.DirtyOverride -= 1
 
     @staticmethod
-    def CreateSprite(x: int, y: int, id_: int | None = None, data = None, add_to_scene = True):
+    def CreateSprite(x: float, y: float, id_: int | None = None, data: bytes | None = None, add_to_scene: bool = True) -> 'SpriteItem':
         """
         Creates and returns a new sprite and makes sure it's added to the right
         lists if 'add_to_scene' is set.
@@ -95,8 +97,9 @@ class SpriteItem(LevelEditorItem):
         sprite id than the id of the sprite that is created, a ValueError will
         be raised.
         """
+        dummy = SpriteItem(-1, -1, -1, b'')
         if globals_.mainWindow is None:
-            return SpriteItem(-1, -1, -1, -1)
+            return dummy
 
         if id_ is None:
             id_ = globals_.CurrentSprite
@@ -114,7 +117,7 @@ class SpriteItem(LevelEditorItem):
             # Check if sprite data exists for this type
             if not (0 <= id_ < globals_.NumSprites) or globals_.Sprites[id_] is None:
                 # Unknown sprite, don't create
-                return
+                return dummy
 
             globals_.mainWindow.palette_dock.sprite_tab.sprite_list.addSprite(spr)
             globals_.mainWindow.palette_dock.sprite_tab.sprite_order_list.addSprite(spr)
@@ -153,7 +156,7 @@ class SpriteItem(LevelEditorItem):
 
         return spr
 
-    def position_changed(self, oldx: int, oldy: int, x: int, y: int):
+    def position_changed(self, oldx: float, oldy: float, x: float, y: float) -> None:
         """
         Handle the sprite being dragged
         """
@@ -171,7 +174,7 @@ class SpriteItem(LevelEditorItem):
             # level overview needs to be redrawn.
             globals_.mainWindow.level_overview.update()
 
-    def SetType(self, sprite_num):
+    def SetType(self, sprite_num: int) -> None:
         """
         Sets the type of the sprite
         """
@@ -186,13 +189,13 @@ class SpriteItem(LevelEditorItem):
         self.InitializeSprite()
         self.UpdateListItem()
 
-    def __lt__(self, other):
+    def __lt__(self, other: 'SpriteItem') -> bool:
         # Sort by objx, then objy, then sprite type
         score = lambda sprite: (sprite.objx, sprite.objy, sprite.type)
 
         return score(self) < score(other)
 
-    def InitializeSprite(self):
+    def InitializeSprite(self) -> None:
         """
         Initializes sprite and creates any auxiliary objects needed
         """
@@ -208,7 +211,7 @@ class SpriteItem(LevelEditorItem):
         if sprite_num in imgs:
             self.setImageObj(imgs[sprite_num])
 
-    def setImageObj(self, obj):
+    def setImageObj(self, obj: Callable) -> None:
         """
         Sets a new sprite image object for this SpriteItem
         """
@@ -235,7 +238,7 @@ class SpriteItem(LevelEditorItem):
 
         self.UpdateDynamicSizing()
 
-    def UpdateDynamicSizing(self):
+    def UpdateDynamicSizing(self) -> None:
         """
         Updates the sizes for dynamically sized sprites
         """
@@ -269,7 +272,7 @@ class SpriteItem(LevelEditorItem):
             for auxUpdateRect in curr_aux_rects:
                 scene.update(auxUpdateRect)
 
-    def UpdateRects(self):
+    def UpdateRects(self) -> None:
         """
         Creates all the rectangles for the sprite
         """
@@ -338,7 +341,7 @@ class SpriteItem(LevelEditorItem):
             # this area.
             self.BoundingRect = self.ImageObj.spritebox.BoundingRect
 
-    def getFullRect(self):
+    def getFullRect(self) -> QtCore.QRectF:
         """
         Returns a rectangle that contains the sprite and all
         auxiliary objects.
@@ -361,7 +364,7 @@ class SpriteItem(LevelEditorItem):
 
         return br
 
-    def itemChange(self, change, value):
+    def itemChange(self, change: QtWidgets.QGraphicsItem.GraphicsItemChange, value: Any) -> QtCore.QPointF | None:
         """
         Makes sure positions don't go out of bounds and updates them as necessary
         """
@@ -473,7 +476,7 @@ class SpriteItem(LevelEditorItem):
 
         return QtWidgets.QGraphicsItem.itemChange(self, change, value)
 
-    def setNewObjPos(self, newobjx, newobjy):
+    def setNewObjPos(self, newobjx: float, newobjy: float) -> None:
         """
         Sets a new position, through objx and objy
         """
@@ -486,7 +489,7 @@ class SpriteItem(LevelEditorItem):
         self.setPos(newobjx * 1.5, newobjy * 1.5)
 
     @staticmethod
-    def moveToSprite(item):
+    def moveToSprite(item: 'SpriteItem') -> None:
         """
         Moves the view to the sprite and selects it.
         """
@@ -499,7 +502,7 @@ class SpriteItem(LevelEditorItem):
         sprite.scene().clearSelection()
         sprite.setSelected(True)
 
-    def mousePressEvent(self, event):
+    def mousePressEvent(self, event: QtWidgets.QGraphicsSceneMouseEvent) -> None:
         """
         Overrides mouse pressing events if needed for cloning
         """
@@ -520,16 +523,16 @@ class SpriteItem(LevelEditorItem):
         globals_.mainWindow.scene.clearSelection()
         self.setSelected(True)
 
-    def hoverMoveEvent(self, event):
+    def hoverMoveEvent(self, event: QtWidgets.QGraphicsSceneHoverEvent) -> None:
         LevelEditorItem.hoverMoveEvent(self, event)
         if (self.isSelected() or globals_.CursorMode == 2) and not globals_.SpritesFrozen:
             setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
 
-    def hoverLeaveEvent(self, event):
+    def hoverLeaveEvent(self, event: QtWidgets.QGraphicsSceneHoverEvent) -> None:
         LevelEditorItem.hoverLeaveEvent(self, event)
         setOverrideCursor(None)
 
-    def nearestZone(self, obj=False):
+    def nearestZone(self, obj: bool = False) -> ZoneItem | int | None:
         """
         Calls a modified MapPositionToZoneID (if obj = True, it returns the
         actual ZoneItem object). If the area is not fully loaded yet, or there
@@ -547,7 +550,7 @@ class SpriteItem(LevelEditorItem):
 
         return zone_obj if obj else zone_obj.id
 
-    def updateScene(self):
+    def updateScene(self) -> None:
         """
         Calls self.scene().update()
         """
@@ -558,8 +561,8 @@ class SpriteItem(LevelEditorItem):
         if scene is not None:
             scene.update()
 
-    def paint(self, painter: QtGui.QPainter | None, option: 'QtWidgets.QStyleOptionGraphicsItem | None'=None,
-              widget: QtWidgets.QWidget | None=None, overrideGlobals=False):
+    def paint(self, painter: QtGui.QPainter | None, option: QtWidgets.QStyleOptionGraphicsItem | None = None,
+              widget: QtWidgets.QWidget | None = None, overrideGlobals: bool = False) -> None:
         """
         Paints the sprite
         """
@@ -620,14 +623,14 @@ class SpriteItem(LevelEditorItem):
             painter.setFont(self.font)
             painter.drawText(spriteboxRect, QtCore.Qt.AlignmentFlag.AlignCenter, str(self.sprite_num))
 
-    def scene(self):
+    def scene(self) -> QtWidgets.QGraphicsScene | None:
         """
         Solves a small bug
         """
         if globals_.mainWindow is not None:
             return globals_.mainWindow.scene
 
-    def delete(self):
+    def delete(self) -> None:
         """
         Delete the sprite from the level
         """

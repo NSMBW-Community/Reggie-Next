@@ -1,5 +1,5 @@
-from data import globals_
 import spritelib as SLib
+from data import globals_
 from data.common import archive
 from data.level.abstract_level import AbstractLevel
 from data.level.area import Area
@@ -10,14 +10,14 @@ class NSMBWLevel(AbstractLevel):
     Class for a level from New Super Mario Bros. Wii
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initializes the level with default settings
         """
         super().__init__()
         self.new(False)
 
-    def new(self, load=True):
+    def new(self, load: bool = True) -> None:
         """
         Creates a completely new level
         """
@@ -34,7 +34,7 @@ class NSMBWLevel(AbstractLevel):
 
         self.areas.append(new_area)
 
-    def load(self, data, areaToLoad):
+    def load(self, data: bytes, areaToLoad: int) -> bool:
         """
         Loads a NSMBW level from bytes data.
         """

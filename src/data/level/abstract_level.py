@@ -6,7 +6,7 @@ class AbstractLevel:
     Class for an abstract level from any game. Defines the API.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initializes the level with default settings
         """
@@ -15,18 +15,18 @@ class AbstractLevel:
 
         self.areas: list[Area] = []
 
-    def load(self, data: bytes, areaNum: int):
+    def load(self, data: bytes, areaNum: int) -> None:
         """
         Loads a level from bytes data. You MUST reimplement this in subclasses!
         """
 
-    def save(self):
+    def save(self) -> bytes:
         """
         Returns the level as a bytes object. You MUST reimplement this in subclasses!
         """
         return b''
 
-    def deleteArea(self, number: int):
+    def deleteArea(self, number: int) -> bool:
         """
         Removes the area specified. Number is a 1-based value, not 0-based;
         so you would pass a 1 if you wanted to delete the first area.
@@ -39,7 +39,7 @@ class AbstractLevel:
 
         return True
 
-    def changeArea(self, number: int):
+    def changeArea(self, number: int) -> bool:
         """
         Changes the current area to the specified area in the loaded level
         archive. Note that number is 1-based, not 0-based.

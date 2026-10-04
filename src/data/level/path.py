@@ -4,6 +4,7 @@ from data import globals_
 from data.level.abstract_path import AbstractPath
 from data.level.items.path import PathItem
 from data.level.items.path_editor_line import PathEditorLineItem
+from ui.widgets.level_scene import LevelScene
 
 
 class Path(AbstractPath):
@@ -15,21 +16,17 @@ class Path(AbstractPath):
         """
         A simple class to store the data belonging to a node.
         """
-        def __init__(self, speed, accel, delay):
+        def __init__(self, speed: float, accel: float, delay: float) -> None:
             self.speed = speed
             self.accel = accel
             self.delay = delay
 
-    def __init__(self, path_id, scene, loops = False):
-        super().__init__()
-        self._id = path_id
-        self._scene = scene
-        self._loops = loops
-        self._node_data = []
+    def __init__(self, path_id: int, scene: LevelScene, loops: bool = False) -> None:
+        super().__init__(path_id, scene, loops)
         self._line_item = PathEditorLineItem(self)
         self._has_line = False
 
-    def add_to_scene(self):
+    def add_to_scene(self) -> None:
         """
         This adds all nodes to the scene. This function mainly exists to keep
         the API of this class similar to the LevelItem classes.
@@ -41,7 +38,7 @@ class Path(AbstractPath):
             self._scene.addItem(self._line_item)
             self._has_line = True
 
-    def set_id(self, new_id):
+    def set_id(self, new_id: int) -> bool:
         """
         Changes the path's id and returns whether the path's id changed.
         """
@@ -55,7 +52,7 @@ class Path(AbstractPath):
 
         return True
 
-    def set_node_data(self, node, speed=None, accel=None, delay=None):
+    def set_node_data(self, node: PathItem, speed: float | None = None, accel: float | None = None, delay: float | None = None) -> bool:
         """
         This function can change the speed, accel and delay values associated
         with a specific node. It only changes the parameters that are given, and
@@ -74,7 +71,7 @@ class Path(AbstractPath):
 
         return (data.speed, data.accel, data.delay) != old_data
 
-    def set_loops(self, value):
+    def set_loops(self, value: bool) -> bool:
         """
         Changes whether the path loops or not. Returns True if the value was
         changed.
@@ -87,7 +84,7 @@ class Path(AbstractPath):
 
         return True
 
-    def set_freeze(self, frozen):
+    def set_freeze(self, frozen: bool) -> None:
         """
         (Un)freezes this path, based on the boolean argument. Passing True causes
         all nodes to not be selectable or movable. Passing False does the opposite.
@@ -99,7 +96,7 @@ class Path(AbstractPath):
             node.setFlag(flag1, not frozen)
             node.setFlag(flag2, not frozen)
 
-    def setVisible(self, value):
+    def setVisible(self, value: bool) -> None:
         """
         Shows or hides the path.
         """
@@ -108,27 +105,10 @@ class Path(AbstractPath):
 
         self._line_item.setVisible(value)
 
-    def get_loops(self):
+    def get_loops(self) -> bool:
         return self._loops
 
-    def get_index(self, node):
-        return self._nodes.index(node)
-
-    def get_node_data(self, index):
-        """
-        Returns a tuple containing the data required for the binary representation
-        of the node at the specified index: x, y, speed, accel, delay.
-        """
-        node = self._nodes[index]
-        data = self._node_data[index]
-
-        return node.objx, node.objy, data.speed, data.accel, data.delay
-
-    def get_points(self):
-        """
-        Returns a list of the positions of the nodes of this path. If this path
-        loops, the first node's position is also the last position in the list.
-        """
+    def get_points(self) -> list[QtCore.QPointF]:
         points = []
 
         for node in self._nodes:
@@ -139,17 +119,27 @@ class Path(AbstractPath):
 
         return points
 
-    def get_data_for_node(self, node_id):
+    def get_data_for_node(self, node_id: int) -> tuple[float, float, float]:
         data = self._node_data[node_id]
         return data.speed, data.accel, data.delay
 
-    def add_node(self, x, y, speed = 0.5, accel = 0.00498, delay = 0, index = None, add_to_list = True, add_to_scene = True):
+    def add_node(
+        self,
+        x: int,
+        y: int,
+        speed: float = 0.5,
+        accel: float = 0.00498,
+        delay: float = 0,
+        index: int | None = None,
+        add_to_list: bool = True,
+        add_to_scene: bool = True,
+    ) -> PathItem:
         """
         Adds a node to the path at the specified position. If no index is given,
         the node is appended to the end of the path.
         """
         if globals_.mainWindow is None:
-            return
+            return PathItem(-1, -1, -1, -1, self)
 
         if index is None:
             index = len(self._nodes)
@@ -179,14 +169,10 @@ class Path(AbstractPath):
 
         return node
 
-    def remove_node(self, index):
-        """
-        Removes the node at a given index. Returns whether the path is empty after
-        this node has been removed.
-        """
+    def remove_node(self, index: int) -> bool:
         node = self._nodes[index]
         if globals_.mainWindow is None:
-            return
+            return False
 
         # Hacky stuff
         plist = globals_.mainWindow.palette_dock.path_tab.path_list
@@ -213,7 +199,7 @@ class Path(AbstractPath):
 
         return len(self._nodes) == 0
 
-    def move_node(self, node, new_id):
+    def move_node(self, node: PathItem, new_id: int) -> None:
         """
         This function moves a given node to a new position in the path. All items
         between the original position of the given node and the new id are shifted
@@ -245,11 +231,5 @@ class Path(AbstractPath):
 
         self._line_item.update_path()
 
-    def node_moved(self, node):
+    def node_moved(self, node) -> None:
         self._line_item.update_path()
-
-    def __len__(self):
-        """
-        Returns the number of nodes.
-        """
-        return len(self._nodes)

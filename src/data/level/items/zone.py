@@ -1,7 +1,9 @@
+from typing import Any
+
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from data import globals_
 import spritelib as SLib
+from data import globals_
 from data.level.dirty import SetDirty
 from data.level.items.basic import LevelEditorItem
 from data.level.items.zone_grabber import ZoneGrabberItem
@@ -12,7 +14,29 @@ class ZoneItem(LevelEditorItem):
     Level editor item that represents a zone
     """
 
-    def __init__(self, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, boundings, bgA, bgB, id_=None):
+    def __init__(
+        self,
+        objx: int,
+        objy: int,
+        width: int,
+        height: int,
+        modeldark: int,
+        terraindark: int,
+        id: int,
+        block3id: int,
+        cammode: int,
+        camzoom: int,
+        visibility: int,
+        block5id: int,
+        block6id: int,
+        camtrack: int,
+        music: int,
+        sfxmod: int,
+        boundings: list[list[int]],
+        bgA: list[list[int]],
+        bgB: list[list[int]],
+        id_: int | None = None,
+    ) -> None:
         """
         Creates a zone with specific data
         """
@@ -21,22 +45,22 @@ class ZoneItem(LevelEditorItem):
         self.font = globals_.NumberFont
         self.TitlePos = QtCore.QPointF(10, 18)
 
-        self.objx = a
-        self.objy = b
-        self.width = c
-        self.height = d
-        self.modeldark = e
-        self.terraindark = f
-        self.id = g
-        self.block3id = h
-        self.cammode = i
-        self.camzoom = j
-        self.visibility = k
-        self.block5id = l
-        self.block6id = m
-        self.camtrack = n
-        self.music = o
-        self.sfxmod = p
+        self.objx = objx
+        self.objy = objy
+        self.width = width
+        self.height = height
+        self.modeldark = modeldark
+        self.terraindark = terraindark
+        self.id = id
+        self.block3id = block3id
+        self.cammode = cammode
+        self.camzoom = camzoom
+        self.visibility = visibility
+        self.block5id = block5id
+        self.block6id = block6id
+        self.camtrack = camtrack
+        self.music = music
+        self.sfxmod = sfxmod
 
         # Create grabbers for resizing
         self.GrabberTL = ZoneGrabberItem(self, 1)
@@ -109,12 +133,12 @@ class ZoneItem(LevelEditorItem):
         self.ent_indicator_offset = 0
 
         globals_.DirtyOverride += 1
-        self.setPos(int(a * 1.5), int(b * 1.5))
+        self.setPos(int(objx * 1.5), int(objy * 1.5))
         globals_.DirtyOverride -= 1
         self.setZValue(50000)
 
     @staticmethod
-    def CreateZone(x: int, y: int, width: int = 408, height: int = 224, id_: int | None = None, add_to_scene = True):
+    def CreateZone(x: int, y: int, width: int = 408, height: int = 224, id_: int | None = None, add_to_scene: bool = True) -> 'ZoneItem':
         """
         Creates and returns a new zone and makes sure it's added to the right
         lists if 'add_to_scene' is set.
@@ -142,13 +166,13 @@ class ZoneItem(LevelEditorItem):
 
         return zone
 
-    def UpdateTitle(self):
+    def UpdateTitle(self) -> None:
         """
         Updates the zone's title
         """
         self.title = globals_.trans.string('Zones', 0, '[num]', self.id + 1)
 
-    def UpdateRects(self):
+    def UpdateRects(self) -> None:
         """
         Updates the zone's bounding rectangle
         """
@@ -157,8 +181,7 @@ class ZoneItem(LevelEditorItem):
 
         if hasattr(globals_.mainWindow, 'ZoomLevel'):
             grabberWidth = 480 / globals_.mainWindow.ZoomLevel
-            if grabberWidth < 4.8:
-                grabberWidth = 4.8
+            grabberWidth = max(grabberWidth, 4.8)
         else:
             grabberWidth = 4.8
 
@@ -177,7 +200,7 @@ class ZoneItem(LevelEditorItem):
         self.GrabberBL.UpdateRects(self.GrabberRectBL)
         self.GrabberBR.UpdateRects(self.GrabberRectBR)
 
-    def getCameraHeight(self):
+    def getCameraHeight(self) -> list[float]:
         """
         Returns the applicable camera height(s) for this zone.
         """
@@ -190,7 +213,7 @@ class ZoneItem(LevelEditorItem):
 
         return heights[self.camzoom]
 
-    def updateEntranceIndicator(self):
+    def updateEntranceIndicator(self) -> None:
         """
         Updates the member fields related to the entrance indicator.
         """
@@ -248,7 +271,7 @@ class ZoneItem(LevelEditorItem):
         # combined to reduce floating point rounding errors.
         self.ent_indicator_offset = height * 24 * 16 / 18
 
-    def paint(self, painter, option, widget = ...):
+    def paint(self, painter: QtGui.QPainter | None, option: QtWidgets.QStyleOptionGraphicsItem | None, widget: QtWidgets.QWidget | None = None) -> None:
         """
         Paints the zone on screen
         """
@@ -319,7 +342,7 @@ class ZoneItem(LevelEditorItem):
             r2.moveBottom(self.DrawRect.bottom())
             painter.drawRect(r2)
 
-    def mousePressEvent(self, event):
+    def mousePressEvent(self, event: QtWidgets.QGraphicsSceneMouseEvent | None) -> None:
         """
         Overrides mouse pressing events if needed for resizing
         """
@@ -353,7 +376,7 @@ class ZoneItem(LevelEditorItem):
         else:
             LevelEditorItem.mousePressEvent(self, event)
 
-    def mouseMoveEvent(self, event):
+    def mouseMoveEvent(self, event: QtWidgets.QGraphicsSceneMouseEvent | None) -> None:
         """
         Overrides mouse movement events if needed for resizing
         """
@@ -388,8 +411,8 @@ class ZoneItem(LevelEditorItem):
                 # Rect from (x2, y2) to clicked
                 x1 = clickedx
                 y1 = clickedy
-                if x1 < MIN_X: x1 = MIN_X
-                if y1 < MIN_Y: y1 = MIN_Y
+                x1 = max(x1, MIN_X)
+                y1 = max(y1, MIN_Y)
                 if x2 - x1 < MIN_W: x1 = x2 - MIN_W
                 if y2 - y1 < MIN_H: y1 = y2 - MIN_H
 
@@ -397,7 +420,7 @@ class ZoneItem(LevelEditorItem):
                 # Rect from (x1, y2) to clicked
                 x2 = clickedx
                 y1 = clickedy
-                if y1 < MIN_Y: y1 = MIN_Y
+                y1 = max(y1, MIN_Y)
                 if x2 - x1 < MIN_W: x2 = x1 + MIN_W
                 if y2 - y1 < MIN_H: y1 = y2 - MIN_H
 
@@ -405,7 +428,7 @@ class ZoneItem(LevelEditorItem):
                 # Rect from (x2, y1) to clicked
                 x1 = clickedx
                 y2 = clickedy
-                if x1 < MIN_X: x1 = MIN_X
+                x1 = max(x1, MIN_X)
                 if x2 - x1 < MIN_W: x1 = x2 - MIN_W
                 if y2 - y1 < MIN_H: y2 = y1 + MIN_H
 
@@ -450,7 +473,7 @@ class ZoneItem(LevelEditorItem):
         else:
             LevelEditorItem.mouseMoveEvent(self, event)
 
-    def itemChange(self, change, value):
+    def itemChange(self, change: QtWidgets.QGraphicsItem.GraphicsItemChange, value: Any) -> QtCore.QVariant | None:
         """
         Avoids snapping for zones
         """

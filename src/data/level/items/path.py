@@ -1,6 +1,7 @@
-from PyQt6 import QtCore, QtGui
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data import globals_
+from data.level.abstract_path import AbstractPath
 from data.level.dirty import SetDirty
 from data.level.items.basic import InstanceDefinition, LevelEditorItem
 from ui.theme.reggie_theme import setOverrideCursor
@@ -18,10 +19,11 @@ class InstanceDefinition_PathItem(InstanceDefinition):
     )
 
     @staticmethod
-    def itemList():
+    def itemList() -> list[AbstractPath]:
+        # TODO figure out a way to import data.level.path without circular imports
         return globals_.Area.paths
 
-    def createNew(self):
+    def createNew(self) -> 'PathItem':
         return PathItem(self.objx, self.objy, *(field for field in self.fields))
 
 
@@ -33,10 +35,11 @@ class PathItem(LevelEditorItem):
     BoundingRect = QtCore.QRectF(0, 0, 24, 24)
     RoundedRect = QtCore.QRectF(1, 1, 22, 22)
 
-    def __init__(self, objx, objy, path_id, node_id, parent):
+    def __init__(self, objx: int, objy: int, path_id: int, node_id: int, parent: AbstractPath) -> None:
         """
         Creates a path node with specific data
         """
+        print(globals_.Area.paths)
         LevelEditorItem.__init__(self)
         if globals_.CursorMode != 0:
             self.setAcceptHoverEvents(True)
@@ -69,7 +72,7 @@ class PathItem(LevelEditorItem):
         self.UpdateTooltip()
         self.UpdateListItem()
 
-    def set_path_id(self, new_id):
+    def set_path_id(self, new_id: int) -> None:
         self.pathid = new_id
 
         self.UpdateTooltip()
@@ -77,7 +80,7 @@ class PathItem(LevelEditorItem):
             self.listitem.setText(self.ListString())
         self.update()
 
-    def position_changed(self, oldx, oldy, x, y):
+    def position_changed(self, oldx: int, oldy: int, x: int, y: int) -> None:
         """
         Handle the path being dragged
         """
@@ -90,22 +93,22 @@ class PathItem(LevelEditorItem):
             SetDirty()
         globals_.mainWindow.level_overview.update()
 
-    def UpdateTooltip(self):
+    def UpdateTooltip(self) -> None:
         """
         Updates the path node's tooltip
         """
         self.setToolTip(globals_.trans.string('Paths', 0, '[path]', self.pathid, '[node]', self.nodeid))
 
-    def ListString(self):
+    def ListString(self) -> str | None:
         """
         Returns a string that can be used to describe the path node in a list
         """
         return globals_.trans.string('Paths', 1, '[path]', self.pathid, '[node]', self.nodeid)
 
-    def __lt__(self, other):
+    def __lt__(self, other: 'PathItem') -> bool:
         return (self.pathid, self.nodeid) < (other.pathid, other.nodeid)
 
-    def update_id(self, new_id):
+    def update_id(self, new_id: int) -> None:
         """
         Path was changed, find our new node id
         """
@@ -114,7 +117,7 @@ class PathItem(LevelEditorItem):
         self.UpdateListItem()
         self.update()
 
-    def paint(self, painter, option, widget = ...):
+    def paint(self, painter: QtGui.QPainter | None, option: QtWidgets.QStyleOptionGraphicsItem | None, widget: QtWidgets.QWidget | None = None) -> None:
         """
         Paints the path node
         """
@@ -140,7 +143,7 @@ class PathItem(LevelEditorItem):
         painter.drawText(4, 11, str(self.pathid))
         painter.drawText(4, 9 + QtGui.QFontMetrics(self.font).height(), str(self.nodeid))
 
-    def delete(self):
+    def delete(self) -> None:
         """
         Delete the path from the level
         """
@@ -150,11 +153,11 @@ class PathItem(LevelEditorItem):
         if was_last:
             globals_.Area.paths.remove(self.path)
 
-    def hoverMoveEvent(self, event):
+    def hoverMoveEvent(self, event: QtWidgets.QGraphicsSceneHoverEvent) -> None:
         LevelEditorItem.hoverMoveEvent(self, event)
         if (self.isSelected() or globals_.CursorMode == 2) and not globals_.PathsFrozen:
             setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
 
-    def hoverLeaveEvent(self, event):
+    def hoverLeaveEvent(self, event: QtWidgets.QGraphicsSceneHoverEvent) -> None:
         LevelEditorItem.hoverLeaveEvent(self, event)
         setOverrideCursor(None)

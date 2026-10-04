@@ -5,6 +5,7 @@ from PyQt6 import QtWidgets
 import spritelib as SLib
 from data import globals_
 from data.common.loaders import CreateTilesets, LoadTileset
+from data.level.abstract_path import AbstractPath
 from data.level.items.comment import CommentItem
 from data.level.items.entrance import EntranceItem
 from data.level.items.location import LocationItem
@@ -12,7 +13,6 @@ from data.level.items.object import ObjectItem
 from data.level.items.sprite import SpriteItem
 from data.level.items.zone import ZoneItem
 from data.level.metadata import Metadata
-from data.level.path import Path
 from data.sprite.spritefield.list import ListSpriteField
 from data.sprite.spritefield.sprite_field import SpriteField
 from data.sprite.spritefield.value import ValueSpriteField
@@ -61,12 +61,12 @@ class Area:
         self.entrances: list[EntranceItem] = []
         self.sprites: list[SpriteItem] = []
         self.bgA: list[int] = []
-        self.bounding: list[int] = []
+        self.bounding: list[list[int]] = []
         self.bgB: list[int] = []
         self.zones: list[ZoneItem] = []
         self.locations: list[LocationItem] = []
         self.camprofiles: list[bytes] = []
-        self.paths: list[Path] = []
+        self.paths: list[AbstractPath] = []
         self.comments: list[CommentItem] = []
         self.layers: list[list[ObjectItem]] = [[], [], []]
         self.loaded_sprites: set[int] = set()
@@ -101,7 +101,7 @@ class Area:
         # Mark the area as loaded
         self._is_loaded = True
 
-    def set_data(self, course: bytes, L0: bytes, L1: bytes, L2: bytes) -> None:
+    def set_data(self, course: bytes, L0: bytes | None, L1: bytes | None, L2: bytes | None) -> None:
         """
         Assigns the archive file data to this area.
         """
@@ -287,10 +287,7 @@ class Area:
             self.Metadata = Metadata()
             return
 
-        try:
-            self.Metadata = Metadata(data)
-        except Exception:
-            self.Metadata = Metadata()  # fallback
+        self.Metadata = Metadata(data)
 
     def LoadBlocks(self, course: bytes) -> None:
         """
@@ -402,11 +399,11 @@ class Area:
         """
         bdngdata = self.blocks[2]
         bdngstruct = struct.Struct('>4lHHhh')
-        bounding = []
+        bounding: list[list[int]] = []
 
         for offset in range(0, len(bdngdata), 24):
             data = bdngstruct.unpack_from(bdngdata, offset)
-            bounding.append(data)
+            bounding.append(list(data))
 
         self.bounding = bounding
 
@@ -444,7 +441,7 @@ class Area:
         zones = []
 
         for offset in range(0, len(zonedata), 24):
-            dataz: tuple[int, int, int, int, int, int, int, int, int, int, int, int, int, int, int] = zonestruct.unpack_from(zonedata, offset)
+            dataz: tuple[int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int] = zonestruct.unpack_from(zonedata, offset)
             zones.append(ZoneItem(*dataz, bounding, bgA, bgB, offset // 24))
 
         self.zones = zones
@@ -703,7 +700,7 @@ class Area:
         self.blocks[12] = bytes(buffer[:offset])
         self.blocks[13] = bytes(nodebuffer)
 
-    def WritePathNodes(self, buffer: bytearray, offset: int, path: Path) -> None:
+    def WritePathNodes(self, buffer: bytearray, offset: int, path: AbstractPath) -> None:
         """
         Writes the path node data to the block 14 bytearray
         """
