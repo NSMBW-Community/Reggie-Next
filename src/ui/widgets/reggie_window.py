@@ -483,6 +483,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
             ), (
                 'shiftitems',
                 'mergelocations',
+                'swapobjectstilesets',
+                'swapobjectstypes',
+                'switchsprites',
             ), (
                 'freezeobjects',
                 'freezesprites',

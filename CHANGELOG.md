@@ -21,6 +21,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added a sprite order list to help with issues caused by an incorrect level-internal sprite order.
 - Added an option to forcefully ignore Windows' app scaling setting.
 - Added support for copy/pasting Comments.
+- The following actions can now be pinned to the toolbar:
+  - Swap Objects' Tilesets
+  - Swap Objects
+  - Switch Sprite IDs
 
 ### Changed
 
