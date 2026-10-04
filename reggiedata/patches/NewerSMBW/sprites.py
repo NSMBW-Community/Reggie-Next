@@ -86,6 +86,7 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
         self.rotates = False
         self.flipOverride = False
         self.transparent = False
+        self.is_water_block = False
 
     def dataChanged(self):
         # SET CONTENTS
@@ -142,6 +143,11 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
             flip = self.image.toImage().mirrored(True, True)
             self.image = self.image.fromImage(flip)
 
+        # Sprite 433 scales the block by 1.5x
+        if self.is_water_block:
+            self.setOffset((-4, -4))
+            self.setSize((36 / 1.5, 36 / 1.5))
+
     def paint(self, painter):
         if self.image is None or not isinstance(self.aux[0], SLib.AuxiliaryImage):
             return
@@ -151,14 +157,17 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
         else:
             painter.setOpacity(1.0)
 
+        img_offs = 6 if self.is_water_block else 0
+        scale = 36 if self.is_water_block else 24
+
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
         if self.rotates:
             self.aux[0].image = SLib.GetTile(self.tilenum).transformed(self.transform, QtCore.Qt.TransformationMode.SmoothTransformation)
             self.aux[0].setSize(self.aux[0].image.width(), self.aux[0].image.height())
         else:
             if self.tilenum < len(SLib.Tiles):
-                painter.drawPixmap(0, 0, SLib.GetTile(self.tilenum))
-            painter.drawPixmap(0, 0, self.image)
+                painter.drawPixmap(0, 0, SLib.GetTile(self.tilenum).scaled(scale, scale))
+            painter.drawPixmap(img_offs, img_offs, self.image)
 
 
 class SpriteImage_QBlock(SpriteImage_Block):  # 207
@@ -2349,54 +2358,14 @@ class SpriteImage_NewerGabon(SLib.SpriteImage_StaticMultiple):  # 414
         super().dataChanged()
 
 
-class SpriteImage_NewerFloatingQBlock(SLib.SpriteImage_StaticMultiple):  # 433
+class SpriteImage_NewerFloatingQBlock(SpriteImage_Block):  # 433
     def __init__(self, parent):
-        super().__init__(
-            parent,
-            1.5,
-            ImageCache['FloatingQBlock'],
-            (-6, -6),
-        )
+        super().__init__(parent, 1.5)
+        self.tilenum = 49
+        self.is_water_block = True
 
-    @staticmethod
-    def loadImages():
-        SLib.loadIfNotInImageCache('FloatingQBlock', 'floating_qblock.png')
-
-        items = (
-            ('Coin',   ImageCache['BlockContents1']),
-            ('Hamr',   ImageCache['BlockContents20']),
-            ('Fire',   ImageCache['BlockContents3']),
-            ('Prop',   ImageCache['BlockContents4']),
-            ('Peng',   ImageCache['BlockContents5']),
-            ('Mini',   ImageCache['BlockContents6']),
-            ('Star',   ImageCache['BlockContents7']),
-            ('StarC',  ImageCache['BlockContents8']),
-            ('Egg',    ImageCache['BlockContents9']),
-            ('10Coin', ImageCache['BlockContents10']),
-            ('1Up',    ImageCache['BlockContents11']),
-            ('Mush',   ImageCache['BlockContents2']),
-            ('Spring', ImageCache['BlockContents13']),
-            ('MushC',  ImageCache['BlockContents14']),
-            ('Ice',    ImageCache['BlockContents15']),
-        )
-        for itemName, overlayImage in items:
-            newPix = QtGui.QPixmap(ImageCache['FloatingQBlock'])
-            painter = QtGui.QPainter(newPix)
-
-            painter.drawPixmap(8, 8, overlayImage)
-            del painter
-            ImageCache['FloatingQBlock' + itemName] = newPix
-
-    def dataChanged(self):
-        item = self.parent.spritedata[5] & 0xF
-
-        itemNames = ('', 'Coin', 'Hamr', 'Fire', 'Prop', 'Peng', 'Mini', 'Star',
-                        'StarC', 'Egg', '10Coin', '1Up', 'Mush', 'Spring', 'MushC', 'Ice')
-        itemStr = itemNames[item]
-
-        self.image = ImageCache['FloatingQBlock' + itemStr]
-
-        super().dataChanged()
+        self.contentsNybble = 5
+        self.twelveIsMushroom = True
 
 
 class SpriteImage_NewerBowserSwitchSm(SpriteImage_NewerSwitch):  # 478
