@@ -25,10 +25,11 @@ class SpriteSwitchDialog(QtWidgets.QDialog):
         self.curr_type = QtWidgets.QSpinBox()
         self.new_type = QtWidgets.QSpinBox()
 
-        self.curr_type.setValue(selected)
-
         self.curr_type.setRange(0, 65535)
         self.new_type.setRange(0, 65535)
+
+        # Set a default ID, if applicable
+        self.curr_type.setValue(selected)
 
         swap_layout = QtWidgets.QGridLayout()
 
