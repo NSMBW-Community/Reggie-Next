@@ -1,5 +1,5 @@
 import base64
-from typing import cast
+from typing import Any, cast
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
@@ -19,24 +19,27 @@ class InstanceDefinition:
     """
     fieldNames = []
 
-    def __init__(self, other=None):
+    def __init__(self, other: 'InstanceDefinition | None' = None) -> None:
         """
         Initializes it
         """
         self.fields = [[name, None] for name in self.fieldNames]
+        self.objx: float | None = None
+        self.objy: float | None = None
+
         if other:
             self.setFrom(other)
         else:
             self.clear()
 
     @staticmethod
-    def itemList():
+    def itemList() -> list['InstanceDefinition']:
         """
         Returns a list of all instances of this item currently in the level
         """
         return []
 
-    def clear(self):
+    def clear(self) -> None:
         """
         Clears all data and position data
         """
@@ -44,14 +47,14 @@ class InstanceDefinition:
         self.objy = None
         self.clearData()
 
-    def clearData(self):
+    def clearData(self) -> None:
         """
         Clears all data
         """
         for field in self.fields:
             field = None
 
-    def setFrom(self, other):
+    def setFrom(self, other: 'InstanceDefinition') -> None:
         """
         Sets data and position from an item
         """
@@ -59,20 +62,20 @@ class InstanceDefinition:
         self.objy = other.objy
         self.setDataFrom(other)
 
-    def setDataFrom(self, other):
+    def setDataFrom(self, other: 'InstanceDefinition') -> None:
         """
         Sets data from an item
         """
         for field in self.fields:
             field[1] = getattr(other, field[0])
 
-    def matches(self, other):
+    def matches(self, other: 'InstanceDefinition') -> bool:
         """
         Returns True if this instance definition matches the specified item
         """
         return self.objx == other.objx and self.objy == other.objy and self.matchesData(other)
 
-    def matchesData(self, other):
+    def matchesData(self, other: 'InstanceDefinition') -> bool:
         """
         Returns True if this instance definition's data matches the specified item's data
         """
@@ -81,7 +84,7 @@ class InstanceDefinition:
             matches = matches and (field[1] == getattr(other, field[0]))
         return matches
 
-    def defMatches(self, other):
+    def defMatches(self, other: 'InstanceDefinition') -> bool:
         """
         Returns True if this instance definition matches the specified instance definition
         """
@@ -90,7 +93,7 @@ class InstanceDefinition:
         matches = matches and (self.objy == other.objy)
         return matches and self.defMatchesData(other)
 
-    def defMatchesData(self, other):
+    def defMatchesData(self, other: 'InstanceDefinition') -> bool:
         """
         Returns True if this instance definition's data matches the specified instance definition's data
         """
@@ -99,14 +102,14 @@ class InstanceDefinition:
             matches = matches and (myField == otherField)
         return matches
 
-    def createNew(self):
+    def createNew(self) -> 'LevelEditorItem':
         """
         Creates a new instance of the target class, with the data specified here
         """
         # This will need to be implemented separately in each subclass
         return LevelEditorItem()
 
-    def findInstance(self):
+    def findInstance(self) -> 'InstanceDefinition | None':
         """
         Returns a matching instance of this thing in the level
         """
@@ -135,7 +138,7 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
     objx, objy = 0, 0
     BoundingRect = QtCore.QRectF(0, 0, 24, 24)
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Generic constructor for level editor items
         """
@@ -144,7 +147,7 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
 
         self.listitem: QtWidgets.QListWidgetItem | None = None
 
-    def __lt__(self, other):
+    def __lt__(self, other: 'LevelEditorItem') -> bool:
         if self.objx != other.objx:
             return self.objx < other.objx
 
@@ -156,7 +159,7 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
         """
         return None
 
-    def itemChange(self, change, value):
+    def itemChange(self, change: QtWidgets.QGraphicsItem.GraphicsItemChange, value: Any) -> QtCore.QVariant | None:
         """
         Makes sure positions don't go out of bounds and updates them as necessary
         """
@@ -270,13 +273,13 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
 
         return QtWidgets.QGraphicsItem.itemChange(self, change, value)
 
-    def getFullRect(self):
+    def getFullRect(self) -> QtCore.QRectF:
         """
         Basic implementation that returns self.BoundingRect
         """
         return self.BoundingRect.translated(self.pos())
 
-    def UpdateListItem(self, updateTooltipPreview=False):
+    def UpdateListItem(self, updateTooltipPreview: bool = False) -> None:
         """
         Updates the list item
         """
@@ -300,7 +303,7 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
 
         self.listitem.setText(self.ListString())
 
-    def renderInLevelIcon(self):
+    def renderInLevelIcon(self) -> QtGui.QImage | None:
         """
         Renders an icon of this item as it appears in the level
         """
@@ -351,7 +354,7 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
 
         return final
 
-    def boundingRect(self):
+    def boundingRect(self) -> QtCore.QRectF:
         """
         Required for Qt
         """

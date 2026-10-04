@@ -1,15 +1,15 @@
 import os
-from typing import cast
+from typing import Any, cast
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from data import globals_
 import spritelib as SLib
+from data import globals_
+from data.common.utils import find_first_available_id, get_reggiedata_folder
+from data.level.dirty import SetDirty
 from data.level.items.basic import InstanceDefinition, LevelEditorItem
 from ui.theme.reggie_theme import setOverrideCursor
-from data.common.utils import find_first_available_id, get_reggiedata_folder
 from ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
-from data.level.dirty import SetDirty
 
 
 class InstanceDefinition_EntranceItem(InstanceDefinition):
@@ -29,10 +29,10 @@ class InstanceDefinition_EntranceItem(InstanceDefinition):
     )
 
     @staticmethod
-    def itemList():
+    def itemList() -> list['EntranceItem']:
         return globals_.Area.entrances
 
-    def createNew(self):
+    def createNew(self) -> 'EntranceItem':
         return EntranceItem(self.objx, self.objy, *(field for field in self.fields))
 
 
@@ -51,7 +51,7 @@ class EntranceItem(LevelEditorItem):
         """
         BoundingRect = QtCore.QRectF(0, 0, 24, 24)
 
-        def __init__(self, parent):
+        def __init__(self, parent: 'LevelEditorItem') -> None:
             """
             Initializes the auxiliary entrance thing
             """
@@ -63,7 +63,7 @@ class EntranceItem(LevelEditorItem):
             self.setParentItem(parent)
             self.hover = False
 
-        def TypeChange(self):
+        def TypeChange(self) -> None:
             """
             Handles type changes to the entrance
             """
@@ -94,7 +94,7 @@ class EntranceItem(LevelEditorItem):
                 self.setPos(0, 0)
                 self.BoundingRect = QtCore.QRectF(0, 0, 24, 24)
 
-        def paint(self, painter, option, widget = ...):
+        def paint(self, painter: QtGui.QPainter | None, option: QtWidgets.QStyleOptionGraphicsItem | None, widget: QtWidgets.QWidget | None = None) -> None:
             """
             Paints the entrance aux
             """
@@ -146,13 +146,13 @@ class EntranceItem(LevelEditorItem):
 
                 painter.drawEllipse(4, 4, 40, 40)
 
-        def boundingRect(self):
+        def boundingRect(self) -> QtCore.QRectF:
             """
             Required by Qt
             """
             return self.BoundingRect
 
-    def __init__(self, x, y, id, destarea, destentrance, type, zone, layer, path, settings, leave_level_val, cpd):
+    def __init__(self, x: float | None, y: float | None, id: int, destarea: int, destentrance: int, type: int, zone: int, layer: int, path: int, settings: int, leave_level_val: int, cpd: int) -> None:
         """
         Creates an entrance with specific data
         """
@@ -168,8 +168,8 @@ class EntranceItem(LevelEditorItem):
             self.setAcceptHoverEvents(True)
 
         self.font = globals_.NumberFont
-        self.objx = x
-        self.objy = y
+        self.objx = x or 0
+        self.objy = y or 0
         self.entid = id
         self.destarea = destarea
         self.destentrance = destentrance
@@ -189,7 +189,7 @@ class EntranceItem(LevelEditorItem):
         self.aux = self.AuxEntranceItem(self)
 
         globals_.DirtyOverride += 1
-        self.setPos(int(x * 1.5), int(y * 1.5))
+        self.setPos(int(self.objx * 1.5), int(self.objy * 1.5))
         globals_.DirtyOverride -= 1
 
         self.setZValue(27000)
@@ -197,7 +197,7 @@ class EntranceItem(LevelEditorItem):
         self.UpdateRects()
 
     @staticmethod
-    def CreateEntrance(x: int, y: int, id_: int | None = None, add_to_scene = True, allow_dupe_id = False):
+    def CreateEntrance(x: int, y: int, id_: int | None = None, add_to_scene: bool = True, allow_dupe_id: bool = False) -> 'EntranceItem | None':
         """
         Creates and returns a new entrance and makes sure it's added to the
         right lists. This function returns None if this entrance could not be
@@ -206,9 +206,9 @@ class EntranceItem(LevelEditorItem):
         if globals_.mainWindow is None:
             return None
 
-        all_ids = set(ent.entid for ent in globals_.Area.entrances)
+        all_ids = {ent.entid for ent in globals_.Area.entrances}
         if id_ is None:
-            id_ = find_first_available_id(all_ids, 256)
+            id_ = find_first_available_id({id for id in all_ids if id is not None}, 256)
 
         if id_ is None:
             result = QtWidgets.QMessageBox.warning(None, globals_.trans.string('MainWindow', 2), globals_.trans.string('MainWindow', 3),
@@ -216,7 +216,7 @@ class EntranceItem(LevelEditorItem):
             if result == QtWidgets.QMessageBox.StandardButton.Ok:
                 return None
         elif id_ in all_ids and add_to_scene and not allow_dupe_id:
-            print("EntranceItem#CreateEntrance: Given entrance id (%d) already in use" % id_)
+            print(f"EntranceItem#CreateEntrance: Given entrance id ({id_}) already in use")
             return None
 
         ent = EntranceItem(x, y, id_, 0, 0, 0, 0, 0, 0, 0x80, 0, 0)
@@ -237,7 +237,7 @@ class EntranceItem(LevelEditorItem):
 
         return ent
 
-    def position_changed(self, oldx: int, oldy: int, x: int, y: int):
+    def position_changed(self, oldx: int, oldy: int, x: int, y: int) -> None:
         """
         Handle the entrance being dragged
         """
@@ -248,7 +248,7 @@ class EntranceItem(LevelEditorItem):
         if self == globals_.mainWindow.selObj:
             SetDirty()
 
-    def UpdateTooltip(self):
+    def UpdateTooltip(self) -> None:
         """
         Updates the entrance object's tooltip
         """
@@ -270,7 +270,7 @@ class EntranceItem(LevelEditorItem):
         self.destination = destination
         self.setToolTip(globals_.trans.string('Entrances', 0, '[ent]', self.entid, '[type]', name, '[dest]', destination))
 
-    def ListString(self):
+    def ListString(self) -> str | None:
         """
         Returns a string that can be used to describe the entrance in a list
         """
@@ -284,10 +284,10 @@ class EntranceItem(LevelEditorItem):
         else:
             return globals_.trans.string('Entrances', 6, '[id]', self.entid, '[name]', name, '[x]', self.objx, '[y]', self.objy)
 
-    def __lt__(self, other):
+    def __lt__(self, other: 'EntranceItem') -> bool:
         return self.entid < other.entid
 
-    def UpdateRects(self):
+    def UpdateRects(self) -> None:
         """
         Updates the rectangles associated with this entrance.
         """
@@ -311,7 +311,7 @@ class EntranceItem(LevelEditorItem):
         # Update the aux thing
         self.aux.TypeChange()
 
-    def TypeChange(self):
+    def TypeChange(self) -> None:
         """
         Handles the entrance's type changing. This updates the associated
         rectangles and redraws the scene and level overview.
@@ -325,7 +325,7 @@ class EntranceItem(LevelEditorItem):
             globals_.mainWindow.scene.update(old_rect.united(self.getFullRect()))
             globals_.mainWindow.level_overview.update()
 
-    def paint(self, painter, option, widget = ...):
+    def paint(self, painter: QtGui.QPainter | None, option: QtWidgets.QStyleOptionGraphicsItem | None, widget: QtWidgets.QWidget | None = None) -> None:
         """
         Paints the entrance
         """
@@ -385,7 +385,7 @@ class EntranceItem(LevelEditorItem):
         painter.setFont(self.font)
         painter.drawText(3, 12, str(self.entid))
 
-    def delete(self):
+    def delete(self) -> None:
         """
         Delete the entrance from the level
         """
@@ -408,7 +408,7 @@ class EntranceItem(LevelEditorItem):
 
         setOverrideCursor(None)
 
-    def itemChange(self, change, value):
+    def itemChange(self, change: QtWidgets.QGraphicsItem.GraphicsItemChange, value: Any) -> QtCore.QVariant | None:
         """
         Handle movement
         """
@@ -420,7 +420,7 @@ class EntranceItem(LevelEditorItem):
 
         return super().itemChange(change, value)
 
-    def getFullRect(self):
+    def getFullRect(self) -> QtCore.QRectF:
         """
         Returns a rectangle that contains the entrance and any
         auxiliary objects.
@@ -430,11 +430,11 @@ class EntranceItem(LevelEditorItem):
 
         return br.translated(self.pos())
 
-    def hoverMoveEvent(self, event):
+    def hoverMoveEvent(self, event: QtWidgets.QGraphicsSceneHoverEvent) -> None:
         LevelEditorItem.hoverMoveEvent(self, event)
         if (self.isSelected() or globals_.CursorMode == 2) and not globals_.EntrancesFrozen:
             setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
 
-    def hoverLeaveEvent(self, event):
+    def hoverLeaveEvent(self, event: QtWidgets.QGraphicsSceneHoverEvent) -> None:
         LevelEditorItem.hoverLeaveEvent(self, event)
         setOverrideCursor(None)

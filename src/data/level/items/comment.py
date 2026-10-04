@@ -1,3 +1,5 @@
+from typing import Callable
+
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data import globals_
@@ -15,10 +17,10 @@ class InstanceDefinition_CommentItem(InstanceDefinition):
     )
 
     @staticmethod
-    def itemList():
+    def itemList() -> list['CommentItem']:
         return globals_.Area.comments
 
-    def createNew(self):
+    def createNew(self) -> 'CommentItem':
         return CommentItem(self.objx, self.objy, self.fields[0][1])
 
 
@@ -27,12 +29,12 @@ class CommentItem(LevelEditorItem):
     Level editor item that represents a in-level comment
     """
     instanceDef = InstanceDefinition_CommentItem
-    textChanged = None
+    textChanged: Callable[['CommentItem'], None] | None = None
     BoundingRect = QtCore.QRectF(-8, -8, 48, 48)
     SelectionRect = QtCore.QRectF(-4, -4, 4, 4)
     Circle = QtCore.QRectF(0, 0, 32, 32)
 
-    def __init__(self, x, y, text=''):
+    def __init__(self, x: float | None, y: float | None, text: str = '') -> None:
         """
         Creates a in-level comment
         """
@@ -44,8 +46,8 @@ class CommentItem(LevelEditorItem):
 
         self.text = text
 
-        self.objx = x
-        self.objy = y
+        self.objx = x or 0
+        self.objy = y or 0
         self.listitem = None
         self.LevelRect = (QtCore.QRectF(self.objx / 16, self.objy / 16, 2.25, 2.25))
 
@@ -53,7 +55,7 @@ class CommentItem(LevelEditorItem):
         self.setFlag(self.GraphicsItemFlag.ItemIsSelectable, not globals_.CommentsFrozen)
 
         globals_.DirtyOverride += 1
-        self.setPos(int(x * 1.5), int(y * 1.5))
+        self.setPos(int(self.objx * 1.5), int(self.objy * 1.5))
         globals_.DirtyOverride -= 1
 
         self.setZValue(zval + 1)
@@ -76,7 +78,7 @@ class CommentItem(LevelEditorItem):
         self.reposTextEdit()
 
     @staticmethod
-    def CreateComment(x: int, y: int, text = '', add_to_scene = True):
+    def CreateComment(x: int, y: int, text: str = '', add_to_scene: bool = True) -> 'CommentItem | None':
         """
         Creates and returns a new comment and makes sure it's added to the
         right lists, unless 'add_to_scene' is set to False.
@@ -102,7 +104,7 @@ class CommentItem(LevelEditorItem):
 
         return com
 
-    def position_changed(self, oldx: int, oldy: int, x: int, y: int):
+    def position_changed(self, oldx: int, oldy: int, x: int, y: int) -> None:
         """
         Handle the comment being dragged
         """
@@ -116,7 +118,7 @@ class CommentItem(LevelEditorItem):
             globals_.mainWindow.SaveComments()
             SetDirty()
 
-    def text_changed(self):
+    def text_changed(self) -> None:
         """
         Handle the comment's text being changed
         """
@@ -128,7 +130,7 @@ class CommentItem(LevelEditorItem):
         globals_.mainWindow.SaveComments()
         SetDirty()
 
-    def mousePressEvent(self, event):
+    def mousePressEvent(self, event: QtWidgets.QGraphicsSceneMouseEvent | None) -> None:
         """
         Override the mouse press event to delegate it to the text edit
         if required. This ensures the user can select the first characters of the
@@ -147,20 +149,20 @@ class CommentItem(LevelEditorItem):
         # selected properly.
         LevelEditorItem.mousePressEvent(self, event)
 
-    def UpdateTooltip(self):
+    def UpdateTooltip(self) -> None:
         """
         For compatibility, just in case
         """
         self.setToolTip(globals_.trans.string('Comments', 1, '[x]', self.objx, '[y]', self.objy))
 
-    def ListString(self):
+    def ListString(self) -> str | None:
         """
         Returns a string that can be used to describe the comment in a list
         """
         t = self.OneLineText()
         return globals_.trans.string('Comments', 0, '[x]', self.objx, '[y]', self.objy, '[text]', t)
 
-    def OneLineText(self):
+    def OneLineText(self) -> str | None:
         """
         Returns the text of this comment in a format that can be written on one line
         """
@@ -188,7 +190,7 @@ class CommentItem(LevelEditorItem):
 
         return t
 
-    def paint(self, painter, option, widget = ...):
+    def paint(self, painter: QtGui.QPainter, option: QtWidgets.QStyleOptionGraphicsItem, widget: QtWidgets.QWidget | None = None) -> None:
         """
         Paints the comment
         """
@@ -252,22 +254,22 @@ class CommentItem(LevelEditorItem):
 
             self.TextEdit.clearFocus()
 
-    def handleTextChanged(self):
+    def handleTextChanged(self) -> None:
         """
         Handles the text being changed
         """
         self.text = str(self.TextEdit.toPlainText())
-        if hasattr(self, 'textChanged'):
+        if hasattr(self, 'textChanged') and self.textChanged is not None:
             self.textChanged(self)
 
-    def reposTextEdit(self):
+    def reposTextEdit(self) -> None:
         """
         Repositions the text edit
         """
         if self.TextEditProxy is not None:
             self.TextEditProxy.setPos((self.objx * 3 / 2) + 24, (self.objy * 3 / 2) + 16)
 
-    def handlePosChange(self, oldx, oldy):
+    def handlePosChange(self, oldx: float, oldy: float) -> None:
         """
         Handles the position changing
         """
@@ -283,7 +285,7 @@ class CommentItem(LevelEditorItem):
         if scene is not None:
             scene.update(oldRect)
 
-    def delete(self):
+    def delete(self) -> None:
         """
         Delete the comment from the level
         """
@@ -313,11 +315,11 @@ class CommentItem(LevelEditorItem):
         globals_.mainWindow.SaveComments()
         setOverrideCursor(None)
 
-    def hoverMoveEvent(self, event):
+    def hoverMoveEvent(self, event: QtWidgets.QGraphicsSceneHoverEvent | None) -> None:
         LevelEditorItem.hoverMoveEvent(self, event)
         if (self.isSelected() or globals_.CursorMode == 2) and not globals_.CommentsFrozen:
             setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
 
-    def hoverLeaveEvent(self, event):
+    def hoverLeaveEvent(self, event: QtWidgets.QGraphicsSceneHoverEvent | None) -> None:
         LevelEditorItem.hoverLeaveEvent(self, event)
         setOverrideCursor(None)
