@@ -35,7 +35,7 @@ class PaletteDock(QtWidgets.QDockWidget):
 
         # Objects
         self.object_tab = ObjectTab()
-        self.tabs.addTab(self.object_tab, GetIcon('objects'), '')
+        self.tabs.addTab(self.object_tab, GetIcon('block'), '')
         self.tabs.setTabToolTip(0, globals_.trans.string('Palette', 13))
 
         # Sprites
@@ -45,7 +45,7 @@ class PaletteDock(QtWidgets.QDockWidget):
 
         # Entrances
         self.entrance_tab = EntranceTab()
-        self.tabs.addTab(self.entrance_tab, GetIcon('entrances'), '')
+        self.tabs.addTab(self.entrance_tab, GetIcon('door'), '')
         self.tabs.setTabToolTip(2, globals_.trans.string('Palette', 15))
 
         # Locations
@@ -55,12 +55,12 @@ class PaletteDock(QtWidgets.QDockWidget):
 
         # Paths
         self.path_tab = PathTab()
-        self.tabs.addTab(self.path_tab, GetIcon('paths'), '')
+        self.tabs.addTab(self.path_tab, GetIcon('node'), '')
         self.tabs.setTabToolTip(4, globals_.trans.string('Palette', 17))
 
         # Events
         self.event_tab = EventTab()
-        self.tabs.addTab(self.event_tab, GetIcon('events'), '')
+        self.tabs.addTab(self.event_tab, GetIcon('flag'), '')
         self.tabs.setTabToolTip(5, globals_.trans.string('Palette', 18))
 
         # Stamps
@@ -70,7 +70,7 @@ class PaletteDock(QtWidgets.QDockWidget):
 
         # Comments
         self.comment_tab = CommentTab()
-        self.tabs.addTab(self.comment_tab, GetIcon('comments'), '')
+        self.tabs.addTab(self.comment_tab, GetIcon('balloon'), '')
         self.tabs.setTabToolTip(7, globals_.trans.string('Palette', 33))
 
         self.setWidget(self.tabs)

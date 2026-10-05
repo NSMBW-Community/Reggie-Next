@@ -15,7 +15,7 @@ class ChooseLevelNameDialog(QtWidgets.QDialog):
         """
         QtWidgets.QDialog.__init__(self)
         self.setWindowTitle(globals_.trans.string('OpenFromNameDlg', 0))
-        self.setWindowIcon(GetIcon('open'))
+        self.setWindowIcon(GetIcon('folder-open-image'))
 
         LoadLevelNames()
         self.current_level = None

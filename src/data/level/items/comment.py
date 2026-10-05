@@ -218,7 +218,7 @@ class CommentItem(LevelEditorItem):
 
         if not self.isSelected():
             painter.setOpacity(.5)
-        painter.drawPixmap(4, 4, GetIcon('comments', True).pixmap(24, 24))
+        painter.drawPixmap(4, 4, GetIcon('balloon_24x').pixmap(24, 24))
         painter.setOpacity(1)
 
         # Set the text edit visibility

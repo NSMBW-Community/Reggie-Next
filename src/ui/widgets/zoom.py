@@ -38,19 +38,19 @@ class ZoomWidget(QtWidgets.QWidget):
             self.slider.setSliderPosition(pos)
         self.slider.valueChanged.connect(self.handle_slider_moved)
 
-        self.min_label.setIcon(GetIcon('zoommin'))
+        self.min_label.setIcon(GetIcon('magnifier-zoom-minimum'))
         self.min_label.setFlat(True)
         self.min_label.clicked.connect(globals_.mainWindow.HandleZoomMin)
 
-        self.dec_label.setIcon(GetIcon('zoomout'))
+        self.dec_label.setIcon(GetIcon('magnifier-zoom-out'))
         self.dec_label.setFlat(True)
         self.dec_label.clicked.connect(globals_.mainWindow.HandleZoomOut)
 
-        self.inc_label.setIcon(GetIcon('zoomin'))
+        self.inc_label.setIcon(GetIcon('magnifier-zoom-in'))
         self.inc_label.setFlat(True)
         self.inc_label.clicked.connect(globals_.mainWindow.HandleZoomIn)
 
-        self.max_label.setIcon(GetIcon('zoommax'))
+        self.max_label.setIcon(GetIcon('magnifier-zoom-maximum'))
         self.max_label.setFlat(True)
         self.max_label.clicked.connect(globals_.mainWindow.HandleZoomMax)
 

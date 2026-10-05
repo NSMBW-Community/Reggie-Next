@@ -15,7 +15,7 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         """
         super().__init__()
         self.setWindowTitle(globals_.trans.string('SwapObjDlg', 0))
-        self.setWindowIcon(GetIcon('swap'))
+        self.setWindowIcon(GetIcon('arrow-switch'))
 
         # Create widgets
         self.curr_type = QtWidgets.QSpinBox()

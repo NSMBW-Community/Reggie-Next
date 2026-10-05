@@ -28,7 +28,7 @@ from libs import lh, lib_versions, lz77, tpl
 from ui.dialogs.about import AboutDialog
 from ui.dialogs.object_swap import ObjectTypeSwapDialog
 from ui.dialogs.diagnostic_tool import DiagnosticToolDialog
-from ui.theme.reggie_theme import GetIcon, ReggieTheme
+from ui.theme.reggie_theme import GetIcon, GetAppIcon, ReggieTheme
 
 
 def getResourcePaths(res_name: str) -> list[str]:
@@ -703,111 +703,111 @@ def LoadMenuActions(mw) -> None:
 
     globals_.MenuActions = (
         MenuAction(
-            'newlevel', mw.HandleNewLevel, GetIcon('new'), globals_.trans.stringOneLine('MenuItems', 0),
+            'newlevel', mw.HandleNewLevel, GetIcon('document'), globals_.trans.stringOneLine('MenuItems', 0),
             globals_.trans.stringOneLine('MenuItems', 1), GetKeybind('newlevel')
         ),
         MenuAction(
-            'openfromname', mw.HandleOpenFromName, GetIcon('open'), globals_.trans.stringOneLine('MenuItems', 2),
+            'openfromname', mw.HandleOpenFromName, GetIcon('folder-open-image'), globals_.trans.stringOneLine('MenuItems', 2),
             globals_.trans.stringOneLine('MenuItems', 3), GetKeybind('openfromname')
         ),
         MenuAction(
-            'openfromfile', mw.HandleOpenFromFile, GetIcon('openfromfile'), globals_.trans.stringOneLine('MenuItems', 4),
+            'openfromfile', mw.HandleOpenFromFile, GetIcon('folder-open'), globals_.trans.stringOneLine('MenuItems', 4),
             globals_.trans.stringOneLine('MenuItems', 5), GetKeybind('openfromfile')
         ),
         MenuAction(
-            'openrecent', None, GetIcon('recent'), globals_.trans.stringOneLine('MenuItems', 6),
+            'openrecent', None, GetIcon('document-clock'), globals_.trans.stringOneLine('MenuItems', 6),
             globals_.trans.stringOneLine('MenuItems', 7), None
         ),
         MenuAction(
-            'save', mw.HandleSave, GetIcon('save'), globals_.trans.stringOneLine('MenuItems', 8),
+            'save', mw.HandleSave, GetIcon('disk-black'), globals_.trans.stringOneLine('MenuItems', 8),
             globals_.trans.stringOneLine('MenuItems', 9), GetKeybind('save')
         ),
         MenuAction(
-            'saveas', mw.HandleSaveAs, GetIcon('saveas'), globals_.trans.stringOneLine('MenuItems', 10),
+            'saveas', mw.HandleSaveAs, GetIcon('disk-black-plus'), globals_.trans.stringOneLine('MenuItems', 10),
             globals_.trans.stringOneLine('MenuItems', 11), GetKeybind('saveas')
         ),
         MenuAction(
-            'savecopyas', lambda: mw.HandleSaveAs(True), GetIcon('savecopyas'), globals_.trans.stringOneLine('MenuItems', 128),
+            'savecopyas', lambda: mw.HandleSaveAs(True), GetIcon('disks-black'), globals_.trans.stringOneLine('MenuItems', 128),
             globals_.trans.stringOneLine('MenuItems', 129), GetKeybind('savecopyas')
         ),
         MenuAction(
-            'metainfo', mw.HandleInfo, GetIcon('info'), globals_.trans.stringOneLine('MenuItems', 12),
+            'metainfo', mw.HandleInfo, GetIcon('information-frame'), globals_.trans.stringOneLine('MenuItems', 12),
             globals_.trans.stringOneLine('MenuItems', 13), GetKeybind('metainfo')
         ),
         MenuAction(
-            'changegamedef', None, GetIcon('game'), globals_.trans.stringOneLine('MenuItems', 98),
+            'changegamedef', None, GetIcon('disc'), globals_.trans.stringOneLine('MenuItems', 98),
             globals_.trans.stringOneLine('MenuItems', 99), None
         ),
         MenuAction(
-            'screenshot', mw.HandleScreenshot, GetIcon('screenshot'), globals_.trans.stringOneLine('MenuItems', 14),
+            'screenshot', mw.HandleScreenshot, GetIcon('camera'), globals_.trans.stringOneLine('MenuItems', 14),
             globals_.trans.stringOneLine('MenuItems', 15), GetKeybind('screenshot')
         ),
         MenuAction(
-            'changegamepath', mw.HandleChangeGamePath, GetIcon('folderpath'), globals_.trans.stringOneLine('MenuItems', 16),
+            'changegamepath', mw.HandleChangeGamePath, GetIcon('folder--pencil'), globals_.trans.stringOneLine('MenuItems', 16),
             globals_.trans.stringOneLine('MenuItems', 17), GetKeybind('changegamepath')
         ),
         MenuAction(
-            'preferences', mw.HandlePreferences, GetIcon('settings'), globals_.trans.stringOneLine('MenuItems', 18),
+            'preferences', mw.HandlePreferences, GetIcon('gear'), globals_.trans.stringOneLine('MenuItems', 18),
             globals_.trans.stringOneLine('MenuItems', 19), GetKeybind('preferences')
         ),
         MenuAction(
-            'exit', lambda: mw.close(), GetIcon('delete'), globals_.trans.stringOneLine('MenuItems', 20),
+            'exit', lambda: mw.close(), GetIcon('cross-circle-frame'), globals_.trans.stringOneLine('MenuItems', 20),
             globals_.trans.stringOneLine('MenuItems', 21), GetKeybind('exit')
         ),
         MenuAction(
-            'selectall', mw.SelectAll, GetIcon('selectall'), globals_.trans.stringOneLine('MenuItems', 22),
+            'selectall', mw.SelectAll, GetIcon('selection-select'), globals_.trans.stringOneLine('MenuItems', 22),
             globals_.trans.stringOneLine('MenuItems', 23), GetKeybind('selectall')
         ),
         MenuAction(
-            'deselect', mw.Deselect, GetIcon('deselect'), globals_.trans.stringOneLine('MenuItems', 24),
+            'deselect', mw.Deselect, GetIcon('selection'), globals_.trans.stringOneLine('MenuItems', 24),
             globals_.trans.stringOneLine('MenuItems', 25), GetKeybind('deselect')
         ),
         MenuAction(
-            'undo', lambda: mw.undoStack.undo(), GetIcon('undo'), globals_.trans.stringOneLine('MenuItems', 124),
+            'undo', lambda: mw.undoStack.undo(), GetIcon('arrow-circle-225-left'), globals_.trans.stringOneLine('MenuItems', 124),
             globals_.trans.stringOneLine('MenuItems', 125), GetKeybind('undo')
         ),
         MenuAction(
-            'redo', lambda: mw.undoStack.redo(), GetIcon('redo'), globals_.trans.stringOneLine('MenuItems', 126),
+            'redo', lambda: mw.undoStack.redo(), GetIcon('arrow-circle-315'), globals_.trans.stringOneLine('MenuItems', 126),
             globals_.trans.stringOneLine('MenuItems', 127), GetKeybind('redo')
         ),
         MenuAction(
-            'cut', mw.Cut, GetIcon('cut'), globals_.trans.stringOneLine('MenuItems', 26),
+            'cut', mw.Cut, GetIcon('scissors-blue'), globals_.trans.stringOneLine('MenuItems', 26),
             globals_.trans.stringOneLine('MenuItems', 27), GetKeybind('cut')
         ),
         MenuAction(
-            'copy', mw.Copy, GetIcon('copy'), globals_.trans.stringOneLine('MenuItems', 28),
+            'copy', mw.Copy, GetIcon('document-copy'), globals_.trans.stringOneLine('MenuItems', 28),
             globals_.trans.stringOneLine('MenuItems', 29), GetKeybind('copy')
         ),
         MenuAction(
-            'paste', mw.Paste, GetIcon('paste'), globals_.trans.stringOneLine('MenuItems', 30),
+            'paste', mw.Paste, GetIcon('clipboard-paste-image'), globals_.trans.stringOneLine('MenuItems', 30),
             globals_.trans.stringOneLine('MenuItems', 31), GetKeybind('paste')
         ),
         MenuAction(
-            'shiftitems', mw.ShiftItems, GetIcon('move'), globals_.trans.stringOneLine('MenuItems', 32),
+            'shiftitems', mw.ShiftItems, GetIcon('arrow-move'), globals_.trans.stringOneLine('MenuItems', 32),
             globals_.trans.stringOneLine('MenuItems', 33), GetKeybind('shiftitems')
         ),
         MenuAction(
-            'mergelocations', LocationItem.MergeLocations, GetIcon('merge'), globals_.trans.stringOneLine('MenuItems', 34),
+            'mergelocations', LocationItem.MergeLocations, GetIcon('layers-group'), globals_.trans.stringOneLine('MenuItems', 34),
             globals_.trans.stringOneLine('MenuItems', 35), GetKeybind('mergelocations')
         ),
         MenuAction(
-            'swapobjectstilesets', mw.SwapObjectsTilesets, GetIcon('swap'), globals_.trans.stringOneLine('MenuItems', 104),
+            'swapobjectstilesets', mw.SwapObjectsTilesets, GetIcon('arrow-switch'), globals_.trans.stringOneLine('MenuItems', 104),
             globals_.trans.stringOneLine('MenuItems', 105), GetKeybind('swapobjectstilesets')
         ),
         MenuAction(
-            'swapobjectstypes', lambda: ObjectTypeSwapDialog().exec(), GetIcon('swap'), globals_.trans.stringOneLine('MenuItems', 106),
+            'swapobjectstypes', lambda: ObjectTypeSwapDialog().exec(), GetIcon('arrow-switch'), globals_.trans.stringOneLine('MenuItems', 106),
             globals_.trans.stringOneLine('MenuItems', 107), GetKeybind('swapobjectstypes')
         ),
         MenuAction(
-            'switchsprites', mw.SwitchSprites, GetIcon('move'), globals_.trans.stringOneLine('MenuItems', 142),
+            'switchsprites', mw.SwitchSprites, GetIcon('arrow-curve'), globals_.trans.stringOneLine('MenuItems', 142),
             globals_.trans.stringOneLine('MenuItems', 143), GetKeybind('switchsprites')
         ),
         MenuAction(
-            'diagnostic', lambda: DiagnosticToolDialog().exec(), GetIcon('diagnostics'), globals_.trans.stringOneLine('MenuItems', 36),
+            'diagnostic', lambda: DiagnosticToolDialog().exec(), GetIcon('wrench-screwdriver'), globals_.trans.stringOneLine('MenuItems', 36),
             globals_.trans.stringOneLine('MenuItems', 37), GetKeybind('diagnostic')
         ),
         MenuAction(
-            'freezeobjects', mw.HandleObjectsFreeze, GetIcon('objectsfreeze'), globals_.trans.stringOneLine('MenuItems', 38),
+            'freezeobjects', mw.HandleObjectsFreeze, GetIcon('block-freeze'), globals_.trans.stringOneLine('MenuItems', 38),
             globals_.trans.stringOneLine('MenuItems', 39), GetKeybind('freezeobjects'), True
         ),
         MenuAction(
@@ -815,7 +815,7 @@ def LoadMenuActions(mw) -> None:
             globals_.trans.stringOneLine('MenuItems', 41), GetKeybind('freezesprites'), True
         ),
         MenuAction(
-            'freezeentrances', mw.HandleEntrancesFreeze, GetIcon('entrancesfreeze'), globals_.trans.stringOneLine('MenuItems', 42),
+            'freezeentrances', mw.HandleEntrancesFreeze, GetIcon('door-freeze'), globals_.trans.stringOneLine('MenuItems', 42),
             globals_.trans.stringOneLine('MenuItems', 43), GetKeybind('freezeentrances'), True
         ),
         MenuAction(
@@ -823,35 +823,35 @@ def LoadMenuActions(mw) -> None:
             globals_.trans.stringOneLine('MenuItems', 45), GetKeybind('freezelocations'), True
         ),
         MenuAction(
-            'freezepaths', mw.HandlePathsFreeze, GetIcon('pathsfreeze'), globals_.trans.stringOneLine('MenuItems', 46),
+            'freezepaths', mw.HandlePathsFreeze, GetIcon('node-freeze'), globals_.trans.stringOneLine('MenuItems', 46),
             globals_.trans.stringOneLine('MenuItems', 47), GetKeybind('freezepaths'), True
         ),
         MenuAction(
-            'freezecomments', mw.HandleCommentsFreeze, GetIcon('commentsfreeze'), globals_.trans.stringOneLine('MenuItems', 114),
+            'freezecomments', mw.HandleCommentsFreeze, GetIcon('balloon-freeze'), globals_.trans.stringOneLine('MenuItems', 114),
             globals_.trans.stringOneLine('MenuItems', 115), GetKeybind('freezecomments'), True
         ),
         MenuAction(
-            'showlay0', mw.HandleUpdateLayer0, GetIcon('layer0'), globals_.trans.stringOneLine('MenuItems', 48),
+            'showlay0', mw.HandleUpdateLayer0, GetIcon('layers-stack'), globals_.trans.stringOneLine('MenuItems', 48),
             globals_.trans.stringOneLine('MenuItems', 49), GetKeybind('showlay0'), True
         ),
         MenuAction(
-            'showlay1', mw.HandleUpdateLayer1, GetIcon('layer1'), globals_.trans.stringOneLine('MenuItems', 50),
+            'showlay1', mw.HandleUpdateLayer1, GetIcon('layers-stack'), globals_.trans.stringOneLine('MenuItems', 50),
             globals_.trans.stringOneLine('MenuItems', 51), GetKeybind('showlay1'), True
         ),
         MenuAction(
-            'showlay2', mw.HandleUpdateLayer2, GetIcon('layer2'), globals_.trans.stringOneLine('MenuItems', 52),
+            'showlay2', mw.HandleUpdateLayer2, GetIcon('layers-stack'), globals_.trans.stringOneLine('MenuItems', 52),
             globals_.trans.stringOneLine('MenuItems', 53), GetKeybind('showlay2'), True
         ),
         MenuAction(
-            'tileanim', mw.HandleTilesetAnimToggle, GetIcon('animation'), globals_.trans.stringOneLine('MenuItems', 108),
+            'tileanim', mw.HandleTilesetAnimToggle, GetIcon('film'), globals_.trans.stringOneLine('MenuItems', 108),
             globals_.trans.stringOneLine('MenuItems', 109), GetKeybind('tileanim'), True
         ),
         MenuAction(
-            'collisions', mw.HandleCollisionsToggle, GetIcon('collisions'), globals_.trans.stringOneLine('MenuItems', 110),
+            'collisions', mw.HandleCollisionsToggle, GetIcon('construction'), globals_.trans.stringOneLine('MenuItems', 110),
             globals_.trans.stringOneLine('MenuItems', 111), GetKeybind('collisions'), True
         ),
         MenuAction(
-            'realview', mw.HandleRealViewToggle, GetIcon('realview'), globals_.trans.stringOneLine('MenuItems', 118),
+            'realview', mw.HandleRealViewToggle, GetIcon('eye'), globals_.trans.stringOneLine('MenuItems', 118),
             globals_.trans.stringOneLine('MenuItems', 119), GetKeybind('realview'), True
         ),
         MenuAction(
@@ -863,7 +863,7 @@ def LoadMenuActions(mw) -> None:
             globals_.trans.stringOneLine('MenuItems', 57), GetKeybind('showspriteimages'), True
         ),
         MenuAction(
-            'showentrances', mw.HandleEntrancesVisibility, GetIcon('entrances'), globals_.trans.stringOneLine('MenuItems', 144),
+            'showentrances', mw.HandleEntrancesVisibility, GetIcon('door'), globals_.trans.stringOneLine('MenuItems', 144),
             globals_.trans.stringOneLine('MenuItems', 145), GetKeybind('showentrances'), True
         ),
         MenuAction(
@@ -871,11 +871,11 @@ def LoadMenuActions(mw) -> None:
             globals_.trans.stringOneLine('MenuItems', 59), GetKeybind('showlocations'), True
         ),
         MenuAction(
-            'showcomments', mw.HandleCommentsVisibility, GetIcon('comments'), globals_.trans.stringOneLine('MenuItems', 116),
+            'showcomments', mw.HandleCommentsVisibility, GetIcon('balloon'), globals_.trans.stringOneLine('MenuItems', 116),
             globals_.trans.stringOneLine('MenuItems', 117), GetKeybind('showcomments'), True
         ),
         MenuAction(
-            'showpaths', mw.HandlePathsVisibility, GetIcon('paths'), globals_.trans.stringOneLine('MenuItems', 130),
+            'showpaths', mw.HandlePathsVisibility, GetIcon('node'), globals_.trans.stringOneLine('MenuItems', 130),
             globals_.trans.stringOneLine('MenuItems', 131), GetKeybind('showpaths'), True
         ),
         MenuAction(
@@ -883,75 +883,75 @@ def LoadMenuActions(mw) -> None:
             globals_.trans.stringOneLine('MenuItems', 61), GetKeybind('grid')
         ),
         MenuAction(
-            'zoommax', mw.HandleZoomMax, GetIcon('zoommax'), globals_.trans.stringOneLine('MenuItems', 62),
+            'zoommax', mw.HandleZoomMax, GetIcon('magnifier-zoom-maximum'), globals_.trans.stringOneLine('MenuItems', 62),
             globals_.trans.stringOneLine('MenuItems', 63), GetKeybind('zoommax')
         ),
         MenuAction(
-            'zoomin', mw.HandleZoomIn, GetIcon('zoomin'), globals_.trans.stringOneLine('MenuItems', 64),
+            'zoomin', mw.HandleZoomIn, GetIcon('magnifier-zoom-in'), globals_.trans.stringOneLine('MenuItems', 64),
             globals_.trans.stringOneLine('MenuItems', 65), GetKeybind('zoomin')
         ),
         MenuAction(
-            'zoomactual', mw.HandleZoomActual, GetIcon('zoomactual'), globals_.trans.stringOneLine('MenuItems', 66),
+            'zoomactual', mw.HandleZoomActual, GetIcon('magnifier-zoom-actual'), globals_.trans.stringOneLine('MenuItems', 66),
             globals_.trans.stringOneLine('MenuItems', 67), GetKeybind('zoomactual')
         ),
         MenuAction(
-            'zoomout', mw.HandleZoomOut, GetIcon('zoomout'), globals_.trans.stringOneLine('MenuItems', 68),
+            'zoomout', mw.HandleZoomOut, GetIcon('magnifier-zoom-out'), globals_.trans.stringOneLine('MenuItems', 68),
             globals_.trans.stringOneLine('MenuItems', 69), GetKeybind('zoomout')
         ),
         MenuAction(
-            'zoommin', mw.HandleZoomMin, GetIcon('zoommin'), globals_.trans.stringOneLine('MenuItems', 70),
+            'zoommin', mw.HandleZoomMin, GetIcon('magnifier-zoom-minimum'), globals_.trans.stringOneLine('MenuItems', 70),
             globals_.trans.stringOneLine('MenuItems', 71), GetKeybind('zoommin')
         ),
         MenuAction(
-            'areaoptions', mw.HandleAreaOptions, GetIcon('area'), globals_.trans.stringOneLine('MenuItems', 72),
+            'areaoptions', mw.HandleAreaOptions, GetIcon('wooden-box'), globals_.trans.stringOneLine('MenuItems', 72),
             globals_.trans.stringOneLine('MenuItems', 73), GetKeybind('areaoptions')
         ),
         MenuAction(
-            'zones', mw.HandleZones, GetIcon('zones'), globals_.trans.stringOneLine('MenuItems', 74),
+            'zones', mw.HandleZones, GetIcon('zone'), globals_.trans.stringOneLine('MenuItems', 74),
             globals_.trans.stringOneLine('MenuItems', 75), GetKeybind('zones')
         ),
         MenuAction(
-            'backgrounds', mw.HandleBG, GetIcon('background'), globals_.trans.stringOneLine('MenuItems', 76),
+            'backgrounds', mw.HandleBG, GetIcon('pictures'), globals_.trans.stringOneLine('MenuItems', 76),
             globals_.trans.stringOneLine('MenuItems', 77), GetKeybind('backgrounds')
         ),
         MenuAction(
-            'camprofiles', mw.HandleCameraProfiles, GetIcon('camprofile'), globals_.trans.stringOneLine('MenuItems', 140),
+            'camprofiles', mw.HandleCameraProfiles, GetIcon('surveillance-camera'), globals_.trans.stringOneLine('MenuItems', 140),
             globals_.trans.stringOneLine('MenuItems', 141), GetKeybind('camprofiles')
         ),
         MenuAction(
-            'addarea', mw.HandleAddNewArea, GetIcon('add'), globals_.trans.stringOneLine('MenuItems', 78),
+            'addarea', mw.HandleAddNewArea, GetIcon('wooden-box--plus'), globals_.trans.stringOneLine('MenuItems', 78),
             globals_.trans.stringOneLine('MenuItems', 79), GetKeybind('addarea')
         ),
         MenuAction(
-            'importarea', mw.HandleImportArea, GetIcon('import'), globals_.trans.stringOneLine('MenuItems', 80),
+            'importarea', mw.HandleImportArea, GetIcon('wooden-box--arrow'), globals_.trans.stringOneLine('MenuItems', 80),
             globals_.trans.stringOneLine('MenuItems', 81), GetKeybind('importarea')
         ),
         MenuAction(
-            'deletearea', mw.HandleDeleteArea, GetIcon('delete'), globals_.trans.stringOneLine('MenuItems', 82),
+            'deletearea', mw.HandleDeleteArea, GetIcon('wooden-box--minus'), globals_.trans.stringOneLine('MenuItems', 82),
             globals_.trans.stringOneLine('MenuItems', 83), GetKeybind('deletearea')
         ),
         MenuAction(
-            'reloadgfx', ReloadTilesets, GetIcon('reload-tilesets'), globals_.trans.stringOneLine('MenuItems', 84),
+            'reloadgfx', ReloadTilesets, GetIcon('arrow-circle-double-135'), globals_.trans.stringOneLine('MenuItems', 84),
             globals_.trans.stringOneLine('MenuItems', 85), GetKeybind('reloadgfx')
         ),
         MenuAction(
-            'reloaddata', ReloadSpritedata, GetIcon('reload-spritedata'), globals_.trans.stringOneLine('MenuItems', 138),
+            'reloaddata', ReloadSpritedata, GetIcon('arrow-circle-double-135'), globals_.trans.stringOneLine('MenuItems', 138),
             globals_.trans.stringOneLine('MenuItems', 139), GetKeybind('reloaddata')
         ),
         MenuAction(
-            'infobox', lambda: AboutDialog().exec(), GetIcon('reggie'), globals_.trans.stringOneLine('MenuItems', 86),
+            'infobox', lambda: AboutDialog().exec(), GetAppIcon(), globals_.trans.stringOneLine('MenuItems', 86),
             globals_.trans.string('MenuItems', 87), GetKeybind('infobox')
         ),
         MenuAction(
-            'helpbox', mw.HelpBox, GetIcon('contents'), globals_.trans.stringOneLine('MenuItems', 88),
+            'helpbox', mw.HelpBox, GetIcon('book-open-bookmark'), globals_.trans.stringOneLine('MenuItems', 88),
             globals_.trans.string('MenuItems', 89), GetKeybind('helpbox')
         ),
         MenuAction(
-            'tipbox', mw.TipBox, GetIcon('tips'), globals_.trans.stringOneLine('MenuItems', 90),
+            'tipbox', mw.TipBox, GetIcon('light-bulb'), globals_.trans.stringOneLine('MenuItems', 90),
             globals_.trans.string('MenuItems', 91), GetKeybind('tipbox')
         ),
         MenuAction(
-            'genstrxml', lambda: globals_.trans.generateXML(), GetIcon('note'), globals_.trans.stringOneLine('MenuItems', 146),
+            'genstrxml', lambda: globals_.trans.generateXML(), GetIcon('document-code'), globals_.trans.stringOneLine('MenuItems', 146),
             globals_.trans.string('MenuItems', 147), GetKeybind('genstrxml')
         ),
         MenuAction(

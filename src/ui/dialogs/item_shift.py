@@ -14,7 +14,7 @@ class ItemShiftDialog(QtWidgets.QDialog):
         """
         super().__init__()
         self.setWindowTitle(globals_.trans.string('ShftItmDlg', 0))
-        self.setWindowIcon(GetIcon('move'))
+        self.setWindowIcon(GetIcon('arrow-move'))
 
         self.offset_x = QtWidgets.QSpinBox()
         self.offset_x.setRange(-16384, 16383)

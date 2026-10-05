@@ -32,21 +32,21 @@ class PropertyDecoder[T: SpriteField](QtCore.QObject):
 
         if self.field.comment is not None:
             self.button_com = QtWidgets.QToolButton()
-            self.button_com.setIcon(GetIcon('setting-comment'))
+            self.button_com.setIcon(GetIcon('question-frame'))
             self.button_com.setStyleSheet("border-radius: 50%")
             self.button_com.clicked.connect(lambda: self.show_comment(self.field.comment))
             self.button_com.setAutoRaise(True)
 
         if self.field.comment2 is not None:
             self.button_com2 = QtWidgets.QToolButton()
-            self.button_com2.setIcon(GetIcon('setting-comment2'))
+            self.button_com2.setIcon(GetIcon('information-frame'))
             self.button_com2.setStyleSheet("border-radius: 50%")
             self.button_com2.clicked.connect(lambda: self.show_comment(self.field.comment2))
             self.button_com2.setAutoRaise(True)
 
         if self.field.advanced_comment is not None:
             self.button_adv = QtWidgets.QToolButton()
-            self.button_adv.setIcon(GetIcon('setting-comment-adv'))
+            self.button_adv.setIcon(GetIcon('exclamation-red-frame'))
             self.button_adv.setStyleSheet("border-radius: 50%")
             self.button_adv.clicked.connect(lambda: self.show_comment(self.field.advanced_comment))
             self.button_adv.setAutoRaise(True)

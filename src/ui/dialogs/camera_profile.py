@@ -16,7 +16,7 @@ class CameraProfilesDialog(QtWidgets.QDialog):
         """
         super().__init__()
         self.setWindowTitle(globals_.trans.string('CamProfsDlg', 0))
-        self.setWindowIcon(GetIcon('camprofile'))
+        self.setWindowIcon(GetIcon('surveillance-camera'))
         self.setMinimumHeight(450)
 
         self.list = QtWidgets.QListWidget()

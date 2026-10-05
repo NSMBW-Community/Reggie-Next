@@ -49,7 +49,7 @@ class RecentFilesMenu(QtWidgets.QMenu):
         """
         # Remove actions in the menu
         self.clear()
-        ico = GetIcon('new')
+        ico = GetIcon('document')
 
         for i, filename in enumerate(self.file_list):
             filename = os.path.basename(filename)

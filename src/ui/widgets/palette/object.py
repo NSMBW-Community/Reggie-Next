@@ -28,7 +28,7 @@ class ObjectTab(QtWidgets.QTabWidget):
 
         # Add the tileset tabs
         for i, slot in enumerate(self.slot_tabs):
-            self.addTab(slot, GetIcon('objects'), str(i + 1))
+            self.addTab(slot, GetIcon('block'), str(i + 1))
 
         # Get strings for the layer change
         layer_change_str = globals_.trans.string('Palette', 38)

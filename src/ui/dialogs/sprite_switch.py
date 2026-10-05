@@ -20,7 +20,7 @@ class SpriteSwitchDialog(QtWidgets.QDialog):
         """
         QtWidgets.QDialog.__init__(self)
         self.setWindowTitle(globals_.trans.string('SwitchSpriteDlg', 0))
-        self.setWindowIcon(GetIcon('move'))
+        self.setWindowIcon(GetIcon('arrow-curve'))
 
         self.curr_type = QtWidgets.QSpinBox()
         self.new_type = QtWidgets.QSpinBox()

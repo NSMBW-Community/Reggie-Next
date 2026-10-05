@@ -31,8 +31,7 @@ class ReggieTheme:
         self.themeName = globals_.trans.string('Themes', 0)
         self.creator = globals_.trans.string('Themes', 1)
         self.description = globals_.trans.string('Themes', 2)
-        self.iconCacheSm = {}
-        self.iconCacheLg = {}
+        self.icon_cache = {}
         self.style = None
         self.forceUiColor = False
         self.forceStyleSheet = False
@@ -124,19 +123,17 @@ class ReggieTheme:
                 self.loadStyleSheet(os.path.join(folder, node.attrib['file']))
 
             elif node.tag.lower() == 'icons':
-                if not all(thing in node.attrib for thing in ['size', 'folder']):
+                if not node.attrib['folder']:
                     continue
 
                 folderName = node.attrib['folder']
-                big = node.attrib['size'].lower()[:2] == 'lg'
-                cache = self.iconCacheLg if big else self.iconCacheSm
+                cache = self.icon_cache
 
                 # Load the icons
                 for fileName in os.listdir(os.path.join(folder, folderName)):
                     iconName = fileName
 
-                    # Remove the 'icon-' prefix and file extension
-                    iconName = iconName.removeprefix('icon-')
+                    # Remove the file extension
                     iconName = iconName.removesuffix('.png')
 
                     with open(os.path.join(folder, folderName, fileName), "rb") as inf:
@@ -266,15 +263,14 @@ class ReggieTheme:
         except KeyError:
             return None
 
-    def GetIcon(self, name, big=False):
+    def GetIcon(self, name):
         """
         Returns an icon
         """
-        cache = self.iconCacheLg if big else self.iconCacheSm
+        cache = self.icon_cache
 
         if name not in cache:
-            path = os.path.join(get_reggiedata_folder(), 'ico', 'lg' if big else 'sm', 'icon-')
-            path += name
+            path = os.path.join(get_reggiedata_folder(), 'ico', name)
             cache[name] = QtGui.QIcon(path)
 
         return cache[name]
@@ -335,11 +331,18 @@ def SetColorScheme():
             style_hint.setColorScheme(QtCore.Qt.ColorScheme.Light)
 
 
-def GetIcon(name: str, big=False):
+def GetIcon(name: str):
     """
     Helper function to grab a specific icon
     """
-    return globals_.theme.GetIcon(name, big)
+    return globals_.theme.GetIcon(name)
+
+
+def GetAppIcon() -> QtGui.QIcon:
+    """
+    Helper function to grab the Reggie icon
+    """
+    return QtGui.QIcon(os.path.join(get_reggiedata_folder(), 'icon.png'))
 
 
 def createHorzLine():

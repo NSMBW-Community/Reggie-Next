@@ -13,7 +13,7 @@ from data.common import archive
 import spritelib as SLib
 
 from libs import lh, lib_versions, lz77
-from ui.theme.reggie_theme import GetIcon, SetColorScheme
+from ui.theme.reggie_theme import GetIcon, SetColorScheme, GetAppIcon
 from data.common.loaders import LoadMenuActions, LoadLevelNames, LoadZoneThemes, GetKeybind, SetKeybind
 from data.common.utils import clamp, SetGamePaths, get_reggiedata_folder
 from data.common.validators import IsNSMBLevel, areValidGamePaths
@@ -126,7 +126,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Set up the window
         QtWidgets.QMainWindow.__init__(self, None)
         self.setWindowTitle(f'Reggie! Next {globals_.ReggieVersionShort}')
-        self.setWindowIcon(QtGui.QIcon(os.path.join(get_reggiedata_folder(), 'icon.png')))
+        self.setWindowIcon(GetAppIcon())
         self.setIconSize(QtCore.QSize(16, 16))
         self.setUnifiedTitleAndToolBarOnMac(True)
 
@@ -178,7 +178,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 return
 
             act.setShortcut(GetKeybind('toolbar'))
-            act.setIcon(GetIcon('diagnostics'))
+            act.setIcon(GetIcon('toolbox'))
             if self.vmenu is not None:
                 self.vmenu.addAction(act)
 
@@ -664,7 +664,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         act = overview_dock.toggleViewAction()
         if act is not None:
             act.setShortcut(GetKeybind('leveloverview'))
-            act.setIcon(GetIcon('overview'))
+            act.setIcon(GetIcon('globe-model'))
             act.setStatusTip(globals_.trans.string('MenuItems', 95))
             if self.vmenu is not None:
                 self.vmenu.addAction(act)

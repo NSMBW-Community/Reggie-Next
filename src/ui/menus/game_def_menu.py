@@ -62,7 +62,7 @@ class GameDefMenu(QtWidgets.QMenu):
         act.setText(globals_.trans.string('Gamedefs', 19))
         act.setData('reload_gamedef')
         act.setActionGroup(self.actGroup)
-        act.setIcon(GetIcon('reload'))
+        act.setIcon(GetIcon('drive-disc'))
         act.setCheckable(False)
         act.setChecked(False)
         act.triggered.connect(self.handleReloadClicked)

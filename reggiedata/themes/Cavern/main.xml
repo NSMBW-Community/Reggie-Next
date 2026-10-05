@@ -10,6 +10,6 @@
         >
         
     <colors file="levelview.xml" />
-    <icons size="sm" folder="icosm" />
-    
+    <icons folder="ico" />
+
 </theme>

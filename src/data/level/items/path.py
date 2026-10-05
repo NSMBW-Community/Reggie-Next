@@ -39,7 +39,6 @@ class PathItem(LevelEditorItem):
         """
         Creates a path node with specific data
         """
-        print(globals_.Area.paths)
         LevelEditorItem.__init__(self)
         if globals_.CursorMode != 0:
             self.setAcceptHoverEvents(True)
