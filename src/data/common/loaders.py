@@ -831,15 +831,15 @@ def LoadMenuActions(mw) -> None:
             globals_.trans.stringOneLine('MenuItems', 115), GetKeybind('freezecomments'), True
         ),
         MenuAction(
-            'showlay0', mw.HandleUpdateLayer0, GetIcon('layers-stack'), globals_.trans.stringOneLine('MenuItems', 48),
+            'showlay0', mw.HandleUpdateLayer0, GetIcon('layers-stack-number-0'), globals_.trans.stringOneLine('MenuItems', 48),
             globals_.trans.stringOneLine('MenuItems', 49), GetKeybind('showlay0'), True
         ),
         MenuAction(
-            'showlay1', mw.HandleUpdateLayer1, GetIcon('layers-stack'), globals_.trans.stringOneLine('MenuItems', 50),
+            'showlay1', mw.HandleUpdateLayer1, GetIcon('layers-stack-number-1'), globals_.trans.stringOneLine('MenuItems', 50),
             globals_.trans.stringOneLine('MenuItems', 51), GetKeybind('showlay1'), True
         ),
         MenuAction(
-            'showlay2', mw.HandleUpdateLayer2, GetIcon('layers-stack'), globals_.trans.stringOneLine('MenuItems', 52),
+            'showlay2', mw.HandleUpdateLayer2, GetIcon('layers-stack-number-2'), globals_.trans.stringOneLine('MenuItems', 52),
             globals_.trans.stringOneLine('MenuItems', 53), GetKeybind('showlay2'), True
         ),
         MenuAction(
@@ -931,11 +931,11 @@ def LoadMenuActions(mw) -> None:
             globals_.trans.stringOneLine('MenuItems', 83), GetKeybind('deletearea')
         ),
         MenuAction(
-            'reloadgfx', ReloadTilesets, GetIcon('arrow-circle-double-135'), globals_.trans.stringOneLine('MenuItems', 84),
+            'reloadgfx', ReloadTilesets, GetIcon('arrow-circle-double-135-block'), globals_.trans.stringOneLine('MenuItems', 84),
             globals_.trans.stringOneLine('MenuItems', 85), GetKeybind('reloadgfx')
         ),
         MenuAction(
-            'reloaddata', ReloadSpritedata, GetIcon('arrow-circle-double-135'), globals_.trans.stringOneLine('MenuItems', 138),
+            'reloaddata', ReloadSpritedata, GetIcon('arrow-circle-double-135-rocket'), globals_.trans.stringOneLine('MenuItems', 138),
             globals_.trans.stringOneLine('MenuItems', 139), GetKeybind('reloaddata')
         ),
         MenuAction(

@@ -40,7 +40,7 @@ class PaletteDock(QtWidgets.QDockWidget):
 
         # Sprites
         self.sprite_tab = SpriteTab()
-        self.tabs.addTab(self.sprite_tab, GetIcon('sprites'), '')
+        self.tabs.addTab(self.sprite_tab, GetIcon('rocket'), '')
         self.tabs.setTabToolTip(1, globals_.trans.string('Palette', 14))
 
         # Entrances
