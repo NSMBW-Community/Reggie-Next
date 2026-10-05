@@ -791,11 +791,11 @@ def LoadMenuActions(mw) -> None:
             globals_.trans.stringOneLine('MenuItems', 35), GetKeybind('mergelocations')
         ),
         MenuAction(
-            'swapobjectstilesets', mw.SwapObjectsTilesets, GetIcon('arrow-switch'), globals_.trans.stringOneLine('MenuItems', 104),
+            'swapobjectstilesets', mw.SwapObjectsTilesets, GetIcon('arrow-switch-block'), globals_.trans.stringOneLine('MenuItems', 104),
             globals_.trans.stringOneLine('MenuItems', 105), GetKeybind('swapobjectstilesets')
         ),
         MenuAction(
-            'swapobjectstypes', lambda: ObjectTypeSwapDialog().exec(), GetIcon('arrow-switch'), globals_.trans.stringOneLine('MenuItems', 106),
+            'swapobjectstypes', lambda: ObjectTypeSwapDialog().exec(), GetIcon('arrow-switch-wooden-box'), globals_.trans.stringOneLine('MenuItems', 106),
             globals_.trans.stringOneLine('MenuItems', 107), GetKeybind('swapobjectstypes')
         ),
         MenuAction(
