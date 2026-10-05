@@ -56,6 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - When inserting nodes into an existing path, the new node will now be selected automatically.
 - Improved rendering of liquids if the sprite is near the top edge or outside of a zone.
 - Sprite Images that use tileset graphics now support animated tile playback.
+- Renamed "Swap Objects' Tilesets" dialog to "Swap Tilesets".
 
 ### Removed
 

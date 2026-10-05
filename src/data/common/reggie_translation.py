@@ -561,10 +561,10 @@ class ReggieTranslation:
                 101: None,  # REMOVED: 'Show or hide the Island Generator window',
                 102: None,  # REMOVED: 'Stamp Pad'
                 103: None,  # REMOVED: 'Show or hide the Stamp Pad window'
-                104: 'Swap Objects\' Tilesets...',
-                105: 'Swaps the tileset of objects using a certain tileset',
+                104: 'Swap Tilesets...',
+                105: 'Swaps all objects of a certain tileset to another',
                 106: 'Swap Objects...',
-                107: 'Swaps the type of objects of a certain type',
+                107: 'Swaps all objects of a certain type to another',
                 108: 'Tileset Animations',
                 109: 'Play tileset animations if they exist (may cause a slowdown)',
                 110: 'Tileset Collisions',
@@ -966,7 +966,7 @@ class ReggieTranslation:
                 7: 'Close',
             },
             'SwapObjTilesDlg': {
-                0: 'Swap Objects\' Tilesets',
+                0: 'Swap Tilesets',
                 1: 'From Tileset Slot:',
                 2: 'To Tileset Slot:',
                 3: 'Exchange (perform 2-way conversion)',

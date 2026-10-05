@@ -21,7 +21,6 @@ from ui.widgets.level_scene import LevelScene
 from ui.widgets.level_view import LevelViewWidget
 from data.level.dirty import SetDirty, CheckDirty
 from data.common.settings import setting, setSetting
-from data.level.items.basic import LevelEditorItem
 from data.level.items.comment import CommentItem
 from data.level.items.entrance import EntranceItem
 from data.level.items.location import LocationItem

@@ -518,10 +518,10 @@
         <string id="101" />
         <string id="102" />
         <string id="103" />
-        <string id="104">Swap Objects' Tilesets...</string>
-        <string id="105">Swaps the tileset of objects using a certain tileset</string>
+        <string id="104">Swap Tilesets...</string>
+        <string id="105">Swaps all objects of a certain tileset to another</string>
         <string id="106">Swap Objects...</string>
-        <string id="107">Swaps the type of objects of a certain type</string>
+        <string id="107">Swaps all objects of a certain type to another</string>
         <string id="108">Tileset Animations</string>
         <string id="109">Play tileset animations if they exist (may cause a slowdown)</string>
         <string id="110">Tileset Collisions</string>
@@ -931,7 +931,7 @@
         <string id="7">Close</string>
     </section>
     <section id="SwapObjTilesDlg">
-        <string id="0">Swap Objects' Tilesets</string>
+        <string id="0">Swap Tilesets</string>
         <string id="1">From Tileset Slot:</string>
         <string id="2">To Tileset Slot:</string>
         <string id="3">Exchange (perform 2-way conversion)</string>
