@@ -50,7 +50,7 @@ class PaletteDock(QtWidgets.QDockWidget):
 
         # Locations
         self.location_tab = LocationTab()
-        self.tabs.addTab(self.location_tab, GetIcon('locations'), '')
+        self.tabs.addTab(self.location_tab, GetIcon('layer-shape-purple'), '')
         self.tabs.setTabToolTip(3, globals_.trans.string('Palette', 16))
 
         # Paths

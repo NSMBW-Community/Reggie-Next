@@ -811,7 +811,7 @@ def LoadMenuActions(mw) -> None:
             globals_.trans.stringOneLine('MenuItems', 39), GetKeybind('freezeobjects'), True
         ),
         MenuAction(
-            'freezesprites', mw.HandleSpritesFreeze, GetIcon('spritesfreeze'), globals_.trans.stringOneLine('MenuItems', 40),
+            'freezesprites', mw.HandleSpritesFreeze, GetIcon('rocket-freeze'), globals_.trans.stringOneLine('MenuItems', 40),
             globals_.trans.stringOneLine('MenuItems', 41), GetKeybind('freezesprites'), True
         ),
         MenuAction(
@@ -819,7 +819,7 @@ def LoadMenuActions(mw) -> None:
             globals_.trans.stringOneLine('MenuItems', 43), GetKeybind('freezeentrances'), True
         ),
         MenuAction(
-            'freezelocations', mw.HandleLocationsFreeze, GetIcon('locationsfreeze'), globals_.trans.stringOneLine('MenuItems', 44),
+            'freezelocations', mw.HandleLocationsFreeze, GetIcon('layer-shape-purple-freeze'), globals_.trans.stringOneLine('MenuItems', 44),
             globals_.trans.stringOneLine('MenuItems', 45), GetKeybind('freezelocations'), True
         ),
         MenuAction(
@@ -855,11 +855,11 @@ def LoadMenuActions(mw) -> None:
             globals_.trans.stringOneLine('MenuItems', 119), GetKeybind('realview'), True
         ),
         MenuAction(
-            'showsprites', mw.HandleSpritesVisibility, GetIcon('sprites'), globals_.trans.stringOneLine('MenuItems', 54),
+            'showsprites', mw.HandleSpritesVisibility, GetIcon('rocket'), globals_.trans.stringOneLine('MenuItems', 54),
             globals_.trans.stringOneLine('MenuItems', 55), GetKeybind('showsprites'), True
         ),
         MenuAction(
-            'showspriteimages', mw.HandleSpriteImages, GetIcon('sprites'), globals_.trans.stringOneLine('MenuItems', 56),
+            'showspriteimages', mw.HandleSpriteImages, GetIcon('rocket-image'), globals_.trans.stringOneLine('MenuItems', 56),
             globals_.trans.stringOneLine('MenuItems', 57), GetKeybind('showspriteimages'), True
         ),
         MenuAction(
@@ -867,7 +867,7 @@ def LoadMenuActions(mw) -> None:
             globals_.trans.stringOneLine('MenuItems', 145), GetKeybind('showentrances'), True
         ),
         MenuAction(
-            'showlocations', mw.HandleLocationsVisibility, GetIcon('locations'), globals_.trans.stringOneLine('MenuItems', 58),
+            'showlocations', mw.HandleLocationsVisibility, GetIcon('layer-shape-purple'), globals_.trans.stringOneLine('MenuItems', 58),
             globals_.trans.stringOneLine('MenuItems', 59), GetKeybind('showlocations'), True
         ),
         MenuAction(
