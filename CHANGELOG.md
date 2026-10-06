@@ -57,6 +57,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved rendering of liquids if the sprite is near the top edge or outside of a zone.
 - Sprite Images that use tileset graphics now support animated tile playback.
 - Renamed "Swap Objects' Tilesets" dialog to "Swap Tilesets".
+- Reimplemented the classic icon set from the original Reggie versions.
+- Several dialogs with tabs now display icons alongside the tab name.
 
 ### Removed
 
