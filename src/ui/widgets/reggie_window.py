@@ -964,7 +964,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     id_list.append(item.sprite_num)
 
             # If we only have one unique item, pass that as an ID
-            if len(set(id_list)) <= 1:
+            if len(set(id_list)) == 1:
                 initial_id = id_list[0]
 
         SpriteSwitchDialog(initial_id).exec()
