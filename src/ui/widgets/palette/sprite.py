@@ -24,7 +24,7 @@ class SpriteTab(QtWidgets.QTabWidget):
 
         # Add Sprites tab
         self.add_sprite_tab = QtWidgets.QWidget()
-        self.addTab(self.add_sprite_tab, GetIcon('rocket-small-plus'), globals_.trans.string('Palette', 25))
+        self.addTab(self.add_sprite_tab, GetIcon('rocket-plus'), globals_.trans.string('Palette', 25))
 
         view_lyt = QtWidgets.QHBoxLayout()
         view_lyt.addWidget(QtWidgets.QLabel(globals_.trans.string('Palette', 4)))
@@ -82,7 +82,7 @@ class SpriteTab(QtWidgets.QTabWidget):
 
         # Sprite Order
         self.sprite_order_tab = QtWidgets.QWidget()
-        self.addTab(self.sprite_order_tab, GetIcon('rocket-small-arrow'), globals_.trans.string('Palette', 39))
+        self.addTab(self.sprite_order_tab, GetIcon('rocket-arrow'), globals_.trans.string('Palette', 39))
 
         order_label = QtWidgets.QLabel(globals_.trans.string('Palette', 40))
         order_label.setWordWrap(True)
