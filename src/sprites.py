@@ -326,9 +326,6 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
             # the sprite is below the zone; don't draw anything
             return
 
-        if fill_rect.top() <= 0:
-            drawCrest = False  # off the top of the zone; no crest
-
         rise_img: QtGui.QPixmap | None = None
 
         # Determine where to put the rise image
