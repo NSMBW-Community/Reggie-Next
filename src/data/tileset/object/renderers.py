@@ -1,12 +1,13 @@
 from data import globals_
+from data.tileset.object.object_def import ObjectDef
 
 
-def RenderObject(tileset, objnum, width, height, fullslope=False):
+def RenderObject(tileset: int, objnum: int, width: int, height: int, fullslope: bool = False) -> list[list[int]]:
     """
     Render a tileset object into an array
     """
     # allocate an array
-    dest = [[0] * width for _ in range(height)]
+    dest: list[list[int]] = [[0] * width for _ in range(height)]
 
     # ignore non-existent objects
     try:
@@ -67,14 +68,14 @@ def RenderObject(tileset, objnum, width, height, fullslope=False):
     return dest
 
 
-def RenderStandardRow(dest, row, y, width):
+def RenderStandardRow(dest: list[int], row: list[list[int]], _y: int, width: int) -> None:
     """
     Render a row from an object
     """
-    repeatFound = False
-    beforeRepeat = []
-    inRepeat = []
-    afterRepeat = []
+    repeatFound: bool = False
+    beforeRepeat: list[list[int]] = []
+    inRepeat: list[list[int]] = []
+    afterRepeat: list[list[int]] = []
 
     for tile in row:
         tiling = (tile[0] & 1) != 0
@@ -105,7 +106,7 @@ def RenderStandardRow(dest, row, y, width):
                 dest[x] = inRepeat[(x - bc) % ic][1]
 
 
-def RenderDiagonalObject(dest, obj, width, height, fullslope):
+def RenderDiagonalObject(dest: list[list[int]], obj: ObjectDef, width: int, height: int, fullslope: bool) -> None:
     """
     Render a diagonal object
     """
@@ -161,7 +162,7 @@ def RenderDiagonalObject(dest, obj, width, height, fullslope):
         yi = -len(mainBlock)
 
     # Finally draw it
-    for i in range(drawAmount):
+    for _ in range(drawAmount):
         PutObjectArray(dest, x, y, mainBlock, width, height)
         if subBlock is not None:
             xb = x
@@ -174,10 +175,13 @@ def RenderDiagonalObject(dest, obj, width, height, fullslope):
         y += yi
 
 
-def PutObjectArray(dest, xo, yo, block, width, height):
+def PutObjectArray(dest: list[list[int]], xo: int, yo: int, block: list[list[list[int]]] | None, width: int, height: int) -> None:
     """
     Places a tile array into an object
     """
+    if block is None:
+        return
+
     for y in range(yo, yo + len(block)):
         if y < 0: continue
         if y >= height: continue
@@ -189,7 +193,7 @@ def PutObjectArray(dest, xo, yo, block, width, height):
             if x >= width: continue
             drow[x] = srow[x - xo][1]
 
-def GetSlopeSections(obj):
+def GetSlopeSections(obj: ObjectDef) -> tuple[list[list[list[int]]], list[list[list[int]]] | None]:
     """
     Sorts the slope data into sections
     """
@@ -213,7 +217,7 @@ def GetSlopeSections(obj):
     else:
         return (sections[0], sections[1])
 
-def CreateSection(rows):
+def CreateSection(rows: list[list[list[int]]]) -> list[list[list[int]]]:
     """
     Create a slope section
     """
@@ -224,9 +228,9 @@ def CreateSection(rows):
         width = max(width, thiswidth)
 
     # Create the section
-    section = []
+    section: list[list[list[int]]] = []
     for row in rows:
-        drow = [0] * width
+        drow = [[0]] * width
         x = 0
         for tile in row:
             if (tile[0] & 0x80) == 0:
@@ -236,7 +240,7 @@ def CreateSection(rows):
 
     return section
 
-def CountTiles(row):
+def CountTiles(row: list[list[int]]) -> int:
     """
     Counts the amount of real tiles in an object row
     """
@@ -247,7 +251,7 @@ def CountTiles(row):
     return res
 
 
-def IncrementTilesetFrame():
+def IncrementTilesetFrame() -> None:
     """
     Moves each tileset to the next frame
     """

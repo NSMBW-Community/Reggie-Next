@@ -9,18 +9,18 @@ class TilesetTile:
     Class that represents a single tile in a tileset
     """
 
-    def __init__(self, main: QtGui.QPixmap):
+    def __init__(self, main: QtGui.QPixmap) -> None:
         """
         Initializes the TilesetTile
         """
         self.main = main
-        self.isAnimated = False
-        self.animFrame = 0
-        self.animTiles = []
-        self.collData = (0, 0, 0, 0, 0, 0, 0, 0)
-        self.collOverlay = None
+        self.isAnimated: bool = False
+        self.animFrame: int = 0
+        self.animTiles: list[QtGui.QPixmap] = []
+        self.collData: tuple[int, int, int, int, int, int, int, int] = (0, 0, 0, 0, 0, 0, 0, 0)
+        self.collOverlay: QtGui.QPixmap | None = None
 
-    def addAnimationData(self, data, reverse=False):
+    def addAnimationData(self, data: bytes, reverse: bool = False) -> None:
         """
         Applies Newer-style animation data to the tile
         """
@@ -40,7 +40,7 @@ class TilesetTile:
         self.animTiles = animTiles
         self.isAnimated = True
 
-    def nextFrame(self):
+    def nextFrame(self) -> None:
         """
         Increments to the next frame
         """
@@ -52,13 +52,13 @@ class TilesetTile:
         if self.animFrame == len(self.animTiles):
             self.animFrame = 0
 
-    def resetAnimation(self):
+    def resetAnimation(self) -> None:
         """
         Resets the animation frame
         """
         self.animFrame = 0
 
-    def getCurrentTile(self, showCollision = False):
+    def getCurrentTile(self, showCollision: bool = False) -> QtGui.QPixmap:
         """
         Returns the current tile based on the current animation frame
         """
@@ -76,26 +76,26 @@ class TilesetTile:
 
         return result
 
-    def setCollisions(self, colldata: tuple[int, int, int, int, int, int, int, int]):
+    def setCollisions(self, colldata: tuple[int, int, int, int, int, int, int, int]) -> None:
         """
         Sets the collision data for this tile
         """
-        self.collData = tuple(colldata)
+        self.collData = colldata
         self.updateCollisionOverlay()
 
-    def setQuestionCollisions(self):
+    def setQuestionCollisions(self) -> None:
         """
         Sets the collision data to that of a question block
         """
         self.setCollisions((0, 0, 0, 5, 0, 0, 0, 0))
 
-    def setBrickCollisions(self):
+    def setBrickCollisions(self) -> None:
         """
         Sets the collision data to that of a brick block
         """
         self.setCollisions((0, 0, 0, 0x10, 0, 0, 0, 0))
 
-    def updateCollisionOverlay(self):
+    def updateCollisionOverlay(self) -> None:
         """
         Updates the collisions overlay for this pixmap
         """

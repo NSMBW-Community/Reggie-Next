@@ -4,7 +4,7 @@ from PyQt6 import QtWidgets
 class SpriteSubCategory:
     """Object representation of a sprite subcategory."""
 
-    def __init__(self, name: str | None, sprite_ids: list[int]):
+    def __init__(self, name: str | None, sprite_ids: list[int]) -> None:
         self.name = name
         self.sprite_ids = sprite_ids
 
@@ -17,7 +17,7 @@ class SpriteCategory:
         name: str | None,
         sub_categories: list[SpriteSubCategory],
         nodes: list[QtWidgets.QTreeWidgetItem],
-    ):
+    ) -> None:
         self.name = name
         self.sub_categories = sub_categories
         self.nodes = nodes

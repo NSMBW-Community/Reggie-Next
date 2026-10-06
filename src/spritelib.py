@@ -447,13 +447,15 @@ class Spritebox:
 #################### AuxiliarySpriteItem Classes ###############
 
 
-class AuxiliaryItem:
+class AuxiliaryItem(QtWidgets.QGraphicsItem):
     """
     Base class for all auxiliary things
     """
+    def __init__(self, parent: QtWidgets.QGraphicsItem) -> None:
+        super().__init__(parent)
 
 
-class AuxiliarySpriteItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
+class AuxiliarySpriteItem(AuxiliaryItem):
     """
     Base class for auxiliary objects that accompany specific sprite types
     """
@@ -817,7 +819,7 @@ class AuxiliaryImage_FollowsRect(AuxiliaryImage):
             scene.update(oldx + parent.x(), oldy + parent.y(), self.width, self.height)
 
 
-class AuxiliaryZoneItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
+class AuxiliaryZoneItem(AuxiliaryItem):
     """
     An auxiliary item that can have a zone as its parent
     """
@@ -893,7 +895,7 @@ class AuxiliaryZoneItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
         return self.BoundingRect
 
 
-class AuxiliaryLocationItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
+class AuxiliaryLocationItem(AuxiliaryItem):
     """
     An auxiliary item that can have a location as its parent
     """

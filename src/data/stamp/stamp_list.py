@@ -1,4 +1,6 @@
-from PyQt6 import QtCore, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
+
+from data.stamp.stamp import Stamp
 
 
 class StampListModel(QtCore.QAbstractListModel):
@@ -6,21 +8,21 @@ class StampListModel(QtCore.QAbstractListModel):
     Model containing all the stamps
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initializes the model
         """
         QtCore.QAbstractListModel.__init__(self)
 
-        self.items = []  # list of Stamp objects
+        self.items: list[Stamp] = []
 
-    def rowCount(self, parent=None):
+    def rowCount(self, parent: QtCore.QModelIndex | None = None) -> int:
         """
         Required by Qt
         """
         return len(self.items)
 
-    def data(self, index, role=QtCore.Qt.ItemDataRole.DisplayRole):
+    def data(self, index: QtCore.QModelIndex, role: QtCore.Qt.ItemDataRole = QtCore.Qt.ItemDataRole.DisplayRole) -> QtGui.QPixmap | str | None:
         """
         Get what we have for a specific row
         """
@@ -41,7 +43,7 @@ class StampListModel(QtCore.QAbstractListModel):
         else:
             return None
 
-    def setData(self, index, value, role=QtCore.Qt.ItemDataRole.DisplayRole):
+    def setData(self, index: QtCore.QModelIndex, value: str, role: QtCore.Qt.ItemDataRole = QtCore.Qt.ItemDataRole.DisplayRole) -> None:
         """
         Set data for a specific row
         """
@@ -53,7 +55,7 @@ class StampListModel(QtCore.QAbstractListModel):
         if role == QtCore.Qt.ItemDataRole.UserRole:
             self.items[n].Name = value
 
-    def addStamp(self, stamp):
+    def addStamp(self, stamp: Stamp) -> None:
         """
         Adds a stamp
         """
@@ -67,7 +69,7 @@ class StampListModel(QtCore.QAbstractListModel):
         # Finish resetting
         self.endResetModel()
 
-    def removeStamp(self, stamp):
+    def removeStamp(self, stamp: Stamp) -> None:
         """
         Removes a stamp
         """

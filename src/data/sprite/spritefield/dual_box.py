@@ -12,7 +12,7 @@ class DualBoxSpriteField(SpriteField):
         bit: list[tuple[int, int]] | None,
         title2: str | None,
         full_nybble: bool,
-    ):
+    ) -> None:
         super().__init__(title, comment, comment2, advanced_comment, required, bit)
         self.title2 = title2
         self.full_nybble = full_nybble

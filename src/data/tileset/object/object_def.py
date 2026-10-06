@@ -3,15 +3,15 @@ class ObjectDef:
     Class for the object definitions
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Constructor
         """
         self.width = 0
         self.height = 0
-        self.rows = []
+        self.rows: list[list[list[int]]] = []
 
-    def load(self, source, offset, tileoffset):
+    def load(self, source: bytes, offset: int, tileoffset: int) -> None:
         """
         Load an object definition
         """

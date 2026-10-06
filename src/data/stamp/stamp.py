@@ -9,7 +9,7 @@ class Stamp:
     Class that represents a stamp in the list
     """
 
-    def __init__(self, ReggieClip=None, Name=''):
+    def __init__(self, ReggieClip: str, Name: str = '') -> None:
         """
         Initializes the stamp
         """
@@ -18,14 +18,14 @@ class Stamp:
         self.Name = Name
         self.Icon = self.render()
 
-    def renderPreview(self):
+    def renderPreview(self) -> QtGui.QPixmap:
         """
         Renders the stamp preview
         """
 
         minX, minY, maxX, maxY = 24576, 12288, 0, 0
 
-        layers, sprites, _, _, _, _ = ReggieClip.decode_reggie_clip(self.ReggieClip, False)
+        layers, sprites, _, _, _, _, _ = ReggieClip.decode_reggie_clip(self.ReggieClip, False)
 
         # Go through the sprites and find the maxs and mins
         for spr in sprites:
@@ -36,10 +36,10 @@ class Stamp:
             x2 = x1 + br.width()
             y2 = y1 + br.height()
 
-            if x1 < minX: minX = x1
-            if x2 > maxX: maxX = x2
-            if y1 < minY: minY = y1
-            if y2 > maxY: maxY = y2
+            minX = min(minX, x1)
+            maxX = max(maxX, x2)
+            minY = min(minY, y1)
+            maxY = max(maxY, y2)
 
         # Go through the objects and find the maxs and mins
         for layer in layers:
@@ -49,10 +49,10 @@ class Stamp:
                 y1 = (obj.objy * 24)
                 y2 = y1 + (obj.height * 24)
 
-                if x1 < minX: minX = x1
-                if x2 > maxX: maxX = x2
-                if y1 < minY: minY = y1
-                if y2 > maxY: maxY = y2
+                minX = min(minX, x1)
+                maxX = max(maxX, x2)
+                minY = min(minY, y1)
+                maxY = max(maxY, y2)
 
         # Calculate offset amounts (snap to 24x24 increments)
         offsetX = int(minX // 24) * 24
@@ -82,7 +82,7 @@ class Stamp:
         objw, objh = int(pixmapSize[0] // 24) + 1, int(pixmapSize[1] // 24) + 1
         for layer in reversed(layers):
             tmap = []
-            for i in range(objh):
+            for _ in range(objh):
                 tmap.append([-1] * objw)
             for obj in layer:
                 startx = int(obj.objx)
@@ -150,7 +150,7 @@ class Stamp:
         # Return it
         return pix
 
-    def render(self):
+    def render(self) -> QtGui.QPixmap:
         """
         Renders the stamp icon, preview AND text
         """
@@ -182,7 +182,7 @@ class Stamp:
         return pix
 
     @staticmethod
-    def calculateTextSize(text):
+    def calculateTextSize(text: str) -> QtCore.QSizeF:
         """
         Calculates the size of text. Crops to 96 pixels wide.
         """
@@ -191,7 +191,7 @@ class Stamp:
         w, h = fontRect.width(), fontRect.height()
         return QtCore.QSizeF(min(w, 96), h)
 
-    def update(self):
+    def update(self) -> None:
         """
         Updates the stamp icon
         """

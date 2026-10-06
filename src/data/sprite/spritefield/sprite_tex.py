@@ -14,7 +14,7 @@ class SpriteTexSpriteField(SpriteField):
         bit: list[tuple[int, int]] | None,
         model: QtCore.QAbstractItemModel,
         max: int,
-    ):
+    ) -> None:
         super().__init__(title, comment, comment2, advanced_comment, required, bit)
         self.model = model
         self.max = max

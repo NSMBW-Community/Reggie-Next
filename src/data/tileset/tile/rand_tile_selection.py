@@ -6,7 +6,7 @@ class RandTileSelection:
     :param special: Special tile type (0b00 = none, 0b01 = double-top, 0b10 = double-bottom).
     """
 
-    def __init__(self, tiles: list[int], direction: int, special: int):
+    def __init__(self, tiles: list[int], direction: int, special: int) -> None:
         # lower 4 bits represent x, upper 4 bits represent y
         self.tiles: list[int] = tiles
         self.direction = direction

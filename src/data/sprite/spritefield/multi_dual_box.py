@@ -11,6 +11,6 @@ class MultiDualBoxSpriteField(SpriteField):
         required: list[tuple[list[tuple[int, int]], tuple[int, int]]] | None,
         bit: list[tuple[int, int]] | None,
         title2: str | None,
-    ):
+    ) -> None:
         super().__init__(title, comment, comment2, advanced_comment, required, bit)
         self.title2 = title2

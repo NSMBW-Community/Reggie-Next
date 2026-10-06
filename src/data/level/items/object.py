@@ -73,7 +73,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
         self.layer = layer
         self.width = width
         self.height = height
-        self.objdata = None
+        self.objdata = []
 
         self.wasExtended = False
 

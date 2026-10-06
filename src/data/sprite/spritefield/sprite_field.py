@@ -9,7 +9,7 @@ class SpriteField:
         advanced_comment: str | None = None,
         required: list[tuple[list[tuple[int, int]], tuple[int, int]]] | None = None,
         bit: list[tuple[int, int]] | None = None,
-    ):
+    ) -> None:
         self.title = title if title is not None else ""
         self.comment = comment
         self.comment2 = comment2

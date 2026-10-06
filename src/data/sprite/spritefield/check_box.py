@@ -12,7 +12,7 @@ class CheckBoxSpriteField(SpriteField):
         bit: list[tuple[int, int]] | None,
         mask: int,
         full_nybble: bool,
-    ):
+    ) -> None:
         super().__init__(title, comment, comment2, advanced_comment, required, bit)
         self.mask = mask
         self.full_nybble = full_nybble

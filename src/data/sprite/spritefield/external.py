@@ -11,6 +11,6 @@ class ExternalSpriteField(SpriteField):
         required: list[tuple[list[tuple[int, int]], tuple[int, int]]] | None,
         bit: list[tuple[int, int]] | None,
         type: str | None,
-    ):
+    ) -> None:
         super().__init__(title, comment, comment2, advanced_comment, required, bit)
         self.type = type or ""

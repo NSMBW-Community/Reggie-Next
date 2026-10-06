@@ -15,7 +15,7 @@ class ValueSpriteField(SpriteField):
         increment: int,
         overrides: list[tuple[int, int]],
         idtype: str | None,
-    ):
+    ) -> None:
         super().__init__(title, comment, comment2, advanced_comment, required, bit)
         self.max = max
         self.start = start

@@ -14,7 +14,7 @@ class ListSpriteField(SpriteField):
         bit: list[tuple[int, int]] | None,
         model: QtCore.QAbstractItemModel,
         idtype: str | None,
-    ):
+    ) -> None:
         super().__init__(title, comment, comment2, advanced_comment, required, bit)
         self.model = model
         self.idtype = idtype
