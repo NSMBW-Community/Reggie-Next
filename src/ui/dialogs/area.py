@@ -263,7 +263,6 @@ class TilesetsTab(QtWidgets.QWidget):
         """
         self.trees[slot].clearSelection()
         txt = str(self.lineEdits[slot].text())
-        print(txt)
         self.set_preview(slot, txt)
 
         if (txt in self.itemDict[slot]) or (txt == ''):
