@@ -16,7 +16,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         """
         QtWidgets.QDialog.__init__(self)
         self.setWindowTitle(globals_.trans.string('ResizeChoiceDlg', 11))
-        self.setWindowIcon(GetIcon('resize'))
+        self.setWindowIcon(GetIcon('arrow-out'))
 
         # Scale levels used by both Resizer modes
         self.scaleLevels =  [1.0, 0.25, 0.5, 0.75, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 10.0]

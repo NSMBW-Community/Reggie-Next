@@ -14,7 +14,7 @@ class ObjectTilesetSwapDialog(QtWidgets.QDialog):
         """
         super().__init__()
         self.setWindowTitle(globals_.trans.string('SwapObjTilesDlg', 0))
-        self.setWindowIcon(GetIcon('swap'))
+        self.setWindowIcon(GetIcon('arrow-switch-block'))
 
         # Create widgets
         self.curr_tileset = QtWidgets.QComboBox()

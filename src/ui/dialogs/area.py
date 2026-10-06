@@ -16,15 +16,15 @@ class AreaOptionsDialog(QtWidgets.QDialog):
         """
         QtWidgets.QDialog.__init__(self)
         self.setWindowTitle(globals_.trans.string('AreaDlg', 0))
-        self.setWindowIcon(GetIcon('area'))
+        self.setWindowIcon(GetIcon('wooden-box'))
 
         self.tabWidget = QtWidgets.QTabWidget()
         self.tilesetsTab = TilesetsTab()
         self.settingsTab = SettingsTab()
         self.loadedSpritesTab = LoadedSpritesTab()
-        self.tabWidget.addTab(self.tilesetsTab, globals_.trans.string('AreaDlg', 1))
-        self.tabWidget.addTab(self.settingsTab, globals_.trans.string('AreaDlg', 2))
-        self.tabWidget.addTab(self.loadedSpritesTab, globals_.trans.string('AreaDlg', 46))
+        self.tabWidget.addTab(self.tilesetsTab, GetIcon('document-block'), globals_.trans.string('AreaDlg', 1))
+        self.tabWidget.addTab(self.settingsTab, GetIcon('gear'), globals_.trans.string('AreaDlg', 2))
+        self.tabWidget.addTab(self.loadedSpritesTab, GetIcon('rocket-exclamation-red'), globals_.trans.string('AreaDlg', 46))
 
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
 

@@ -31,24 +31,24 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         """
         super().__init__()
         self.setWindowTitle(globals_.trans.string('Diag', 0))
-        self.setWindowIcon(GetIcon('diagnostics'))
+        self.setWindowIcon(GetIcon('wrench-screwdriver'))
 
         # check_functions: (icon, description, function, is_critical)
         self.check_functions = (
-            ('objects',   globals_.trans.string('Diag', 2),  self.check_invalid_obj,        True),
-            ('sprites',   globals_.trans.string('Diag', 3),  self.check_crash_sprite,       False),
-            ('sprites',   globals_.trans.string('Diag', 4),  self.check_sprite_param,       True),
-            ('sprites',   globals_.trans.string('Diag', 5),  self.check_sprite_max,         False),
-            ('entrances', globals_.trans.string('Diag', 6),  self.check_duplicate_entrance, True),
-            ('entrances', globals_.trans.string('Diag', 7),  self.check_start_entrance,     True),
-            ('entrances', globals_.trans.string('Diag', 8),  self.check_entrance_near_edge, False),
-            ('entrances', globals_.trans.string('Diag', 9),  self.check_entrance_out_zone,  False),
-            ('zones',     globals_.trans.string('Diag', 10), self.check_zone_max,           True),
-            ('zones',     globals_.trans.string('Diag', 11), self.check_no_zone_exist,      True),
-            ('zones',     globals_.trans.string('Diag', 12), self.check_zone_proximity,     True),
-            ('zones',     globals_.trans.string('Diag', 13), self.check_zone_on_area_edge,  True),
-            ('zones',     globals_.trans.string('Diag', 14), self.check_no_bias,            False),
-            ('zones',     globals_.trans.string('Diag', 15), self.check_zone_max_size,      True),
+            ('block',   globals_.trans.string('Diag', 2),  self.check_invalid_obj,        True),
+            ('sprites',   globals_.trans.string('Diag', 3),  self.check_crash_sprite,     False),
+            ('sprites',   globals_.trans.string('Diag', 4),  self.check_sprite_param,     True),
+            ('sprites',   globals_.trans.string('Diag', 5),  self.check_sprite_max,       False),
+            ('door', globals_.trans.string('Diag', 6),  self.check_duplicate_entrance,    True),
+            ('door', globals_.trans.string('Diag', 7),  self.check_start_entrance,        True),
+            ('door', globals_.trans.string('Diag', 8),  self.check_entrance_near_edge,    False),
+            ('door', globals_.trans.string('Diag', 9),  self.check_entrance_out_zone,     False),
+            ('zone',     globals_.trans.string('Diag', 10), self.check_zone_max,          True),
+            ('zone',     globals_.trans.string('Diag', 11), self.check_no_zone_exist,     True),
+            ('zone',     globals_.trans.string('Diag', 12), self.check_zone_proximity,    True),
+            ('zone',     globals_.trans.string('Diag', 13), self.check_zone_on_area_edge, True),
+            ('zone',     globals_.trans.string('Diag', 14), self.check_no_bias,           False),
+            ('zone',     globals_.trans.string('Diag', 15), self.check_zone_max_size,     True),
             # Possible things to implement checks for:
             # Non-location liquid in zone bigger than 8192 pixels (crest stops rendering)
         )
@@ -80,7 +80,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         self.header.addWidget(QtWidgets.QLabel(globals_.trans.string('Diag', 18)), 0, 0, 1, 3)
 
         point_size = 14
-        icon_names = ['check', 'warning', 'delete']
+        icon_names = ['tick_32x', 'exclamation_32x', 'cross_32x']
         widths = [64, 128, 72]
         string_ids = [(19, 20), (21, 22), (23, 24)]
         colors = [
@@ -90,7 +90,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         ]
 
         icon_label = QtWidgets.QLabel()
-        icon_label.setPixmap(GetIcon(icon_names[result], True).pixmap(64, 64))
+        icon_label.setPixmap(GetIcon(icon_names[result]).pixmap(64, 64))
         self.header.addWidget(icon_label, 1, 0)
 
         if result == self.Result.WARNING:

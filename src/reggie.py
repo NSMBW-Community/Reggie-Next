@@ -86,7 +86,7 @@ from data import globals_
 import spritelib as SLib
 from data.common.sprites import LoadBasics
 
-from ui.theme.reggie_theme import SetAppStyle, LoadNumberFont, SetColorScheme
+from ui.theme.reggie_theme import SetAppStyle, LoadNumberFont, SetColorScheme, GetAppIcon
 from data.common.loaders import LoadToolbarActionsLists, LoadTheme, LoadDefaultKeybinds, module_path
 from data.common.utils import SetGamePaths, get_reggiedata_folder, get_root_path
 from data.common.validators import FilesAreMissing, areValidGamePaths
@@ -195,7 +195,7 @@ def main():
         setSetting('uiStyle', "Fusion")
 
     # Set the default window name/icon (used for random popups and stuff)
-    globals_.app.setWindowIcon(QtGui.QIcon(os.path.join(get_reggiedata_folder(), 'icon.png')))
+    globals_.app.setWindowIcon(GetAppIcon())
     globals_.app.setApplicationDisplayName('Reggie! Next %s' % globals_.ReggieVersionShort)
 
     # 4.0 -> Oldest version with settings.ini compatible with the current version

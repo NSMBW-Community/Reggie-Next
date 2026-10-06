@@ -17,7 +17,7 @@ class GameDefViewer(QtWidgets.QWidget):
         # "Has Sprite Images" indicator
         self.sprite_img_label = QtWidgets.QLabel()
         self.sprite_img_label.setToolTip(globals_.trans.string('Gamedefs', 0))
-        self.sprite_img_label.setPixmap(GetIcon('sprites', False).pixmap(16, 16))
+        self.sprite_img_label.setPixmap(GetIcon('rocket-image').pixmap(16, 16))
 
         self.version_label = QtWidgets.QLabel()
 
@@ -58,7 +58,7 @@ class GameDefViewer(QtWidgets.QWidget):
         sprite_folders = globals_.gamedef.recursiveFiles('sprites', is_folder=True)[0]
 
         if not globals_.gamedef.custom or sprite_folders:
-            img = GetIcon('sprites', False).pixmap(16, 16)
+            img = GetIcon('rocket').pixmap(16, 16)
         else:
             img = QtGui.QPixmap(16, 16)
             img.fill(QtGui.QColor(0, 0, 0, 0))

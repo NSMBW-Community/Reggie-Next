@@ -97,7 +97,7 @@ Other Testers and Contributors:
  * MinGW - http://www.mingw.org/
  * Cython - http://cython.org/
  * Wii.py - megazig, Xuzz, The Lemon Man, Matt_P, SquidMan, Omega (https://github.com/grp/Wii.py) (included)
- * Interface Icons - FlatIcons (http://flaticons.net)
+ * Interface Icons - Yusuke Kamiyamane (http://p.yusukekamiyamane.com/)
 
 ### License
 

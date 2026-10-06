@@ -4,6 +4,7 @@ from PyQt6 import QtGui, QtWidgets
 
 from data import globals_
 from data.common.utils import get_reggiedata_folder, get_root_path
+from ui.theme.reggie_theme import GetAppIcon
 
 
 class AboutDialog(QtWidgets.QDialog):

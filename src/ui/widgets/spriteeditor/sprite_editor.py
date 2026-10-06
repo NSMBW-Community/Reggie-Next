@@ -70,28 +70,28 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         self.spriteLabel.setWordWrap(True)
 
         self.noteButton = QtWidgets.QToolButton()
-        self.noteButton.setIcon(GetIcon('note'))
+        self.noteButton.setIcon(GetIcon('sticky-note-text'))
         self.noteButton.setText(globals_.trans.string('SpriteDataEditor', 4))
         self.noteButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.noteButton.setAutoRaise(True)
         self.noteButton.clicked.connect(self.ShowNoteTooltip)
 
         self.depButton = QtWidgets.QToolButton()
-        self.depButton.setIcon(GetIcon('dependency-notes'))
+        self.depButton.setIcon(GetIcon('node-select-child'))
         self.depButton.setText(globals_.trans.string('SpriteDataEditor', 4))
         self.depButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.depButton.setAutoRaise(True)
         self.depButton.clicked.connect(self.ShowDependencies)
 
         self.relatedObjFilesButton = QtWidgets.QToolButton()
-        self.relatedObjFilesButton.setIcon(GetIcon('data'))
+        self.relatedObjFilesButton.setIcon(GetIcon('documents-stack'))
         self.relatedObjFilesButton.setText(globals_.trans.string('SpriteDataEditor', 7))
         self.relatedObjFilesButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.relatedObjFilesButton.setAutoRaise(True)
         self.relatedObjFilesButton.clicked.connect(self.ShowRelatedObjFilesTooltip)
 
         self.advNoteButton = QtWidgets.QToolButton()
-        self.advNoteButton.setIcon(GetIcon('note-advanced'))
+        self.advNoteButton.setIcon(GetIcon('sticky-note-text-advanced'))
         self.advNoteButton.setText(globals_.trans.string('SpriteDataEditor', 10))
         self.advNoteButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.advNoteButton.setAutoRaise(True)
@@ -106,10 +106,10 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         self.yoshiInfo.clicked.connect(self.ShowYoshiTooltip)
 
         self.asm = QtWidgets.QLabel()
-        self.asm.setPixmap(GetIcon("asm").pixmap(64, 64))
+        self.asm.setPixmap(GetIcon('processor').pixmap(64, 64))
 
         self.sizeButton = QtWidgets.QToolButton()
-        self.sizeButton.setIcon(GetIcon('resize'))
+        self.sizeButton.setIcon(GetIcon('arrow-out'))
         self.sizeButton.setText(globals_.trans.string('SpriteDataEditor', 27))
         self.sizeButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.sizeButton.setAutoRaise(True)
@@ -373,15 +373,15 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
         # yoshi info
         if sprite.noyoshi is True:
-            image = "ys-no"
+            image = 'yoshi-egg-cross'
         elif sprite.noyoshi is not None:
-            image = "ys-works"
+            image = 'yoshi-egg'
         else:
             image = None
 
         if sprite.yoshiNotes is not None:
             if image is None:
-                image = "ys-works"
+                image = 'yoshi-egg'
 
             self.yoshiIcon.setVisible(False)
             self.yoshiInfo.setIcon(GetIcon(image))

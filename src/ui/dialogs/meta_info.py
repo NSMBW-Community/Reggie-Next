@@ -11,7 +11,7 @@ class ChangePasswordDialog(QtWidgets.QDialog):
     def __init__(self):
         QtWidgets.QDialog.__init__(self)
         self.setWindowTitle(globals_.trans.string('InfoDlg', 9))
-        self.setWindowIcon(GetIcon('info'))
+        self.setWindowIcon(GetIcon('lock'))
 
         self.new_pass = QtWidgets.QLineEdit()
         self.new_pass.setMaxLength(64)
@@ -68,7 +68,7 @@ class MetaInfoDialog(QtWidgets.QDialog):
         """
         super().__init__()
         self.setWindowTitle(globals_.trans.string('InfoDlg', 0))
-        self.setWindowIcon(GetIcon('info'))
+        self.setWindowIcon(GetIcon('information-frame'))
 
         title = globals_.Area.Metadata.strData('Title')
         author = globals_.Area.Metadata.strData('Author')

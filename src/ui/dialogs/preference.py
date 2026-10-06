@@ -23,7 +23,7 @@ class PreferencesDialog(QtWidgets.QDialog):
         """
         QtWidgets.QDialog.__init__(self)
         self.setWindowTitle(globals_.trans.string('PrefsDlg', 0))
-        self.setWindowIcon(GetIcon('settings'))
+        self.setWindowIcon(GetIcon('gear'))
 
         # Create the tab widget
         self.tab_widget = QtWidgets.QTabWidget()
@@ -35,10 +35,10 @@ class PreferencesDialog(QtWidgets.QDialog):
         self.keybind_tab = KeybindTab(globals_.trans.string('PrefsDlg', 57))
         self.appearance_tab = AppearanceTab(globals_.trans.string('PrefsDlg', 6))
 
-        self.tab_widget.addTab(self.general_tab, globals_.trans.string('PrefsDlg', 1))
-        self.tab_widget.addTab(self.toolbar_tab, globals_.trans.string('PrefsDlg', 2))
-        self.tab_widget.addTab(self.keybind_tab, globals_.trans.string('PrefsDlg', 56))
-        self.tab_widget.addTab(self.appearance_tab, globals_.trans.string('PrefsDlg', 3))
+        self.tab_widget.addTab(self.general_tab, GetIcon('gear'), globals_.trans.string('PrefsDlg', 1))
+        self.tab_widget.addTab(self.toolbar_tab, GetIcon('toolbox'), globals_.trans.string('PrefsDlg', 2))
+        self.tab_widget.addTab(self.keybind_tab, GetIcon('keyboard-full'), globals_.trans.string('PrefsDlg', 56))
+        self.tab_widget.addTab(self.appearance_tab, GetIcon('monitor'), globals_.trans.string('PrefsDlg', 3))
 
         button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
         button_box.accepted.connect(self.accept)

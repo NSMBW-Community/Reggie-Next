@@ -13,7 +13,7 @@ from data.common import archive
 import spritelib as SLib
 
 from libs import lh, lib_versions, lz77
-from ui.theme.reggie_theme import GetIcon, SetColorScheme
+from ui.theme.reggie_theme import GetIcon, SetColorScheme, GetAppIcon
 from data.common.loaders import LoadMenuActions, LoadLevelNames, LoadZoneThemes, GetKeybind, SetKeybind
 from data.common.utils import clamp, SetGamePaths, get_reggiedata_folder
 from data.common.validators import IsNSMBLevel, areValidGamePaths
@@ -36,6 +36,7 @@ from ui.widgets.spriteeditor.sprite_editor import SpriteEditorWidget
 from ui.actions.undo.undo_stack import UndoStack
 
 from ui.dialogs.area import AreaOptionsDialog
+from ui.dialogs.area_delete import AreaDeleteDialog
 from ui.dialogs.area_import import AreaImportDialog
 from ui.dialogs.background import BackgroundDialog
 from ui.dialogs.camera_profile import CameraProfilesDialog
@@ -125,7 +126,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Set up the window
         QtWidgets.QMainWindow.__init__(self, None)
         self.setWindowTitle(f'Reggie! Next {globals_.ReggieVersionShort}')
-        self.setWindowIcon(QtGui.QIcon(os.path.join(get_reggiedata_folder(), 'icon.png')))
+        self.setWindowIcon(GetAppIcon())
         self.setIconSize(QtCore.QSize(16, 16))
         self.setUnifiedTitleAndToolBarOnMac(True)
 
@@ -177,7 +178,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 return
 
             act.setShortcut(GetKeybind('toolbar'))
-            act.setIcon(GetIcon('diagnostics'))
+            act.setIcon(GetIcon('toolbox'))
             if self.vmenu is not None:
                 self.vmenu.addAction(act)
 
@@ -663,7 +664,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         act = overview_dock.toggleViewAction()
         if act is not None:
             act.setShortcut(GetKeybind('leveloverview'))
-            act.setIcon(GetIcon('overview'))
+            act.setIcon(GetIcon('globe-model'))
             act.setStatusTip(globals_.trans.string('MenuItems', 95))
             if self.vmenu is not None:
                 self.vmenu.addAction(act)
@@ -901,7 +902,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 # We should warn the user that we will round the offset to the
                 # nearest multiple of 16, because objects can only be placed on
                 # the grid.
-                result = QtWidgets.QMessageBox.information(None, globals_.trans.string('ShftItmDlg', 5),
+                result = QtWidgets.QMessageBox.warning(None, globals_.trans.string('ShftItmDlg', 5),
                                                             globals_.trans.string('ShftItmDlg', 6), QtWidgets.QMessageBox.StandardButton.Yes,
                                                             QtWidgets.QMessageBox.StandardButton.No)
 
@@ -974,7 +975,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Adds a new area to the level
         """
         if len(globals_.Level.areas) >= 4:
-            QtWidgets.QMessageBox.warning(self, globals_.trans.string('Menu Items', 78), globals_.trans.string('AreaImportDlg', 2))
+            QtWidgets.QMessageBox.warning(self, globals_.trans.string('MenuItems', 78), globals_.trans.string('AreaImportDlg', 2))
             return
 
         # This is an unsaved new level if self.fileSavePath is None
@@ -1092,9 +1093,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Deletes the current area
         """
-        result = QtWidgets.QMessageBox.warning(self, globals_.trans.string('DeleteArea', 1), globals_.trans.string('DeleteArea', 0),
-                                               QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
-        if result == QtWidgets.QMessageBox.StandardButton.No:
+        dlg = AreaDeleteDialog()
+        if dlg.exec() == QtWidgets.QDialog.DialogCode.Rejected:
             return
 
         # Save the current area in case something goes wrong.

@@ -14,7 +14,7 @@ class ScreenshotDialog(QtWidgets.QDialog):
         """
         super().__init__()
         self.setWindowTitle(globals_.trans.string('ScrShtDlg', 0))
-        self.setWindowIcon(GetIcon('screenshot'))
+        self.setWindowIcon(GetIcon('camera'))
 
         self.target_combo = QtWidgets.QComboBox()
         self.target_combo.addItem(globals_.trans.string('ScrShtDlg', 1)) # Current Screen

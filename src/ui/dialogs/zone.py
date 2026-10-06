@@ -19,7 +19,7 @@ class ZonesDialog(QtWidgets.QDialog):
         """
         QtWidgets.QDialog.__init__(self)
         self.setWindowTitle(globals_.trans.string('ZonesDlg', 0))
-        self.setWindowIcon(GetIcon('zones'))
+        self.setWindowIcon(GetIcon('zone'))
 
         self.tabWidget = QtWidgets.QTabWidget()
         self.zoneTabs: list[ZoneTab]
