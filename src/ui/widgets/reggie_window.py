@@ -37,6 +37,7 @@ from ui.widgets.spriteeditor.sprite_editor import SpriteEditorWidget
 from ui.actions.undo.undo_stack import UndoStack
 
 from ui.dialogs.area import AreaOptionsDialog
+from ui.dialogs.area_delete import AreaDeleteDialog
 from ui.dialogs.area_import import AreaImportDialog
 from ui.dialogs.background import BackgroundDialog
 from ui.dialogs.camera_profile import CameraProfilesDialog
@@ -902,7 +903,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 # We should warn the user that we will round the offset to the
                 # nearest multiple of 16, because objects can only be placed on
                 # the grid.
-                result = QtWidgets.QMessageBox.information(None, globals_.trans.string('ShftItmDlg', 5),
+                result = QtWidgets.QMessageBox.warning(None, globals_.trans.string('ShftItmDlg', 5),
                                                             globals_.trans.string('ShftItmDlg', 6), QtWidgets.QMessageBox.StandardButton.Yes,
                                                             QtWidgets.QMessageBox.StandardButton.No)
 
@@ -965,7 +966,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     id_list.append(item.sprite_num)
 
             # If we only have one unique item, pass that as an ID
-            if len(set(id_list)) <= 1:
+            if len(set(id_list)) == 1:
                 initial_id = id_list[0]
 
         SpriteSwitchDialog(initial_id).exec()
@@ -975,7 +976,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Adds a new area to the level
         """
         if len(globals_.Level.areas) >= 4:
-            QtWidgets.QMessageBox.warning(self, globals_.trans.string('Menu Items', 78), globals_.trans.string('AreaImportDlg', 2))
+            QtWidgets.QMessageBox.warning(self, globals_.trans.string('MenuItems', 78), globals_.trans.string('AreaImportDlg', 2))
             return
 
         # This is an unsaved new level if self.fileSavePath is None
@@ -1093,9 +1094,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Deletes the current area
         """
-        result = QtWidgets.QMessageBox.warning(self, globals_.trans.string('DeleteArea', 1), globals_.trans.string('DeleteArea', 0),
-                                               QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
-        if result == QtWidgets.QMessageBox.StandardButton.No:
+        dlg = AreaDeleteDialog()
+        if dlg.exec() == QtWidgets.QDialog.DialogCode.Rejected:
             return
 
         # Save the current area in case something goes wrong.

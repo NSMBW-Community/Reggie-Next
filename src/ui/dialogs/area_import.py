@@ -14,7 +14,7 @@ class AreaImportDialog(QtWidgets.QDialog):
         """
         super().__init__()
         self.setWindowTitle(globals_.trans.string('AreaImportDlg', 0))
-        self.setWindowIcon(GetIcon('wooden-box'))
+        self.setWindowIcon(GetIcon('wooden-box--arrow'))
 
         info_top = QtWidgets.QLabel()
         info_top.setText(globals_.trans.string('AreaImportDlg', 3))
