@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Swap Objects' Tilesets
   - Swap Objects
   - Switch Sprite IDs
+- Added a preview for selected tilesets in the Area Options dialog.
 
 ### Changed
 
@@ -59,7 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed "Swap Objects' Tilesets" dialog to "Swap Tilesets".
 - Reimplemented the classic icon set from the original Reggie versions.
 - Several dialogs with tabs now display icons alongside the tab name.
-- Added a preview for selected tilesets in the Area Options dialog.
+- The Area Import dialog can now change the source level without needing to be re-opened.
 
 ### Removed
 

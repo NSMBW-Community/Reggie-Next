@@ -117,11 +117,15 @@ class ReggieTranslation:
                 53: 'UNKNOWN',
             },
             'AreaImportDlg': {
-                0: 'Import Area',
+                0: 'Import Area from Level',
                 1: 'Area [num]',
                 2: 'You have reached the maximum amount of areas in this level.[br]Due to the game\'s limitations, Reggie Next only allows you to add up to 4 areas to a level.',
-                3: 'Choose an area to import from the selected level:',
-                4: 'It will be added to this level as Area [num].',
+                3: 'Area to Import:',
+                4: 'The selected area will be imported into this level as Area [num].',
+                5: 'Selected Level:',
+                6: 'None',
+                7: 'Stay in Current Area:',
+                8: 'Import',
             },
             'AutoDiag': {
                 0: '[num] error found.',

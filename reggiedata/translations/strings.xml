@@ -82,11 +82,15 @@
         <string id="53">UNKNOWN</string>
     </section>
     <section id="AreaImportDlg">
-        <string id="0">Import Area</string>
+        <string id="0">Import Area from Level</string>
         <string id="1">Area [num]</string>
         <string id="2">You have reached the maximum amount of areas in this level.[br]Due to the game's limitations, Reggie Next only allows you to add up to 4 areas to a level.</string>
-        <string id="3">Choose an area to import from the selected level:</string>
-        <string id="4">It will be added to this level as Area [num].</string>
+        <string id="3">Area to Import:</string>
+        <string id="4">The selected area will be imported into this level as Area [num].</string>
+        <string id="5">Selected Level:</string>
+        <string id="6">None</string>
+        <string id="7">Stay in Current Area:</string>
+        <string id="8">Import</string>
     </section>
     <section id="AutoDiag">
         <string id="0">[num] error found.</string>

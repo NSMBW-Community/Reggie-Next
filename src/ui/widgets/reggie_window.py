@@ -1008,55 +1008,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if CheckDirty():
             return
 
-        filetypes = ''
-        filetypes += globals_.trans.string('FileDlgs', 1) + ' (*' + '.arc' + ');;'  # *.arc
-        filetypes += globals_.trans.string('FileDlgs', 5) + ' (*' + '.arc' + '.LH);;'  # *.arc.LH
-        filetypes += globals_.trans.string('FileDlgs', 10) + ' (*' + '.arc' + '.LZ);;'  # *.arc.LZ
-        filetypes += globals_.trans.string('FileDlgs', 2) + ' (*)'  # *
-
-        fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('FileDlgs', 0), '', filetypes)[0]
-        if fn == '':
-            return
-
-        with open(str(fn), 'rb') as fileobj:
-            arcdata = fileobj.read()
-
-        if (arcdata[0] & 0xF0) == 0x40:  # If LH-compressed
-            try:
-                arcdata = lh.UncompressLH(arcdata)
-            except IndexError:
-                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
-                                              globals_.trans.string('Err_Decompress', 1, '[file]', str(fn)))
-                return
-        elif not arcdata.startswith(b"U\xAA8-"):  # If LZ-compressed
-            try:
-                arcdata = lz77.UncompressLZ77(arcdata)
-            except IndexError:
-                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
-                                                globals_.trans.string('Err_Decompress', 2, '[file]', str(fn)))
-                return
-
-        arc = archive.U8.load(arcdata)
-
-        # get the area count
-        areacount = 0
-
-        for item, val in arc.files:
-            if val is not None:
-                # it's a file
-                fname = item[item.rfind('/') + 1:]
-                if fname.startswith('course'):
-                    maxarea = int(fname[6])
-                    if maxarea > areacount: areacount = maxarea
-
         # Choose the area
-        dlg = AreaImportDialog(areacount)
+        dlg = AreaImportDialog()
         if dlg.exec() == QtWidgets.QDialog.DialogCode.Rejected:
             return
 
         area = dlg.area_combo.currentIndex() + 1
 
-        # get the required files
+        # Get the required files
         reqcourse = 'course%d.bin' % area
         reqL0 = 'course%d_bgdatL0.bin' % area
         reqL1 = 'course%d_bgdatL1.bin' % area
@@ -1067,7 +1026,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         L1 = None
         L2 = None
 
-        for item, val in arc.files:
+        for item, val in dlg.archive.files:
             if val is not None:
                 fname = item.split('/')[-1]
                 if fname == reqcourse:
@@ -1079,13 +1038,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 elif fname == reqL2:
                     L2 = val
 
-        # add them to our level
+        # Add the area to our level
         globals_.Level.appendArea(course, L0, L1, L2)
         new_id = globals_.Level.areas[-1].areanum
 
         if not self.HandleSave():
             globals_.Level.deleteArea(new_id)
             return
+
+        if dlg.stay_in_area.isChecked():
+            new_id = globals_.Area.areanum
 
         self.LoadLevel(self.fileSavePath, True, new_id)
 
