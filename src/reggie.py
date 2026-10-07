@@ -270,6 +270,7 @@ def main():
     globals_.AutoDiagFrequency = setting('AutoDiagFrequency', 1)
     globals_.ShowUnknownSpriteWarning = setting('ShowUnknownSpriteWarning', True)
     globals_.MoveItemsWithArrowKeys = setting('MoveItemsWithArrowKeys', True)
+    globals_.ShowTilesetPreview = setting('ShowTilesetPreview', True)
     SLib.RealViewEnabled = globals_.RealViewEnabled
 
     # Choose a folder for the game

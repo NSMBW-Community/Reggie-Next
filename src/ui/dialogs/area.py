@@ -38,7 +38,8 @@ class AreaOptionsDialog(QtWidgets.QDialog):
         buttonBox.rejected.connect(self.reject)
 
         # Wide enough for the tileset previews
-        self.setMinimumWidth(852)
+        if globals_.ShowTilesetPreview:
+            self.setMinimumWidth(852)
 
         mainLayout = QtWidgets.QVBoxLayout()
         mainLayout.addWidget(self.tabWidget)
@@ -186,11 +187,15 @@ class TilesetsTab(QtWidgets.QWidget):
             # Create the layout and add it to the widget
             L = QtWidgets.QGridLayout()
             L.addWidget(tree, 0, 0, 1, 2)
-            L.addLayout(preview_grid, 0, 2)
+            if globals_.ShowTilesetPreview:
+                L.addLayout(preview_grid, 0, 2)
             L.addWidget(QtWidgets.QLabel(globals_.trans.string('AreaDlg', 31, '[slot]', slot)), 1, 0)  # 'Tilesets (Pa[slot])'
             L.addWidget(line, 1, 1)
             L.setRowStretch(0, 1)
-            L.setRowStretch(2, 1)
+            if globals_.ShowTilesetPreview:
+                L.setRowStretch(2, 1)
+            else:
+                L.setRowStretch(0, 1)
             widget.setLayout(L)
 
         # Set up the tab widget
@@ -384,6 +389,9 @@ class TilesetsTab(QtWidgets.QWidget):
         return True
 
     def set_preview(self, idx: int, name: str):
+        if not globals_.ShowTilesetPreview:
+            return
+
         loaded = False
         if name != '' and self.get_preview(idx, name):
             loaded = True

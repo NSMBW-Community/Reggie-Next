@@ -119,6 +119,7 @@ OverrideSnapping: bool = False
 Overrides: list[TilesetTile | None] = []  # 320 tiles, this is put into Tiles usually
 Overrides_safe: list[TilesetTile | None] = []
 OVERRIDE_UNKNOWN: int = 0
+ShowTilesetPreview: bool = False
 Tiles: list[TilesetTile | None] = []  # 0x200 tiles per tileset, plus 64 for each type of override
 TilesetAnimTimer: QtCore.QTimer | None = None
 TilesetFilesLoaded: list[str | None] = [None for _ in range(4)]  # should always have exactly 4 entries

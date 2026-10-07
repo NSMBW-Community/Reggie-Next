@@ -84,6 +84,9 @@ class AppearanceTab(PreferenceTabWidget):
         self.ignore_win_scale.setToolTip(globals_.trans.string('PrefsDlg', 80))
         self.ignore_win_scale.setChecked(globals_.IgnoreWinScale)
 
+        self.show_tileset_preview = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 81))
+        self.show_tileset_preview.setChecked(globals_.ShowTilesetPreview)
+
         settings_box = QtWidgets.QGroupBox(globals_.trans.string('PrefsDlg', 40))
         L = QtWidgets.QFormLayout()
         L.addRow(globals_.trans.string('PrefsDlg', 41), self.theme_combo)
@@ -94,6 +97,7 @@ class AppearanceTab(PreferenceTabWidget):
         L.addRow(globals_.trans.string('PrefsDlg', 66), self.tileset_tab_pos)
         L.addRow(globals_.trans.string('PrefsDlg', 53), self.cursor_mode)
         L.addRow(self.ignore_win_scale)
+        L.addRow(self.show_tileset_preview)
         L2 = QtWidgets.QGridLayout()
         L2.addLayout(L, 0, 0)
         settings_box.setLayout(L2)

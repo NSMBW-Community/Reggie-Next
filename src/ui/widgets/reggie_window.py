@@ -1253,12 +1253,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.TilesetTabPos = dlg.appearance_tab.tileset_tab_pos.currentIndex()
         globals_.UseFullFilepath = dlg.appearance_tab.full_file_path.isChecked()
         globals_.CursorMode = dlg.appearance_tab.cursor_mode.currentIndex()
+        globals_.ShowTilesetPreview = dlg.appearance_tab.show_tileset_preview.isChecked()
 
         setSetting('UseRoundedRectangles', globals_.UseRoundedRectangles)
         setSetting('DarkMode', globals_.DarkMode)
         setSetting('TilesetTabPos', globals_.TilesetTabPos)
         setSetting('UseFullFilepath', globals_.UseFullFilepath)
         setSetting('CursorMode', globals_.CursorMode)
+        setSetting('ShowTilesetPreview', globals_.ShowTilesetPreview)
 
         # Update window title
         if self.fileSavePath:

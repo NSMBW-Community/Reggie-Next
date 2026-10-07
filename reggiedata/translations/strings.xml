@@ -742,6 +742,7 @@
         <string id="78">Are you sure you want to reset the toolbar to its default configuration?[br]This cannot be undone.</string>
         <string id="79">Ignore Windows Scale</string>
         <string id="80">[b]Ignore Windows Scale[/b][br]This will force the program to ignore the app scaling applied by Windows, which may help in some cases.</string>
+        <string id="81">Show tileset preview in Area Options</string>
     </section>
     <section id="ResizeChoiceDlg">
         <string id="0">Let's resize your sprite. In order to do this, choose one of the two modes, based on the below information. Note that some choices can overlap with other settings, leading to undesired effects.</string>
