@@ -42,9 +42,9 @@ class SpriteList(QtWidgets.QWidget):
         # Set of row ids
         self.SearchResults = set()
 
-        sprite_translations = globals_.trans.stringList('Sprites', 23)
+        sprite_translations = globals_.trans.stringList('Actors', 23)
         self.table = SpriteTableWidget(0, len(sprite_translations if sprite_translations is not None else []) + 1)
-        headers = [globals_.trans.string('Sprites', 21), globals_.trans.string('Sprites', 22)] + list(sprite_translations[1:] if sprite_translations is not None else [])
+        headers = [globals_.trans.string('Actors', 21), globals_.trans.string('Actors', 22)] + list(sprite_translations[1:] if sprite_translations is not None else [])
         self.table.setHorizontalHeaderLabels(headers)
         vertical_header = self.table.verticalHeader()
         if vertical_header is not None:
@@ -64,11 +64,11 @@ class SpriteList(QtWidgets.QWidget):
         self.table.itemEntered.connect(self.toolTip)
 
         # populate filter box
-        self.filterbox.addItems(globals_.trans.stringList('Sprites', 23))
+        self.filterbox.addItems(globals_.trans.stringList('Actors', 23))
 
         # Make a layout
-        search_label_text = globals_.trans.string('Sprites', 19)
-        filter_label_text = globals_.trans.string('Sprites', 20)
+        search_label_text = globals_.trans.string('Actors', 19)
+        filter_label_text = globals_.trans.string('Actors', 20)
         search_label = QtWidgets.QLabel((search_label_text + ":") if search_label_text is not None else "")
         filter_label = QtWidgets.QLabel((filter_label_text + ":") if filter_label_text is not None else "")
 

@@ -606,7 +606,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Sprite Editor
         self.spriteDataEditor = SpriteEditorWidget()
         self.spriteDataEditor.DataUpdate.connect(self.SpriteDataUpdated)
-        sprite_dock = self.CreateDockWidget(globals_.trans.string('SpriteDataEditor', 0), 'spriteeditor', self.spriteDataEditor,
+        sprite_dock = self.CreateDockWidget(globals_.trans.string('ActorDataEditor', 0), 'spriteeditor', self.spriteDataEditor,
                                             features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True)
         self.spriteEditorDock = sprite_dock
 

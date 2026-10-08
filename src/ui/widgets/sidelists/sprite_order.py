@@ -18,7 +18,7 @@ class SpriteOrderList(QtWidgets.QWidget):
 
         self.is_batch_add = False
 
-        headers = [globals_.trans.string('Sprites', 21), globals_.trans.string('Sprites', 22)]
+        headers = [globals_.trans.string('Actors', 21), globals_.trans.string('Actors', 22)]
 
         self.table = SpriteTableWidget(0, len(headers))
         self.table.setHorizontalHeaderLabels(headers)
@@ -43,8 +43,8 @@ class SpriteOrderList(QtWidgets.QWidget):
         self.table.itemDoubleClicked.connect(SpriteItem.moveToSprite)
         self.table.itemEntered.connect(self.toolTip)
 
-        self.move_up_btn = QtWidgets.QPushButton(globals_.trans.string('Sprites', 25))
-        self.move_down_btn = QtWidgets.QPushButton(globals_.trans.string('Sprites', 26))
+        self.move_up_btn = QtWidgets.QPushButton(globals_.trans.string('Actors', 25))
+        self.move_down_btn = QtWidgets.QPushButton(globals_.trans.string('Actors', 26))
 
         self.move_up_btn.clicked.connect(lambda: self.moveSprite(0))
         self.move_down_btn.clicked.connect(lambda: self.moveSprite(1))

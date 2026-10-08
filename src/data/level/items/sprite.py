@@ -66,7 +66,7 @@ class SpriteItem(LevelEditorItem):
         if 0 <= sprite_num < globals_.NumSprites:
             self.name = globals_.Sprites[sprite_num].name
         else:
-            self.name = globals_.trans.string('Sprites', 24)
+            self.name = globals_.trans.string('Actors', 24)
 
         self.InitializeSprite()
 
@@ -181,9 +181,9 @@ class SpriteItem(LevelEditorItem):
         if 0 <= sprite_num < globals_.NumSprites:
             self.name = globals_.Sprites[sprite_num].name
         else:
-            self.name = globals_.trans.string('Sprites', 24) # 'UNKNOWN'
+            self.name = globals_.trans.string('Actors', 24) # 'UNKNOWN'
 
-        self.setToolTip(globals_.trans.string('Sprites', 0, '[type]', sprite_num, '[name]', self.name))
+        self.setToolTip(globals_.trans.string('Actors', 0, '[type]', sprite_num, '[name]', self.name))
         self.sprite_num = sprite_num
 
         self.InitializeSprite()
@@ -205,7 +205,7 @@ class SpriteItem(LevelEditorItem):
             return
 
         self.name = globals_.Sprites[sprite_num].name
-        self.setToolTip(globals_.trans.string('Sprites', 0, '[type]', self.sprite_num, '[name]', self.name))
+        self.setToolTip(globals_.trans.string('Actors', 0, '[type]', self.sprite_num, '[name]', self.name))
 
         imgs = globals_.gamedef.getImageClasses()
         if sprite_num in imgs:

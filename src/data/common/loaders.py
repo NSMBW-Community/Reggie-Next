@@ -398,20 +398,20 @@ def LoadSpriteData() -> None:
             attribs = sprite.keys()
 
             if 'notes' in attribs:
-                notes = globals_.trans.string('SpriteDataEditor', 2, '[notes]', sprite.get('notes'))
+                notes = globals_.trans.string('ActorDataEditor', 2, '[notes]', sprite.get('notes'))
 
             if 'advancednotes' in attribs:
-                advNotes = globals_.trans.string('SpriteDataEditor', 11, '[notes]', sprite.get('advancednotes'))
+                advNotes = globals_.trans.string('ActorDataEditor', 11, '[notes]', sprite.get('advancednotes'))
 
             if 'files' in attribs:
                 sprite_files = sprite.get('files')
                 if sprite_files is None:
                     continue
-                relatedObjFiles = globals_.trans.string('SpriteDataEditor', 8, '[list]',
+                relatedObjFiles = globals_.trans.string('ActorDataEditor', 8, '[list]',
                                                 sprite_files.replace(';', '<br>* '))
 
             if 'yoshinotes' in attribs:
-                yoshiNotes = globals_.trans.string('SpriteDataEditor', 9, '[notes]',
+                yoshiNotes = globals_.trans.string('ActorDataEditor', 9, '[notes]',
                                                 sprite.get('yoshinotes'))
 
             noyoshi = sprite.get('noyoshi', 'False') == "True"
@@ -443,10 +443,10 @@ def LoadSpriteData() -> None:
 
     # Warn the user if errors occurred
     if errors:
-        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_BrokenSpriteData', 0),
-                                      globals_.trans.string('Err_BrokenSpriteData', 1, '[sprites]', ', '.join(errors)),
+        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_BrokenActorData', 0),
+                                      globals_.trans.string('Err_BrokenActorData', 1, '[sprites]', ', '.join(errors)),
                                       QtWidgets.QMessageBox.StandardButton.Ok)
-        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_BrokenSpriteData', 2), repr(errortext))
+        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_BrokenActorData', 2), repr(errortext))
 
 
 def ReloadSpritedata():
@@ -482,7 +482,7 @@ def LoadSpriteCategories(reload_: bool = False) -> None:
 
     globals_.SpriteCategories = []
     # Add a Search category
-    globals_.SpriteCategories.append(SpriteCategory(globals_.trans.string('Sprites', 19), [SpriteSubCategory(globals_.trans.string('Sprites', 16), list(range(globals_.NumSprites)))], []))
+    globals_.SpriteCategories.append(SpriteCategory(globals_.trans.string('Actors', 19), [SpriteSubCategory(globals_.trans.string('Actors', 16), list(range(globals_.NumSprites)))], []))
     globals_.SpriteCategories[0].sub_categories[0].sprite_ids.append(9999)  # 'no results' special case
     for path in paths:
         if path is None:

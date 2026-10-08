@@ -51,20 +51,20 @@ class SpriteDefinition:
             elif 'title' in attribs:
                 title = attribs['title']
             else:
-                title = globals_.trans.string('SpriteDataEditor', 28)
+                title = globals_.trans.string('ActorDataEditor', 28)
 
             comment = comment2 = advancedcomment = required = idtype = None
             start = 0
             increment = 1
 
             if 'comment' in attribs:
-                comment = globals_.trans.string('SpriteDataEditor', 1, '[name]', title, '[note]', attribs['comment'])
+                comment = globals_.trans.string('ActorDataEditor', 1, '[name]', title, '[note]', attribs['comment'])
 
             if 'comment2' in attribs:
-                comment2 = globals_.trans.string('SpriteDataEditor', 1, '[name]', title, '[note]', attribs['comment2'])
+                comment2 = globals_.trans.string('ActorDataEditor', 1, '[name]', title, '[note]', attribs['comment2'])
 
             if 'advancedcomment' in attribs:
-                advancedcomment = globals_.trans.string('SpriteDataEditor', 1, '[name]', title, '[note]', attribs['advancedcomment'])
+                advancedcomment = globals_.trans.string('ActorDataEditor', 1, '[name]', title, '[note]', attribs['advancedcomment'])
 
             if 'requirednybble' in attribs:
                 bit_ranges, _ = self.parseBits(attribs.get("requirednybble"))
