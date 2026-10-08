@@ -234,7 +234,11 @@ class SpriteList(QtWidgets.QWidget):
             if len(id_values) == 1:
                 id_values = id_values[0]
 
-            entry_item = QtWidgets.QTableWidgetItem(str(id_values))
+            entry_item = QtWidgets.QTableWidgetItem()
+            if idtype == 'Mushroom':
+                entry_item.setText(str(id_values))
+            else:
+                entry_item.setData(QtCore.Qt.ItemDataRole.EditRole, id_values)
             entry_item.setFlags(entry_item.flags() & mask)
 
             self.table.setItem(row, 2 + col, entry_item)
@@ -265,7 +269,10 @@ class SpriteList(QtWidgets.QWidget):
             if item is None:
                 continue
 
-            item.setText(str(id_values))
+            if self.idtypes[i - 2] == 'Mushroom':
+                item.setText(str(id_values))
+            else:
+                item.setData(QtCore.Qt.ItemDataRole.EditRole, id_values)
 
         # re-enable sorting
         self.table.setSortingEnabled(True)
