@@ -22,13 +22,14 @@ from data.sprite.sprite_category import SpriteCategory, SpriteSubCategory
 from data.tileset.object.object_def import ObjectDef
 from data.tileset.object.renderers import IncrementTilesetFrame
 from data.tileset.tile.rand_tile_selection import RandTileSelection
+from data.tileset.tile.tile_def import TileDef
 from data.tileset.tile.tileset_tile import TilesetTile
 from data.tileset.tileset_category import TilesetCategory, TilesetFileEntry
 from libs import lh, lib_versions, lz77, tpl
 from ui.dialogs.about import AboutDialog
-from ui.dialogs.object_swap import ObjectTypeSwapDialog
 from ui.dialogs.diagnostic_tool import DiagnosticToolDialog
-from ui.theme.reggie_theme import GetIcon, GetAppIcon, ReggieTheme
+from ui.dialogs.object_swap import ObjectTypeSwapDialog
+from ui.theme.reggie_theme import GetAppIcon, GetIcon, ReggieTheme
 
 
 def getResourcePaths(res_name: str) -> list[str]:
@@ -1653,7 +1654,7 @@ def ProcessOverrides(idx: int, name: str) -> None:
             replace = 2048 + 10
             question_block_def = defs[39]
             if question_block_def is not None:
-                baseblock = t[question_block_def.rows[0][0][1]].main
+                baseblock = t[question_block_def.rows[0][0].tilenum].main
 
             # question blocks
             for i, a in zip(rangeA, range(2, 12)):
@@ -1663,13 +1664,13 @@ def ProcessOverrides(idx: int, name: str) -> None:
                     current_tile.main = overlay(baseblock, override_tile.main)
                 current_def = defs[i]
                 if current_def is not None:
-                    current_def.rows[0][0] = (0, replace, 0)
+                    current_def.rows[0][0] = TileDef(0, replace, 0)
                     replace += 1
 
             replace += 1
             brick_block_def = defs[26]
             if brick_block_def is not None:
-                baseblock = t[brick_block_def.rows[0][0][1]].main
+                baseblock = t[brick_block_def.rows[0][0].tilenum].main
             # brick block
             for i, a in zip(rangeB, (1, 12, 2, 3, 13, 5, 7, 8, 9, 10, 11)):
                 current_tile = t[replace]
@@ -1678,7 +1679,7 @@ def ProcessOverrides(idx: int, name: str) -> None:
                     current_tile.main = overlay(baseblock, override_tile.main)
                 current_def = defs[i]
                 if current_def is not None:
-                    current_def.rows[0][0] = (0, replace, 0)
+                    current_def.rows[0][0] = TileDef(0, replace, 0)
                 replace += 1
 
         # now the extra stuff (invisible collisions etc)

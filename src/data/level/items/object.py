@@ -309,7 +309,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
         if obj_def is None:
             return
 
-        if globals_.ObjectDefinitions[self.tileset][self.object_num] is None or len(obj_def.rows[0][0]) == 1:
+        if globals_.ObjectDefinitions[self.tileset][self.object_num] is None or obj_def.rows[0][0].is_slope_extra():
             # Slope -> exit
             return
 
@@ -429,7 +429,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
            or obj_def.rows is None \
            or obj_def.rows[0] is None \
            or obj_def.rows[0][0] is None \
-           or len(obj_def.rows[0][0]) == 1:
+           or obj_def.rows[0][0].is_slope_extra():
             # No randomisation info -> exit
             save = (self.width, self.height)
             self.width, self.height = width, height
@@ -438,7 +438,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
             return
 
         name = self.get_tileset_base_name()
-        tile = obj_def.rows[0][0][1] & 0xFF
+        tile = obj_def.rows[0][0].tilenum & 0xFF
 
         if name not in globals_.TilesetInfo or tile not in globals_.TilesetInfo[name]:
             # No randomisation needed -> exit

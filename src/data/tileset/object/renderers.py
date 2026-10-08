@@ -1,5 +1,6 @@
 from data import globals_
 from data.tileset.object.object_def import ObjectDef
+from data.tileset.tile.tile_def import TileDef
 
 
 def RenderObject(tileset: int, objnum: int, width: int, height: int, fullslope: bool = False) -> list[list[int]]:
@@ -27,7 +28,7 @@ def RenderObject(tileset: int, objnum: int, width: int, height: int, fullslope: 
         return dest
 
     # Diagonal objects are rendered differently
-    if (obj.rows[0][0][0] & 0x80) != 0:
+    if obj.rows[0][0].is_slope_extra():
         RenderDiagonalObject(dest, obj, width, height, fullslope)
         return dest
 
@@ -40,7 +41,7 @@ def RenderObject(tileset: int, objnum: int, width: int, height: int, fullslope: 
     for row in obj.rows:
         if not row: continue
 
-        if (row[0][0] & 2) != 0:
+        if (row[0].repetition_type & 2) != 0:
             repeatFound = True
             inRepeat.append(row)
         else:
@@ -68,17 +69,17 @@ def RenderObject(tileset: int, objnum: int, width: int, height: int, fullslope: 
     return dest
 
 
-def RenderStandardRow(dest: list[int], row: list[list[int]], _y: int, width: int) -> None:
+def RenderStandardRow(dest: list[int], row: list[TileDef], _y: int, width: int) -> None:
     """
     Render a row from an object
     """
     repeatFound: bool = False
-    beforeRepeat: list[list[int]] = []
-    inRepeat: list[list[int]] = []
-    afterRepeat: list[list[int]] = []
+    beforeRepeat: list[TileDef] = []
+    inRepeat: list[TileDef] = []
+    afterRepeat: list[TileDef] = []
 
     for tile in row:
-        tiling = (tile[0] & 1) != 0
+        tiling = (tile.repetition_type & 1) != 0
 
         if tiling:
             repeatFound = True
@@ -94,16 +95,16 @@ def RenderStandardRow(dest: list[int], row: list[list[int]], _y: int, width: int
     ac = len(afterRepeat)
     if ic == 0:
         for x in range(width):
-            dest[x] = beforeRepeat[x % bc][1]
+            dest[x] = beforeRepeat[x % bc].tilenum
     else:
         afterthreshold = width - ac - 1
         for x in range(width):
             if x < bc:
-                dest[x] = beforeRepeat[x][1]
+                dest[x] = beforeRepeat[x].tilenum
             elif x > afterthreshold:
-                dest[x] = afterRepeat[x - width + ac][1]
+                dest[x] = afterRepeat[x - width + ac].tilenum
             else:
-                dest[x] = inRepeat[(x - bc) % ic][1]
+                dest[x] = inRepeat[(x - bc) % ic].tilenum
 
 
 def RenderDiagonalObject(dest: list[list[int]], obj: ObjectDef, width: int, height: int, fullslope: bool) -> None:
@@ -117,7 +118,7 @@ def RenderDiagonalObject(dest: list[list[int]], obj: ObjectDef, width: int, heig
 
     # Get sections
     mainBlock, subBlock = GetSlopeSections(obj)
-    cbyte = obj.rows[0][0][0]
+    cbyte = obj.rows[0][0].repetition_type
 
     # Get direction
     goLeft = ((cbyte & 1) != 0)
@@ -175,7 +176,7 @@ def RenderDiagonalObject(dest: list[list[int]], obj: ObjectDef, width: int, heig
         y += yi
 
 
-def PutObjectArray(dest: list[list[int]], xo: int, yo: int, block: list[list[list[int]]] | None, width: int, height: int) -> None:
+def PutObjectArray(dest: list[list[int]], xo: int, yo: int, block: list[list[TileDef]] | None, width: int, height: int) -> None:
     """
     Places a tile array into an object
     """
@@ -191,18 +192,18 @@ def PutObjectArray(dest: list[list[int]], xo: int, yo: int, block: list[list[lis
         for x in range(xo, xo + len(srow)):
             if x < 0: continue
             if x >= width: continue
-            drow[x] = srow[x - xo][1]
+            drow[x] = srow[x - xo].tilenum
 
-def GetSlopeSections(obj: ObjectDef) -> tuple[list[list[list[int]]], list[list[list[int]]] | None]:
+def GetSlopeSections(obj: ObjectDef) -> tuple[list[list[TileDef]], list[list[TileDef]] | None]:
     """
     Sorts the slope data into sections
     """
-    sections = []
-    currentSection = []
+    sections: list[list[list[TileDef]]] = []
+    currentSection: list[list[TileDef]] = []
 
     for row in obj.rows:
         # Begin new section
-        if row and (row[0][0] & 0x80) != 0:
+        if row and (row[0].repetition_type & 0x80) != 0:
             if currentSection:
                 sections.append(CreateSection(currentSection))
             currentSection = []
@@ -217,7 +218,7 @@ def GetSlopeSections(obj: ObjectDef) -> tuple[list[list[list[int]]], list[list[l
     else:
         return (sections[0], sections[1])
 
-def CreateSection(rows: list[list[list[int]]]) -> list[list[list[int]]]:
+def CreateSection(rows: list[list[TileDef]]) -> list[list[TileDef]]:
     """
     Create a slope section
     """
@@ -228,25 +229,25 @@ def CreateSection(rows: list[list[list[int]]]) -> list[list[list[int]]]:
         width = max(width, thiswidth)
 
     # Create the section
-    section: list[list[list[int]]] = []
+    section: list[list[TileDef]] = []
     for row in rows:
-        drow = [[0]] * width
+        drow = [TileDef(0)] * width
         x = 0
         for tile in row:
-            if (tile[0] & 0x80) == 0:
+            if (tile.repetition_type & 0x80) == 0:
                 drow[x] = tile
                 x += 1
         section.append(drow)
 
     return section
 
-def CountTiles(row: list[list[int]]) -> int:
+def CountTiles(row: list[TileDef]) -> int:
     """
     Counts the amount of real tiles in an object row
     """
     res = 0
     for tile in row:
-        if (tile[0] & 0x80) == 0:
+        if (tile.repetition_type & 0x80) == 0:
             res += 1
     return res
 
