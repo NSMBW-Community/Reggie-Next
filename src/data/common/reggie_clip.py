@@ -7,7 +7,7 @@ from data.level.items.entrance import EntranceItem
 from data.level.items.location import LocationItem
 from data.level.items.object import ObjectItem
 from data.level.items.path import PathItem
-from data.level.items.sprite import SpriteItem
+from data.level.items.sprite import ActorItem
 from data.level.items.comment import CommentItem
 from data.level.path import Path
 
@@ -35,7 +35,7 @@ class ReggieClip:
         for obj in items:
             if isinstance(obj, ObjectItem):
                 objects.append(obj)
-            elif isinstance(obj, SpriteItem):
+            elif isinstance(obj, ActorItem):
                 sprites.append(obj)
             elif isinstance(obj, EntranceItem):
                 entrances.append(obj)
@@ -51,7 +51,7 @@ class ReggieClip:
     @staticmethod
     def encode_reggie_clip(
         objects: list[ObjectItem],
-        sprites: list[SpriteItem],
+        sprites: list[ActorItem],
         entrances: list[EntranceItem],
         locations: list[LocationItem],
         path_nodes: list[PathItem],
@@ -245,7 +245,7 @@ class ReggieClip:
         return added
 
     @staticmethod
-    def decode_reggie_clip(reggie_clip: str, add_to_scene: bool = True) -> tuple[tuple[list[ObjectItem], list[ObjectItem], list[ObjectItem]], list[SpriteItem], list[EntranceItem], list[LocationItem], list[Path], list[PathItem], list[CommentItem]]:
+    def decode_reggie_clip(reggie_clip: str, add_to_scene: bool = True) -> tuple[tuple[list[ObjectItem], list[ObjectItem], list[ObjectItem]], list[ActorItem], list[EntranceItem], list[LocationItem], list[Path], list[PathItem], list[CommentItem]]:
         """
         Decode the objects from a ReggieClip
         """
@@ -316,7 +316,7 @@ class ReggieClip:
                     type = int(split[1])
                     data = bytes(map(int, [split[4], split[5], split[6], split[7], split[8], split[9], '0', split[10]]))
 
-                    newitem = SpriteItem.CreateSprite(objx, objy, type, data, add_to_scene)
+                    newitem = ActorItem.CreateSprite(objx, objy, type, data, add_to_scene)
                     sprites.append(newitem)
 
                 # Entrance

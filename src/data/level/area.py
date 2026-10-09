@@ -10,7 +10,7 @@ from data.level.items.comment import CommentItem
 from data.level.items.entrance import EntranceItem
 from data.level.items.location import LocationItem
 from data.level.items.object import ObjectItem
-from data.level.items.sprite import SpriteItem
+from data.level.items.sprite import ActorItem
 from data.level.items.zone import ZoneItem
 from data.level.metadata import Metadata
 from data.sprite.spritefield.list import ListSpriteField
@@ -59,7 +59,7 @@ class Area:
         self.unkVal2: int = 0
 
         self.entrances: list[EntranceItem] = []
-        self.sprites: list[SpriteItem] = []
+        self.sprites: list[ActorItem] = []
         self.bgA: list[int] = []
         self.bounding: list[list[int]] = []
         self.bgB: list[int] = []
@@ -275,7 +275,7 @@ class Area:
         """
         Sorts the sprite list by zone ID so it will work in-game
         """
-        def compKey(zonelist: list[ZoneItem], sprite: SpriteItem) -> int:
+        def compKey(zonelist: list[ZoneItem], sprite: ActorItem) -> int:
             id_ = SLib.MapPositionToZoneID(zonelist, sprite.objx, sprite.objy)
             sprite.zoneID = zonelist[id_].id if id_ != -1 else -1
             return id_
@@ -359,7 +359,7 @@ class Area:
 
         unpack = sprstruct.unpack_from
         append = sprites.append
-        obj = SpriteItem
+        obj = ActorItem
 
         # Ignore the last 4 bytes because they are always 0xFFFFFFFF
         for offset in range(0, len(spritedata) - 4, 16):
@@ -901,7 +901,7 @@ class Area:
 
                 counter[value] = counter.get(value, 0) + 1
 
-    def RemoveSprite(self, sprite: SpriteItem) -> None:
+    def RemoveSprite(self, sprite: ActorItem) -> None:
         """
         This properly removes a sprite from the area.
         """

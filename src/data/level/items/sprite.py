@@ -18,9 +18,9 @@ from ui.theme.reggie_theme import setOverrideCursor
 from ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
 
 
-class InstanceDefinition_SpriteItem(InstanceDefinition):
+class InstanceDefinition_ActorItem(InstanceDefinition):
     """
-    Definition of an instance of SpriteItem
+    Definition of an instance of ActorItem
     """
     fieldNames = (
         'type',
@@ -28,18 +28,18 @@ class InstanceDefinition_SpriteItem(InstanceDefinition):
     )
 
     @staticmethod
-    def itemList() -> list['SpriteItem']:
+    def itemList() -> list['ActorItem']:
         return globals_.Area.sprites
 
-    def createNew(self) -> 'SpriteItem':
-        return SpriteItem(self.fields[0][1], self.objx, self.objy, self.fields[1][1])
+    def createNew(self) -> 'ActorItem':
+        return ActorItem(self.fields[0][1], self.objx, self.objy, self.fields[1][1])
 
 
-class SpriteItem(LevelEditorItem):
+class ActorItem(LevelEditorItem):
     """
     Level editor item that represents a sprite
     """
-    instanceDef = InstanceDefinition_SpriteItem
+    instanceDef = InstanceDefinition_ActorItem
     BoundingRect = QtCore.QRectF(0, 0, 24, 24)
     SelectionRect = QtCore.QRectF(0, 0, 23, 23)
 
@@ -87,7 +87,7 @@ class SpriteItem(LevelEditorItem):
         globals_.DirtyOverride -= 1
 
     @staticmethod
-    def CreateSprite(x: float, y: float, id_: int | None = None, data: bytes | None = None, add_to_scene: bool = True) -> 'SpriteItem':
+    def CreateSprite(x: float, y: float, id_: int | None = None, data: bytes | None = None, add_to_scene: bool = True) -> 'ActorItem':
         """
         Creates and returns a new sprite and makes sure it's added to the right
         lists if 'add_to_scene' is set.
@@ -97,7 +97,7 @@ class SpriteItem(LevelEditorItem):
         sprite id than the id of the sprite that is created, a ValueError will
         be raised.
         """
-        dummy = SpriteItem(-1, -1, -1, b'')
+        dummy = ActorItem(-1, -1, -1, b'')
         if globals_.mainWindow is None:
             return dummy
 
@@ -110,8 +110,8 @@ class SpriteItem(LevelEditorItem):
 
             data = globals_.mainWindow.defaultDataEditor.data
 
-        spr = SpriteItem(id_, x, y, data)
-        spr.positionChanged = SpriteItem.position_changed
+        spr = ActorItem(id_, x, y, data)
+        spr.positionChanged = ActorItem.position_changed
 
         if add_to_scene:
             # Check if sprite data exists for this type
@@ -189,7 +189,7 @@ class SpriteItem(LevelEditorItem):
         self.InitializeSprite()
         self.UpdateListItem()
 
-    def __lt__(self, other: 'SpriteItem') -> bool:
+    def __lt__(self, other: 'ActorItem') -> bool:
         # Sort by objx, then objy, then sprite type
         score = lambda sprite: (sprite.objx, sprite.objy, sprite.type)
 
@@ -213,10 +213,10 @@ class SpriteItem(LevelEditorItem):
 
     def setImageObj(self, obj: Callable) -> None:
         """
-        Sets a new sprite image object for this SpriteItem
+        Sets a new sprite image object for this ActorItem
         """
         for aux_obj in self.ImageObj.aux:
-            aux_obj = cast(SLib.AuxiliarySpriteItem, aux_obj)
+            aux_obj = cast(SLib.AuxiliaryActorItem, aux_obj)
             scene = aux_obj.scene()
 
             if scene is not None:
@@ -233,7 +233,7 @@ class SpriteItem(LevelEditorItem):
 
         # show auxiliary objects properly
         for aux in self.ImageObj.aux:
-            aux = cast(SLib.AuxiliarySpriteItem, aux)
+            aux = cast(SLib.AuxiliaryActorItem, aux)
             aux.setVisible(globals_.SpriteImagesShown)
 
         self.UpdateDynamicSizing()
@@ -245,7 +245,7 @@ class SpriteItem(LevelEditorItem):
         curr_rect = QtCore.QRectF(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
         curr_aux_rects = []
         for aux_obj in self.ImageObj.aux:
-            aux_obj = cast(SLib.AuxiliarySpriteItem, aux_obj)
+            aux_obj = cast(SLib.AuxiliaryActorItem, aux_obj)
 
             curr_aux_rects.append(QtCore.QRectF(
                 aux_obj.x() + self.x(),
@@ -353,7 +353,7 @@ class SpriteItem(LevelEditorItem):
             self.y(),
         )
         for aux in self.ImageObj.aux:
-            aux = cast(SLib.AuxiliarySpriteItem, aux)
+            aux = cast(SLib.AuxiliaryActorItem, aux)
 
             br = br.united(
                 aux.boundingRect().translated(
@@ -442,7 +442,7 @@ class SpriteItem(LevelEditorItem):
                 self.LevelRect.moveTo(new_pos / 24)
 
                 for aux_obj in self.ImageObj.aux:
-                    aux_obj = cast(SLib.AuxiliarySpriteItem, aux_obj)
+                    aux_obj = cast(SLib.AuxiliaryActorItem, aux_obj)
 
                     update_rect = QtCore.QRectF(
                         self.pos() + aux_obj.pos(),
@@ -489,7 +489,7 @@ class SpriteItem(LevelEditorItem):
         self.setPos(newobjx * 1.5, newobjy * 1.5)
 
     @staticmethod
-    def moveToSprite(item: 'SpriteItem') -> None:
+    def moveToSprite(item: 'ActorItem') -> None:
         """
         Moves the view to the sprite and selects it.
         """
@@ -576,7 +576,7 @@ class SpriteItem(LevelEditorItem):
 
         # Turn aux things on or off
         for aux in self.ImageObj.aux:
-            aux = cast(SLib.AuxiliarySpriteItem, aux)
+            aux = cast(SLib.AuxiliaryActorItem, aux)
             aux.setVisible(globals_.SpriteImagesShown)
 
         # Default spritebox

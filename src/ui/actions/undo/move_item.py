@@ -46,11 +46,11 @@ class MoveItemUndoAction(UndoAction):
         """
         from data.level.items.object import ObjectItem
         from data.level.items.path import PathItem
-        from data.level.items.sprite import SpriteItem
+        from data.level.items.sprite import ActorItem
 
         main_window = globals_.mainWindow
 
-        if isinstance(obj, SpriteItem):
+        if isinstance(obj, ActorItem):
             # Sprites are weird so they handle this themselves
             obj.setNewObjPos(newX, newY)
 

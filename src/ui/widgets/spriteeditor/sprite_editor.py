@@ -2,7 +2,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data import globals_
 from data.level.dirty import SetDirty
-from data.level.items.sprite import SpriteItem
+from data.level.items.sprite import ActorItem
 from data.level.sprite_definition import SpriteDefinition
 from data.common.list_property import ListPropertyModel
 from data.sprite.spritefield.check_box import CheckBoxSpriteField
@@ -768,12 +768,12 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
     def HandleSpritePlaced(self, id_, button_):
         def placeSprite():
             mw = globals_.mainWindow
-            if mw is None or mw.selObj is None or not isinstance(mw.selObj, SpriteItem):
+            if mw is None or mw.selObj is None or not isinstance(mw.selObj, ActorItem):
                 return
 
             x_ = mw.selObj.objx + 16 if mw.selObj.objx is not None else 16
             y_ = mw.selObj.objy if mw.selObj.objy is not None else 0
-            SpriteItem.CreateSprite(x_, y_, id_, data=bytes(8))
+            ActorItem.CreateSprite(x_, y_, id_, data=bytes(8))
 
             # remove this dependency, because it is now fulfilled.
             # get row of button

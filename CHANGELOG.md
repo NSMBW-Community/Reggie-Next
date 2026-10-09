@@ -61,6 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reimplemented the classic icon set from the original Reggie versions.
 - Several dialogs with tabs now display icons alongside the tab name.
 - The Area Import dialog can now change the source level without needing to be re-opened.
+- Sprites now go by the more fitting and accurate term of "Actor".
 
 ### Removed
 

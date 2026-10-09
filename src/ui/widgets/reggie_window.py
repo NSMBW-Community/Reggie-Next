@@ -27,7 +27,7 @@ from data.level.items.location import LocationItem
 from data.level.items.object import ObjectItem
 from data.level.items.path import PathItem
 from data.level.items.path_editor_line import PathEditorLineItem
-from data.level.items.sprite import SpriteItem
+from data.level.items.sprite import ActorItem
 from data.level.items.zone import ZoneItem
 from data.level.path import Path
 from data.common.loaders import UnloadTileset, LoadTileset
@@ -961,7 +961,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             # Get all the sprite IDs
             for item in items:
-                if isinstance(item, SpriteItem):
+                if isinstance(item, ActorItem):
                     id_list.append(item.sprite_num)
 
             # If we only have one unique item, pass that as an ID
@@ -2195,7 +2195,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # possibly a small optimization
         func_ii = isinstance
         type_obj = ObjectItem
-        type_spr = SpriteItem
+        type_spr = ActorItem
         type_ent = EntranceItem
         type_loc = LocationItem
         type_path = PathItem
@@ -2368,7 +2368,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         if self.spriteEditorDock.isVisible():
             obj = self.selObj
-            if isinstance(obj, SpriteItem):
+            if isinstance(obj, ActorItem):
                 obj.spritedata = data
                 obj.UpdateListItem()
                 SetDirty()
@@ -2382,7 +2382,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         self.UpdateFlag = True
 
-        if isinstance(self.selObj, SpriteItem) and self.spriteEditorDock.isVisible():
+        if isinstance(self.selObj, ActorItem) and self.spriteEditorDock.isVisible():
             obj = self.selObj
             self.spriteDataEditor.setSprite(obj.sprite_num, initial_data=obj.spritedata)
         elif isinstance(self.selObj, EntranceItem) and self.entrance_editor_dock.isVisible():
@@ -2414,7 +2414,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 info = globals_.trans.string('Statusbar', 23, '[width]', hovered.width, '[height]', hovered.height, '[xpos]',
                                     hovered.objx, '[ypos]', hovered.objy, '[layer]', hovered.layer, '[type]',
                                     hovered.object_num, '[tileset]', hovered.tileset + 1)
-            elif isinstance(hovered, SpriteItem):  # Sprite
+            elif isinstance(hovered, ActorItem):  # Sprite
                 info = globals_.trans.string('Statusbar', 24, '[name]', hovered.name, '[xpos]', hovered.objx, '[ypos]',
                                     hovered.objy)
             elif isinstance(hovered, SLib.AuxiliaryItem):  # Sprite (auxiliary thing) (treat it like the actual sprite)

@@ -11,7 +11,7 @@ from ui.widgets.sidelists.sprite_picker import SpritePickerWidget
 from ui.widgets.sidelists.sprite_list import SpriteList
 from ui.widgets.sidelists.sprite_order import SpriteOrderList
 
-from data.level.items.sprite import SpriteItem
+from data.level.items.sprite import ActorItem
 from spritelib import SpriteImage
 
 class SpriteTab(QtWidgets.QTabWidget):
@@ -131,7 +131,7 @@ class SpriteTab(QtWidgets.QTabWidget):
         changed = False
 
         for spr in items:
-            if isinstance(spr, SpriteItem):
+            if isinstance(spr, ActorItem):
                 # Reset spritedata
                 spr.spritedata = globals_.mainWindow.defaultDataEditor.data
                 spr.SetType(sprite_num)

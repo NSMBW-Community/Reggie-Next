@@ -7,7 +7,7 @@ from data import globals_
 from data.level.dirty import SetDirty
 import spritelib as SLib
 from data.level.items.entrance import EntranceItem
-from data.level.items.sprite import SpriteItem
+from data.level.items.sprite import ActorItem
 from data.level.items.zone import ZoneItem
 from ui.theme.reggie_theme import GetIcon
 
@@ -268,7 +268,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         if mode == 'c':
             return bool(crash_sprites)
         else:
-            sprite: SpriteItem
+            sprite: ActorItem
             for sprite in crash_sprites:
                 sprite.delete()
                 sprite.setSelected(False)
@@ -284,7 +284,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         check_list = []
         problem = False
 
-        sprite: SpriteItem
+        sprite: ActorItem
         for sprite in globals_.Area.sprites:
             # Snake Block, end-of-path behavior is above 3
             if sprite.sprite_num == 166 and ((sprite.spritedata[2] & 0xF0) >> 4) > 3:
@@ -390,7 +390,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
             if globals_.mainWindow is not None:
                 for id_, x, y in add_sprites:
-                    SpriteItem.CreateSprite(x, y, id_, bytes(8))
+                    ActorItem.CreateSprite(x, y, id_, bytes(8))
 
                 globals_.mainWindow.scene.update()
 
@@ -409,7 +409,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             return None
 
         if globals_.mainWindow is not None:
-            sprite: SpriteItem
+            sprite: ActorItem
             for sprite in globals_.Area.sprites[max_sprite_num:]:
                 sprite.delete()
                 sprite.setSelected(False)

@@ -4,7 +4,7 @@ from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
 from ui.widgets.sprite_table import SpriteTableWidget
-from data.level.items.sprite import SpriteItem
+from data.level.items.sprite import ActorItem
 from data.level.dirty import SetDirty
 
 
@@ -40,7 +40,7 @@ class SpriteOrderList(QtWidgets.QWidget):
         self.table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
 
         self.table.itemSelectionChanged.connect(self.select_item)
-        self.table.itemDoubleClicked.connect(SpriteItem.moveToSprite)
+        self.table.itemDoubleClicked.connect(ActorItem.moveToSprite)
         self.table.itemEntered.connect(self.toolTip)
 
         self.move_up_btn = QtWidgets.QPushButton(globals_.trans.string('Actors', 25))

@@ -13,7 +13,7 @@ from ui.widgets.palette.event import EventTab
 from ui.widgets.palette.stamp import StampTab
 from ui.widgets.palette.comment import CommentTab
 
-from data.level.items.sprite import SpriteItem
+from data.level.items.sprite import ActorItem
 from data.level.items.entrance import EntranceItem
 from data.level.items.location import LocationItem
 from data.level.items.comment import CommentItem
@@ -92,7 +92,7 @@ class PaletteDock(QtWidgets.QDockWidget):
         # Sprites
         self.sprite_tab.prepare_batch_add()
 
-        pos_change = SpriteItem.position_changed
+        pos_change = ActorItem.position_changed
         for spr in globals_.Area.sprites:
             spr.positionChanged = pos_change
             self.sprite_tab.add_sprite(spr)

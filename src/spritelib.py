@@ -38,7 +38,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from data.common.utils import get_reggiedata_folder
 from data.level.area import Area as AreaType
 from data.level.items.location import LocationItem
-from data.level.items.sprite import SpriteItem
+from data.level.items.sprite import ActorItem
 from data.level.items.zone import ZoneItem
 from data.tileset.tile.tileset_tile import TilesetTile
 
@@ -189,7 +189,7 @@ class SpriteImage:
     Class that contains information about a sprite image
     """
 
-    def __init__(self, parent: SpriteItem, scale: float = 1.5) -> None:
+    def __init__(self, parent: ActorItem, scale: float = 1.5) -> None:
         """
         Intializes the sprite image
         """
@@ -282,7 +282,7 @@ class SpriteImage_Static(SpriteImage):
     A simple class for drawing a static sprite image
     """
 
-    def __init__(self, parent: SpriteItem, scale: float = 1.5, image: QtGui.QPixmap | None = None, offset: tuple[float, float] | None = None) -> None:
+    def __init__(self, parent: ActorItem, scale: float = 1.5, image: QtGui.QPixmap | None = None, offset: tuple[float, float] | None = None) -> None:
         super().__init__(parent, scale)
         self.image = image
         self.spritebox.shown = False
@@ -320,7 +320,7 @@ class SpriteImage_StaticMultiple(SpriteImage_Static):
     the image with the dataChanged() function
     """
 
-    def __init__(self, parent: SpriteItem, scale: float = 1.5, image: QtGui.QPixmap | None = None, offset: tuple[float, float] | None = None) -> None:
+    def __init__(self, parent: ActorItem, scale: float = 1.5, image: QtGui.QPixmap | None = None, offset: tuple[float, float] | None = None) -> None:
         super().__init__(parent, scale, image, offset)
         # no other changes needed yet
 
@@ -444,7 +444,7 @@ class Spritebox:
 ################################################################
 ################################################################
 ################################################################
-#################### AuxiliarySpriteItem Classes ###############
+#################### AuxiliaryActorItem Classes ###############
 
 
 class AuxiliaryItem(QtWidgets.QGraphicsItem):
@@ -455,7 +455,7 @@ class AuxiliaryItem(QtWidgets.QGraphicsItem):
         super().__init__(parent)
 
 
-class AuxiliarySpriteItem(AuxiliaryItem):
+class AuxiliaryActorItem(AuxiliaryItem):
     """
     Base class for auxiliary objects that accompany specific sprite types
     """
@@ -489,7 +489,7 @@ class AuxiliarySpriteItem(AuxiliaryItem):
         return self.BoundingRect
 
 
-class AuxiliaryTrackObject(AuxiliarySpriteItem):
+class AuxiliaryTrackObject(AuxiliaryActorItem):
     """
     Track shown behind moving platforms to show where they can move
     """
@@ -535,7 +535,7 @@ class AuxiliaryTrackObject(AuxiliarySpriteItem):
             painter.drawEllipse(lineX - 4, int((self.height * 1.5) - 16), 8, 8)
 
 
-class AuxiliaryCircleOutline(AuxiliarySpriteItem):
+class AuxiliaryCircleOutline(AuxiliaryActorItem):
     def __init__(self, parent: QtWidgets.QGraphicsItem, width: float, alignMode: Qt.AlignmentFlag = Qt.AlignmentFlag.AlignHCenter) -> None:
         """
         Constructor
@@ -580,7 +580,7 @@ class AuxiliaryCircleOutline(AuxiliarySpriteItem):
         painter.drawEllipse(self.BoundingRect)
 
 
-class AuxiliaryRotationAreaOutline(AuxiliarySpriteItem):
+class AuxiliaryRotationAreaOutline(AuxiliaryActorItem):
     def __init__(self, parent: QtWidgets.QGraphicsItem, width: float) -> None:
         """
         Constructor
@@ -607,7 +607,7 @@ class AuxiliaryRotationAreaOutline(AuxiliarySpriteItem):
         painter.drawPie(self.BoundingRect, int(self.startAngle), int(self.spanAngle))
 
 
-class AuxiliaryRectOutline(AuxiliarySpriteItem):
+class AuxiliaryRectOutline(AuxiliaryActorItem):
     def __init__(self, parent: QtWidgets.QGraphicsItem, width: float, height: float, xoff: float = 0, yoff: float = 0) -> None:
         """
         Constructor
@@ -655,7 +655,7 @@ class AuxiliaryRectOutline(AuxiliarySpriteItem):
         painter.drawRect(self.BoundingRect)
 
 
-class AuxiliaryPainterPath(AuxiliarySpriteItem):
+class AuxiliaryPainterPath(AuxiliaryActorItem):
     def __init__(self, parent: QtWidgets.QGraphicsItem, path: QtGui.QPainterPath, width: float, height: float, xoff: float = 0, yoff: float = 0) -> None:
         """
         Constructor
@@ -688,7 +688,7 @@ class AuxiliaryPainterPath(AuxiliarySpriteItem):
         painter.drawPath(self.PainterPath)
 
 
-class AuxiliaryImage(AuxiliarySpriteItem):
+class AuxiliaryImage(AuxiliaryActorItem):
     def __init__(self, parent: QtWidgets.QGraphicsItem, width: float, height: float) -> None:
         """
         Constructor

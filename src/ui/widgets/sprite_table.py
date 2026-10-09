@@ -1,6 +1,6 @@
 
 from PyQt6 import QtCore, QtWidgets
-from data.level.items.sprite import SpriteItem
+from data.level.items.sprite import ActorItem
 
 class SpriteTableWidget(QtWidgets.QTableWidget):
     """
@@ -9,6 +9,6 @@ class SpriteTableWidget(QtWidgets.QTableWidget):
     def keyPressEvent(self, e):
         if e is not None:
             if e.key() == QtCore.Qt.Key.Key_Space or e.key() == QtCore.Qt.Key.Key_Return:
-                SpriteItem.moveToSprite(self.currentItem())
+                ActorItem.moveToSprite(self.currentItem())
 
         super().keyPressEvent(e)

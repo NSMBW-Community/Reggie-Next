@@ -649,6 +649,10 @@ def update_sprites_module(filename: str):
     # Fix (very rarely used) references to the sprite ID
     new_data = new_data.replace("parent.type", "parent.sprite_num")
 
+    # Sprite -> Actor
+    new_data = new_data.replace("SpriteItem", "ActorItem")
+    new_data = new_data.replace("AuxiliarySpriteItem", "AuxiliaryActorItem")
+
     # All done, save the file
     with open(filename, 'w') as file_out:
         file_out.write(new_data)

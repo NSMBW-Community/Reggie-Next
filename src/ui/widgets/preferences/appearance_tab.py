@@ -7,7 +7,7 @@ from data.level.path import Path
 from data.level.items.location import LocationItem
 from data.level.items.comment import CommentItem
 from data.level.items.entrance import EntranceItem
-from data.level.items.sprite import SpriteItem
+from data.level.items.sprite import ActorItem
 from data.level.items.zone import ZoneItem
 from data.common.utils import get_reggiedata_folder
 from ui.widgets.level_view import LevelViewWidget
@@ -201,11 +201,11 @@ class AppearanceTab(PreferenceTabWidget):
         globals_.GridType = types[grid_type]
 
         # Sprite [38] at (11, 4)
-        sprite = SpriteItem.CreateSprite(11 * 16, 4 * 16, 38, data=bytes(8), add_to_scene=False)
+        sprite = ActorItem.CreateSprite(11 * 16, 4 * 16, 38, data=bytes(8), add_to_scene=False)
         scene.addItem(sprite)
 
         # Sprite [53] at (1, 6)
-        sprite = SpriteItem.CreateSprite(1 * 16, 6 * 16, 53, data=bytes(8), add_to_scene=False)
+        sprite = ActorItem.CreateSprite(1 * 16, 6 * 16, 53, data=bytes(8), add_to_scene=False)
         scene.addItem(sprite)
 
         # Entrance [0] at (13, 8)

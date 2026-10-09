@@ -31,7 +31,7 @@ class LocationItem(LevelEditorItem):
     Level editor item that represents a sprite location
     """
     instanceDef = InstanceDefinition_LocationItem
-    sizeChanged = None  # Callback: sizeChanged(SpriteItem obj, int width, int height)
+    sizeChanged = None  # Callback: sizeChanged(ActorItem obj, int width, int height)
     dragstartx: int = -1
     dragstarty: int = -1
 

@@ -10,7 +10,7 @@ from ui.widgets.spriteeditor.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
 from ui.widgets.sprite_table import SpriteTableWidget
-from data.level.items.sprite import SpriteItem
+from data.level.items.sprite import ActorItem
 
 
 class SpriteList(QtWidgets.QWidget):
@@ -60,7 +60,7 @@ class SpriteList(QtWidgets.QWidget):
         self.table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
         self.table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
 
-        self.table.itemDoubleClicked.connect(SpriteItem.moveToSprite)
+        self.table.itemDoubleClicked.connect(ActorItem.moveToSprite)
         self.table.itemEntered.connect(self.toolTip)
 
         # populate filter box
