@@ -176,7 +176,7 @@
         <string id="49">Present:</string>
         <string id="50">Custom:</string>
         <string id="51">On the left is a list of actors already present in the level (their resources will be loaded by default). On the right, you can add more actors you'd like to load the resources for.</string>
-        <string id="52">Type a Actor ID...</string>
+        <string id="52">Type an Actor ID...</string>
         <string id="53">UNKNOWN</string>
     </section>
     <section id="AreaImportDlg">
