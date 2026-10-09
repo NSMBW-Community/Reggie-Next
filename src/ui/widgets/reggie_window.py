@@ -2134,11 +2134,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 sprite_ids = sorted(globals_.Area.unknown_sprite_ids)
 
                 if len(sprite_ids) == 1:
-                    msg = globals_.trans.string('Err_UnknownSprite', 1, '[id]', str(sprite_ids[0]))
+                    msg = globals_.trans.string('Err_UnknownActor', 1, '[id]', str(sprite_ids[0]))
                 else:
-                    msg = globals_.trans.string('Err_UnknownSprite', 2, '[ids]', ', '.join(map(str, sprite_ids)))
+                    msg = globals_.trans.string('Err_UnknownActor', 2, '[ids]', ', '.join(map(str, sprite_ids)))
 
-                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_UnknownSprite', 0), msg)
+                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_UnknownActor', 0), msg)
 
         self.reset_area()
 
