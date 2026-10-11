@@ -1,7 +1,7 @@
 from PyQt6 import QtCore, QtGui
 from data import globals_
 
-def draw_foreground_grid(painter: QtGui.QPainter | None, rect: QtCore.QRectF):
+def draw_foreground_grid(painter: QtGui.QPainter | None, rect: QtCore.QRectF, ignore_zoom: bool):
     """
     Draw the foreground grid. This is separate so both
     the LevelScene and LevelView can access it.
@@ -9,7 +9,11 @@ def draw_foreground_grid(painter: QtGui.QPainter | None, rect: QtCore.QRectF):
     if globals_.GridType is None or globals_.mainWindow is None or painter is None:
         return
 
-    zoom = globals_.mainWindow.ZoomLevel
+    if ignore_zoom:
+        zoom = 100
+    else:
+        zoom = globals_.mainWindow.ZoomLevel
+
     drawLine = painter.drawLine
     grid_color = globals_.theme.color('grid')
     if grid_color is None:

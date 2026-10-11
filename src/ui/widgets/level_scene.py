@@ -18,7 +18,7 @@ class LevelScene(QtWidgets.QGraphicsScene):
         Draw a grid for screenshots
         """
         if self.is_screenshot:
-            draw_foreground_grid(painter, rect)
+            draw_foreground_grid(painter, rect, True)
 
     def drawBackground(self, painter, rect):
         """

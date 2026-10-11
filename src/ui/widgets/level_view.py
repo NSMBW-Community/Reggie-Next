@@ -521,7 +521,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         """
         Draws a foreground grid and other stuff
         """
-        draw_foreground_grid(painter, rect)
+        draw_foreground_grid(painter, rect, False)
 
     def keyPressEvent(self, event):
         """
