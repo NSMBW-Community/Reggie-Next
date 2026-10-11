@@ -61,6 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reimplemented the classic icon set from the original Reggie versions.
 - Several dialogs with tabs now display icons alongside the tab name.
 - The Area Import dialog can now change the source level without needing to be re-opened.
+- ID Types in the Current Sprites tab are now sorted numerically rather than alphabetically.
 
 ### Removed
 
@@ -82,6 +83,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed some small issues regarding creating new Areas without properly saving the level.
 - Fixed location-based liquids rendering incorrectly if their crest texture is outside of the zone.
 - Fixed some sprite images leaving artifacts when rotated.
+- Fixed the autosave message not applying the color scheme set in the preferences.
 
 ## [4.10.0] - 2026-07-25
 
