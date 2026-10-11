@@ -1,8 +1,10 @@
 import collections
-
-from PyQt6 import QtWidgets
+from PyQt6 import QtWidgets, QtGui
 
 from data import globals_
+from data.common.settings import setSetting
+from data.common.loaders import SetKeybind
+
 from ui.widgets.preferences.widgets.keybind_editor_tab import KeybindEditorTab
 from ui.widgets.preferences.widgets.keybind_line_edit import KeybindLineEdit
 from ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
@@ -119,3 +121,32 @@ class KeybindTab(PreferenceTabWidget):
 
             QtWidgets.QMessageBox.warning(None, globals_.trans.string('PrefsDlg', 63),
                                           globals_.trans.string('PrefsDlg', 64, '[conflicts]', out_string))
+
+    def save(self) -> bool:
+        """
+        Saves keybinds
+        """
+        tab: KeybindEditorTab
+        key_edit: KeybindLineEdit
+
+        for tab in self.tabs:
+            for key_edit in tab.key_edits:
+                SetKeybind(key_edit.name, key_edit.keySequence())
+
+        globals_.UseRecentFileKeys = self.recent_file_keybind.isChecked()
+        setSetting('UseRecentFileKeys', globals_.UseRecentFileKeys)
+
+        globals_.MoveItemsWithArrowKeys = self.arrow_move_items.isChecked()
+        setSetting('MoveItemsWithArrowKeys', globals_.MoveItemsWithArrowKeys)
+
+        if globals_.mainWindow is None:
+            return False
+
+        for i, act in enumerate(globals_.mainWindow.RecentMenu.actions()):
+            if not globals_.UseRecentFileKeys:
+                act.setShortcut(QtGui.QKeySequence())
+            else:
+                if i <= 9:
+                    act.setShortcut(QtGui.QKeySequence(f'Ctrl+Alt+{i}'))
+
+        return False

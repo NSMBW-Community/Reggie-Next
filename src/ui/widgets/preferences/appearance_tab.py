@@ -2,7 +2,7 @@ from PyQt6 import QtCore, QtWidgets, QtGui
 import os
 
 from data import globals_
-from data.common.settings import setting
+from data.common.settings import setting, setSetting
 from data.level.path import Path
 from data.level.items.location import LocationItem
 from data.level.items.comment import CommentItem
@@ -12,6 +12,7 @@ from data.level.items.zone import ZoneItem
 from data.common.utils import get_reggiedata_folder
 from ui.widgets.level_view import LevelViewWidget
 from ui.theme.reggie_theme import ReggieTheme
+from ui.theme.reggie_theme import SetColorScheme
 
 from ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
 
@@ -256,3 +257,61 @@ class AppearanceTab(PreferenceTabWidget):
         globals_.GridType = old_grid
 
         return pixmap
+
+    def save(self) -> bool:
+        """
+        Saves appearance options
+        """
+        show_restart_warning = False
+
+        # Get the theme settings
+        theme = self.themes[self.theme_combo.currentIndex()][0]
+        style = self.window_style.currentText()
+
+        if setting('Theme') != theme:
+            show_restart_warning = True
+        if setting('uiStyle') != style:
+            show_restart_warning = True
+
+        setSetting('Theme', theme)
+        setSetting('uiStyle', style)
+
+        globals_.UseRoundedRectangles = self.rounded_rects.isChecked()
+        setSetting('UseRoundedRectangles', globals_.UseRoundedRectangles)
+
+        globals_.DarkMode = self.dark_mode.isChecked()
+        setSetting('DarkMode', globals_.DarkMode)
+
+        globals_.TilesetTabPos = self.tileset_tab_pos.currentIndex()
+        setSetting('TilesetTabPos', globals_.TilesetTabPos)
+
+        globals_.UseFullFilepath = self.full_file_path.isChecked()
+        setSetting('UseFullFilepath', globals_.UseFullFilepath)
+
+        globals_.CursorMode = self.cursor_mode.currentIndex()
+        setSetting('CursorMode', globals_.CursorMode)
+
+        globals_.ShowTilesetPreview = self.show_tileset_preview.isChecked()
+        setSetting('ShowTilesetPreview', globals_.ShowTilesetPreview)
+
+        # We have to restart since this must be applied before the QApplication
+        # is created... no way to do that while the editor is running
+        globals_.IgnoreWinScale = self.ignore_win_scale.isChecked()
+        if setting('IgnoreWinScale') != globals_.IgnoreWinScale:
+            show_restart_warning = True
+
+        setSetting('IgnoreWinScale', globals_.IgnoreWinScale)
+
+        # Switch light/dark mode
+        SetColorScheme()
+
+        if globals_.mainWindow is not None:
+            # Update window title
+            globals_.mainWindow.UpdateTitle()
+    
+            # Toggle hover events for scene items
+            for item in globals_.mainWindow.scene.items():
+                if not isinstance(item, ZoneItem):
+                    item.setAcceptHoverEvents(globals_.CursorMode != 0)
+
+        return show_restart_warning

@@ -2,8 +2,9 @@ from PyQt6 import QtCore, QtWidgets
 import os
 
 from data import globals_
-from data.common.settings import setting
+from data.common.settings import setting, setSetting
 from data.common.reggie_translation import ReggieTranslation
+from data.level.items.zone import ZoneItem
 
 from data.common.utils import get_reggiedata_folder
 from ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
@@ -137,6 +138,53 @@ class GeneralTab(PreferenceTabWidget):
         self.auto_diag.setChecked(globals_.AutoDiagEnabled)
         self.diag_freq.setEnabled(globals_.AutoDiagEnabled)
         self.diag_freq.setCurrentIndex(globals_.AutoDiagFrequency)
+
+    def save(self) -> bool:
+        """
+        Saves general options
+        """
+        show_restart_warning = False
+
+        # Get the translation's folder name
+        name = self.translations[self.trans_combo.currentIndex()][0]
+        if setting('Translation') != name:
+            show_restart_warning = True
+        setSetting('Translation', name)
+
+        globals_.DrawEntIndicators = self.zone_entrance_line.isChecked()
+        setSetting('ZoneEntIndicators', globals_.DrawEntIndicators)
+
+        globals_.BoundsDrawn = self.zone_bound_indicators.isChecked()
+        setSetting('ZoneBoundIndicators', globals_.BoundsDrawn)
+
+        globals_.ResetDataWhenHiding = self.reset_data_hide.isChecked()
+        setSetting('ResetDataWhenHiding', globals_.ResetDataWhenHiding)
+
+        globals_.EnablePadding = self.enable_padding.isChecked()
+        setSetting('EnablePadding', globals_.EnablePadding)
+
+        globals_.PaddingLength = self.padding_value.value()
+        setSetting('PaddingLength', globals_.PaddingLength)
+
+        globals_.PlaceObjectsAtFullSize = self.full_object_size.isChecked()
+        setSetting('PlaceObjectsAtFullSize', globals_.PlaceObjectsAtFullSize)
+
+        globals_.AutoDiagEnabled = self.auto_diag.isChecked()
+        setSetting('AutoDiagEnabled', globals_.AutoDiagEnabled)
+
+        globals_.AutoDiagFrequency = self.diag_freq.currentIndex()
+        setSetting('AutoDiagFrequency', globals_.AutoDiagFrequency)
+
+        globals_.ShowUnknownSpriteWarning = self.show_unk_sprite_msg.isChecked()
+        setSetting('ShowUnknownSpriteWarning', globals_.ShowUnknownSpriteWarning)
+
+        if globals_.mainWindow is None:
+            return show_restart_warning
+
+        # Update diagnostic widget
+        globals_.mainWindow.diagnostic.update_widget()
+
+        return show_restart_warning
 
     def clear_recent_files(self):
         """

@@ -13,8 +13,8 @@ from data.common import archive
 import spritelib as SLib
 
 from libs import lh, lib_versions, lz77
-from ui.theme.reggie_theme import GetIcon, SetColorScheme, GetAppIcon
-from data.common.loaders import LoadMenuActions, LoadLevelNames, LoadZoneThemes, GetKeybind, SetKeybind
+from ui.theme.reggie_theme import GetIcon, GetAppIcon
+from data.common.loaders import LoadMenuActions, LoadLevelNames, LoadZoneThemes, GetKeybind
 from data.common.utils import clamp, SetGamePaths, get_reggiedata_folder
 from data.common.validators import IsNSMBLevel, areValidGamePaths
 from ui.widgets.level_scene import LevelScene
@@ -29,7 +29,6 @@ from data.level.items.path import PathItem
 from data.level.items.path_editor_line import PathEditorLineItem
 from data.level.items.sprite import SpriteItem
 from data.level.items.zone import ZoneItem
-from data.level.path import Path
 from data.common.loaders import UnloadTileset, LoadTileset
 from data.level.nsmbw_level import NSMBWLevel
 from ui.widgets.spriteeditor.sprite_editor import SpriteEditorWidget
@@ -51,10 +50,6 @@ from ui.dialogs.zone import ZonesDialog
 
 from ui.menus.game_def_menu import GameDefMenu
 from ui.menus.recent_files_menu import RecentFilesMenu
-
-from ui.widgets.preferences.widgets.toolbar_check_box import ToolbarCheckBox
-from ui.widgets.preferences.widgets.keybind_line_edit import KeybindLineEdit
-from ui.widgets.preferences.widgets.keybind_editor_tab import KeybindEditorTab
 
 from ui.widgets.zoom import ZoomWidget
 from ui.widgets.zoom_status import ZoomStatusWidget
@@ -729,6 +724,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Sets the window title accordingly
         """
+        if self.fileSavePath:
+            if globals_.UseFullFilepath:
+                self.fileTitle = self.fileSavePath
+            else:
+                self.fileTitle = os.path.basename(self.fileSavePath)
+
         dirty_text = ''
         if globals_.Dirty:
             dirty_text = f' {globals_.trans.string('MainWindow', 0)}' # '[unsaved]'
@@ -1140,155 +1141,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if dlg.exec() == QtWidgets.QDialog.DialogCode.Rejected:
             return
 
-        # Check if we need to show the restart warning
-        show_restart_warning = False
-
-        # Get the translation's folder name
-        name = dlg.general_tab.translations[dlg.general_tab.trans_combo.currentIndex()][0]
-        if setting('Translation') != name:
-            show_restart_warning = True
-        setSetting('Translation', name)
-
-        # Get the Zone Entrance Indicators setting
-        globals_.DrawEntIndicators = dlg.general_tab.zone_entrance_line.isChecked()
-        setSetting('ZoneEntIndicators', globals_.DrawEntIndicators)
-
-        # Get the Zone Bounds Indicators setting
-        globals_.BoundsDrawn = dlg.general_tab.zone_bound_indicators.isChecked()
-        setSetting('ZoneBoundIndicators', globals_.BoundsDrawn)
-
-        # Get the reset data when hiding setting
-        globals_.ResetDataWhenHiding = dlg.general_tab.reset_data_hide.isChecked()
-        setSetting('ResetDataWhenHiding', globals_.ResetDataWhenHiding)
-
-        # Padding settings
-        globals_.EnablePadding = dlg.general_tab.enable_padding.isChecked()
-        setSetting('EnablePadding', globals_.EnablePadding)
-
-        globals_.PaddingLength = dlg.general_tab.padding_value.value()
-        setSetting('PaddingLength', globals_.PaddingLength)
-
-        # Full object size setting
-        globals_.PlaceObjectsAtFullSize = dlg.general_tab.full_object_size.isChecked()
-        setSetting('PlaceObjectsAtFullSize', globals_.PlaceObjectsAtFullSize)
-
-        globals_.AutoDiagEnabled = dlg.general_tab.auto_diag.isChecked()
-        setSetting('AutoDiagEnabled', globals_.AutoDiagEnabled)
-
-        globals_.AutoDiagFrequency = dlg.general_tab.diag_freq.currentIndex()
-        setSetting('AutoDiagFrequency', globals_.AutoDiagFrequency)
-
-        globals_.ShowUnknownSpriteWarning = dlg.general_tab.show_unk_sprite_msg.isChecked()
-        setSetting('ShowUnknownSpriteWarning', globals_.ShowUnknownSpriteWarning)
-
-        # Update diagnostic widget
-        self.diagnostic.set_timer()
-        if globals_.AutoDiagEnabled:
-            # Need to remake the entire bar, or else
-            # auto-diag will appear after the zoom stuff
-            self.setup_status_bar()
-
-            self.diagnostic.update_status()
-        else:
-            status_bar = self.statusBar()
-            if status_bar is not None:
-                status_bar.removeWidget(self.diagnostic)
-
-        # Get the Toolbar tab settings
-        boxes = (
-            dlg.toolbar_tab.file_boxes,
-            dlg.toolbar_tab.edit_boxes,
-            dlg.toolbar_tab.view_boxes,
-            dlg.toolbar_tab.settings_boxes,
-            dlg.toolbar_tab.help_boxes
-        )
-
-        toolbar_actions = {}
-        box: ToolbarCheckBox
-
-        for box_list in boxes:
-            for box in box_list:
-                toolbar_actions[box.internal_name] = box.isChecked()
-        setSetting('ToolbarActs', toolbar_actions)
-
-        # Update the toolbar
-        self.setup_toolbar()
-
-        # Get keybinds and save them
-        tab: KeybindEditorTab
-        key_edit: KeybindLineEdit
-
-        for tab in dlg.keybind_tab.tabs:
-            for key_edit in tab.key_edits:
-                SetKeybind(key_edit.name, key_edit.keySequence())
-
-        # Toggles keybinds for first 10 items in Recent Files menu
-        globals_.UseRecentFileKeys = dlg.keybind_tab.recent_file_keybind.isChecked()
-        setSetting('UseRecentFileKeys', globals_.UseRecentFileKeys)
-
-        globals_.MoveItemsWithArrowKeys = dlg.keybind_tab.arrow_move_items.isChecked()
-        setSetting('MoveItemsWithArrowKeys', globals_.MoveItemsWithArrowKeys)
-
-        for i, act in enumerate(self.RecentMenu.actions()):
-            if not globals_.UseRecentFileKeys:
-                act.setShortcut(QtGui.QKeySequence())
-            else:
-                if i <= 9:
-                    act.setShortcut(QtGui.QKeySequence(f'Ctrl+Alt+{i}'))
-
-        # Get the theme settings
-        theme = dlg.appearance_tab.themes[dlg.appearance_tab.theme_combo.currentIndex()][0]
-        style = dlg.appearance_tab.window_style.currentText()
-
-        if setting('Theme') != theme:
-            show_restart_warning = True
-        if setting('uiStyle') != style:
-            show_restart_warning = True
-
-        setSetting('Theme', theme)
-        setSetting('uiStyle', style)
-
-        globals_.UseRoundedRectangles = dlg.appearance_tab.rounded_rects.isChecked()
-        globals_.DarkMode = dlg.appearance_tab.dark_mode.isChecked()
-        globals_.TilesetTabPos = dlg.appearance_tab.tileset_tab_pos.currentIndex()
-        globals_.UseFullFilepath = dlg.appearance_tab.full_file_path.isChecked()
-        globals_.CursorMode = dlg.appearance_tab.cursor_mode.currentIndex()
-        globals_.ShowTilesetPreview = dlg.appearance_tab.show_tileset_preview.isChecked()
-
-        setSetting('UseRoundedRectangles', globals_.UseRoundedRectangles)
-        setSetting('DarkMode', globals_.DarkMode)
-        setSetting('TilesetTabPos', globals_.TilesetTabPos)
-        setSetting('UseFullFilepath', globals_.UseFullFilepath)
-        setSetting('CursorMode', globals_.CursorMode)
-        setSetting('ShowTilesetPreview', globals_.ShowTilesetPreview)
-
-        # Update window title
-        if self.fileSavePath:
-            if globals_.UseFullFilepath:
-                self.fileTitle = self.fileSavePath
-            else:
-                self.fileTitle = os.path.basename(self.fileSavePath)
-        self.UpdateTitle()
-
-        # Toggle hover events for scene items
-        for item in self.scene.items():
-            if not isinstance(item, ZoneItem):
-                item.setAcceptHoverEvents(globals_.CursorMode != 0)
-
-        # Update mode
-        SetColorScheme()
-
-        # We have to restart since this must be applied before the QApplication
-        # is created... no way to do that while the editor is running
-        globals_.IgnoreWinScale = dlg.appearance_tab.ignore_win_scale.isChecked()
-        if setting('IgnoreWinScale') != globals_.IgnoreWinScale:
-            show_restart_warning = True
-
-        setSetting('IgnoreWinScale', globals_.IgnoreWinScale)
-
-        # Warn the user that they may need to restart
-        if show_restart_warning:
-            QtWidgets.QMessageBox.warning(None, globals_.trans.string('PrefsDlg', 0), globals_.trans.string('PrefsDlg', 30))
+        dlg.save_preferences()
 
     def HandleNewLevel(self):
         """

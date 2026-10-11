@@ -102,3 +102,23 @@ class DiagnosticWidget(QtWidgets.QWidget):
             QtWidgets.QToolTip.showText(pos, text, self.manual_check_button)
         else:
             self.update_status()
+
+    def update_widget(self):
+        """
+        Updates the widget after (possibly) being modifed in the Preferences
+        """
+        if globals_.mainWindow is None:
+            return
+
+        # Update diagnostic widget
+        self.set_timer()
+        if globals_.AutoDiagEnabled:
+            # Need to remake the entire bar, or else
+            # auto-diag will appear after the zoom stuff
+            globals_.mainWindow.setup_status_bar()
+
+            self.update_status()
+        else:
+            status_bar = globals_.mainWindow.statusBar()
+            if status_bar is not None:
+                status_bar.removeWidget(self)

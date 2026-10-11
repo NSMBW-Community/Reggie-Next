@@ -59,3 +59,16 @@ class PreferencesDialog(QtWidgets.QDialog):
         """
         tab = typing.cast(PreferenceTabWidget, self.tab_widget.currentWidget())
         self.info_label.setText(tab.info)
+
+    def save_preferences(self):
+        """
+        Saves the preference settings
+        """
+        restart_1 = self.general_tab.save()
+        restart_2 = self.toolbar_tab.save()
+        restart_3 = self.keybind_tab.save()
+        restart_4 = self.appearance_tab.save()
+
+        # Warn the user that they may need to restart
+        if restart_1 or restart_2 or restart_3 or restart_4:
+            QtWidgets.QMessageBox.warning(None, globals_.trans.string('PrefsDlg', 0), globals_.trans.string('PrefsDlg', 30))

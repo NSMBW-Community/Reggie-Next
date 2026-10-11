@@ -2,7 +2,7 @@
 from PyQt6 import QtWidgets
 
 from data import globals_
-from data.common.settings import setting
+from data.common.settings import setting, setSetting
 
 from ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
 from ui.widgets.preferences.widgets.toolbar_check_box import ToolbarCheckBox
@@ -114,3 +114,29 @@ class ToolbarTab(PreferenceTabWidget):
         for boxes, defaults in items:
             for box, default in zip(boxes, defaults):
                 box.setChecked(default.active)
+
+    def save(self) -> bool:
+        """
+        Saves toolbar items
+        """
+        boxes = (
+            self.file_boxes,
+            self.edit_boxes,
+            self.view_boxes,
+            self.settings_boxes,
+            self.help_boxes
+        )
+
+        toolbar_actions = {}
+        box: ToolbarCheckBox
+
+        for box_list in boxes:
+            for box in box_list:
+                toolbar_actions[box.internal_name] = box.isChecked()
+        setSetting('ToolbarActs', toolbar_actions)
+
+        # Remake the toolbar
+        if globals_.mainWindow is not None:
+            globals_.mainWindow.setup_toolbar()
+
+        return False
