@@ -1,3 +1,8 @@
+# NOTICE
+This branch is outdated and contains an incomplete update to level item and layer rendering. As such, it is not recommended to use this branch and you should instead use the `master` branch.
+
+We will not accept any bug reports, issues, or complaints regarding this branch of the editor. Continue at your own risk.
+
 # Reggie! Level Editor Next
 ## The New Super Mario Bros. Wii Editor
 (Milestone 4)
