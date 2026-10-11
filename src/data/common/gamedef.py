@@ -18,7 +18,7 @@ from data.common.loaders import (
     LoadMusicInfo,
     LoadObjDescriptions,
     LoadSpriteCategories,
-    LoadSpriteData,
+    LoadActorData,
     LoadTilesetInfo,
     LoadTilesetNames,
     LoadZoneThemes,
@@ -27,6 +27,7 @@ from data.common.loaders import (
 from data.common.settings import setSetting, setting
 from data.common.sprites import LoadBasics
 from data.common.utils import get_reggiedata_folder
+from data.common.gamedef_compatibility import update_main, update_sprites_module
 
 
 # Gamedef File - has 2 values: name (str) and patch (bool)
@@ -88,7 +89,7 @@ class ReggieGameDefinition:
             'levelnames': gdf(os.path.join(reggiedata_folder, 'levelnames.xml'), False),
             'music': gdf(os.path.join(reggiedata_folder, 'music.txt'), False),
             'spritecategories': gdf(os.path.join(reggiedata_folder, 'spritecategories.xml'), False),
-            'spritedata': gdf(os.path.join(reggiedata_folder, 'spritedata.xml'), False),
+            'actordata': gdf(os.path.join(reggiedata_folder, 'actordata.xml'), False),
             'tilesetinfo': gdf(os.path.join(reggiedata_folder, 'tilesetinfo.xml'), False),
             'tilesets': gdf(os.path.join(reggiedata_folder, 'tilesets.xml'), False),
             'ts1_descriptions': gdf(os.path.join(reggiedata_folder, 'ts1_descriptions.txt'), False),
@@ -113,6 +114,7 @@ class ReggieGameDefinition:
         # Parse the file (errors are handled by __init__())
         path = os.path.join(get_reggiedata_folder(), "patches", name, "main.xml")
         try:
+            update_main(path)
             tree = etree.parse(path)
         except FileNotFoundError:
             return False
@@ -489,7 +491,7 @@ def LoadGameDef(name: str | None = None):
             # switching process.
             return False
 
-    LoadSpriteData()
+    LoadActorData()
     LoadSpriteCategories(True)
 
     # Reload all of the spritedata ID types in the area
@@ -605,54 +607,3 @@ def FindGameDef(name: str, skip: str | None = None):
 
         def_.__init2__()
         return def_
-
-
-def update_sprites_module(filename: str):
-    """
-    Fixes compatibility issues with sprites.py modules made for older versions of Reggie Next
-    """
-    with open(filename, "r", encoding="utf-8") as f:
-        orig_data = f.read()
-
-    # Fix the import
-    new_data = orig_data.replace("PyQt5", "PyQt6")
-
-    # Common PyQt5 -> 6 changes that need to be fixed
-    pyqt_strings = [
-        ("QPainter.Antialiasing",   "QPainter.RenderHint.Antialiasing"),
-        ("Qt.SmoothTransformation", "Qt.TransformationMode.SmoothTransformation"),
-        ("Qt.IgnoreAspectRatio",    "Qt.AspectRatioMode.IgnoreAspectRatio"),
-        ("QPoint(",                 "QPointF("),
-        ("Qt.transparent",          "Qt.GlobalColor.transparent"),
-        ("Qt.Align",                "Qt.AlignmentFlag.Align")
-    ]
-
-    for old, new in pyqt_strings:
-        new_data = new_data.replace(old, new)
-
-    # Regex fixes
-    regex_strings = [
-        # Fix BlockContents accesses
-        (r"\['BlockContents'\]\[(\d+)\]", r"['BlockContents\1']"),
-        (r"\['BlockContents'\]\[(.*?)\]", r"[f'BlockContents{\1}']"),
-        # Update GetImg() calls to the proper function
-        (r"SLib\.GetImg\((\w?[\"']?[\w{}%\.]+[\"']?(?: ?% ?(?:(?:\([\w, +-\.()]+\))|(?:[\w +\-\.()]+)))?)(?:, ?False)?\)", r"SLib.GetPixmap(\1)"),
-        (r"SLib\.GetImg\((\w?[\"']?[\w{}%\.]+[\"']?(?: ?% ?(?:(?:\([\w, +-\.()]+\))|(?:[\w +\-\.()]+)))?)(?:, ?True)\)", r"SLib.GetImage(\1)")
-    ]
-
-    for pattern, replace in regex_strings:
-        new_data = re.sub(pattern, replace, new_data)
-
-    # Fix old sprites_common imports
-    new_data = new_data.replace("import sprites_common", "import data.common.sprites")
-
-    # Fix (very rarely used) references to the sprite ID
-    new_data = new_data.replace("parent.type", "parent.sprite_num")
-
-    # Sprite -> Actor
-    new_data = new_data.replace("SpriteItem", "ActorItem")
-    new_data = new_data.replace("AuxiliarySpriteItem", "AuxiliaryActorItem")
-
-    # All done, save the file
-    with open(filename, 'w') as file_out:
-        file_out.write(new_data)

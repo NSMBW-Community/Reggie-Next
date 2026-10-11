@@ -3,6 +3,7 @@ from typing import Any
 from xml.etree import ElementTree
 
 from data.common.utils import get_reggiedata_folder
+from data.common.gamedef_compatibility import update_main, update_actordata
 
 
 class ReggieTranslation:
@@ -37,7 +38,7 @@ class ReggieTranslation:
             'levelnames': os.path.join(get_reggiedata_folder(), 'levelnames.xml'),
             'music': os.path.join(get_reggiedata_folder(), 'music.txt'),
             'spritecategories': os.path.join(get_reggiedata_folder(), 'spritecategories.xml'),
-            'spritedata': os.path.join(get_reggiedata_folder(), 'spritedata.xml'),
+            'actordata': os.path.join(get_reggiedata_folder(), 'actordata.xml'),
             'tilesets': os.path.join(get_reggiedata_folder(), 'tilesets.xml'),
             'ts1_descriptions': os.path.join(get_reggiedata_folder(), 'ts1_descriptions.txt'),
             'zonethemes': os.path.join(get_reggiedata_folder(), 'zonethemes.txt'),
@@ -1169,6 +1170,9 @@ class ReggieTranslation:
 
         # Parse the file
         path = os.path.join(get_reggiedata_folder(), 'translations', name, 'main.xml')
+
+        # This is intended to fix gamedef names, but it works for this too
+        update_main(path)
 
         try:
             tree = ElementTree.parse(path)

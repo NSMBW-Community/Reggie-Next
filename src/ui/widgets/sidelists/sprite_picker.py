@@ -1,7 +1,7 @@
 from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
-from data.common.loaders import LoadSpriteCategories, LoadSpriteData
+from data.common.loaders import LoadSpriteCategories, LoadActorData
 from data.sprite.sprite_category import SpriteCategory
 
 
@@ -20,7 +20,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
         self.setIndentation(16)
         self.currentItemChanged.connect(self.HandleItemChange)
 
-        LoadSpriteData()
+        LoadActorData()
         LoadSpriteCategories()
         self.LoadItems()
 

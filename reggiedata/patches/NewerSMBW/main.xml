@@ -13,7 +13,7 @@
     <file name="config" path="config.xml" />
     <file name="levelnames" path="levelnames.xml" patch="False" />
     <file name="music" path="music.txt" patch="False" />
-    <file name="spritedata" path="spritedata.xml" />
+    <file name="actordata" path="actordata.xml" />
     <file name="sprites" path="sprites.py" />
     <file name="spritecategories" path="spritecategories.xml" />
     <file name="tilesets" path="tilesets.xml" />

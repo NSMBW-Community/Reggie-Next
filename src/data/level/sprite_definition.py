@@ -151,10 +151,10 @@ class SpriteDefinition:
                 type_dict = {'required': 0, 'suggested': 1, 'resource': 2, 'suggestedresource': 3}
 
                 for entry in field:
-                    if entry.attrib['sprite'] == "":
+                    if entry.attrib['actor'] == "":
                         continue
 
-                    sprite_ids = str(entry.attrib['sprite']).split(',')
+                    sprite_ids = str(entry.attrib['actor']).split(',')
 
                     for id in sprite_ids:
                         self.dependencies.append((int(id), type_dict[entry.tag]))

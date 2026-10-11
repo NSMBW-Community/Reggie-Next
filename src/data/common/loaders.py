@@ -30,6 +30,8 @@ from ui.dialogs.object_swap import ObjectTypeSwapDialog
 from ui.dialogs.diagnostic_tool import DiagnosticToolDialog
 from ui.theme.reggie_theme import GetIcon, GetAppIcon, ReggieTheme
 
+from data.common.gamedef_compatibility import update_actordata
+
 
 def getResourcePaths(res_name: str) -> list[str]:
     """
@@ -339,18 +341,21 @@ def LoadConfig() -> None:
                     globals_.AllowSizeHacks = value.strip().lower() == 'true'
 
 
-def LoadSpriteData() -> None:
+def LoadActorData() -> None:
     """
-    Ensures that the sprite data info is loaded
+    Ensures that the actor data info is loaded
     """
     errors = []
     errortext = []
     sprite_ids = [-1]
 
     # Convert the iterable to list, because we need to iterate over it twice
-    paths = list(getResourcePaths('spritedata'))
+    paths = list(getResourcePaths('actordata'))
 
     for path in paths:
+        # Check if anything should be fixed
+        update_actordata(path)
+
         if path is None:
             continue
 
@@ -360,7 +365,7 @@ def LoadSpriteData() -> None:
 
         tree = ElementTree.parse(path)
 
-        for sprite in tree.iter("sprite"):
+        for sprite in tree.iter("actor"):
             id_text = sprite.get("id")
 
             if id_text is None:
@@ -381,7 +386,7 @@ def LoadSpriteData() -> None:
         path = sdpath if isinstance(sdpath, str) else sdpath.path
         tree = ElementTree.parse(path)
 
-        for sprite in tree.iter("sprite"):
+        for sprite in tree.iter("actor"):
             id_from_sprite = sprite.get("id")
 
             if id_from_sprite is None:
@@ -449,14 +454,14 @@ def LoadSpriteData() -> None:
         QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_BrokenActorData', 2), repr(errortext))
 
 
-def ReloadSpritedata():
+def ReloadActorData():
     """
-    Reload the entire spritedata
+    Reload the entire actordata
     """
     if globals_.mainWindow is None:
         return
 
-    LoadSpriteData()
+    LoadActorData()
 
     # Reload spritedata editor
     cur_sel_sprite = globals_.mainWindow.spriteDataEditor.spritetype
@@ -935,7 +940,7 @@ def LoadMenuActions(mw) -> None:
             globals_.trans.stringOneLine('MenuItems', 85), GetKeybind('reloadgfx')
         ),
         MenuAction(
-            'reloaddata', ReloadSpritedata, GetIcon('arrow-circle-double-135-rocket'), globals_.trans.stringOneLine('MenuItems', 138),
+            'reloaddata', ReloadActorData, GetIcon('arrow-circle-double-135-rocket'), globals_.trans.stringOneLine('MenuItems', 138),
             globals_.trans.stringOneLine('MenuItems', 139), GetKeybind('reloaddata')
         ),
         MenuAction(
