@@ -273,6 +273,9 @@ def main():
     globals_.ShowTilesetPreview = setting('ShowTilesetPreview', True)
     SLib.RealViewEnabled = globals_.RealViewEnabled
 
+    # Toggle light/dark mode
+    SetColorScheme()
+
     # Choose a folder for the game
     # Let the user pick a folder without restarting the editor if they fail
     while not areValidGamePaths():
@@ -318,9 +321,6 @@ def main():
         else:
             setSetting('AutoSaveFilePath', None)
             setSetting('AutoSaveFileData', 'x')
-
-    # Toggle light/dark mode
-    SetColorScheme()
 
     # Create and show the main window
     globals_.mainWindow = ReggieWindow()
