@@ -202,11 +202,11 @@ class AppearanceTab(PreferenceTabWidget):
         globals_.GridType = types[grid_type]
 
         # Actor [38] at (11, 4)
-        actor = ActorItem.CreateActor(11 * 16, 4 * 16, 38, data=bytes(8), add_to_scene=False)
+        actor = ActorItem.CreateActor(11 * 16, 4 * 16, 38, data=bytes(10), add_to_scene=False)
         scene.addItem(actor)
 
         # Actor [53] at (1, 6)
-        actor = ActorItem.CreateActor(1 * 16, 6 * 16, 53, data=bytes(8), add_to_scene=False)
+        actor = ActorItem.CreateActor(1 * 16, 6 * 16, 53, data=bytes(10), add_to_scene=False)
         scene.addItem(actor)
 
         # Entrance [0] at (13, 8)

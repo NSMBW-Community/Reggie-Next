@@ -235,7 +235,7 @@ class ActorDefinition:
             b = 4 * (nybble - 1) + bits
 
             # Check if the resulting range would be valid.
-            if not 1 <= a < b + 1 <= 65:
+            if not 1 <= a < b + 1 <= 81:
                 raise ValueError("Indexed bits out of bounds: " + str(range_) + "->" + str((a, b + 1)))
 
             bit_length += b - a + 1

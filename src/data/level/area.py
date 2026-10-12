@@ -353,7 +353,7 @@ class Area:
         loaded for calculating the actors that are forced to load.
         """
         actordata = self.blocks[7]
-        sprstruct = struct.Struct('>HHH8sxx')
+        sprstruct = struct.Struct('>HHH10s')
         actors = []
         unknown_actor_ids = None
 
@@ -715,7 +715,7 @@ class Area:
         Saves the actors back to block 8
         """
         offset = 0
-        sprstruct = struct.Struct('>HHH6sBcxx')
+        sprstruct = struct.Struct('>HHH6sBc2s')
         buffer = bytearray((len(self.actors) * 16) + 4)
         f_int = int
         for actor in self.actors:
@@ -729,7 +729,7 @@ class Area:
 
             try:
                 sprstruct.pack_into(buffer, offset, f_int(actor.actor_num) % 0xFFFF, f_int(actor.objx), f_int(actor.objy),
-                                    actor.actordata[:6], actor.zoneID, bytes([actor.actordata[7]]))
+                                    actor.actordata[:6], actor.zoneID, bytes([actor.actordata[7]]), actor.actordata[8:])
             except:
                 # Hopefully this will solve the mysterious bug, and will
                 # soon no longer be necessary.
