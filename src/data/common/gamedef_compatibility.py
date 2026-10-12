@@ -95,7 +95,7 @@ def update_actors_module(path: str):
         ('setIsBehindSprite', 'setIsBehindActor'),
         ('import spritelib as SLib', 'import actorlib'),
         ('SLib', 'actorlib'),
-        #('', ''),
+        ('parent.spritedata', 'parent.actordata'),
         #('', ''),
         #('', ''),
         #('', ''),
