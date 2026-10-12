@@ -262,7 +262,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         crash_sprites = []
         for sprite in globals_.Area.actors:
-            if sprite.sprite_num in problems:
+            if sprite.actor_num in problems:
                 crash_sprites.append(sprite)
 
         if mode == 'c':
@@ -287,46 +287,46 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         sprite: ActorItem
         for sprite in globals_.Area.actors:
             # Snake Block, end-of-path behavior is above 3
-            if sprite.sprite_num == 166 and ((sprite.spritedata[2] & 0xF0) >> 4) > 3:
+            if sprite.actor_num == 166 and ((sprite.actordata[2] & 0xF0) >> 4) > 3:
                 problem = True
 
             # Also double-check nyb10, then add it to the fixers
             # Mushroom in Bubble, spawns player
-            if sprite.sprite_num == 171 and sprite.spritedata[4] & 0xF != 1:
+            if sprite.actor_num == 171 and sprite.actordata[4] & 0xF != 1:
                 problem = True
 
             # Chest, check if we need a Toad
-            if sprite.sprite_num == 203 and sprite.spritedata[4] & 0xF == 1:
+            if sprite.actor_num == 203 and sprite.actordata[4] & 0xF == 1:
                 if [454, 432] not in check_list:
                     check_list.append([454, 432])
 
             # Cheep Cheep Formation, shape is 'Filled Arrow'
             # TODO: Investigate, this doesn't crash the game?
-            if sprite.sprite_num == 247 and sprite.spritedata[5] & 0xF == 1:
+            if sprite.actor_num == 247 and sprite.actordata[5] & 0xF == 1:
                 problem = True
 
             # Boo circle
-            if sprite.sprite_num == 323:
+            if sprite.actor_num == 323:
                 # Expand behavior
-                if sprite.spritedata[4] & 0xF == 4:
+                if sprite.actordata[4] & 0xF == 4:
                     problem = True
 
                 # Greater Radius < Lesser Radius
-                if sprite.spritedata[2] & 0xF < (sprite.spritedata[3] & 0xF0) >> 4:
+                if sprite.actordata[2] & 0xF < (sprite.actordata[3] & 0xF0) >> 4:
                     problem = True
 
             # Bowser Fireball Spawner, position mod 1 can sometimes freeze the game
-            if sprite.sprite_num == 449 and (sprite.spritedata[5] & 0xF0) >> 4 == 1:
+            if sprite.actor_num == 449 and (sprite.actordata[5] & 0xF0) >> 4 == 1:
                 problem = True
 
             # Giant Bowser Switch, has Multi-Use enabled
-            if sprite.sprite_num == 479 and sprite.spritedata[4] & 0xF != 0:
+            if sprite.actor_num == 479 and sprite.actordata[4] & 0xF != 0:
                 problem = True
 
             # Rubble Block
-            if sprite.sprite_num == 481:
+            if sprite.actor_num == 481:
                 # Invalid size
-                if sprite.spritedata[5] & 0xF > 1:
+                if sprite.actordata[5] & 0xF > 1:
                     problem = True
 
                 # Check for resource
@@ -337,7 +337,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         new = list(check_list)
         for item in check_list:
             for sprite in globals_.Area.actors:
-                if sprite.sprite_num in item:
+                if sprite.actor_num in item:
                     try:
                         new.remove(item)
                     except Exception:
@@ -353,44 +353,44 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         elif problem:
             add_sprites = []
             for sprite in globals_.Area.actors:
-                if sprite.sprite_num == 166 and (sprite.spritedata[2] & 0xF0) >> 4 > 3:
-                    sprite.spritedata = sprite.spritedata[0:2] + ' ' + sprite.spritedata[3:]
+                if sprite.actor_num == 166 and (sprite.actordata[2] & 0xF0) >> 4 > 3:
+                    sprite.actordata = sprite.actordata[0:2] + ' ' + sprite.actordata[3:]
 
-                if sprite.sprite_num == 171 and sprite.spritedata[4] & 0xF != 1:
-                    sprite.spritedata = sprite.spritedata[0:4] + chr(1) + sprite.spritedata[5:]
+                if sprite.actor_num == 171 and sprite.actordata[4] & 0xF != 1:
+                    sprite.actordata = sprite.actordata[0:4] + chr(1) + sprite.actordata[5:]
 
-                if sprite.sprite_num == 203 and sprite.spritedata[4] & 0xF == 1:
+                if sprite.actor_num == 203 and sprite.actordata[4] & 0xF == 1:
                     if [454, 432] in check_list:
                         add_sprites.append((454, sprite.objx - 128, sprite.objy - 128))
 
-                if sprite.sprite_num == 247 and sprite.spritedata[5] & 0xF == 1:
-                    sprite.spritedata = sprite.spritedata[0:5] + chr(0) + sprite.spritedata[6:]
+                if sprite.actor_num == 247 and sprite.actordata[5] & 0xF == 1:
+                    sprite.actordata = sprite.actordata[0:5] + chr(0) + sprite.actordata[6:]
 
-                if sprite.sprite_num == 323:
-                    if sprite.spritedata[4] & 0xF == 4:
-                        sprite.spritedata = sprite.spritedata[0:4] + chr(1) + sprite.spritedata[5:]
+                if sprite.actor_num == 323:
+                    if sprite.actordata[4] & 0xF == 4:
+                        sprite.actordata = sprite.actordata[0:4] + chr(1) + sprite.actordata[5:]
 
-                    if sprite.spritedata[2] & 0xF < (sprite.spritedata[3] & 0xF0) >> 4:
-                        sprite.spritedata = sprite.spritedata[0:2] + chr((sprite.spritedata[3] & 0xF0) >> 4) + sprite.spritedata[3:]
+                    if sprite.actordata[2] & 0xF < (sprite.actordata[3] & 0xF0) >> 4:
+                        sprite.actordata = sprite.actordata[0:2] + chr((sprite.actordata[3] & 0xF0) >> 4) + sprite.actordata[3:]
 
-                if sprite.sprite_num == 449 and (sprite.spritedata[5] & 0xF0) >> 4 == 1:
-                    sprite.spritedata = sprite.spritedata[0:5] + chr(0) + sprite.spritedata[6:]
+                if sprite.actor_num == 449 and (sprite.actordata[5] & 0xF0) >> 4 == 1:
+                    sprite.actordata = sprite.actordata[0:5] + chr(0) + sprite.actordata[6:]
 
-                if sprite.sprite_num == 479 and sprite.spritedata[4] & 0xF == 1:
-                    if (sprite.spritedata[4] & 0xF0) >> 4 == 1:
-                        sprite.spritedata = sprite.spritedata[0:4] + chr(0x10) + sprite.spritedata[5:]
+                if sprite.actor_num == 479 and sprite.actordata[4] & 0xF == 1:
+                    if (sprite.actordata[4] & 0xF0) >> 4 == 1:
+                        sprite.actordata = sprite.actordata[0:4] + chr(0x10) + sprite.actordata[5:]
                     else:
-                        sprite.spritedata = sprite.spritedata[0:4] + chr(0) + sprite.spritedata[5:]
+                        sprite.actordata = sprite.actordata[0:4] + chr(0) + sprite.actordata[5:]
 
-                if sprite.sprite_num == 481:
-                    if sprite.spritedata[5] & 0xF > 2:
-                        sprite.spritedata = sprite.spritedata[0:5] + chr(2) + sprite.spritedata[6:]
+                if sprite.actor_num == 481:
+                    if sprite.actordata[5] & 0xF > 2:
+                        sprite.actordata = sprite.actordata[0:5] + chr(2) + sprite.actordata[6:]
 
                     add_sprites.append((419, sprite.objx - 128, sprite.objy - 128))
 
             if globals_.mainWindow is not None:
                 for id_, x, y in add_sprites:
-                    ActorItem.CreateSprite(x, y, id_, bytes(8))
+                    ActorItem.CreateActor(x, y, id_, bytes(8))
 
                 globals_.mainWindow.scene.update()
 

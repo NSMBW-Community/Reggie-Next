@@ -133,7 +133,7 @@ class ActorTab(QtWidgets.QTabWidget):
         for spr in items:
             if isinstance(spr, ActorItem):
                 # Reset actordata
-                spr.spritedata = globals_.mainWindow.defaultDataEditor.data
+                spr.actordata = globals_.mainWindow.defaultDataEditor.data
                 spr.SetType(actor_num)
                 spr.update()
 

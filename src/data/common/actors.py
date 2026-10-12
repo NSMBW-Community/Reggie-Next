@@ -93,13 +93,13 @@ class ActorImage_TileEvent(actorlib.ActorImage_StaticMultiple):  # 191
     def dataChanged(self):
         super().dataChanged()
 
-        self.width = (self.parent.spritedata[5] >> 4) << 4
-        self.height = (self.parent.spritedata[5] & 0xF) << 4
-        self.pattern = self.parent.spritedata[3] & 3
-        self.creationtype = self.parent.spritedata[4] & 1
-        self.noeffect = self.parent.spritedata[3] & 4 == 4
-        self.pattern = self.parent.spritedata[3] & 3
-        self.permanent = self.parent.spritedata[2] & 16 == 16
+        self.width = (self.parent.actordata[5] >> 4) << 4
+        self.height = (self.parent.actordata[5] & 0xF) << 4
+        self.pattern = self.parent.actordata[3] & 3
+        self.creationtype = self.parent.actordata[4] & 1
+        self.noeffect = self.parent.actordata[3] & 4 == 4
+        self.pattern = self.parent.actordata[3] & 3
+        self.permanent = self.parent.actordata[2] & 16 == 16
         self.shouldTile = True
 
         if self.pattern == 3:
@@ -126,7 +126,7 @@ class ActorImage_TileEvent(actorlib.ActorImage_StaticMultiple):  # 191
 
         rect_outline.setSize(self.width * 1.5, self.height * 1.5)
 
-        self.tile_num = self.parent.spritedata[4] >> 4
+        self.tile_num = self.parent.actordata[4] >> 4
         if self.tile_num in self.notAllowedTypes:
             self.actorbox.shown = True
             self.image = None
@@ -206,10 +206,10 @@ class ActorImage_Switch(actorlib.ActorImage_StaticMultiple):  # 40, 41, 42, 153,
             ImageCache['ESwitchU'] = QtGui.QPixmap.fromImage(e.mirrored(True, True))
 
     def dataChanged(self):
-        midway = (self.parent.spritedata[2] >> 6) & 1
-        upsideDown = self.parent.spritedata[5] & 1
-        shiftY = self.parent.spritedata[3] & 0xF
-        shiftX = (self.parent.spritedata[5] >> 4) & 0xF
+        midway = (self.parent.actordata[2] >> 6) & 1
+        upsideDown = self.parent.actordata[5] & 1
+        shiftY = self.parent.actordata[3] & 0xF
+        shiftX = (self.parent.actordata[5] >> 4) & 0xF
 
         if midway:
             self.alpha = 0.5
@@ -260,10 +260,10 @@ class ActorImage_LineBlock(actorlib.ActorImage):  # 219
         block.
         """
 
-        direction = self.parent.spritedata[4] >> 4
-        width_a = self.parent.spritedata[5] & 0xF
-        width_b = self.parent.spritedata[5] >> 4
-        distance = self.parent.spritedata[4] & 0xF
+        direction = self.parent.actordata[4] >> 4
+        width_a = self.parent.actordata[5] & 0xF
+        width_b = self.parent.actordata[5] >> 4
+        distance = self.parent.actordata[4] & 0xF
 
         # maybe flip _a and _b so _a is opaque, _b is not opaque
         if direction & 1:

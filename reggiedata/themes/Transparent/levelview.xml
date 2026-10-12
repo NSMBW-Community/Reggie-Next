@@ -19,9 +19,9 @@
     <color id="path_fill_s"      value="#17FF00AA" />
     <color id="path_lines"       value="#3FFF5FFF" />
     <color id="smi"              value="#ddffdd10" />
-    <color id="spritebox_fill"   value="#0000FF2F" />
-    <color id="spritebox_fill_s" value="#b000b0FF" />
-    <color id="spritebox_lines"  value="#FFFFFF" />
+    <color id="actorbox_fill"   value="#0000FF2F" />
+    <color id="actorbox_fill_s" value="#b000b0FF" />
+    <color id="actorbox_lines"  value="#FFFFFF" />
     <color id="zone_lines"       value="#dc23a5" />
     <color id="zone_text"        value="#F5F5F5"   />
 </colors>

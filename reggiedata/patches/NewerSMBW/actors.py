@@ -47,7 +47,7 @@ class ActorImage_NewerSwitch(common.ActorImage_Switch):
                 ImageCache[f'ESwitchU{i}'] = QtGui.QPixmap.fromImage(p.mirrored(True, True))
 
     def dataChanged(self):
-        self.styleType = self.parent.spritedata[3] & 0xF
+        self.styleType = self.parent.actordata[3] & 0xF
 
         self.yOffset = 0
         self.xOffset = 0
@@ -100,7 +100,7 @@ class ActorImage_Block(actorlib.ActorImage):  # 207, 208, 209, 221, 255, 256, 40
         if self.contentsOverride is not None:
             contents = self.contentsOverride
         else:
-            contents = self.parent.spritedata[self.contentsNybble] & 0xF
+            contents = self.parent.actordata[self.contentsNybble] & 0xF
 
         if contents == 2:  # Hammer
             contents = 20
@@ -117,8 +117,8 @@ class ActorImage_Block(actorlib.ActorImage):  # 207, 208, 209, 221, 255, 256, 40
             transform = QtGui.QTransform()
             transform.translate(12, 12)
 
-            angle = (self.parent.spritedata[4] & 0xF0) >> 4
-            leftTilt = self.parent.spritedata[3] & 1
+            angle = (self.parent.actordata[4] & 0xF0) >> 4
+            leftTilt = self.parent.actordata[3] & 1
 
             angle *= (45.0 / 16.0)
 
@@ -143,7 +143,7 @@ class ActorImage_Block(actorlib.ActorImage):  # 207, 208, 209, 221, 255, 256, 40
             flip = self.image.toImage().mirrored(True, True)
             self.image = self.image.fromImage(flip)
 
-        # Sprite 433 scales the block by 1.5x
+        # Actor 433 scales the block by 1.5x
         if self.is_water_block:
             self.setOffset((-4, -4))
             self.setSize((36 / 1.5, 36 / 1.5))
@@ -223,8 +223,8 @@ class ActorImage_NewerWoodCircle(actorlib.ActorImage_StaticMultiple):  # 286
 
     def dataChanged(self):
         super().dataChanged()
-        size = (self.parent.spritedata[5] & 0xF) % 3
-        gray = self.parent.spritedata[2] & 1
+        size = (self.parent.actordata[5] & 0xF) % 3
+        gray = self.parent.actordata[2] & 1
 
         if gray:
             self.image = ImageCache[f'GrayWoodCircle{size}']
@@ -294,7 +294,7 @@ class ActorImage_MusicBlock(actorlib.ActorImage_StaticMultiple): # 17
             ImageCache[f'MusicBlock{i + 1}'] = actorlib.GetPixmap(f'music_block_{i + 1}.png')
 
     def dataChanged(self):
-        colour = (self.parent.spritedata[5] & 0xF) % 9
+        colour = (self.parent.actordata[5] & 0xF) % 9
 
         if colour == 0:
             self.image = ImageCache['MusicBlock1']
@@ -326,9 +326,9 @@ class ActorImage_DragonCoasterPiece(actorlib.ActorImage_StaticMultiple): # 18
         ImageCache['DragonTail'] = actorlib.GetPixmap('dragon_coaster_tail.png')
 
     def dataChanged(self):
-        piece = self.parent.spritedata[5] & 3
-        direction = (self.parent.spritedata[3] >> 4) & 1
-        rotates = self.parent.spritedata[2] & 0x10
+        piece = self.parent.actordata[5] & 3
+        direction = (self.parent.actordata[3] >> 4) & 1
+        rotates = self.parent.actordata[2] & 0x10
 
         sPiece = ("Head", "Body", "Tail")[piece]
 
@@ -342,7 +342,7 @@ class ActorImage_DragonCoasterPiece(actorlib.ActorImage_StaticMultiple): # 18
             transform.translate(-12, 0)
 
         if rotates:
-            angle = self.parent.spritedata[2] & 0xF
+            angle = self.parent.actordata[2] & 0xF
 
             if angle < 8:
                 angle -= 8
@@ -398,7 +398,7 @@ class ActorImage_NewerGoomba(actorlib.ActorImage_StaticMultiple):  # 20
 
     def dataChanged(self):
 
-        color = (self.parent.spritedata[2] & 0xF) % 9
+        color = (self.parent.actordata[2] & 0xF) % 9
 
         if color == 0:
             self.image = ImageCache['Goomba']
@@ -420,7 +420,7 @@ class ActorImage_NewerParaGoomba(actorlib.ActorImage_StaticMultiple):  # 21
             ImageCache[f'ParaGoomba{i + 1}'] = actorlib.GetPixmap(f'para_goomba_{i + 1}.png')
 
     def dataChanged(self):
-        colour = (self.parent.spritedata[2] & 0xF) % 9
+        colour = (self.parent.actordata[2] & 0xF) % 9
         self.offset = (-1, -10)
 
         if colour == 0:
@@ -443,7 +443,7 @@ class ActorImage_PumpkinGoomba(actorlib.ActorImage_StaticMultiple):  # 22
         actorlib.loadIfNotInImageCache('PumpkinParagoomba', 'pumpkin_paragoomba.png')
 
     def dataChanged(self):
-        para = self.parent.spritedata[5] & 1
+        para = self.parent.actordata[5] & 1
         self.image = ImageCache['PumpkinGoomba' if not para else 'PumpkinParagoomba']
 
         super().dataChanged()
@@ -467,8 +467,8 @@ class ActorImage_NewerBuzzyBeetle(actorlib.ActorImage_StaticMultiple):  # 24
 
     def dataChanged(self):
 
-        orient = self.parent.spritedata[5] & 15
-        colour = self.parent.spritedata[2] & 15
+        orient = self.parent.actordata[5] & 15
+        colour = self.parent.actordata[2] & 15
         if colour > 7:
             colour = 0
 
@@ -505,8 +505,8 @@ class ActorImage_NewerSpiny(actorlib.ActorImage_StaticMultiple):  # 25
             ImageCache[f'Spiny{colour}ShellU'] = actorlib.GetPixmap(f'spiny_{colour}_shell_u.png')
 
     def dataChanged(self):
-        orient = self.parent.spritedata[5] & 15
-        colour = self.parent.spritedata[2] & 15
+        orient = self.parent.actordata[5] & 15
+        colour = self.parent.actordata[2] & 15
         if colour > 7:
             colour = 0
 
@@ -542,7 +542,7 @@ class ActorImage_NewerUpsideDownSpiny(actorlib.ActorImage_StaticMultiple):  # 26
                 ImageCache[f'Spiny{style}U'] = QtGui.QPixmap.fromImage(Spiny.mirrored(False, True))
 
     def dataChanged(self):
-        colour = self.parent.spritedata[2] & 15
+        colour = self.parent.actordata[2] & 15
         if colour > 7:
             colour = 0
 
@@ -581,12 +581,12 @@ class ActorImage_NewerQSwitchBlock(ActorImage_Block):  # 43
         self.tilenum = 48
 
     def dataChanged(self):
-        upsideDown = self.parent.spritedata[5] & 1
+        upsideDown = self.parent.actordata[5] & 1
         self.flipOverride = upsideDown
-        midway = (self.parent.spritedata[2] >> 6) & 1
+        midway = (self.parent.actordata[2] >> 6) & 1
         self.transparent = midway
 
-        color = self.parent.spritedata[3] & 3
+        color = self.parent.actordata[3] & 3
         if color < 2:
             self.contentsOverride = 17
         else:
@@ -600,12 +600,12 @@ class ActorImage_NewerExcSwitchBlock(ActorImage_Block):  # 45
         self.tilenum = 48
 
     def dataChanged(self):
-        upsideDown = self.parent.spritedata[5] & 1
+        upsideDown = self.parent.actordata[5] & 1
         self.flipOverride = upsideDown
-        midway = (self.parent.spritedata[2] >> 6) & 1
+        midway = (self.parent.actordata[2] >> 6) & 1
         self.transparent = midway
 
-        color = self.parent.spritedata[3] & 3
+        color = self.parent.actordata[3] & 3
         if color < 2:
             self.contentsOverride = 19
         else:
@@ -637,7 +637,7 @@ class ActorImage_NewerPodoboo(actorlib.ActorImage):  # 46
         if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
-        style = (self.parent.spritedata[2] & 0xF) % 9
+        style = (self.parent.actordata[2] & 0xF) % 9
         if style == 2:
             self.aux[0].image = ImageCache['Podoboo0']
         else:
@@ -659,7 +659,7 @@ class ActorImage_Thwomp(actorlib.ActorImage_StaticMultiple):  # 47
         actorlib.loadIfNotInImageCache('ThwompIce', 'thwomp_ice.png')
 
     def dataChanged(self):
-        icy = self.parent.spritedata[2] & 1
+        icy = self.parent.actordata[2] & 1
 
         if icy:
             self.image = ImageCache['ThwompIce']
@@ -682,7 +682,7 @@ class ActorImage_GiantThwomp(actorlib.ActorImage_StaticMultiple):  # 48
         actorlib.loadIfNotInImageCache('GiantThwompIce', 'giant_thwomp_ice.png')
 
     def dataChanged(self):
-        icy = self.parent.spritedata[2] & 1
+        icy = self.parent.actordata[2] & 1
 
         if icy:
             self.image = ImageCache['GiantThwompIce']
@@ -727,10 +727,10 @@ class ActorImage_NewerKoopa(actorlib.ActorImage_StaticMultiple):  # 57
 
     def dataChanged(self):
         # get properties
-        props = self.parent.spritedata[5]
-        shell = (props >> 4) & 1 or (self.parent.spritedata[2] >> 4) != 0
+        props = self.parent.actordata[5]
+        shell = (props >> 4) & 1 or (self.parent.actordata[2] >> 4) != 0
         red = props & 1
-        texhack = (self.parent.spritedata[2] & 0xF) % 5
+        texhack = (self.parent.actordata[2] & 0xF) % 5
 
         if not shell:
 
@@ -784,9 +784,9 @@ class ActorImage_NewerParaKoopa(actorlib.ActorImage_StaticMultiple):  # 58
             return
 
         # get properties
-        red = self.parent.spritedata[5] & 1
-        mode = (self.parent.spritedata[5] >> 4) & 3
-        texhack = (self.parent.spritedata[2] & 0xF) % 5
+        red = self.parent.actordata[5] & 1
+        mode = (self.parent.actordata[5] >> 4) & 3
+        texhack = (self.parent.actordata[2] & 0xF) % 5
 
         if texhack == 0:
             if mode == 3:
@@ -808,7 +808,7 @@ class ActorImage_NewerParaKoopa(actorlib.ActorImage_StaticMultiple):  # 58
 
         if mode == 1 or mode == 2:
 
-            turnImmediately = self.parent.spritedata[4] & 1 == 1
+            turnImmediately = self.parent.actordata[4] & 1 == 1
             track = self.aux[0]
 
             if mode == 1:
@@ -870,9 +870,9 @@ class ActorImage_NewerSpikeTop(actorlib.ActorImage_StaticMultiple):  # 60
             ImageCache[f'SpikeTop31{style}'] = ImageCache[f'SpikeTop01{style}'].transformed(Transform)
 
     def dataChanged(self):
-        orientation = (self.parent.spritedata[5] >> 4) % 4
-        direction = self.parent.spritedata[5] & 1
-        colour = self.parent.spritedata[2] & 7
+        orientation = (self.parent.actordata[5] >> 4) % 4
+        direction = self.parent.actordata[5] & 1
+        colour = self.parent.actordata[2] & 7
 
         color = ("", "_red", "_orange", "_yellow", "_green", "_hothead", "_purple", "_black")[colour]
         # slow patch folder is slow, 2
@@ -913,7 +913,7 @@ class ActorImage_NewerSpikeBall(actorlib.ActorImage_StaticMultiple):  # 63
         actorlib.loadIfNotInImageCache('SnowBall', 'snow_ball.png')
 
     def dataChanged(self):
-        snowy = self.parent.spritedata[2] & 1
+        snowy = self.parent.actordata[2] & 1
         if snowy:
             self.image = ImageCache['SnowBall']
         else:
@@ -943,8 +943,8 @@ class ActorImage_NewerBouncyCloud(actorlib.ActorImage_StaticMultiple):  # 78
                 ImageCache[name] = actorlib.GetPixmap(f"cloud_trampoline_{size.lower()}{style}.png")
 
     def dataChanged(self):
-        style = (self.parent.spritedata[2] & 0xF) % 7
-        raw_size = (self.parent.spritedata[4] >> 4) & 1
+        style = (self.parent.actordata[2] & 0xF) % 7
+        raw_size = (self.parent.actordata[4] >> 4) & 1
         size = "Small" if raw_size == 0 else "Big"
 
         if style == 0 or style > 6:
@@ -996,7 +996,7 @@ class ActorImage_NewerHammerBroNormal(actorlib.ActorImage_StaticMultiple):  # 95
         actorlib.loadIfNotInImageCache('HammerBroBlack', 'hammerbro_black.png')
 
     def dataChanged(self):
-        black = self.parent.spritedata[2] & 1
+        black = self.parent.actordata[2] & 1
         self.image = ImageCache['HammerBro'] if not black else ImageCache['HammerBroBlack']
 
         super().dataChanged()
@@ -1017,7 +1017,7 @@ class ActorImage_GiantSpikeBall(actorlib.ActorImage_StaticMultiple):  # 98
         actorlib.loadIfNotInImageCache('GiantSnowBall', 'giant_snow_ball.png')
 
     def dataChanged(self):
-        snowy = self.parent.spritedata[2] & 1
+        snowy = self.parent.actordata[2] & 1
 
         if snowy:
             self.image = ImageCache['GiantSnowBall']
@@ -1035,7 +1035,7 @@ class ActorImage_NewerBobomb(actorlib.ActorImage_StaticMultiple):  # 101
             ImageCache[f'Bobomb{i + 1}'] = actorlib.GetPixmap(f'bobomb_{i + 1}.png')
 
     def dataChanged(self):
-        colour = (self.parent.spritedata[2] & 0xF) % 9
+        colour = (self.parent.actordata[2] & 0xF) % 9
         if colour == 0:
             self.image = ImageCache['Bobomb']
             self.offset = (-8, -8)
@@ -1071,8 +1071,8 @@ class ActorImage_NewerPokey(actorlib.ActorImage_StaticMultiple):  # 105
         if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
-        height = self.parent.spritedata[5] % 8
-        style = self.parent.spritedata[2] % 5
+        height = self.parent.actordata[5] % 8
+        style = self.parent.actordata[2] % 5
         color = ("", "pumpkin", "", "jungle", "lava")[style]
 
         pix = QtGui.QPixmap(100, 252)
@@ -1136,7 +1136,7 @@ class ActorImage_NewerFloatingBarrel(actorlib.ActorImage_StaticMultiple):  # 145
         if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
-        color = self.parent.spritedata[2] & 3
+        color = self.parent.actordata[2] & 3
         if color == 0:
             img = ImageCache['FloatingBarrel']
         else:
@@ -1208,7 +1208,7 @@ class ActorImage_BigPumpkin(actorlib.ActorImage_StaticMultiple):  # 157
 
     def dataChanged(self):
 
-        power = self.parent.spritedata[5] & 0xF
+        power = self.parent.actordata[5] & 0xF
         self.image = ImageCache[f'BigPumpkin{power}']
         super().dataChanged()
 
@@ -1226,8 +1226,8 @@ class ActorImage_ShyGuyGiant(actorlib.ActorImage_Static): # 167
                 ImageCache[f'ShyGuy{size}{colour}'] = actorlib.GetPixmap(f'shyguy_{size}_{colour}.png')
 
     def dataChanged(self):
-        size = (self.parent.spritedata[2] >> 4) & 3
-        colour = (self.parent.spritedata[2] & 0xF) % 5
+        size = (self.parent.actordata[2] >> 4) & 3
+        colour = (self.parent.actordata[2] & 0xF) % 5
         scale = ("big", "mega", "colossal")[size]
         color = ("red", "blue", "green", "yellow", "magenta")[colour]
 
@@ -1264,10 +1264,10 @@ class ActorImage_Meteor(actorlib.ActorImage_StaticMultiple):  # 183
         ImageCache['MeteorElectric'] = actorlib.GetPixmap('meteor_electric.png')
 
     def dataChanged(self):
-        multiplier = self.parent.spritedata[4] / 20
+        multiplier = self.parent.actordata[4] / 20
         if multiplier == 0:
             multiplier = 0.01
-        isElectric = (self.parent.spritedata[5] >> 4) & 1
+        isElectric = (self.parent.actordata[5] >> 4) & 1
 
         # Get the size data, taking into account the size
         # differences between the non-electric and
@@ -1314,7 +1314,7 @@ class ActorImage_MidwayFlag(actorlib.ActorImage_StaticMultiple):  # 188
             ImageCache[f'MidwayFlag{i}'] = actorlib.GetPixmap(f'midway_flag_{i}.png')
 
     def dataChanged(self):
-        style = self.parent.spritedata[2] % 19
+        style = self.parent.actordata[2] % 19
 
         self.image = ImageCache[f'MidwayFlag{style}']
         if style == 18:
@@ -1347,8 +1347,8 @@ class ActorImage_TileEventNewer(common.ActorImage_TileEvent):  # 191
             return actorlib.GetTile(45)
 
         if type in [8, 9, 10, 11]:
-            row = self.parent.spritedata[2] & 0xF
-            col = self.parent.spritedata[3] >> 4
+            row = self.parent.actordata[2] & 0xF
+            col = self.parent.actordata[3] >> 4
 
             tilenum = 256 * (type - 8)
             tilenum += row * 16 + col
@@ -1380,8 +1380,8 @@ class ActorImage_NewerHuckitCrab(actorlib.ActorImage_StaticMultiple):  # 195
         ImageCache['HuckitCrabWhiteR'] = QtGui.QPixmap.fromImage(Wintercrab.mirrored(True, False))
 
     def dataChanged(self):
-        info = self.parent.spritedata[5]
-        colour = self.parent.spritedata[2] & 1
+        info = self.parent.actordata[5]
+        colour = self.parent.actordata[2] & 1
 
         colour = ("", "White")[colour]
         if 'HuckitCrabWhiteR' not in ImageCache:
@@ -1411,7 +1411,7 @@ class ActorImage_NewerGiantGoomba(actorlib.ActorImage_StaticMultiple):  # 198
 
     def dataChanged(self):
 
-        colour = (self.parent.spritedata[2] & 0xF) % 7
+        colour = (self.parent.actordata[2] & 0xF) % 7
 
         if colour == 0:
             self.image = ImageCache['GiantGoomba']
@@ -1433,7 +1433,7 @@ class ActorImage_NewerMegaGoomba(actorlib.ActorImage_StaticMultiple):  # 199
             ImageCache[f'MegaGoomba{i + 1}'] = actorlib.GetPixmap(f'mega_goomba_{i + 1}.png')
 
     def dataChanged(self):
-        colour = (self.parent.spritedata[2] & 0xF) % 7
+        colour = (self.parent.actordata[2] & 0xF) % 7
 
         if colour == 0:
             self.image = ImageCache['MegaGoomba']
@@ -1497,12 +1497,11 @@ class ActorImage_NewerLineBlock(common.ActorImage_LineBlock):  # 219
             ImageCache[f'LineBlock{i + 1}'] = actorlib.GetPixmap(f'lineblock{i + 1}.png')
 
     def dataChanged(self):
-        # Make sure the relevant images have been loaded before processing the
-        # sprite settings
+        # Make sure the relevant images have been loaded before processing the settings
         if ImageCache['LineBlock8'] is None:
             return
 
-        color = (self.parent.spritedata[2] & 0xF) % 9
+        color = (self.parent.actordata[2] & 0xF) % 9
 
         self.setLineBlockImage(ImageCache[f'LineBlock{color}'])
 
@@ -1519,8 +1518,8 @@ class ActorImage_NewerSpringBlock(actorlib.ActorImage_StaticMultiple):  # 223
             ImageCache[f'SpringBlockAlt{i + 1}'] = actorlib.GetPixmap(f'spring_block_alt_{i + 1}.png')
 
     def dataChanged(self):
-        colour = (self.parent.spritedata[2] & 0xF) % 4
-        alt = self.parent.spritedata[5] & 1
+        colour = (self.parent.actordata[2] & 0xF) % 4
+        alt = self.parent.actordata[5] & 1
 
         if colour == 0:
             self.image = ImageCache['SpringBlockAlt'] if alt else ImageCache['SpringBlock']
@@ -1546,7 +1545,7 @@ class ActorImage_NewerBramball(actorlib.ActorImage_StaticMultiple):  # 230
             ImageCache[f'Bramball{i}'] = actorlib.GetPixmap(f'bramball_{i}.png')
 
     def dataChanged(self):
-        colour = (self.parent.spritedata[2] & 0xF) % 5
+        colour = (self.parent.actordata[2] & 0xF) % 5
 
         if colour == 0:
             self.image = ImageCache['Bramball']
@@ -1584,11 +1583,11 @@ class ActorImage_NewerWiggleShroom(actorlib.ActorImage):  # 231
         if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
-        width = (self.parent.spritedata[4] & 0xF0) >> 4
-        long = (self.parent.spritedata[3] >> 2) & 1
-        extends = (self.parent.spritedata[3] >> 5) & 1
-        distance = self.parent.spritedata[3] & 3 # this is also the stem length
-        colour = (self.parent.spritedata[2] & 0xF) % 6
+        width = (self.parent.actordata[4] & 0xF0) >> 4
+        long = (self.parent.actordata[3] >> 2) & 1
+        extends = (self.parent.actordata[3] >> 5) & 1
+        distance = self.parent.actordata[3] & 3 # this is also the stem length
+        colour = (self.parent.actordata[2] & 0xF) % 6
         shroom = ("", "red", "orange", "", "green", "blue")[colour]
 
         self.xOffset = -(width * 8) - 20
@@ -1639,8 +1638,8 @@ class ActorImage_LineEvent(actorlib.ActorImage):  # 244
         if not isinstance(self.aux[0], actorlib.AuxiliaryRectOutline):
             return
 
-        width = (self.parent.spritedata[5] >> 4) & 0xF
-        height = self.parent.spritedata[4] & 0xF
+        width = (self.parent.actordata[5] >> 4) & 0xF
+        height = self.parent.actordata[4] & 0xF
         if width == 0:
             w = 1
         else:
@@ -1669,7 +1668,7 @@ class ActorImage_ElectricLine(actorlib.ActorImage_StaticMultiple):  # 250
         if not isinstance(self.aux[0], actorlib.AuxiliaryRectOutline):
             return
 
-        left = self.parent.spritedata[5] & 1
+        left = self.parent.actordata[5] & 1
 
         if left:
             self.image = ImageCache['ElectricLineLeft']
@@ -1708,7 +1707,7 @@ class ActorImage_NewerParabomb(actorlib.ActorImage_StaticMultiple):  # 269
             ImageCache[f'Parabomb{i + 1}'] = actorlib.GetPixmap(f'parabomb_{i + 1}.png')
 
     def dataChanged(self):
-        colour = (self.parent.spritedata[2] & 0xF) % 9
+        colour = (self.parent.actordata[2] & 0xF) % 9
         self.offset = (-2, -16)
 
         if colour == 0:
@@ -1744,7 +1743,7 @@ class ActorImage_AngrySun(actorlib.ActorImage_StaticMultiple):  # 282
         actorlib.loadIfNotInImageCache('AngryMoon', 'angry_moon.png')
 
     def dataChanged(self):
-        isMoon = self.parent.spritedata[5] & 1
+        isMoon = self.parent.actordata[5] & 1
         self.image = ImageCache['AngrySun' if not isMoon else 'AngryMoon']
         self.offset = (-18, -18) if not isMoon else (-13, -13)
 
@@ -1758,7 +1757,7 @@ class ActorImage_FuzzyBear(actorlib.ActorImage_StaticMultiple):  # 283
         actorlib.loadIfNotInImageCache('FuzzyBearBig', 'fuzzy_bear_big.png')
 
     def dataChanged(self):
-        big = (self.parent.spritedata[2] >> 4) & 1
+        big = (self.parent.actordata[2] >> 4) & 1
         self.image = ImageCache['FuzzyBear' if not big else 'FuzzyBearBig']
 
         super().dataChanged()
@@ -1795,8 +1794,8 @@ class ActorImage_NewerParabeetle(actorlib.ActorImage_StaticMultiple):  # 291
 
     def dataChanged(self):
         self.yOffset = -8 / 1.5
-        direction = self.parent.spritedata[5] & 0xf
-        colour = self.parent.spritedata[2] & 15
+        direction = self.parent.actordata[5] & 0xf
+        colour = self.parent.actordata[2] & 15
         if colour > 10:
             colour = 0
 
@@ -1835,8 +1834,8 @@ class ActorImage_NewerHeavyParabeetle(actorlib.ActorImage_StaticMultiple):  # 29
 
     def dataChanged(self):
         self.yOffset = -85 / 1.5
-        direction = self.parent.spritedata[5] & 0xf
-        colour = self.parent.spritedata[2] & 15
+        direction = self.parent.actordata[5] & 0xf
+        colour = self.parent.actordata[2] & 15
         if colour > 10:
             colour = 0
 
@@ -1875,8 +1874,8 @@ class ActorImage_NewerMegaBuzzy(actorlib.ActorImage_StaticMultiple):  # 296
 
     def dataChanged(self):
 
-        direction = self.parent.spritedata[5] & 3
-        style = (self.parent.spritedata[2] & 0xF) % 10
+        direction = self.parent.actordata[5] & 3
+        style = (self.parent.actordata[2] & 0xF) % 10
         dir = ("R", "L", "F", "R")[direction]
         colour = ("", "red", "orange", "yellow", "green", "blue", "purple", "black", "shyguy", "monty")[style]
 
@@ -1914,8 +1913,8 @@ class ActorImage_RockyBossWrench(actorlib.ActorImage_StaticMultiple):  # 302
                 ImageCache[f'RockyBossWrench{big}{direction}'] = actorlib.GetPixmap(f'rocky_boss_wrench_{big}{direction}.png')
 
     def dataChanged(self):
-        big = (self.parent.spritedata[5] >> 4) & 1
-        direction = self.parent.spritedata[5] & 3
+        big = (self.parent.actordata[5] >> 4) & 1
+        direction = self.parent.actordata[5] & 3
         if direction == 3:
             direction = 2
 
@@ -1951,7 +1950,7 @@ class ActorImage_NewerMegaIcicle(actorlib.ActorImage_StaticMultiple):  # 311
         actorlib.loadIfNotInImageCache('MegaCrystal', 'mega_crystal.png')
 
     def dataChanged(self):
-        crystal = (self.parent.spritedata[3] >> 4) & 1
+        crystal = (self.parent.actordata[3] >> 4) & 1
         self.image = ImageCache['MegaIcicle'] if not crystal else ImageCache['MegaCrystal']
 
         super().dataChanged()
@@ -2001,9 +2000,9 @@ class ActorImage_FallingChestnut(actorlib.ActorImage_StaticMultiple):  # 320
                 ImageCache[f'Chestnut{color}{itemName}'] = newPix
 
     def dataChanged(self):
-        yellow = self.parent.spritedata[5] & 1
-        scale = (self.parent.spritedata[5] >> 4) & 0xF
-        item = self.parent.spritedata[3] & 0xF
+        yellow = self.parent.actordata[5] & 1
+        scale = (self.parent.actordata[5] >> 4) & 0xF
+        item = self.parent.actordata[3] & 0xF
 
         color = ("Brown", "Yellow")[yellow]
         itemName = ('Goomba', 'Spiny', 'Coin', 'Fire', 'StarCoin')
@@ -2075,9 +2074,9 @@ class ActorImage_MegaThwomp(actorlib.ActorImage):  # 322
         ):
             return
 
-        left_buffer = self.parent.spritedata[2] + 2
-        right_buffer = self.parent.spritedata[3] + 2
-        top_buffer = self.parent.spritedata[4] + 2
+        left_buffer = self.parent.actordata[2] + 2
+        right_buffer = self.parent.actordata[3] + 2
+        top_buffer = self.parent.actordata[4] + 2
 
         self.aux[1].setSize(left_buffer * 8, 16)
         self.aux[1].setPos((-left_buffer * 12) + 24, 0)
@@ -2123,8 +2122,8 @@ class ActorImage_Podouble(actorlib.ActorImage):  # 324
             or not isinstance(self.aux[1], actorlib.AuxiliaryTrackObject)
         ):
             return
-        fire = (self.parent.spritedata[2] >> 4) & 1
-        distance = self.parent.spritedata[5] & 0xFF
+        fire = (self.parent.actordata[2] >> 4) & 1
+        distance = self.parent.actordata[5] & 0xFF
 
         self.aux[0].image = ImageCache['PodoubleFire' if fire else 'PodoubleIce']
         self.aux[1].setSize(16, 208 + (distance * 8))
@@ -2144,8 +2143,8 @@ class ActorImage_NewerBigShell(actorlib.ActorImage_StaticMultiple):  # 341
         actorlib.loadIfNotInImageCache('BigShellInside', 'bigshell_inside.png')
 
     def dataChanged(self):
-        style = self.parent.spritedata[5] & 1
-        colour = self.parent.spritedata[2] & 1
+        style = self.parent.actordata[5] & 1
+        colour = self.parent.actordata[2] & 1
 
         colour = ("Green", "Red")[colour]
         if style == 0:
@@ -2173,7 +2172,7 @@ class ActorImage_ShyGuy(actorlib.ActorImage_StaticMultiple):  # 351
             ImageCache[f'ShyGuy{i}'] = actorlib.GetPixmap(f'shyguy_{i}.png')
 
     def dataChanged(self):
-        type = (self.parent.spritedata[2] >> 4) & 15
+        type = (self.parent.actordata[2] >> 4) & 15
 
         #1 & 6 use the same image as 10 & 7 respectively, the rest use 0
         if type == 7:
@@ -2209,7 +2208,7 @@ class ActorImage_NewerFruit(actorlib.ActorImage_StaticMultiple):  # 357
 
     def dataChanged(self):
 
-        style = self.parent.spritedata[5] & 1
+        style = self.parent.actordata[5] & 1
         if style == 0:
             self.image = ImageCache['Fruit']
             self.offset = (0, 0)
@@ -2240,10 +2239,10 @@ class ActorImage_NewerBush(actorlib.ActorImage_StaticMultiple):  # 387
                 ImageCache[f'bush{style}{size}'] = actorlib.GetPixmap(f'bush_{style}_{size}.png')
 
     def dataChanged(self):
-        style = self.parent.spritedata[2] >> 4
+        style = self.parent.actordata[2] >> 4
         colors = style % 6
-        size = self.parent.spritedata[5] & 3
-        yellowish = (self.parent.spritedata[5] >> 4) & 1
+        size = self.parent.actordata[5] & 3
+        yellowish = (self.parent.actordata[5] >> 4) & 1
 
         bush = ("green", "brown", "darkred", "yellow", "darkbrown", "red")[colors]
         scale = ("small", "med", "large", "xlarge")[size]
@@ -2285,7 +2284,7 @@ class ActorImage_NewerGlowBlock(actorlib.ActorImage):  # 391
         if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
-        purple = self.parent.spritedata[2] & 1
+        purple = self.parent.actordata[2] & 1
         self.aux[0].image = ImageCache['GlowBlock' if not purple else 'GlowBlockPurple']
 
     @staticmethod
@@ -2337,9 +2336,9 @@ class ActorImage_NewerGabon(actorlib.ActorImage_StaticMultiple):  # 414
             ImageCache[f'Gabon{color}Spike'] = actorlib.GetPixmap(f'gabon_{color}_spike.png')
 
     def dataChanged(self):
-        throwdir = self.parent.spritedata[5] & 1
-        facing = self.parent.spritedata[4] & 1
-        style = self.parent.spritedata[2] & 7
+        throwdir = self.parent.actordata[5] & 1
+        facing = self.parent.actordata[4] & 1
+        style = self.parent.actordata[2] & 7
 
         if 'GabonsnowRight' not in ImageCache:
             return
@@ -2394,9 +2393,9 @@ class ActorImage_NewerBowserSwitchLg(actorlib.ActorImage_StaticMultiple):  # 479
                 ImageCache[f'ELSwitchU{i}'] = QtGui.QPixmap.fromImage(elg2.mirrored(True, True))
 
     def dataChanged(self):
-        midway = (self.parent.spritedata[2] >> 6) & 1
-        colour = (self.parent.spritedata[3] & 0xF) % 6
-        upsideDown = self.parent.spritedata[5] & 1
+        midway = (self.parent.actordata[2] >> 6) & 1
+        colour = (self.parent.actordata[3] & 0xF) % 6
+        upsideDown = self.parent.actordata[5] & 1
 
         if midway:
             self.alpha = 0.5

@@ -84,7 +84,7 @@ def update_actors_module(path: str):
     new_data = new_data.replace("import data.common.sprites", "import data.common.actors")
 
     # Fix (very rarely used) references to the actor ID
-    new_data = new_data.replace("parent.type", "parent.sprite_num")
+    new_data = new_data.replace("parent.type", "parent.actor_num")
 
     # All Sprite -> Actor changes
     sprite_strings = [

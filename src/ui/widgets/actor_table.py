@@ -9,6 +9,6 @@ class ActorTableWidget(QtWidgets.QTableWidget):
     def keyPressEvent(self, e):
         if e is not None:
             if e.key() == QtCore.Qt.Key.Key_Space or e.key() == QtCore.Qt.Key.Key_Return:
-                ActorItem.moveToSprite(self.currentItem())
+                ActorItem.moveToActor(self.currentItem())
 
         super().keyPressEvent(e)

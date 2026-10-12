@@ -40,7 +40,7 @@ class ActorOrderList(QtWidgets.QWidget):
         self.table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
 
         self.table.itemSelectionChanged.connect(self.select_item)
-        self.table.itemDoubleClicked.connect(ActorItem.moveToSprite)
+        self.table.itemDoubleClicked.connect(ActorItem.moveToActor)
         self.table.itemEntered.connect(self.toolTip)
 
         self.move_up_btn = QtWidgets.QPushButton(globals_.trans.string('Actors', 25))
@@ -93,7 +93,7 @@ class ActorOrderList(QtWidgets.QWidget):
 
         # Add the actor id
         id_item = QtWidgets.QTableWidgetItem()
-        id_item.setData(QtCore.Qt.ItemDataRole.DisplayRole, actor.sprite_num)
+        id_item.setData(QtCore.Qt.ItemDataRole.DisplayRole, actor.actor_num)
         id_item.setData(QtCore.Qt.ItemDataRole.UserRole, actor)
         id_item.setFlags(id_item.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)
         self.table.setItem(row, 0, id_item)

@@ -8,7 +8,7 @@ from ui.theme.reggie_theme import GetIcon
 # TODO:
 # - Batch feature
 # - Import file for quick batch swapping
-# - Selection multi-swapping (select sprites of different IDs, open dialog, already in batch mode with those IDs chosen)
+# - Selection multi-swapping (select actors of different IDs, open dialog, already in batch mode with those IDs chosen)
 class ActorSwitchDialog(QtWidgets.QDialog):
     """
     Dialog to switch the IDs of selected actors
@@ -72,13 +72,13 @@ class ActorSwitchDialog(QtWidgets.QDialog):
             return
 
         for actor in globals_.Area.actors:
-            if actor.sprite_num == curr_type:
+            if actor.actor_num == curr_type:
                 actor.SetType(new_type)
 
-                # Fixes sprite image issues
+                # Fixes actor image issues
                 image_classes = globals_.gamedef.getImageClasses()
-                if actor.sprite_num in image_classes:
-                    actor.setImageObj(image_classes[actor.sprite_num])
+                if actor.actor_num in image_classes:
+                    actor.setImageObj(image_classes[actor.actor_num])
                 else:
                     actor.setImageObj(actorlib.ActorImage)
 

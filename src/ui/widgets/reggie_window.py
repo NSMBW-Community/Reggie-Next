@@ -962,7 +962,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             # Get all the actor IDs
             for item in items:
                 if isinstance(item, ActorItem):
-                    id_list.append(item.sprite_num)
+                    id_list.append(item.actor_num)
 
             # If we only have one unique item, pass that as an ID
             if len(set(id_list)) == 1:
@@ -2130,7 +2130,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # https://github.com/Zement/Reggie/blob/master/reggie.py#L3630-L3637
         # Check for unknown actor IDs and show warning message
         if globals_.ShowUnknownActorWarning:
-            if hasattr(globals_.Area, 'unknown_sprite_ids') and globals_.Area.unknown_actor_ids is not None:
+            if hasattr(globals_.Area, 'unknown_actor_ids') and globals_.Area.unknown_actor_ids is not None:
                 actor_ids = sorted(globals_.Area.unknown_actor_ids)
 
                 if len(actor_ids) == 1:
@@ -2369,7 +2369,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if self.actorEditorDock.isVisible():
             obj = self.selObj
             if isinstance(obj, ActorItem):
-                obj.spritedata = data
+                obj.actordata = data
                 obj.UpdateListItem()
                 SetDirty()
 
@@ -2384,7 +2384,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         if isinstance(self.selObj, ActorItem) and self.actorEditorDock.isVisible():
             obj = self.selObj
-            self.actorDataEditor.setActor(obj.sprite_num, initial_data=obj.spritedata)
+            self.actorDataEditor.setActor(obj.actor_num, initial_data=obj.actordata)
         elif isinstance(self.selObj, EntranceItem) and self.entrance_editor_dock.isVisible():
             self.entrance_editor.set_entrance(self.selObj)
         elif isinstance(self.selObj, PathItem) and self.path_editor_dock.isVisible():
@@ -2478,8 +2478,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Actors
         # Extracting the actor id from the actor name is hacky, but it works.
-        globals_.Area.loaded_actors = set(int(desc.split(']')[0][1:]) for desc in dlg.loadedSpritesTab.autoModel.stringList())
-        globals_.Area.force_loaded_actors = set(int(desc.split(']')[0][1:]) for desc in dlg.loadedSpritesTab.customModel.stringList())
+        globals_.Area.loaded_actors = set(int(desc.split(']')[0][1:]) for desc in dlg.loadedActorsTab.autoModel.stringList())
+        globals_.Area.force_loaded_actors = set(int(desc.split(']')[0][1:]) for desc in dlg.loadedActorsTab.customModel.stringList())
 
         # Settings
         globals_.Area.timeLimit = dlg.settingsTab.timer.value() - 200

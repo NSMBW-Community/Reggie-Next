@@ -14,10 +14,10 @@ class GameDefViewer(QtWidgets.QWidget):
         """
         QtWidgets.QWidget.__init__(self)
 
-        # "Has Sprite Images" indicator
-        self.sprite_img_label = QtWidgets.QLabel()
-        self.sprite_img_label.setToolTip(globals_.trans.string('Gamedefs', 0))
-        self.sprite_img_label.setPixmap(GetIcon('rocket-image').pixmap(16, 16))
+        # "Has Actor Images" indicator
+        self.actor_img_label = QtWidgets.QLabel()
+        self.actor_img_label.setToolTip(globals_.trans.string('Gamedefs', 0))
+        self.actor_img_label.setPixmap(GetIcon('rocket-image').pixmap(16, 16))
 
         self.version_label = QtWidgets.QLabel()
 
@@ -30,7 +30,7 @@ class GameDefViewer(QtWidgets.QWidget):
 
         # Make layouts
         left_layout = QtWidgets.QVBoxLayout()
-        left_layout.addWidget(self.sprite_img_label)
+        left_layout.addWidget(self.actor_img_label)
         left_layout.addWidget(self.version_label)
         left_layout.addStretch(1)
 
@@ -55,9 +55,9 @@ class GameDefViewer(QtWidgets.QWidget):
         """
         Updates all info
         """
-        sprite_folders = globals_.gamedef.recursiveFiles('actors', is_folder=True)[0]
+        actor_folders = globals_.gamedef.recursiveFiles('actors', is_folder=True)[0]
 
-        if not globals_.gamedef.custom or sprite_folders:
+        if not globals_.gamedef.custom or actor_folders:
             img = GetIcon('rocket').pixmap(16, 16)
         else:
             img = QtGui.QPixmap(16, 16)
@@ -70,7 +70,7 @@ class GameDefViewer(QtWidgets.QWidget):
         title = '<b>%s</b>' % str(globals_.gamedef.name)
         desc = str(globals_.gamedef.description)
 
-        self.sprite_img_label.setPixmap(img)
+        self.actor_img_label.setPixmap(img)
         self.version_label.setText(ver)
         self.title_label.setText(title)
         self.description_label.setText(desc)

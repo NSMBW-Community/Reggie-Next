@@ -60,7 +60,7 @@ class ActorList(QtWidgets.QWidget):
         self.table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
         self.table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
 
-        self.table.itemDoubleClicked.connect(ActorItem.moveToSprite)
+        self.table.itemDoubleClicked.connect(ActorItem.moveToActor)
         self.table.itemEntered.connect(self.toolTip)
 
         # populate filter box
@@ -137,8 +137,8 @@ class ActorList(QtWidgets.QWidget):
             return
         actor = row_item.data(QtCore.Qt.ItemDataRole.UserRole)
 
-        if 0 <= actor.sprite_num < globals_.NumActors:
-            sdef = globals_.Actors[actor.sprite_num]
+        if 0 <= actor.actor_num < globals_.NumActors:
+            sdef = globals_.Actors[actor.actor_num]
         else:
             # No actor definition -> hide
             self.table.setRowHidden(row, True)
@@ -207,7 +207,7 @@ class ActorList(QtWidgets.QWidget):
 
         # Add the actor id
         id_item = QtWidgets.QTableWidgetItem()
-        id_item.setData(QtCore.Qt.ItemDataRole.DisplayRole, actor.sprite_num)
+        id_item.setData(QtCore.Qt.ItemDataRole.DisplayRole, actor.actor_num)
         id_item.setData(QtCore.Qt.ItemDataRole.UserRole, actor)
         id_item.setFlags(id_item.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)
         self.table.setItem(row, 0, id_item)
@@ -326,13 +326,13 @@ class ActorList(QtWidgets.QWidget):
         Returns an (idtype, [values]) dict for every
         idtype this actor has
         """
-        if not 0 <= actor.sprite_num < globals_.NumActors:
+        if not 0 <= actor.actor_num < globals_.NumActors:
             return {}
 
-        sdef = globals_.Actors[actor.sprite_num]
+        sdef = globals_.Actors[actor.actor_num]
         res = {}
         decoder = PropertyDecoder(ActorField())
-        data = actor.spritedata
+        data = actor.actordata
 
         for field in sdef.fields:
             # Only values (1) and fields (2) have idtypes, so ignore all other

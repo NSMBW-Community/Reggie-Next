@@ -10,7 +10,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
     """
     Dialog for the resize option.
     """
-    def __init__(self, spriteid):
+    def __init__(self, actor_id):
         """
         Initialise the dialog
         """
@@ -21,10 +21,10 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         # Scale levels used by both Resizer modes
         self.scaleLevels =  [1.0, 0.25, 0.5, 0.75, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 10.0]
 
-        if 0 <= spriteid < globals_.NumActors:
-            self.sprite = globals_.Actors[spriteid]
+        if 0 <= actor_id < globals_.NumActors:
+            self.actor = globals_.Actors[actor_id]
         else:
-            self.sprite = None
+            self.actor = None
 
         ## Slots
         used = self.getNyb5And7Availability()
@@ -47,7 +47,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         selDesc = QtWidgets.QLabel(globals_.trans.string('ResizeChoiceDlg', 13))
         glbDesc = QtWidgets.QLabel(globals_.trans.string('ResizeChoiceDlg', 14))
 
-        # Display a warning if this sprite has settings on Nybbles 5 or 7
+        # Display a warning if this actor_id has settings on Nybbles 5 or 7
         isDispWarning = True
         warnLabel = QtWidgets.QLabel('')
         warnLabel.setStyleSheet("color: orange;")
@@ -124,16 +124,16 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
             # Just in case we can't find it for whatever reason
             self.radio1.setChecked(True)
 
-            for type, sprite in self.present:
-                if sprite.sprite_num != globals_.SpecialEventActorID:
+            for type, actor_id in self.present:
+                if actor_id.actor_num != globals_.SpecialEventActorID:
                     continue
 
-                type = sprite.spritedata[5] & 0xF
+                type = actor_id.actordata[5] & 0xF
                 if type == 5:
                     self.radio3.setChecked(True)
                     self.glbScaleWidget.setEnabled(True)
                 elif type == 6:
-                    if (sprite.spritedata[5] >> 4) != 0:
+                    if (actor_id.actordata[5] >> 4) != 0:
                         self.radio2.setChecked(True)
                     else:
                         self.radio1.setChecked(True)
@@ -153,13 +153,13 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         else:
             btnText = globals_.trans.string('ResizeChoiceDlg', 5)
 
-        spriteButton = QtWidgets.QPushButton(btnText)
-        spriteButton.clicked.connect(self.handleResizer)
+        actor_button = QtWidgets.QPushButton(btnText)
+        actor_button.clicked.connect(self.handleResizer)
 
         # Create layout
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Close)
         buttonBox.rejected.connect(self.reject)
-        buttonBox.addButton(spriteButton, QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
+        buttonBox.addButton(actor_button, QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
 
         mainLayout = QtWidgets.QVBoxLayout()
         mainLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('ResizeChoiceDlg', 0)))
@@ -175,17 +175,17 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
 
     def getNyb5And7Availability(self):
         """
-        Gets whether nybbles 5 or 7 (or both/none) are occupied by spritedata or not
+        Gets whether nybbles 5 or 7 (or both/none) are occupied by actordata or not
         """
         nyb5 = (17, 21) # excludes end
         nyb7 = (25, 29)
 
         found = {5: [], 7: []}
 
-        if self.sprite is None:
+        if self.actor is None:
             return found
 
-        for field in self.sprite.fields:
+        for field in self.actor.fields:
             bit = field.bit
             if isinstance(bit, tuple) and not isinstance(bit[0], tuple):
                 bit = (bit,)
@@ -212,22 +212,22 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
     def checkSpecialEvent(self):
         """
         Find Special Event and then check if it has resize set.
-        Returns a list of (slot, sprite) pairs, where slot = 2 means it is a global
+        Returns a list of (slot, actor) pairs, where slot = 2 means it is a global
         resize.
         """
         slots = []
-        for sprite in globals_.Area.actors:
-            if sprite.sprite_num != globals_.SpecialEventActorID:
+        for actor in globals_.Area.actors:
+            if actor.actor_num != globals_.SpecialEventActorID:
                 continue
 
-            type = sprite.spritedata[5] & 0xF
+            type = actor.actordata[5] & 0xF
             if type == 5:
                 # Global resizer
-                slots.append((2, sprite))
+                slots.append((2, actor))
             elif type == 6:
                 # Selective resizer
-                slot = (sprite.spritedata[5] >> 4) & 1
-                slots.append((slot, sprite))
+                slot = (actor.actordata[5] >> 4) & 1
+                slots.append((slot, actor))
 
         return slots
 
@@ -238,18 +238,18 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         if not self.present:
             self.createResizer()
         else:
-            for type, sprite in self.present:
-                if sprite.sprite_num == globals_.SpecialEventActorID:
-                    self.editResizer(sprite)
+            for type, actor in self.present:
+                if actor.actor_num == globals_.SpecialEventActorID:
+                    self.editResizer(actor)
                     break
 
         return self.accept()
 
-    def editResizer(self, sprite):
+    def editResizer(self, actor):
         """
         Updates the existing Special Event
         """
-        data = list(sprite.spritedata)
+        data = list(actor.actordata)
 
         slot = self.buttongroup.checkedId()
         if slot == 2: # global
@@ -257,7 +257,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         else: # only slot
             data[5] = (slot << 4) | 6
 
-        sprite.spritedata = bytes(data)
+        actor.actordata = bytes(data)
 
     def createResizer(self):
         """
@@ -284,20 +284,20 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         y = selObj.objy if selObj.objy is not None else 0
         special_event_id = globals_.SpecialEventActorID
 
-        if ActorItem.CreateSprite(x, y, special_event_id, data) is not None:
+        if ActorItem.CreateActor(x, y, special_event_id, data) is not None:
             mainWindow.scene.update()
 
     def getGlobalScale(self):
         """
         Get the scale for the Global Resizer
         """
-        for sprite in globals_.Area.actors:
-            if sprite.sprite_num != globals_.SpecialEventActorID:
+        for actor in globals_.Area.actors:
+            if actor.actor_num != globals_.SpecialEventActorID:
                 continue
 
-            type = sprite.spritedata[5] & 0xF
+            type = actor.actordata[5] & 0xF
             if type == 5:
-                return (sprite.spritedata[5] >> 4)
+                return (actor.actordata[5] >> 4)
             else:
                 return 0
 

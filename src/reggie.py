@@ -212,15 +212,15 @@ def main():
     if FilesAreMissing():
         sys.exit(1)
 
-    # Load some requirements for spritelib
+    # Load some requirements for actorlib
     LoadTheme()
     LoadOverrides()
 
-    # Initialise spritelib
+    # Initialise actorlib
     actorlib.OutlineColor = globals_.theme.color('smi')
     actorlib.main()
 
-    # Load the gamedef (including sprite image path, for which we need spritelib)
+    # Load the gamedef (including actor image path, for which we need actorlib)
     LoadGameDef(setting('LastGameDef'))
     LoadBasics()
 
@@ -240,12 +240,12 @@ def main():
     globals_.CollisionsShown = setting('ShowCollisions', False)
     globals_.RealViewEnabled = setting('RealViewEnabled', True)
     globals_.ObjectsFrozen = setting('FreezeObjects', False)
-    globals_.ActorsFrozen = setting('FreezeSprites', False)
+    globals_.ActorsFrozen = setting('FreezeActors', False)
     globals_.EntrancesFrozen  = setting('FreezeEntrances', False)
     globals_.LocationsFrozen = setting('FreezeLocations', False)
     globals_.PathsFrozen = setting('FreezePaths', False)
     globals_.CommentsFrozen = setting('FreezeComments', False)
-    globals_.ActorsShown = setting('ShowSprites', True)
+    globals_.ActorsShown = setting('ShowActors', True)
     globals_.ActorImagesShown = setting('ShowActorImages', True)
     globals_.LocationsShown = setting('ShowLocations', True)
     globals_.EntrancesShown = setting('ShowEntrances', True)
@@ -268,7 +268,7 @@ def main():
     globals_.UseRecentFileKeys = setting('UseRecentFileKeys', True)
     globals_.AutoDiagEnabled = setting('AutoDiagEnabled', True)
     globals_.AutoDiagFrequency = setting('AutoDiagFrequency', 1)
-    globals_.ShowUnknownSpriteWarning = setting('ShowUnknownSpriteWarning', True)
+    globals_.ShowUnknownActorWarning = setting('ShowUnknownActorWarning', True)
     globals_.MoveItemsWithArrowKeys = setting('MoveItemsWithArrowKeys', True)
     globals_.ShowTilesetPreview = setting('ShowTilesetPreview', True)
     actorlib.RealViewEnabled = globals_.RealViewEnabled

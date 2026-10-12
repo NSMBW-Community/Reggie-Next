@@ -24,7 +24,7 @@ class InstanceDefinition_ActorItem(InstanceDefinition):
     """
     fieldNames = (
         'type',
-        'spritedata',
+        'actordata',
     )
 
     @staticmethod
@@ -37,15 +37,15 @@ class InstanceDefinition_ActorItem(InstanceDefinition):
 
 class ActorItem(LevelEditorItem):
     """
-    Level editor item that represents a sprite
+    Level editor item that represents an actor
     """
     instanceDef = InstanceDefinition_ActorItem
     BoundingRect = QtCore.QRectF(0, 0, 24, 24)
     SelectionRect = QtCore.QRectF(0, 0, 23, 23)
 
-    def __init__(self, sprite_num: int, x: float, y: float, data: bytes) -> None:
+    def __init__(self, actor_num: int, x: float, y: float, data: bytes) -> None:
         """
-        Creates a sprite with specific data
+        Creates a actor with specific data
         """
         LevelEditorItem.__init__(self)
         self.setZValue(26000)
@@ -53,22 +53,22 @@ class ActorItem(LevelEditorItem):
             self.setAcceptHoverEvents(True)
 
         self.font = globals_.NumberFont
-        self.sprite_num = sprite_num
+        self.actor_num = actor_num
         self.objx = x
         self.objy = y
-        self.spritedata = data
+        self.actordata = data
         self.LevelRect = QtCore.QRectF(self.objx / 16, self.objy / 16, 1.5, 1.5)
         self.ChangingPos = False
         self.zoneID = -1
 
         self.ImageObj = actorlib.ActorImage(self)
 
-        if 0 <= sprite_num < globals_.NumActors:
-            self.name = globals_.Actors[sprite_num].name
+        if 0 <= actor_num < globals_.NumActors:
+            self.name = globals_.Actors[actor_num].name
         else:
             self.name = globals_.trans.string('Actors', 24)
 
-        self.InitializeSprite()
+        self.InitializeActor()
 
         self.setFlag(self.GraphicsItemFlag.ItemIsMovable, not globals_.ActorsFrozen)
         self.setFlag(self.GraphicsItemFlag.ItemIsSelectable, not globals_.ActorsFrozen)
@@ -87,14 +87,14 @@ class ActorItem(LevelEditorItem):
         globals_.DirtyOverride -= 1
 
     @staticmethod
-    def CreateSprite(x: float, y: float, id_: int | None = None, data: bytes | None = None, add_to_scene: bool = True) -> 'ActorItem':
+    def CreateActor(x: float, y: float, id_: int | None = None, data: bytes | None = None, add_to_scene: bool = True) -> 'ActorItem':
         """
-        Creates and returns a new sprite and makes sure it's added to the right
+        Creates and returns a new actor and makes sure it's added to the right
         lists if 'add_to_scene' is set.
-        If 'id_' is not set, the currently selected sprite id is used.
+        If 'id_' is not set, the currently selected actor id is used.
         If 'data' is not set, the current data of the default data editor is used.
         If 'data' is not set and the default data editor is configured for another
-        sprite id than the id of the sprite that is created, a ValueError will
+        actor id than the id of the actor that is created, a ValueError will
         be raised.
         """
         dummy = ActorItem(-1, -1, -1, b'')
@@ -102,11 +102,11 @@ class ActorItem(LevelEditorItem):
             return dummy
 
         if id_ is None:
-            id_ = globals_.CurrentSprite
+            id_ = globals_.CurrentActor
 
         if data is None:
             if globals_.mainWindow.defaultDataEditor.actortype != id_:
-                raise ValueError(f'The default data editor was configured for sprite {globals_.mainWindow.defaultDataEditor.actortype} while trying to use data for sprite {id_}')
+                raise ValueError(f'The default data editor was configured for actor {globals_.mainWindow.defaultDataEditor.actortype} while trying to use data for actor {id_}')
 
             data = globals_.mainWindow.defaultDataEditor.data
 
@@ -114,9 +114,9 @@ class ActorItem(LevelEditorItem):
         spr.positionChanged = ActorItem.position_changed
 
         if add_to_scene:
-            # Check if sprite data exists for this type
+            # Check if actor data exists for this type
             if not (0 <= id_ < globals_.NumActors) or globals_.Actors[id_] is None:
-                # Unknown sprite, don't create
+                # Unknown actor, don't create
                 return dummy
 
             globals_.mainWindow.palette_dock.actor_tab.actor_list.addActor(spr)
@@ -127,7 +127,7 @@ class ActorItem(LevelEditorItem):
             decoder = PropertyDecoder(ActorField())
             sdef = globals_.Actors[id_]
 
-            # Find what values are used by this sprite
+            # Find what values are used by this actor
             for field in sdef.fields:
                 if not isinstance(field, (ListActorField, ValueActorField)):
                     # Only values and lists can be idtypes
@@ -140,7 +140,7 @@ class ActorItem(LevelEditorItem):
 
                 value = decoder.retrieve(data, field.bit)
 
-                # 3. Add the value to self.sprite_idtypes
+                # 3. Add the value to self.actor_idtypes
                 try:
                     counter = globals_.Area.actor_idtypes[idtype]
                 except KeyError:
@@ -158,7 +158,7 @@ class ActorItem(LevelEditorItem):
 
     def position_changed(self, oldx: float, oldy: float, x: float, y: float) -> None:
         """
-        Handle the sprite being dragged
+        Handle the actor being dragged
         """
         if globals_.mainWindow is None:
             return
@@ -170,50 +170,50 @@ class ActorItem(LevelEditorItem):
             self.UpdateListItem()
             SetDirty()
 
-            # The sprite has changed position, so its LevelRect changed, so the
+            # The actor has changed position, so its LevelRect changed, so the
             # level overview needs to be redrawn.
             globals_.mainWindow.level_overview.update()
 
-    def SetType(self, sprite_num: int) -> None:
+    def SetType(self, actor_num: int) -> None:
         """
-        Sets the type of the sprite
+        Sets the type of the actor
         """
-        if 0 <= sprite_num < globals_.NumActors:
-            self.name = globals_.Actors[sprite_num].name
+        if 0 <= actor_num < globals_.NumActors:
+            self.name = globals_.Actors[actor_num].name
         else:
             self.name = globals_.trans.string('Actors', 24) # 'UNKNOWN'
 
-        self.setToolTip(globals_.trans.string('Actors', 0, '[type]', sprite_num, '[name]', self.name))
-        self.sprite_num = sprite_num
+        self.setToolTip(globals_.trans.string('Actors', 0, '[type]', actor_num, '[name]', self.name))
+        self.actor_num = actor_num
 
-        self.InitializeSprite()
+        self.InitializeActor()
         self.UpdateListItem()
 
     def __lt__(self, other: 'ActorItem') -> bool:
-        # Sort by objx, then objy, then sprite type
-        score = lambda sprite: (sprite.objx, sprite.objy, sprite.type)
+        # Sort by objx, then objy, then actor type
+        score = lambda actor: (actor.objx, actor.objy, actor.type)
 
         return score(self) < score(other)
 
-    def InitializeSprite(self) -> None:
+    def InitializeActor(self) -> None:
         """
-        Initializes sprite and creates any auxiliary objects needed
+        Initializes actor and creates any auxiliary objects needed
         """
-        sprite_num = self.sprite_num
+        actor_num = self.actor_num
 
-        if not 0 <= sprite_num < globals_.NumActors:
+        if not 0 <= actor_num < globals_.NumActors:
             return
 
-        self.name = globals_.Actors[sprite_num].name
-        self.setToolTip(globals_.trans.string('Actors', 0, '[type]', self.sprite_num, '[name]', self.name))
+        self.name = globals_.Actors[actor_num].name
+        self.setToolTip(globals_.trans.string('Actors', 0, '[type]', self.actor_num, '[name]', self.name))
 
         imgs = globals_.gamedef.getImageClasses()
-        if sprite_num in imgs:
-            self.setImageObj(imgs[sprite_num])
+        if actor_num in imgs:
+            self.setImageObj(imgs[actor_num])
 
     def setImageObj(self, obj: Callable) -> None:
         """
-        Sets a new sprite image object for this ActorItem
+        Sets a new actor image object for this ActorItem
         """
         for aux_obj in self.ImageObj.aux:
             aux_obj = cast(actorlib.AuxiliaryActorItem, aux_obj)
@@ -225,9 +225,9 @@ class ActorItem(LevelEditorItem):
         self.setZValue(26000)
         self.resetTransform()
 
-        if (self.sprite_num in globals_.gamedef.getImageClasses()) and (self.sprite_num not in actorlib.ActorImagesLoaded):
-            globals_.gamedef.getImageClasses()[self.sprite_num].loadImages()
-            actorlib.ActorImagesLoaded.add(self.sprite_num)
+        if (self.actor_num in globals_.gamedef.getImageClasses()) and (self.actor_num not in actorlib.ActorImagesLoaded):
+            globals_.gamedef.getImageClasses()[self.actor_num].loadImages()
+            actorlib.ActorImagesLoaded.add(self.actor_num)
 
         self.ImageObj = obj(self) if obj else actorlib.ActorImage(self)
 
@@ -240,7 +240,7 @@ class ActorItem(LevelEditorItem):
 
     def UpdateDynamicSizing(self) -> None:
         """
-        Updates the sizes for dynamically sized sprites
+        Updates the sizes for dynamically sized actors
         """
         curr_rect = QtCore.QRectF(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
         curr_aux_rects = []
@@ -274,7 +274,7 @@ class ActorItem(LevelEditorItem):
 
     def UpdateRects(self) -> None:
         """
-        Creates all the rectangles for the sprite
+        Creates all the rectangles for the actor
         """
         self.prepareGeometryChange()
 
@@ -307,8 +307,8 @@ class ActorItem(LevelEditorItem):
                 unitedOffsetRect = imgOffsetRect
 
             # SelectionRect: Used to determine the size of the
-            # "this sprite is selected" translucent white box that
-            # appears when a sprite with an image is selected.
+            # "this actor is selected" translucent white box that
+            # appears when a actor with an image is selected.
             self.SelectionRect = QtCore.QRectF(
                 0.5, 0.5,
                 imgRect.width() - 1,
@@ -316,14 +316,14 @@ class ActorItem(LevelEditorItem):
             )
 
             # LevelRect: Used by the Level Overview to determine
-            # the size and position of the sprite in the level.
+            # the size and position of the actor in the level.
             # Measured in blocks.
             self.LevelRect = QtCore.QRectF(
                 unitedOffsetRect.topLeft() / 24,
                 unitedOffsetRect.size() / 24,
             )
 
-            # BoundingRect: The sprite can only paint within
+            # BoundingRect: The actor can only paint within
             # this area.
             self.BoundingRect = unitedRect.translated(
                 self.ImageObj.actorbox.BoundingRect.topLeft()
@@ -337,13 +337,13 @@ class ActorItem(LevelEditorItem):
                 actorboxOffsetRect.size() / 24,
             )
 
-            # BoundingRect: The sprite can only paint within
+            # BoundingRect: The actor can only paint within
             # this area.
             self.BoundingRect = self.ImageObj.actorbox.BoundingRect
 
     def getFullRect(self) -> QtCore.QRectF:
         """
-        Returns a rectangle that contains the sprite and all
+        Returns a rectangle that contains the actor and all
         auxiliary objects.
         """
         self.UpdateRects()
@@ -377,7 +377,7 @@ class ActorItem(LevelEditorItem):
             if self.ChangingPos:
                 return value
 
-            # The sprite image offset as a point
+            # The actor image offset as a point
             if globals_.ActorImagesShown:
                 offset_point = QtCore.QPointF(*self.ImageObj.getOffset())
             else:
@@ -387,7 +387,7 @@ class ActorItem(LevelEditorItem):
             # block
             new_pos = value / 1.5
 
-            # Move the position to sprite origin space by subtracting the image
+            # Move the position to actor origin space by subtracting the image
             # offset
             origin_pos = (new_pos - offset_point).toPoint()
 
@@ -428,8 +428,8 @@ class ActorItem(LevelEditorItem):
             if drag_offset is not None:
                 origin_pos = (QtCore.QPointF(origin_pos) - drag_offset).toPoint()
 
-            # Move position back to sprite image space by adding the image offset
-            # and calculate objx and objy based on the sprite origin position.
+            # Move position back to actor image space by adding the image offset
+            # and calculate objx and objy based on the actor origin position.
             new_pos = QtCore.QPointF(QtCore.QPointF(origin_pos) + offset_point) * 1.5
 
             x = origin_pos.x()
@@ -461,7 +461,7 @@ class ActorItem(LevelEditorItem):
                 if self.positionChanged is not None:
                     self.positionChanged(self, oldx, oldy, x, y)
 
-                # Add moving this sprite to the undo stack.
+                # Add moving this actor to the undo stack.
                 if len(globals_.mainWindow.CurrentSelection) == 1:
                     act = MoveItemUndoAction(self, oldx, oldy, x, y)
                     globals_.mainWindow.undoStack.addOrExtendAction(act)
@@ -489,18 +489,18 @@ class ActorItem(LevelEditorItem):
         self.setPos(newobjx * 1.5, newobjy * 1.5)
 
     @staticmethod
-    def moveToSprite(item: 'ActorItem') -> None:
+    def moveToActor(item: 'ActorItem') -> None:
         """
-        Moves the view to the sprite and selects it.
+        Moves the view to the actor and selects it.
         """
-        sprite = item.data(QtCore.Qt.ItemDataRole.UserRole)
+        actor = item.data(QtCore.Qt.ItemDataRole.UserRole)
 
-        if sprite is None:
+        if actor is None:
             return
 
-        sprite.ensureVisible(xMargin=192, yMargin=192)
-        sprite.scene().clearSelection()
-        sprite.setSelected(True)
+        actor.ensureVisible(xMargin=192, yMargin=192)
+        actor.scene().clearSelection()
+        actor.setSelected(True)
 
     def mousePressEvent(self, event: QtWidgets.QGraphicsSceneMouseEvent) -> None:
         """
@@ -519,7 +519,7 @@ class ActorItem(LevelEditorItem):
 
             return
 
-        self.CreateSprite(self.objx, self.objy, self.sprite_num, self.spritedata)
+        self.CreateActor(self.objx, self.objy, self.actor_num, self.actordata)
         globals_.mainWindow.scene.clearSelection()
         self.setSelected(True)
 
@@ -564,7 +564,7 @@ class ActorItem(LevelEditorItem):
     def paint(self, painter: QtGui.QPainter | None, option: QtWidgets.QStyleOptionGraphicsItem | None = None,
               widget: QtWidgets.QWidget | None = None, overrideGlobals: bool = False) -> None:
         """
-        Paints the sprite
+        Paints the actor
         """
         if not painter or not self.font:
             return
@@ -588,13 +588,13 @@ class ActorItem(LevelEditorItem):
 
             drawActorbox = self.ImageObj.actorbox.shown
 
-            # Draw the selected-sprite-image overlay box
+            # Draw the selected-actor-image overlay box
             if self.isSelected() and (not drawActorbox or self.ImageObj.size != (16, 16)):
-                color = globals_.theme.color('sprite_lines_s')
+                color = globals_.theme.color('actor_lines_s')
                 if color is not None:
                     painter.setPen(QtGui.QPen(color, 1, QtCore.Qt.PenStyle.DashLine))
                 painter.drawRect(self.SelectionRect)
-                color = globals_.theme.color('sprite_fill_s')
+                color = globals_.theme.color('actor_fill_s')
                 if color is not None:
                     painter.fillRect(self.SelectionRect, color)
 
@@ -605,13 +605,13 @@ class ActorItem(LevelEditorItem):
         # Draw the actorbox if applicable
         if drawActorbox:
             if self.isSelected():
-                painter.setBrush(QtGui.QBrush(globals_.theme.color('spritebox_fill_s')))
-                color = globals_.theme.color('spritebox_lines_s')
+                painter.setBrush(QtGui.QBrush(globals_.theme.color('actorbox_fill_s')))
+                color = globals_.theme.color('actorbox_lines_s')
                 if color is not None:
                     painter.setPen(QtGui.QPen(color, 1))
             else:
-                painter.setBrush(QtGui.QBrush(globals_.theme.color('spritebox_fill')))
-                color = globals_.theme.color('spritebox_lines')
+                painter.setBrush(QtGui.QBrush(globals_.theme.color('actorbox_fill')))
+                color = globals_.theme.color('actorbox_lines')
                 if color is not None:
                     painter.setPen(QtGui.QPen(color, 1))
 
@@ -621,7 +621,7 @@ class ActorItem(LevelEditorItem):
                 painter.drawRect(actorboxRect)
 
             painter.setFont(self.font)
-            painter.drawText(actorboxRect, QtCore.Qt.AlignmentFlag.AlignCenter, str(self.sprite_num))
+            painter.drawText(actorboxRect, QtCore.Qt.AlignmentFlag.AlignCenter, str(self.actor_num))
 
     def scene(self) -> QtWidgets.QGraphicsScene | None:
         """
@@ -632,7 +632,7 @@ class ActorItem(LevelEditorItem):
 
     def delete(self) -> None:
         """
-        Delete the sprite from the level
+        Delete the actor from the level
         """
         if globals_.mainWindow is None:
             return
@@ -650,7 +650,7 @@ class ActorItem(LevelEditorItem):
         sel_model = globals_.mainWindow.palette_dock.actor_tab.actor_order_list.selectionModel()
         if sel_model is not None:
             sel_model.clearSelection()
-        globals_.Area.RemoveSprite(self)
+        globals_.Area.RemoveActor(self)
 
         # The zone painters need for the whole thing to update
         scene = self.scene()

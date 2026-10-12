@@ -290,7 +290,7 @@ class ActorEditorWidget(AbstractActorEditorWidget):
         # (actor id, importance level)
         # importance level is 0 for 'required', 1 for 'suggested', 2 for 'resource', 3 for 'suggestedresource'
         missing = [[], [], [], []]
-        cur_actors = [s.sprite_num for s in globals_.Area.actors]
+        cur_actors = [s.actor_num for s in globals_.Area.actors]
         for dependency, importance in actor.dependencies:
             if dependency not in cur_actors:
                 if importance == 2:

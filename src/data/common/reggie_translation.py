@@ -37,7 +37,7 @@ class ReggieTranslation:
             'entrancetypes': os.path.join(get_reggiedata_folder(), 'entrancetypes.txt'),
             'levelnames': os.path.join(get_reggiedata_folder(), 'levelnames.xml'),
             'music': os.path.join(get_reggiedata_folder(), 'music.txt'),
-            'spritecategories': os.path.join(get_reggiedata_folder(), 'spritecategories.xml'),
+            'actorcategories': os.path.join(get_reggiedata_folder(), 'actorcategories.xml'),
             'actordata': os.path.join(get_reggiedata_folder(), 'actordata.xml'),
             'tilesets': os.path.join(get_reggiedata_folder(), 'tilesets.xml'),
             'ts1_descriptions': os.path.join(get_reggiedata_folder(), 'ts1_descriptions.txt'),

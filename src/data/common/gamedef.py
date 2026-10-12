@@ -534,18 +534,18 @@ def LoadGameDef(name: str | None = None):
         actorClasses = globals_.gamedef.getImageClasses()
 
         for actor in globals_.Area.actors:
-            if actor.sprite_num in actorlib.ActorImagesLoaded:
+            if actor.actor_num in actorlib.ActorImagesLoaded:
                 continue
-            if actor.sprite_num not in actorClasses:
+            if actor.actor_num not in actorClasses:
                 continue
 
-            actorClasses[actor.sprite_num].loadImages()
+            actorClasses[actor.actor_num].loadImages()
 
-            actorlib.ActorImagesLoaded.add(actor.sprite_num)
+            actorlib.ActorImagesLoaded.add(actor.actor_num)
 
         for actor in globals_.Area.actors:
-            if actor.sprite_num in actorClasses:
-                actor.setImageObj(actorClasses[actor.sprite_num])
+            if actor.actor_num in actorClasses:
+                actor.setImageObj(actorClasses[actor.actor_num])
             else:
                 actor.setImageObj(actorlib.ActorImage)
 
@@ -553,8 +553,8 @@ def LoadGameDef(name: str | None = None):
         # Recalculate unknown actor IDs based on current patch's actor definitions
         unknown_actor_ids = set()
         for actor in globals_.Area.actors:
-            if actor.sprite_num >= globals_.NumActors or globals_.Actors[actor.sprite_num] is None:
-                unknown_actor_ids.add(actor.sprite_num)
+            if actor.actor_num >= globals_.NumActors or globals_.Actors[actor.actor_num] is None:
+                unknown_actor_ids.add(actor.actor_num)
 
         # Update the Area's unknown_actor_ids
         globals_.Area.unknown_actor_ids = unknown_actor_ids

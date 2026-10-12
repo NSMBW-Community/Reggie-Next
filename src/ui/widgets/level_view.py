@@ -88,11 +88,11 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 self.dragstarty = clickedy
 
             elif globals_.CurrentPaintType == 4 and globals_.CurrentActor >= 0 and globals_.ActorsShown:
-                # paint a sprite
+                # paint an actor
                 clickedx = int((clicked.x() - 12) / 12) * 8
                 clickedy = int((clicked.y() - 12) / 12) * 8
 
-                spr = ActorItem.CreateSprite(clickedx, clickedy, globals_.CurrentActor)
+                spr = ActorItem.CreateActor(clickedx, clickedy, globals_.CurrentActor)
                 if spr is not None:
                     spr.UpdateDynamicSizing()
 
@@ -396,7 +396,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         globals_.mainWindow.level_overview.update()
 
                 elif isinstance(obj, type_spr):
-                    # move the created sprite
+                    # move the created actor
                     clickedx = int((pos.x() - 12) / 1.5)
                     clickedy = int((pos.y() - 12) / 1.5)
 
@@ -455,7 +455,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         obj.UpdateRects()
 
                 elif isinstance(obj, type_spr):
-                    # move the created sprite
+                    # move the created actor
 
                     newx = int(obj.dragstartx + changexspr)
                     newy = int(obj.dragstarty + changeyspr)

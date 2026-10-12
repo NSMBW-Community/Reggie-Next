@@ -59,7 +59,7 @@ class ActorImage_WoodenPlatform(actorlib.ActorImage):  # 23, 31, 50, 103, 106, 1
 
     @staticmethod
     def loadImages():
-        # Load the two batches separately because another sprite only
+        # Load the two batches separately because another actor only
         # loads the first three.
         if 'WoodenPlatformL' not in ImageCache:
             ImageCache['WoodenPlatformL'] = actorlib.GetPixmap('wood_platform_left.png')
@@ -118,10 +118,10 @@ class ActorImage_DSStoneBlock(actorlib.ActorImage):  # 27, 28
 
     def dataChanged(self):
         # get size
-        width = self.parent.spritedata[5] & 7
+        width = self.parent.actordata[5] & 7
         if width == 0:
             width = 1
-        byte5 = self.parent.spritedata[4]
+        byte5 = self.parent.actordata[4]
         self.width = (16 + (width << 4))
         self.height = (16 << ((byte5 & 0x30) >> 4)) - 4
 
@@ -188,7 +188,7 @@ class ActorImage_OldStoneBlock(actorlib.ActorImage):  # 30, 81, 82, 83, 84, 85, 
         if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
-        size = self.parent.spritedata[5]
+        size = self.parent.actordata[5]
         height = (size & 0xF0) >> 4
         width = size & 0xF
         height = 1 if height == 0 else height
@@ -210,8 +210,8 @@ class ActorImage_OldStoneBlock(actorlib.ActorImage):  # 30, 81, 82, 83, 84, 85, 
 
         # now set up the track
         if self.hasMovementAux:
-            direction = self.parent.spritedata[2] & 3
-            distance = (self.parent.spritedata[4] & 0xF0) >> 4
+            direction = self.parent.actordata[2] & 3
+            distance = (self.parent.actordata[4] & 0xF0) >> 4
             if direction > 3:
                 direction = 0
 
@@ -325,7 +325,7 @@ class ActorImage_LiquidOrFog(actorlib.ActorImage):  # 53, 64, 138, 139, 216, 358
         fill_rect.translate(-zoneRect.topLeft())
 
         if fill_rect.isEmpty():
-            # the sprite is below the zone; don't draw anything
+            # the actor is below the zone; don't draw anything
             return
 
         rise_img: QtGui.QPixmap | None = None
@@ -466,7 +466,7 @@ class ActorImage_Skewer(actorlib.ActorImage):  # 137, 140, 141, 142
 
         self.HorzSpikeLength = ((36 * 16) + 41) / 1.5
         self.VertSpikeLength = ((36 * 16) + 39) / 1.5
-        # (16 mid sections + an end section), accounting for image/sprite size difference
+        # (16 mid sections + an end section), accounting for image/actor size difference
         self.dir = 'down'
 
     @staticmethod
@@ -482,12 +482,12 @@ class ActorImage_Skewer(actorlib.ActorImage):  # 137, 140, 141, 142
         if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
-        rawdistance = self.parent.spritedata[3] >> 4
+        rawdistance = self.parent.actordata[3] >> 4
         distance = (
             (16, 7, 14, 10, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16)
         )[rawdistance]
         distance += 1  # In order to hide one side of the track behind the image.
-        speed = (self.parent.spritedata[2] >> 4) & 3
+        speed = (self.parent.actordata[2] >> 4) & 3
 
         L = 615
         W = 617  # 16 mid sections + an end section
@@ -509,7 +509,7 @@ class ActorImage_Skewer(actorlib.ActorImage):  # 137, 140, 141, 142
                 self.aux[0].setSize(distance * 16, 16)
 
     def paint(self, painter):
-        color = self.parent.spritedata[3] & 15
+        color = self.parent.actordata[3] & 15
         if color == 2 or color == 3 or color == 7:
             mid = ImageCache['SkewerM1' + self.dir]
             end = ImageCache['SkewerE1' + self.dir]
@@ -555,8 +555,8 @@ class ActorImage_ScrewMushroom(actorlib.ActorImage):  # 172, 382
             ImageCache['ScrewShroomB'] = actorlib.GetPixmap('screw_shroom_bottom.png')
 
     def dataChanged(self):
-        mushroomId = self.parent.spritedata[2] >> 4 & 0xf
-        posOffset = self.parent.spritedata[3]
+        mushroomId = self.parent.actordata[2] >> 4 & 0xf
+        posOffset = self.parent.actordata[3]
 
         if posOffset == 0:
             posOffset = 8
@@ -617,7 +617,7 @@ class ActorImage_Door(actorlib.ActorImage):  # 182, 259, 276, 277, 278
         if not isinstance(self.aux[0], actorlib.AuxiliaryRectOutline):
             return
 
-        rotstatus = self.parent.spritedata[4]
+        rotstatus = self.parent.actordata[4]
         if rotstatus & 1 == 0:
             direction = 0
         else:
@@ -694,9 +694,9 @@ class ActorImage_GiantBubble(actorlib.ActorImage):  # 205, 226
         if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
-        self.shape = self.parent.spritedata[4] >> 4
-        direction = self.parent.spritedata[5] & 15
-        distance = (self.parent.spritedata[5] & 0xF0) >> 4
+        self.shape = self.parent.actordata[4] >> 4
+        direction = self.parent.actordata[5] & 15
+        distance = (self.parent.actordata[5] & 0xF0) >> 4
 
         if self.shape > 3:
             self.shape = 0
@@ -760,7 +760,7 @@ class ActorImage_Block(actorlib.ActorImage):  # 207, 208, 209, 221, 255, 256, 40
         if self.contentsOverride is not None:
             contents = self.contentsOverride
         else:
-            contents = self.parent.spritedata[self.contentsNybble] & 0xF
+            contents = self.parent.actordata[self.contentsNybble] & 0xF
 
         if contents == 2:  # 1 and 2 are always fire flowers
             contents = 3
@@ -777,8 +777,8 @@ class ActorImage_Block(actorlib.ActorImage):  # 207, 208, 209, 221, 255, 256, 40
             transform = QtGui.QTransform()
             transform.translate(12, 12)
 
-            angle = (self.parent.spritedata[4] & 0xF0) >> 4
-            leftTilt = self.parent.spritedata[3] & 1
+            angle = (self.parent.actordata[4] & 0xF0) >> 4
+            leftTilt = self.parent.actordata[3] & 1
 
             angle *= 45 / 16
 
@@ -803,7 +803,7 @@ class ActorImage_Block(actorlib.ActorImage):  # 207, 208, 209, 221, 255, 256, 40
             flip = self.image.toImage().mirrored(True, True)
             self.image = self.image.fromImage(flip)
 
-        # Sprite 433 scales the block by 1.5x
+        # Actor 433 scales the block by 1.5x
         if self.is_water_block:
             self.setOffset((-4, -4))
             self.setSize((36 / 1.5, 36 / 1.5))
@@ -867,7 +867,7 @@ class ActorImage_Pipe(actorlib.ActorImage):  # 254, 339, 353, 377, 378, 379, 380
                 ImageCache[f'PipeRight{color}'] = actorlib.GetPixmap(f'pipe_{color_l}_right.png')
 
     def dataChanged(self):
-        # sprite types:
+        # actor types:
         # 339 = Moving Pipe Facing Up
         # 353 = Moving Pipe Facing Down
         # 377 = Pipe Up
@@ -978,7 +978,7 @@ class ActorImage_PipeStationary(ActorImage_Pipe):  # 377, 378, 379, 380, 450
     def dataChanged(self):
         self.color = (
             'Green', 'Red', 'Yellow', 'Blue',
-        )[(self.parent.spritedata[5] >> 4) & 3]
+        )[(self.parent.actordata[5] >> 4) & 3]
 
         self.length1 = self.length
         self.length2 = self.length
@@ -1014,7 +1014,7 @@ class ActorImage_BrownTowerBlock(actorlib.ActorImage):  # 354, 356
                 )
 
     def dataChanged(self):
-        size = self.parent.spritedata[5]
+        size = self.parent.actordata[5]
         height = size >> 4
         width = size & 0xF
         height = 1 if height == 0 else height
@@ -1064,7 +1064,7 @@ class ActorImage_RollingHillWithPipe(actorlib.ActorImage):  # 355, 360
 class ActorImage_LongSkewer(actorlib.ActorImage):  # 398, 400
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
-        self.parent.setZValue(24999) # to see sprites behind it easily
+        self.parent.setZValue(24999) # to see actor behind it easily
         self.actorbox.shown = False
 
         # 55 mid sections + an end section = 2021
@@ -1087,7 +1087,7 @@ class ActorImage_LongSkewer(actorlib.ActorImage):  # 398, 400
         ):
             return
 
-        color = self.parent.spritedata[3] & 15
+        color = self.parent.actordata[3] & 15
         tiles = 55
         tilesize = 36
         endsize = 41
@@ -1121,10 +1121,10 @@ class ActorImage_LongSkewer(actorlib.ActorImage):  # 398, 400
 class ActorImage_MassiveSkewer(actorlib.ActorImage):  # 401, 404
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
-        self.parent.setZValue(24999) # to see sprites behind it easily
+        self.parent.setZValue(24999) # to see actor behind it easily
 
         self.SpikeLength = ((72 * 40) + 136) / 1.5
-        # (40 mid sections + an end section), accounting for image/sprite size difference
+        # (40 mid sections + an end section), accounting for image/actor size difference
         self.dir = 'down'
 
     @staticmethod
@@ -1145,7 +1145,7 @@ class ActorImage_MassiveSkewer(actorlib.ActorImage):  # 401, 404
         ):
             return
 
-        color = self.parent.spritedata[3] & 15
+        color = self.parent.actordata[3] & 15
         tiles = 40
         tilesize = 72
         endsize = 136
@@ -1229,8 +1229,8 @@ class ActorImage_MeasureJump(actorlib.ActorImage):
         if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
-        jumptype = self.parent.spritedata[2] & 3
-        flags = (self.parent.spritedata[3] & 0xF0) >> 4
+        jumptype = self.parent.actordata[2] & 3
+        flags = (self.parent.actordata[3] & 0xF0) >> 4
         direction = flags >> 3
         spin = (flags & 4) >> 2
 
@@ -1257,8 +1257,8 @@ class ActorImage_MeasureJump(actorlib.ActorImage):
 
 class ActorImage_CharacterSpawner(actorlib.ActorImage_StaticMultiple):  # 9
     def dataChanged(self):
-        direction = self.parent.spritedata[2] & 1
-        character = self.parent.spritedata[5] & 3
+        direction = self.parent.actordata[2] & 1
+        character = self.parent.actordata[5] & 3
 
         directionstr = 'L' if direction else 'R'
 
@@ -1304,7 +1304,7 @@ class ActorImage_HorzMovingPlatform(ActorImage_WoodenPlatform):  # 23
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
-        self.width = (((self.parent.spritedata[5] & 0xF) + 1) << 4) + (4 / 1.5)
+        self.width = (((self.parent.actordata[5] & 0xF) + 1) << 4) + (4 / 1.5)
         self.aux.append(actorlib.AuxiliaryTrackObject(parent, self.width, 16, actorlib.AuxiliaryTrackObject.Horizontal))
 
     def dataChanged(self):
@@ -1312,16 +1312,16 @@ class ActorImage_HorzMovingPlatform(ActorImage_WoodenPlatform):  # 23
             return
 
         # get width and distance
-        self.width = (((self.parent.spritedata[5] & 0xF) + 1) << 4) + (4 / 1.5)
+        self.width = (((self.parent.actordata[5] & 0xF) + 1) << 4) + (4 / 1.5)
         if self.width < 20:
             self.width = 32 + (4 / 1.5)
 
-        distance = ((self.parent.spritedata[4] & 0xF) << 4) - 1
+        distance = ((self.parent.actordata[4] & 0xF) << 4) - 1
 
         # update the track
         self.aux[0].setSize(self.width + distance, 16)
 
-        if (self.parent.spritedata[3] & 1) == 0:
+        if (self.parent.actordata[3] & 1) == 0:
             # platform goes right
             self.aux[0].setPos(0, 0)
         else:
@@ -1329,7 +1329,7 @@ class ActorImage_HorzMovingPlatform(ActorImage_WoodenPlatform):  # 23
             self.aux[0].setPos(-distance * 1.5, 0)
 
         # set color, silver is only used for a value of 1
-        self.color = (self.parent.spritedata[3] >> 4) == 1
+        self.color = (self.parent.actordata[3] >> 4) == 1
 
         self.aux[0].update()
 
@@ -1344,7 +1344,7 @@ class ActorImage_BuzzyBeetle(actorlib.ActorImage_StaticMultiple):  # 24
 
     def dataChanged(self):
 
-        orient = self.parent.spritedata[5] & 15
+        orient = self.parent.actordata[5] & 15
         if orient == 1:
             self.image = ImageCache['BuzzyBeetleU']
             self.yOffset = 0
@@ -1371,7 +1371,7 @@ class ActorImage_Spiny(actorlib.ActorImage_StaticMultiple):  # 25
 
     def dataChanged(self):
 
-        orient = self.parent.spritedata[5] & 15
+        orient = self.parent.actordata[5] & 15
         if orient == 1:
             self.image = ImageCache['SpinyBall']
             self.yOffset = 8
@@ -1414,13 +1414,13 @@ class ActorImage_DSStoneBlock_Vert(ActorImage_DSStoneBlock):  # 27
             return
 
         # get height and distance
-        byte5 = self.parent.spritedata[4]
+        byte5 = self.parent.actordata[4]
         distance = (byte5 & 0xF) << 4
 
         # update the track
         self.aux[0].setSize(self.width, distance + self.height)
 
-        if (self.parent.spritedata[3] & 1) == 0:
+        if (self.parent.actordata[3] & 1) == 0:
             # block goes up
             self.aux[0].setPos(0, -distance * 1.5)
         else:
@@ -1443,13 +1443,13 @@ class ActorImage_DSStoneBlock_Horz(ActorImage_DSStoneBlock):  # 28
             return
 
         # get height and distance
-        byte5 = self.parent.spritedata[4]
+        byte5 = self.parent.actordata[4]
         distance = (byte5 & 0xF) << 4
 
         # update the track
         self.aux[0].setSize(distance + self.width, self.height)
 
-        if (self.parent.spritedata[3] & 1) == 0:
+        if (self.parent.actordata[3] & 1) == 0:
             # block goes right
             self.aux[0].setPos(0, 0)
         else:
@@ -1467,7 +1467,7 @@ class ActorImage_VertMovingPlatform(ActorImage_WoodenPlatform):  # 31
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
-        self.width = (((self.parent.spritedata[5] & 0xF) + 1) << 4) + (4 / 1.5)
+        self.width = (((self.parent.actordata[5] & 0xF) + 1) << 4) + (4 / 1.5)
         self.aux.append(actorlib.AuxiliaryTrackObject(parent, self.width, 16, actorlib.AuxiliaryTrackObject.Vertical))
 
     def dataChanged(self):
@@ -1475,16 +1475,16 @@ class ActorImage_VertMovingPlatform(ActorImage_WoodenPlatform):  # 31
             return
 
         # get width and distance
-        self.width = (((self.parent.spritedata[5] & 0xF) + 1) << 4) + (4 / 1.5)
+        self.width = (((self.parent.actordata[5] & 0xF) + 1) << 4) + (4 / 1.5)
         if self.width < 20:
             self.width = 32 + (4 / 1.5)
 
-        distance = (self.parent.spritedata[4] & 0xF) << 4
+        distance = (self.parent.actordata[4] & 0xF) << 4
 
         # update the track
         self.aux[0].setSize(self.width, distance + 16)
 
-        if (self.parent.spritedata[3] & 1) == 0:
+        if (self.parent.actordata[3] & 1) == 0:
             # platform goes up
             self.aux[0].setPos(0, -distance * 1.5)
         else:
@@ -1492,7 +1492,7 @@ class ActorImage_VertMovingPlatform(ActorImage_WoodenPlatform):  # 31
             self.aux[0].setPos(0, 0)
 
         # set color, silver is only used for a value of 1
-        self.color = (self.parent.spritedata[3] >> 4) == 1
+        self.color = (self.parent.actordata[3] >> 4) == 1
 
         self.aux[0].update()
 
@@ -1538,8 +1538,8 @@ class ActorImage_QSwitchBlock(ActorImage_Block):  # 43
         self.contentsOverride = 17
 
     def dataChanged(self):
-        upsideDown = self.parent.spritedata[5] & 1
-        midway = (self.parent.spritedata[2] >> 6) & 1
+        upsideDown = self.parent.actordata[5] & 1
+        midway = (self.parent.actordata[2] >> 6) & 1
         self.flipOverride = upsideDown
         self.transparent = midway
         super().dataChanged()
@@ -1552,9 +1552,9 @@ class ActorImage_PSwitchBlock(ActorImage_Block):  # 44
         self.contentsOverride = 18
 
     def dataChanged(self):
-        upsideDown = self.parent.spritedata[5] & 1
+        upsideDown = self.parent.actordata[5] & 1
         self.flipOverride = upsideDown
-        self.transparent = (self.parent.spritedata[2] >> 6) & 1
+        self.transparent = (self.parent.actordata[2] >> 6) & 1
         super().dataChanged()
 
 
@@ -1565,9 +1565,9 @@ class ActorImage_ExcSwitchBlock(ActorImage_Block):  # 45
         self.contentsOverride = 19
 
     def dataChanged(self):
-        upsideDown = self.parent.spritedata[5] & 1
+        upsideDown = self.parent.actordata[5] & 1
         self.flipOverride = upsideDown
-        self.transparent = (self.parent.spritedata[2] >> 6) & 1
+        self.transparent = (self.parent.actordata[2] >> 6) & 1
         super().dataChanged()
 
 
@@ -1637,7 +1637,7 @@ class ActorImage_UnusedSeesaw(actorlib.ActorImage):  # 49
         if not isinstance(self.aux[0], actorlib.AuxiliaryRotationAreaOutline):
             return
 
-        w = self.parent.spritedata[5] & 15
+        w = self.parent.actordata[5] & 15
         if w == 0:
             self.width = 16 * 16  # 16 blocks wide
         else:
@@ -1648,7 +1648,7 @@ class ActorImage_UnusedSeesaw(actorlib.ActorImage):  # 49
         )
         self.xOffset = (8 * 16) - (self.width / 2)
 
-        swingArc = self.parent.spritedata[5] >> 4
+        swingArc = self.parent.actordata[5] >> 4
         swingArcs = (
             45,
             4.5,
@@ -1686,8 +1686,8 @@ class ActorImage_FallingPlatform(ActorImage_WoodenPlatform):  # 50
 
     def dataChanged(self):
         # get width
-        raw_width = self.parent.spritedata[5] & 0xF
-        slow = (self.parent.spritedata[5] >> 4) & 1
+        raw_width = self.parent.actordata[5] & 0xF
+        slow = (self.parent.actordata[5] >> 4) & 1
 
         self.width = ((raw_width + 1) << 4) + (4 / 1.5)
         if raw_width == 0:
@@ -1701,7 +1701,7 @@ class ActorImage_FallingPlatform(ActorImage_WoodenPlatform):  # 50
                 self.xOffset = -16 * (raw_width >> 1) - 2 / 1.5
 
         # set color
-        color = (self.parent.spritedata[3] >> 4) & 3
+        color = (self.parent.actordata[3] >> 4) & 3
         self.height = 16 # reset so the image isn't too big after using the bone platform
         if color == 1:
             self.color = 1
@@ -1773,8 +1773,8 @@ class ActorImage_Quicksand(ActorImage_LiquidOrFog):  # 53
         ImageCache['LiquidSandCrest'] = actorlib.GetPixmap('liquid_sand_crest.png')
 
     def dataChanged(self):
-        self.locId = self.parent.spritedata[5] & 0x7F
-        self.drawCrest = self.parent.spritedata[4] & 8 == 0
+        self.locId = self.parent.actordata[5] & 0x7F
+        self.drawCrest = self.parent.actordata[4] & 8 == 0
 
         if self.drawCrest:
             self.top = self.parent.objy + 8
@@ -1822,7 +1822,7 @@ class ActorImage_UnusedRisingSeesaw(actorlib.ActorImage_StaticMultiple):  # 55
         actorlib.loadIfNotInImageCache('UnusedPlatformDark', 'unused_platform_dark.png')
 
     def dataChanged(self):
-        midway = (self.parent.spritedata[3] >> 4) & 1
+        midway = (self.parent.actordata[3] >> 4) & 1
         if midway:
             self.alpha = 0.5
         else:
@@ -1843,7 +1843,7 @@ class ActorImage_RisingTiltGirder(actorlib.ActorImage_StaticMultiple):  # 56
         actorlib.loadIfNotInImageCache('RisingTiltGirder', 'rising_girder.png')
 
     def dataChanged(self):
-        midway = self.parent.spritedata[5] & 1
+        midway = self.parent.actordata[5] & 1
         if midway:
             self.alpha = 0.5
         else:
@@ -1862,8 +1862,8 @@ class ActorImage_KoopaTroopa(actorlib.ActorImage_StaticMultiple):  # 57
 
     def dataChanged(self):
         # get properties
-        props = self.parent.spritedata[5]
-        shell = (props >> 4) & 1 or (self.parent.spritedata[2] >> 4) != 0
+        props = self.parent.actordata[5]
+        shell = (props >> 4) & 1 or (self.parent.actordata[2] >> 4) != 0
         red = props & 1
 
         if not shell:
@@ -1895,8 +1895,8 @@ class ActorImage_KoopaParatroopa(actorlib.ActorImage_StaticMultiple):  # 58
             return
 
         # get properties
-        color = self.parent.spritedata[5] & 1
-        mode = (self.parent.spritedata[5] >> 4) & 3
+        color = self.parent.actordata[5] & 1
+        mode = (self.parent.actordata[5] >> 4) & 3
 
         # 0: jumping
         # 3: shell
@@ -1917,7 +1917,7 @@ class ActorImage_KoopaParatroopa(actorlib.ActorImage_StaticMultiple):  # 58
 
         if mode == 1 or mode == 2:
             track = self.aux[0]
-            turnImmediately = self.parent.spritedata[4] & 1 == 1
+            turnImmediately = self.parent.actordata[4] & 1 == 1
 
             if mode == 1:
                 track.direction = actorlib.AuxiliaryTrackObject.Horizontal
@@ -1955,7 +1955,7 @@ class ActorImage_LineTiltGirder(actorlib.ActorImage_StaticMultiple):  # 59
         actorlib.loadIfNotInImageCache('LineGirder', 'line_tilt_girder.png')
 
     def dataChanged(self):
-        midway = (self.parent.spritedata[3] >> 4) & 1
+        midway = (self.parent.actordata[3] >> 4) & 1
         self.alpha = 0.5 if midway else 1.0
 
 
@@ -1995,8 +1995,8 @@ class ActorImage_SpikeTop(actorlib.ActorImage_StaticMultiple):  # 60
         ImageCache['SpikeTop31'] = ImageCache['SpikeTop01'].transformed(Transform)
 
     def dataChanged(self):
-        orientation = (self.parent.spritedata[5] >> 4) & 3
-        direction = self.parent.spritedata[5] & 1
+        orientation = (self.parent.actordata[5] >> 4) & 3
+        direction = self.parent.actordata[5] & 1
 
         self.image = ImageCache[f'SpikeTop{orientation}{direction}']
 
@@ -2043,8 +2043,8 @@ class ActorImage_SpinningFirebar(actorlib.ActorImage):  # 62
         if not isinstance(self.aux[0], actorlib.AuxiliaryCircleOutline):
             return
 
-        size = self.parent.spritedata[5] & 0xF
-        wideBase = (self.parent.spritedata[3] >> 4) & 1
+        size = self.parent.actordata[5] & 0xF
+        wideBase = (self.parent.actordata[3] >> 4) & 1
 
         width = ((size * 2) + 1) * 12
         self.aux[0].setSize(width)
@@ -2090,7 +2090,7 @@ class ActorImage_OutdoorsFog(ActorImage_LiquidOrFog):  # 64
         actorlib.loadIfNotInImageCache('OutdoorsFog', 'fog_outdoors.png')
 
     def dataChanged(self):
-        self.locId = self.parent.spritedata[5] & 0x7F
+        self.locId = self.parent.actordata[5] & 0x7F
         super().dataChanged()
 
     def positionChanged(self):
@@ -2222,7 +2222,7 @@ class ActorImage_GroundPiranha(actorlib.ActorImage_StaticMultiple):  # 73
 
     def dataChanged(self):
 
-        upsideDown = self.parent.spritedata[5] & 1
+        upsideDown = self.parent.actordata[5] & 1
         if not upsideDown:
             self.yOffset = 14 / 1.5
             self.image = ImageCache['GroundPiranha']
@@ -2245,7 +2245,7 @@ class ActorImage_BigGroundPiranha(actorlib.ActorImage_StaticMultiple):  # 74
 
     def dataChanged(self):
 
-        upsideDown = self.parent.spritedata[5] & 1
+        upsideDown = self.parent.actordata[5] & 1
         if not upsideDown:
             self.yOffset = -46 / 1.5
             self.image = ImageCache['BigGroundPiranha']
@@ -2268,7 +2268,7 @@ class ActorImage_GroundFiretrap(actorlib.ActorImage_StaticMultiple):  # 75
 
     def dataChanged(self):
 
-        upsideDown = self.parent.spritedata[5] & 1
+        upsideDown = self.parent.actordata[5] & 1
         if not upsideDown:
             self.yOffset = -13 / 1.5
             self.image = ImageCache['GroundFiretrap']
@@ -2291,7 +2291,7 @@ class ActorImage_BigGroundFiretrap(actorlib.ActorImage_StaticMultiple):  # 76
 
     def dataChanged(self):
 
-        upsideDown = self.parent.spritedata[5] & 1
+        upsideDown = self.parent.actordata[5] & 1
         if not upsideDown:
             self.yOffset = -100 / 1.5
             self.image = ImageCache['BigGroundFiretrap']
@@ -2332,7 +2332,7 @@ class ActorImage_CloudTrampoline(actorlib.ActorImage_StaticMultiple):  # 78
 
     def dataChanged(self):
 
-        size = (self.parent.spritedata[4] >> 4) & 1
+        size = (self.parent.actordata[4] >> 4) & 1
         if size == 0:
             self.image = ImageCache['CloudTrSmall']
         else:
@@ -2402,7 +2402,7 @@ class ActorImage_TrampolineWall(actorlib.ActorImage_StaticMultiple):  # 87
         actorlib.loadIfNotInImageCache('UnusedPlatformDark', 'unused_platform_dark.png')
 
     def dataChanged(self):
-        height = (self.parent.spritedata[5] & 15) + 1
+        height = (self.parent.actordata[5] & 15) + 1
 
         self.image = ImageCache['UnusedPlatformDark'].scaled(
             24, height * 24,
@@ -2424,7 +2424,7 @@ class ActorImage_BulletBillLauncher(actorlib.ActorImage):  # 92
         actorlib.loadIfNotInImageCache('BBLauncherM', 'bullet_launcher_middle.png')
 
     def dataChanged(self):
-        height = (self.parent.spritedata[5] & 0xF0) >> 4
+        height = (self.parent.actordata[5] & 0xF0) >> 4
 
         self.height = (height + 2) * 16
         self.yOffset = (height + 1) * -16
@@ -2487,7 +2487,7 @@ class ActorImage_RotationControllerSwaying(actorlib.ActorImage):  # 96
             return
 
         # get the swing arc: 4 == 90 degrees (45 left from the origin, 45 right)
-        swingArc = self.parent.spritedata[2] >> 4
+        swingArc = self.parent.actordata[2] >> 4
         realSwingArc = swingArc * 11.25
 
         # angle starts at the right position (3 o'clock)
@@ -2505,8 +2505,8 @@ class ActorImage_RotationControlledSolidBetaPlatform(ActorImage_UnusedBlockPlatf
         self.isDark = True
 
     def dataChanged(self):
-        width = (self.parent.spritedata[3] & 1) << 4 | (self.parent.spritedata[4] >> 4)
-        height = self.parent.spritedata[4] & 0xF
+        width = (self.parent.actordata[3] & 1) << 4 | (self.parent.actordata[4] >> 4)
+        height = self.parent.actordata[4] & 0xF
 
         if width == 0 or height == 0:
             self.actorbox.shown = True
@@ -2538,7 +2538,7 @@ class ActorImage_PipeEnemyGenerator(actorlib.ActorImage):  # 99
 
     def dataChanged(self):
         self.actorbox.size = (16, 16)
-        direction = (self.parent.spritedata[5] & 0xF) & 3
+        direction = (self.parent.actordata[5] & 0xF) & 3
         if direction in (0, 1):  # vertical pipe
             self.actorbox.size = (32, 16)
         elif direction in (2, 3):  # horizontal pipe
@@ -2601,8 +2601,8 @@ class ActorImage_PlatformGenerator(ActorImage_WoodenPlatform):  # 103
         if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
-        self.width = self.parent.spritedata[5] & 0xF0
-        direction = self.parent.spritedata[3] & 0xF
+        self.width = self.parent.actordata[5] & 0xF0
+        direction = self.parent.actordata[3] & 0xF
 
         # adjust offset since each direction is slightly different
         if direction == 0: # up
@@ -2661,7 +2661,7 @@ class ActorImage_Pokey(actorlib.ActorImage):  # 105
 
     def dataChanged(self):
         # get the height
-        height = self.parent.spritedata[5] & 7
+        height = self.parent.actordata[5] & 7
         self.height = (height * 16) + 16 + 25
         self.yOffset = 16 - self.height
 
@@ -2678,7 +2678,7 @@ class ActorImage_LinePlatform(ActorImage_WoodenPlatform):  # 106
 
     def dataChanged(self):
         # get width
-        self.width = (self.parent.spritedata[5] & 0xF) << 4
+        self.width = (self.parent.actordata[5] & 0xF) << 4
 
         # length=0 becomes length=4
         if self.width == 0:
@@ -2695,7 +2695,7 @@ class ActorImage_LinePlatform(ActorImage_WoodenPlatform):  # 106
         else:
             self.xOffset += 2 / 1.5
 
-        color = (self.parent.spritedata[4] & 0xF0) >> 4
+        color = (self.parent.actordata[4] & 0xF0) >> 4
         if color > 1:
             color = 0
         self.color = color
@@ -2708,7 +2708,7 @@ class ActorImage_RotationControlledPassBetaPlatform(ActorImage_UnusedBlockPlatfo
         self.width = 16
 
     def dataChanged(self):
-        size = self.parent.spritedata[4]
+        size = self.parent.actordata[4]
         height = (size & 0xF) + 1
 
         self.yOffset = -(height - 1) * 8
@@ -2733,7 +2733,7 @@ class ActorImage_ChainBall(actorlib.ActorImage_StaticMultiple):  # 109
         ImageCache['ChainBallL'] = actorlib.GetPixmap('chainball_left.png')
 
     def dataChanged(self):
-        direction = self.parent.spritedata[5] & 3
+        direction = self.parent.actordata[5] & 3
         if direction > 3:
             direction = 0
 
@@ -2773,8 +2773,8 @@ class ActorImage_Sunlight(actorlib.ActorImage):  # 110
         # infinite loop. Alternative idea: Only move the sunlight when
         # - scrolling or
         # - zooming
-        # This causes small visual bugs while moving the sprite, but moving this
-        # sprite makes little sense, so I guess it's fine.
+        # This causes small visual bugs while moving the actor, but moving this
+        # actor makes little sense, so I guess it's fine.
 
         slot = self.moveSunlight
 
@@ -2901,8 +2901,8 @@ class ActorImage_Flagpole(actorlib.ActorImage):  # 113
             return
 
         # get the info (mimic the way the game does it)
-        exit_type = self.parent.spritedata[2] >> 4
-        snow_type = self.parent.spritedata[5] & 0xF
+        exit_type = self.parent.actordata[2] >> 4
+        snow_type = self.parent.actordata[5] & 0xF
         value = exit_type + snow_type * 2
 
         if value == 0:
@@ -2962,7 +2962,7 @@ class ActorImage_FlameCannon(actorlib.ActorImage_StaticMultiple):  # 114
         ImageCache['FlameCannonU'] = QtGui.QPixmap.fromImage(image.transformed(transform270).mirrored(True, False))
 
     def dataChanged(self):
-        direction = self.parent.spritedata[5] & 15
+        direction = self.parent.actordata[5] & 15
         if direction > 3:
             direction = 0
 
@@ -3002,7 +3002,7 @@ class ActorImage_Cheep(actorlib.ActorImage):  # 115
         if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
-        type = self.parent.spritedata[5] & 0xF
+        type = self.parent.actordata[5] & 0xF
         if type in (1, 7):
             self.image = ImageCache['CheepGreen']
         elif type == 8:
@@ -3014,7 +3014,7 @@ class ActorImage_Cheep(actorlib.ActorImage):  # 115
         self.size = (self.image.width() / 1.5, self.image.height() / 1.5)
 
         if type == 3:
-            distance = ((self.parent.spritedata[3] & 0xF) + 1) * 16
+            distance = ((self.parent.actordata[3] & 0xF) + 1) * 16
             self.aux[0].setSize((distance * 2) + 16, 16)
             self.aux[0].setPos(-distance * 1.5, 0)
         else:
@@ -3044,12 +3044,12 @@ class ActorImage_CoinCheep(actorlib.ActorImage):  # 116
 
     def dataChanged(self):
 
-        waitFlag = self.parent.spritedata[5] & 1
+        waitFlag = self.parent.actordata[5] & 1
         if waitFlag:
             self.actorbox.shown = False
             self.image = ImageCache['CheepRedAtYou']
         else:
-            type = self.parent.spritedata[2] >> 4
+            type = self.parent.actordata[2] >> 4
             if type & 3 == 3:
                 self.actorbox.shown = True
                 self.image = None
@@ -3095,7 +3095,7 @@ class ActorImage_PulseFlameCannon(actorlib.ActorImage_StaticMultiple):  # 117
 
     def dataChanged(self):
 
-        direction = self.parent.spritedata[5] & 15
+        direction = self.parent.actordata[5] & 15
         if direction > 3:
             direction = 0
 
@@ -3160,7 +3160,7 @@ class ActorImage_SledgeBro(actorlib.ActorImage_Static):  # 120
 class ActorImage_OneWayPlatform(ActorImage_WoodenPlatform):  # 122
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        width = self.parent.spritedata[5] & 0xF
+        width = self.parent.actordata[5] & 0xF
         if width < 2:
             width = 1
         self.width = width * 32 + 32
@@ -3171,17 +3171,17 @@ class ActorImage_OneWayPlatform(ActorImage_WoodenPlatform):  # 122
         if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
-        width = self.parent.spritedata[5] & 0xF
+        width = self.parent.actordata[5] & 0xF
         if width < 2:
             width = 1
         self.width = width * 32 + (52 / 1.5)
 
         self.xOffset = self.width * -0.5
 
-        self.color = ((self.parent.spritedata[4] & 0xF0) >> 4) & 1
+        self.color = ((self.parent.actordata[4] & 0xF0) >> 4) & 1
 
-        distance = (self.parent.spritedata[3] & 0xF0) >> 4
-        direction = self.parent.spritedata[3] & 0xF
+        distance = (self.parent.actordata[3] & 0xF0) >> 4
+        direction = self.parent.actordata[3] & 0xF
 
         if distance != 0 or direction != 4:
             if distance == 1:
@@ -3229,7 +3229,7 @@ class ActorImage_UnusedCastlePlatform(actorlib.ActorImage):  # 123
         if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
-        rawSize = self.parent.spritedata[4] >> 4
+        rawSize = self.parent.actordata[4] >> 4
 
         if rawSize != 0:
             widthInBlocks = rawSize * 4
@@ -3254,7 +3254,7 @@ class ActorImage_FenceKoopaHorz(actorlib.ActorImage_StaticMultiple):  # 125
         actorlib.loadIfNotInImageCache('FenceKoopaHR', 'fencekoopa_horz_red.png')
 
     def dataChanged(self):
-        color = self.parent.spritedata[5] & 1
+        color = self.parent.actordata[5] & 1
         if color == 1:
             self.image = ImageCache['FenceKoopaHR']
         else:
@@ -3276,7 +3276,7 @@ class ActorImage_FenceKoopaVert(actorlib.ActorImage_StaticMultiple):  # 126
 
     def dataChanged(self):
 
-        color = self.parent.spritedata[5] & 1
+        color = self.parent.actordata[5] & 1
         if color == 1:
             self.image = ImageCache['FenceKoopaVR']
         else:
@@ -3330,7 +3330,7 @@ class ActorImage_4Spinner(actorlib.ActorImage_Static):  # 129
 
     def dataChanged(self):
         super().dataChanged()
-        self.alpha = 0.6 if (self.parent.spritedata[2] >> 4) & 1 else 1
+        self.alpha = 0.6 if (self.parent.actordata[2] >> 4) & 1 else 1
 
 
 class ActorImage_Wiggler(actorlib.ActorImage_Static):  # 130
@@ -3367,8 +3367,8 @@ class ActorImage_Boo(actorlib.ActorImage):  # 131
 
 class ActorImage_UnusedBlockPlatform1(ActorImage_UnusedBlockPlatform):  # 132
     def dataChanged(self):
-        self.width = ((self.parent.spritedata[5] & 0xF) + 1) * 16
-        self.height = ((self.parent.spritedata[5] >> 4) + 1) * 16
+        self.width = ((self.parent.actordata[5] & 0xF) + 1) * 16
+        self.height = ((self.parent.actordata[5] >> 4) + 1) * 16
 
 
 class ActorImage_StalagmitePlatform(actorlib.ActorImage):  # 133
@@ -3443,18 +3443,18 @@ class ActorImage_RotBulletLauncher(actorlib.ActorImage):  # 136
         actorlib.loadIfNotInImageCache('RotLauncherPivot', 'bullet_cannon_rot_P.png')
 
     def dataChanged(self):
-        pieces = self.parent.spritedata[3] & 15
+        pieces = self.parent.actordata[3] & 15
         pieces = min(pieces, 7)
         self.yOffset = -pieces * 16
         self.height = (pieces + 1) * 16
 
     def paint(self, painter):
-        pieces = (self.parent.spritedata[3] & 15) + 1
+        pieces = (self.parent.actordata[3] & 15) + 1
         pieces = min(pieces, 8)
-        pivot1_4 = self.parent.spritedata[4] & 15
-        pivot5_8 = self.parent.spritedata[4] >> 4
-        startleft1_4 = self.parent.spritedata[5] & 15
-        startleft5_8 = self.parent.spritedata[5] >> 4
+        pivot1_4 = self.parent.actordata[4] & 15
+        pivot5_8 = self.parent.actordata[4] >> 4
+        startleft1_4 = self.parent.actordata[5] & 15
+        startleft5_8 = self.parent.actordata[5] >> 4
 
         pivots = [pivot1_4, pivot5_8]
         startleft = [startleft1_4, startleft5_8]
@@ -3507,12 +3507,12 @@ class ActorImage_Water(ActorImage_LiquidOrFog):  # 138
         ImageCache['LiquidWaterFull'] = actorlib.GetPixmap('liquid_water_full.png')
 
     def dataChanged(self):
-        self.locId = self.parent.spritedata[5] & 0x7F
-        self.drawCrest = self.parent.spritedata[4] & 8 == 0
+        self.locId = self.parent.actordata[5] & 0x7F
+        self.drawCrest = self.parent.actordata[4] & 8 == 0
 
-        self.risingHeight = (self.parent.spritedata[3] & 0xF) << 4
-        self.risingHeight |= self.parent.spritedata[4] >> 4
-        if self.parent.spritedata[2] & 15 > 7:  # falling
+        self.risingHeight = (self.parent.actordata[3] & 0xF) << 4
+        self.risingHeight |= self.parent.actordata[4] >> 4
+        if self.parent.actordata[2] & 15 > 7:  # falling
             self.risingHeight = -self.risingHeight
 
         if not self.drawCrest and self.locId == 0:
@@ -3548,12 +3548,12 @@ class ActorImage_Lava(ActorImage_LiquidOrFog):  # 139
         ImageCache['LiquidLavaRiseCrest'] = actorlib.GetPixmap('liquid_lava_rise_crest.png')
 
     def dataChanged(self):
-        self.locId = self.parent.spritedata[5] & 0x7F
-        self.drawCrest = self.parent.spritedata[4] & 8 == 0
+        self.locId = self.parent.actordata[5] & 0x7F
+        self.drawCrest = self.parent.actordata[4] & 8 == 0
 
-        self.risingHeight = (self.parent.spritedata[3] & 0xF) << 4
-        self.risingHeight |= self.parent.spritedata[4] >> 4
-        if self.parent.spritedata[2] & 15 > 7:  # falling
+        self.risingHeight = (self.parent.actordata[3] & 0xF) << 4
+        self.risingHeight |= self.parent.actordata[4] >> 4
+        if self.parent.actordata[2] & 15 > 7:  # falling
             self.risingHeight = -self.risingHeight
 
         super().dataChanged()
@@ -3604,7 +3604,7 @@ class ActorImage_Arrow(actorlib.ActorImage_StaticMultiple):  # 143
     def dataChanged(self):
         ArrowOffsets = [(4, 1), (7, 7), (1, 4), (7, -2), (4, 0), (-2, -2), (0, 4), (-2, 7)]
 
-        direction = self.parent.spritedata[5] & 7
+        direction = self.parent.actordata[5] & 7
         self.image = ImageCache[f'Arrow{direction}']
 
         self.width = self.image.width() / 1.5
@@ -3692,7 +3692,7 @@ class ActorImage_Coin(actorlib.ActorImage_StaticMultiple):  # 147
         ImageCache['CoinBubble'] = actorlib.GetPixmap('coin_bubble.png')
 
     def dataChanged(self):
-        type = self.parent.spritedata[5] & 0xF
+        type = self.parent.actordata[5] & 0xF
 
         if type == 0:
             self.image = ImageCache['Coin']
@@ -3723,7 +3723,7 @@ class ActorImage_Spring(actorlib.ActorImage_Static):  # 148
         actorlib.loadIfNotInImageCache('Spring', 'spring.png')
 
     def dataChanged(self):
-        offset = (self.parent.spritedata[5] >> 4) & 1
+        offset = (self.parent.actordata[5] >> 4) & 1
         self.xOffset = 8 if offset else 0
 
         super().dataChanged()
@@ -3795,8 +3795,8 @@ class ActorImage_RedCoinRing(actorlib.ActorImage):  # 156
             ImageCache['RedCoinRing' + name] = newPix
 
     def dataChanged(self):
-        item = (self.parent.spritedata[5] >> 4) & 0x3
-        shifted = self.parent.spritedata[5] & 1
+        item = (self.parent.actordata[5] >> 4) & 0x3
+        shifted = self.parent.actordata[5] & 1
         self.xOffset = -2 if shifted else -10
 
         if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
@@ -3846,7 +3846,7 @@ class ActorImage_BigBrick(actorlib.ActorImage_StaticMultiple):  # 157
 
     def dataChanged(self):
 
-        power = self.parent.spritedata[5] & 0xF
+        power = self.parent.actordata[5] & 0xF
         self.image = ImageCache[f'BigBrick{power}']
         super().dataChanged()
 
@@ -3862,7 +3862,7 @@ class ActorImage_FireSnake(actorlib.ActorImage_StaticMultiple):  # 158
 
     def dataChanged(self):
 
-        move = self.parent.spritedata[5] & 15
+        move = self.parent.actordata[5] & 15
         if move == 1:
             del self.size
             self.yOffset = 0
@@ -3877,10 +3877,10 @@ class ActorImage_FireSnake(actorlib.ActorImage_StaticMultiple):  # 158
 
 class ActorImage_UnusedBlockPlatform2(ActorImage_UnusedBlockPlatform):  # 160
     def dataChanged(self):
-        self.width = ((self.parent.spritedata[4] & 0xF) + 1) * 16
-        self.height = ((self.parent.spritedata[4] >> 4) + 1) * 16
-        self.xOffset = (self.parent.spritedata[3] & 0xF)
-        self.yOffset = ((self.parent.spritedata[3] >> 4) & 0xF)
+        self.width = ((self.parent.actordata[4] & 0xF) + 1) * 16
+        self.height = ((self.parent.actordata[4] >> 4) + 1) * 16
+        self.xOffset = (self.parent.actordata[3] & 0xF)
+        self.yOffset = ((self.parent.actordata[3] >> 4) & 0xF)
 
 
 class ActorImage_PipeBubbles(actorlib.ActorImage_StaticMultiple):  # 161
@@ -3906,7 +3906,7 @@ class ActorImage_PipeBubbles(actorlib.ActorImage_StaticMultiple):  # 161
 
     def dataChanged(self):
 
-        direction = self.parent.spritedata[5] & 15
+        direction = self.parent.actordata[5] & 15
         if direction == 0 or direction > 3:
             self.dimensions = (0, -52, 32, 53)
             direction = 'U'
@@ -3935,7 +3935,7 @@ class ActorImage_SnakeBlock(actorlib.ActorImage):  # 166
         actorlib.loadIfNotInImageCache('SnakeBlock', 'snake_block.png')
 
     def dataChanged(self):
-        length = self.parent.spritedata[5] & 15
+        length = self.parent.actordata[5] & 15
         self.width = (length + 3) * 16
 
     def paint(self, painter):
@@ -4042,8 +4042,8 @@ class ActorImage_OneWayGate(actorlib.ActorImage_StaticMultiple):  # 174
 
     def dataChanged(self):
 
-        flag = (self.parent.spritedata[5] >> 4) & 1
-        direction = self.parent.spritedata[5] & 3
+        flag = (self.parent.actordata[5] >> 4) & 1
+        direction = self.parent.actordata[5] & 3
         self.image = ImageCache[f'1WayGate{flag}{direction}']
 
         direction = min(direction, 3)
@@ -4069,8 +4069,8 @@ class ActorImage_FlyingQBlock(actorlib.ActorImage):  # 175
         actorlib.loadIfNotInImageCache('FlyingQBlock', 'flying_qblock.png')
 
     def paint(self, painter):
-        theme = self.parent.spritedata[4] >> 4
-        content = self.parent.spritedata[5] & 0xF
+        theme = self.parent.actordata[4] >> 4
+        content = self.parent.actordata[5] & 0xF
 
         if theme > 3:
             theme = 0
@@ -4112,7 +4112,7 @@ class ActorImage_RouletteBlock(actorlib.ActorImage_StaticMultiple):  # 176
             ImageCache['RouletteBlock' + name] = newPix
 
     def dataChanged(self):
-        item = self.parent.spritedata[5] & 0x3
+        item = self.parent.actordata[5] & 0x3
 
         itemStrs = ('Fire', 'Prop', 'IceF', 'Peng')
         self.image = ImageCache['RouletteBlock' + itemStrs[item]]
@@ -4152,8 +4152,8 @@ class ActorImage_ScalePlatform(actorlib.ActorImage):  # 178
             ImageCache['ScalePulley'] = actorlib.GetPixmap('scale_pulley.png')
 
     def dataChanged(self):
-        info1 = self.parent.spritedata[4]
-        info2 = self.parent.spritedata[5]
+        info1 = self.parent.actordata[4]
+        info2 = self.parent.actordata[5]
         self.platformWidth = (info1 & 0xF0) >> 4
         if self.platformWidth > 12:
             self.platformWidth = -1
@@ -4216,8 +4216,8 @@ class ActorImage_SpecialExit(actorlib.ActorImage):  # 179
         if not isinstance(self.aux[0], actorlib.AuxiliaryRectOutline):
             return
 
-        w = (self.parent.spritedata[4] & 15) + 1
-        h = (self.parent.spritedata[5] >> 4) + 1
+        w = (self.parent.actordata[4] & 15) + 1
+        h = (self.parent.actordata[5] >> 4) + 1
         if w == 1 and h == 1:  # no point drawing a 1x1 outline behind the self.parent
             self.aux[0].setSize(0, 0)
             return
@@ -4384,8 +4384,8 @@ class ActorImage_Urchin(actorlib.ActorImage_Static):  # 193
         if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
-        distance = ((self.parent.spritedata[5] & 0xF0) << 1) | 8
-        horizontal = (self.parent.spritedata[5] & 1) == 1
+        distance = ((self.parent.actordata[5] & 0xF0) << 1) | 8
+        horizontal = (self.parent.actordata[5] & 1) == 1
 
         if horizontal:
             self.aux[0].direction = actorlib.AuxiliaryTrackObject.Horizontal
@@ -4421,8 +4421,8 @@ class ActorImage_MegaUrchin(actorlib.ActorImage_Static):  # 194
         if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
-        distance = ((self.parent.spritedata[5] & 0xF0) << 1) | 8
-        horizontal = (self.parent.spritedata[5] & 1) == 1
+        distance = ((self.parent.actordata[5] & 0xF0) << 1) | 8
+        horizontal = (self.parent.actordata[5] & 1) == 1
 
         if horizontal:
             self.aux[0].direction = actorlib.AuxiliaryTrackObject.Horizontal
@@ -4448,7 +4448,7 @@ class ActorImage_HuckitCrab(actorlib.ActorImage_StaticMultiple):  # 195
         ImageCache['HuckitCrabR'] = QtGui.QPixmap.fromImage(huckit_crab.mirrored(True, False))
 
     def dataChanged(self):
-        direction = self.parent.spritedata[5]
+        direction = self.parent.actordata[5]
 
         if direction == 1: # Right
             self.image = ImageCache['HuckitCrabR']
@@ -4476,8 +4476,8 @@ class ActorImage_Fishbones(actorlib.ActorImage_StaticMultiple):  # 196
         if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
-        direction = self.parent.spritedata[5] >> 4
-        distance = self.parent.spritedata[5] & 0xF
+        direction = self.parent.actordata[5] >> 4
+        distance = self.parent.actordata[5] & 0xF
 
         # distance values > 1 result in a distance of 9
         if distance == 0:
@@ -4554,8 +4554,8 @@ class ActorImage_Clam(actorlib.ActorImage_StaticMultiple):  # 197
 
     def dataChanged(self):
 
-        holds = self.parent.spritedata[5] & 0xF
-        switchdir = self.parent.spritedata[4] & 0xF
+        holds = self.parent.actordata[5] & 0xF
+        switchdir = self.parent.actordata[4] & 0xF
 
         holdsStr = 'Empty'
         if holds == 1:
@@ -4625,7 +4625,7 @@ class ActorImage_Icicle(actorlib.ActorImage_StaticMultiple):  # 201
 
     def dataChanged(self):
 
-        size = self.parent.spritedata[5] & 1
+        size = self.parent.actordata[5] & 1
         if size == 0:
             self.image = ImageCache['IcicleSmallS']
         else:
@@ -4667,7 +4667,7 @@ class ActorImage_Chest(actorlib.ActorImage_StaticMultiple):  # 203
         actorlib.loadIfNotInImageCache('Chest', 'chest.png')
 
     def dataChanged(self):
-        pipeAlign = (self.parent.spritedata[2] >> 4) & 1
+        pipeAlign = (self.parent.actordata[2] >> 4) & 1
         if pipeAlign:
             self.yOffset = -13 / 1.5
         else:
@@ -4677,9 +4677,9 @@ class ActorImage_Chest(actorlib.ActorImage_StaticMultiple):  # 203
             return
 
         # Render item
-        chestType = self.parent.spritedata[4] & 0xF
+        chestType = self.parent.actordata[4] & 0xF
         if chestType == 0:
-            item = self.parent.spritedata[5] & 0xF
+            item = self.parent.actordata[5] & 0xF
             # Hide for 'Nothing' values (or Random)
             if item < 2 or item > 8:
                 self.aux[0].alpha = 0.0
@@ -4706,7 +4706,7 @@ class ActorImage_RollObjSpawner(actorlib.ActorImage_StaticMultiple):  # 204
         actorlib.loadIfNotInImageCache('RollingBarrel', 'barrel_rolling.png')
 
     def dataChanged(self):
-        barrel = (self.parent.spritedata[2] >> 4) & 1
+        barrel = (self.parent.actordata[2] >> 4) & 1
         if barrel:
             self.image = ImageCache['RollingBarrel']
         else:
@@ -4729,8 +4729,8 @@ class ActorImage_Zoom(actorlib.ActorImage):  # 206
         if not isinstance(self.aux[0], actorlib.AuxiliaryRectOutline):
             return
 
-        w = self.parent.spritedata[5]
-        h = self.parent.spritedata[4]
+        w = self.parent.actordata[5]
+        h = self.parent.actordata[4]
         if w == 0 and h == 0:  # no point drawing a 1x1 outline behind the self.parent
             self.aux[0].setSize(0, 0, 0, 0)
             return
@@ -4780,7 +4780,7 @@ class ActorImage_RollingHill(actorlib.ActorImage):  # 212
         super().__init__(parent, 1.5)
         self.RollingHillSizes = [0, 18 * 16, 32 * 16, 50 * 16, 64 * 16, 10 * 16, 14 * 16, 20 * 16, 0, 0, 0, 0, 0, 0, 0, 0]
 
-        size = (self.parent.spritedata[3] >> 4) & 0xF
+        size = (self.parent.actordata[3] >> 4) & 0xF
         realSize = self.RollingHillSizes[size]
 
         self.aux.append(actorlib.AuxiliaryCircleOutline(parent, realSize))
@@ -4789,11 +4789,11 @@ class ActorImage_RollingHill(actorlib.ActorImage):  # 212
         if not isinstance(self.aux[0], actorlib.AuxiliaryCircleOutline):
             return
 
-        size = (self.parent.spritedata[3] >> 4) & 0xF
+        size = (self.parent.actordata[3] >> 4) & 0xF
         if size != 0:
             realSize = self.RollingHillSizes[size]
         else:
-            adjust = self.parent.spritedata[4]
+            adjust = self.parent.actordata[4]
             realSize = 32 * (adjust + 1)
 
         self.aux[0].setSize(realSize)
@@ -4839,12 +4839,12 @@ class ActorImage_Poison(ActorImage_LiquidOrFog):  # 216
         ImageCache['LiquidPoisonRiseCrest'] = actorlib.GetPixmap('liquid_poison_rise_crest.png')
 
     def dataChanged(self):
-        self.locId = self.parent.spritedata[5] & 0x7F
-        self.drawCrest = self.parent.spritedata[4] & 8 == 0
+        self.locId = self.parent.actordata[5] & 0x7F
+        self.drawCrest = self.parent.actordata[4] & 8 == 0
 
-        self.risingHeight = (self.parent.spritedata[3] & 0xF) << 4
-        self.risingHeight |= self.parent.spritedata[4] >> 4
-        if self.parent.spritedata[2] & 15 > 7:  # falling
+        self.risingHeight = (self.parent.actordata[3] & 0xF) << 4
+        self.risingHeight |= self.parent.actordata[4] >> 4
+        if self.parent.actordata[2] & 15 > 7:  # falling
             self.risingHeight = -self.risingHeight
 
         super().dataChanged()
@@ -4893,7 +4893,7 @@ class ActorImage_SpringBlock(actorlib.ActorImage_StaticMultiple):  # 223
         actorlib.loadIfNotInImageCache('SpringBlock2', 'spring_block_alt.png')
 
     def dataChanged(self):
-        type = self.parent.spritedata[5] & 1
+        type = self.parent.actordata[5] & 1
         self.image = ImageCache['SpringBlock2'] if type else ImageCache['SpringBlock1']
 
         super().dataChanged()
@@ -4913,7 +4913,7 @@ class ActorImage_JumboRay(actorlib.ActorImage_StaticMultiple):  # 224
 
     def dataChanged(self):
 
-        flyleft = self.parent.spritedata[4] & 15
+        flyleft = self.parent.actordata[4] & 15
         if flyleft:
             self.xOffset = 0
             self.image = ImageCache['JumboRayL']
@@ -4968,7 +4968,7 @@ class ActorImage_PipeCannon(actorlib.ActorImage):  # 227
         ):
             return
 
-        fireDirection = (self.parent.spritedata[5] & 0xF) % 7
+        fireDirection = (self.parent.actordata[5] & 0xF) % 7
 
         self.aux[0].image = ImageCache[f'PipeCannon{fireDirection}']
 
@@ -5045,8 +5045,8 @@ class ActorImage_ExtendShroom(actorlib.ActorImage):  # 228
 
     def dataChanged(self):
 
-        props = self.parent.spritedata[5]
-        size = self.parent.spritedata[4] & 1
+        props = self.parent.actordata[5]
+        size = self.parent.actordata[4] & 1
         self.start = (props & 0x10) >> 4
         stemlength = props & 0xF
 
@@ -5135,10 +5135,10 @@ class ActorImage_WiggleShroom(actorlib.ActorImage):  # 231
         if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
-        width = (self.parent.spritedata[4] & 0xF0) >> 4
-        long = (self.parent.spritedata[3] >> 2) & 1
-        extends = (self.parent.spritedata[3] >> 5) & 1
-        distance = self.parent.spritedata[3] & 3 # this is also the stem length
+        width = (self.parent.actordata[4] & 0xF0) >> 4
+        long = (self.parent.actordata[3] >> 2) & 1
+        extends = (self.parent.actordata[3] >> 5) & 1
+        distance = self.parent.actordata[3] & 3 # this is also the stem length
 
         self.xOffset = -(width * 8) - 20
         self.width = (width * 16) + 56
@@ -5211,10 +5211,10 @@ class ActorImage_Bulber(actorlib.ActorImage):  # 233
         ):
             return
 
-        type = self.parent.spritedata[5] & 0xF
+        type = self.parent.actordata[5] & 0xF
         if type == 1:
-            distance = ((self.parent.spritedata[4] & 0xF) + 1) * 16
-            isLeft = (self.parent.spritedata[4] >> 4) & 1
+            distance = ((self.parent.actordata[4] & 0xF) + 1) * 16
+            isLeft = (self.parent.actordata[4] >> 4) & 1
             self.aux[0].setSize((distance * 2) + 48, 16)
             self.aux[0].setPos((-distance * 1.5) + self.width - 48, self.height)
             if isLeft:
@@ -5303,10 +5303,10 @@ class ActorImage_CheepFormation(actorlib.ActorImage_Static):  # 247
         ImageCache['CheepRedRight'] = QtGui.QPixmap.fromImage(actorlib.GetImage('cheep_red.png').mirrored(True, False))
 
     def dataChanged(self):
-        isLeft = (self.parent.spritedata[4] >> 4) & 0x1
-        cheepNum = self.parent.spritedata[4] & 0xF
-        doStretch = self.parent.spritedata[3] & 0x1
-        formation = self.parent.spritedata[5] & 0xF
+        isLeft = (self.parent.actordata[4] >> 4) & 0x1
+        cheepNum = self.parent.actordata[4] & 0xF
+        doStretch = self.parent.actordata[3] & 0x1
+        formation = self.parent.actordata[5] & 0xF
         if formation > 4:
             formation = 0
 
@@ -5373,8 +5373,8 @@ class ActorImage_RotControlledCoin(ActorImage_SpecialCoin):  # 253
 
 class ActorImage_RotControlledPipe(ActorImage_Pipe):  # 254
     def dataChanged(self):
-        self.length1 = self.length2 = (self.parent.spritedata[4] >> 4) + 2
-        dir = self.parent.spritedata[4] & 3
+        self.length1 = self.length2 = (self.parent.actordata[4] >> 4) + 2
+        dir = self.parent.actordata[4] & 3
         self.direction = 'URDL'[dir]
         super().dataChanged()
 
@@ -5407,7 +5407,7 @@ class ActorImage_MoveWhenOnMetalLavaBlock(actorlib.ActorImage_StaticMultiple):  
         ImageCache['MetalLavaBlock2'] = actorlib.GetPixmap('lava_iron_block_2.png')
 
     def dataChanged(self):
-        size = (self.parent.spritedata[5] & 0xF) % 3
+        size = (self.parent.actordata[5] & 0xF) % 3
         self.image = ImageCache[f'MetalLavaBlock{size}']
 
         super().dataChanged()
@@ -5426,8 +5426,8 @@ class ActorImage_MovementController_TwoWayLine(actorlib.ActorImage):  # 260
         if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
-        direction = self.parent.spritedata[3] & 3
-        distance = (self.parent.spritedata[5] >> 4) + 1
+        direction = self.parent.actordata[3] & 3
+        distance = (self.parent.actordata[5] >> 4) + 1
 
         if direction <= 1:  # horizontal
             self.aux[0].direction = 1
@@ -5488,7 +5488,7 @@ class ActorImage_PoltergeistItem(actorlib.ActorImage):  # 262
         if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
-        style = self.parent.spritedata[5] & 15
+        style = self.parent.actordata[5] & 15
         if style == 0:
             self.offset = (0, 0)
             self.height = 16
@@ -5555,7 +5555,7 @@ class ActorImage_WalkingPiranha(actorlib.ActorImage_Static):  # 264
         ):
             return
 
-        distance = self.parent.spritedata[5] & 0xF
+        distance = self.parent.actordata[5] & 0xF
         sideLen = (distance + 2) * 16
 
         self.aux[0].setPos(6 / 1.5, 112 / 1.5)
@@ -5578,7 +5578,7 @@ class ActorImage_FallingIcicle(actorlib.ActorImage_StaticMultiple):  # 265
     def dataChanged(self):
         super().dataChanged()
 
-        size = self.parent.spritedata[5] & 1
+        size = self.parent.actordata[5] & 1
         if size == 0:
             self.image = ImageCache['IcicleSmall']
             self.height = 19
@@ -5615,7 +5615,7 @@ class ActorImage_TiltGrate(actorlib.ActorImage_StaticMultiple):  # 267
         ImageCache['TiltGrateR'] = actorlib.GetPixmap('tilt_grate_right.png')
 
     def dataChanged(self):
-        direction = self.parent.spritedata[5] & 3
+        direction = self.parent.actordata[5] & 3
         direction = min(direction, 3)
 
         if direction < 2:
@@ -5659,8 +5659,8 @@ class ActorImage_LavaGeyser(actorlib.ActorImage_StaticMultiple):  # 268
 
     def dataChanged(self):
 
-        height = self.parent.spritedata[4] >> 4
-        startsOn = self.parent.spritedata[5] & 1
+        height = self.parent.actordata[4] >> 4
+        startsOn = self.parent.actordata[5] & 1
 
         if height > 6:
             height = 0
@@ -5705,8 +5705,8 @@ class ActorImage_ScaredyRat(actorlib.ActorImage):  # 271
         actorlib.loadIfNotInImageCache('ScaredyRat', 'scaredy_rat.png')
 
     def dataChanged(self):
-        number = (self.parent.spritedata[5] >> 4) & 3
-        direction = self.parent.spritedata[5] & 0xF
+        number = (self.parent.actordata[5] >> 4) & 3
+        direction = self.parent.actordata[5] & 0xF
 
         self.width = (number + 1) * (ImageCache['ScaredyRat'].width() / 1.5)
 
@@ -5716,7 +5716,7 @@ class ActorImage_ScaredyRat(actorlib.ActorImage):  # 271
             self.xOffset = 0
 
     def paint(self, painter):
-        direction = self.parent.spritedata[5] & 0xF
+        direction = self.parent.actordata[5] & 0xF
 
         rat = ImageCache['ScaredyRat']
         if direction == 1:
@@ -5755,7 +5755,7 @@ class ActorImage_CastleGear(actorlib.ActorImage):  # 274
         if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
-        big = (self.parent.spritedata[4] & 0xF) & 1
+        big = (self.parent.actordata[4] & 0xF) & 1
 
         if big:
             self.aux[0].image = ImageCache['CastleGearL']
@@ -5812,7 +5812,7 @@ class ActorImage_GiantIceBlock(actorlib.ActorImage_StaticMultiple):  # 280
 
     def dataChanged(self):
 
-        item = self.parent.spritedata[5] & 3
+        item = self.parent.actordata[5] & 3
         if item > 2:
             item = 0
 
@@ -5849,10 +5849,10 @@ class ActorImage_RiseFallWater(ActorImage_LiquidOrFog):  # 285
 
     def dataChanged(self):
 
-        self.risingHeight = ((self.parent.spritedata[5] >> 4) & 0xF)* 2 + 2 # distance
-        self.depth = (self.parent.spritedata[5] & 0xF) * 2 + 2
+        self.risingHeight = ((self.parent.actordata[5] >> 4) & 0xF)* 2 + 2 # distance
+        self.depth = (self.parent.actordata[5] & 0xF) * 2 + 2
 
-        if self.parent.spritedata[3] & 8:  # it Fall
+        if self.parent.actordata[3] & 8:  # it Fall
             self.risingHeight = -self.risingHeight
 
         super().dataChanged()
@@ -5913,7 +5913,7 @@ class ActorImage_WoodCircle(actorlib.ActorImage_StaticMultiple):  # 286
 
     def dataChanged(self):
         super().dataChanged()
-        size = (self.parent.spritedata[5] & 0xF) % 3
+        size = (self.parent.actordata[5] & 0xF) % 3
 
         self.image = ImageCache[f'WoodCircle{size}']
 
@@ -5937,8 +5937,8 @@ class ActorImage_PathIceBlock(actorlib.ActorImage_StaticMultiple):  # 287
         actorlib.loadIfNotInImageCache('PathIceBlock', 'unused_path_ice_block.png')
 
     def dataChanged(self):
-        width = (self.parent.spritedata[5] & 0xF) + 1
-        height = (self.parent.spritedata[5] >> 4) + 1
+        width = (self.parent.actordata[5] & 0xF) + 1
+        height = (self.parent.actordata[5] >> 4) + 1
 
         self.image = ImageCache['PathIceBlock'].scaled(width * 24, height * 24)
 
@@ -6014,9 +6014,9 @@ class ActorImage_Box(actorlib.ActorImage_StaticMultiple):  # 289
 
     def dataChanged(self):
 
-        style = self.parent.spritedata[4] & 1
-        size = (self.parent.spritedata[5] >> 4) & 3
-        item = self.parent.spritedata[5] & 0xF
+        style = self.parent.actordata[4] & 1
+        size = (self.parent.actordata[5] >> 4) & 3
+        item = self.parent.actordata[5] & 0xF
 
         itemStr = ''
         if style != 1:
@@ -6040,7 +6040,7 @@ class ActorImage_Parabeetle(actorlib.ActorImage_StaticMultiple):  # 291
         ImageCache['ParabeetleAtYou'] = actorlib.GetPixmap('parabeetle_atyou.png')
 
     def dataChanged(self):
-        direction = self.parent.spritedata[5] & 0xf
+        direction = self.parent.actordata[5] & 0xf
         self.yOffset = -8 / 1.5
 
         if direction == 0:  # right
@@ -6071,7 +6071,7 @@ class ActorImage_HeavyParabeetle(actorlib.ActorImage_StaticMultiple):  # 292
 
     def dataChanged(self):
 
-        direction = self.parent.spritedata[5] & 0xf
+        direction = self.parent.actordata[5] & 0xf
         self.yOffset = -85 / 1.5
 
         if direction == 0:  # right
@@ -6109,8 +6109,8 @@ class ActorImage_NutPlatform(actorlib.ActorImage_StaticMultiple):  # 295
         actorlib.loadIfNotInImageCache('NutPlatform', 'nut_platform.png')
 
     def dataChanged(self):
-        offsetUp = self.parent.spritedata[5] >> 4
-        offsetRight = self.parent.spritedata[5] & 7
+        offsetUp = self.parent.actordata[5] >> 4
+        offsetRight = self.parent.actordata[5] & 7
 
         if offsetUp == 0:
             self.yOffset = -8
@@ -6148,7 +6148,7 @@ class ActorImage_MegaBuzzy(actorlib.ActorImage_StaticMultiple):  # 296
 
     def dataChanged(self):
 
-        direction = self.parent.spritedata[5] & 3
+        direction = self.parent.actordata[5] & 3
         if direction == 0 or direction > 2:
             self.image = ImageCache['MegaBuzzyR']
         elif direction == 1:
@@ -6174,7 +6174,7 @@ class ActorImage_DragonCoaster(actorlib.ActorImage):  # 297
         ImageCache['DragonTail'] = actorlib.GetPixmap('dragon_coaster_tail.png')
 
     def dataChanged(self):
-        raw_size = self.parent.spritedata[5] & 7
+        raw_size = self.parent.actordata[5] & 7
 
         if raw_size == 0:
             self.width = 32
@@ -6184,7 +6184,7 @@ class ActorImage_DragonCoaster(actorlib.ActorImage):  # 297
             self.xOffset = 32 - self.width
 
     def paint(self, painter):
-        raw_size = self.parent.spritedata[5] & 15
+        raw_size = self.parent.actordata[5] & 15
 
         if raw_size == 0 or raw_size == 8:
             # just the head
@@ -6230,11 +6230,11 @@ class ActorImage_LongCannon(actorlib.ActorImage_StaticMultiple):  # 298
     def dataChanged(self):
         super().dataChanged()
 
-        raw_length = self.parent.spritedata[4] & 0xF
-        self.dir = self.parent.spritedata[5] & 1
-        self.big = self.parent.spritedata[5] & 0x10 != 0
+        raw_length = self.parent.actordata[4] & 0xF
+        self.dir = self.parent.actordata[5] & 1
+        self.big = self.parent.actordata[5] & 0x10 != 0
 
-        self.bugged = (self.parent.spritedata[5] & 2 == 2) and self.dir == 0
+        self.bugged = (self.parent.actordata[5] & 2 == 2) and self.dir == 0
 
         if self.bugged:
             self.dir = 1
@@ -6339,8 +6339,8 @@ class ActorImage_CannonMulti(actorlib.ActorImage_StaticMultiple):  # 299
         ImageCache['CannonMultiD1'] = QtGui.QPixmap.fromImage(CannonUL.mirrored(False, True))
 
     def dataChanged(self):
-        left = self.parent.spritedata[5] & 1
-        upsideDown = (self.parent.spritedata[5] >> 4) & 1
+        left = self.parent.actordata[5] & 1
+        upsideDown = (self.parent.actordata[5] >> 4) & 1
 
         if upsideDown:
             self.image = ImageCache[f'CannonMultiD{left}']
@@ -6360,7 +6360,7 @@ class ActorImage_RotCannon(actorlib.ActorImage_StaticMultiple):  # 300
 
     def dataChanged(self):
 
-        upsideDown = (self.parent.spritedata[5] >> 4) & 1
+        upsideDown = (self.parent.actordata[5] >> 4) & 1
         if not upsideDown:
             self.image = ImageCache['RotCannon']
             self.offset = (-12, -29)
@@ -6379,7 +6379,7 @@ class ActorImage_RotCannonPipe(actorlib.ActorImage_StaticMultiple):  # 301
 
     def dataChanged(self):
 
-        upsideDown = (self.parent.spritedata[5] >> 4) & 1
+        upsideDown = (self.parent.actordata[5] >> 4) & 1
         if not upsideDown:
             self.image = ImageCache['RotCannonPipe']
             self.offset = (-40, -74)
@@ -6398,7 +6398,7 @@ class ActorImage_MontyMole(actorlib.ActorImage_StaticMultiple):  # 303
 
     def dataChanged(self):
 
-        notInCave = self.parent.spritedata[5] & 1
+        notInCave = self.parent.actordata[5] & 1
         if not notInCave:  # wow, that looks weird
             self.image = ImageCache['MoleCave']
             self.offset = (-6, -8 / 1.5)
@@ -6425,8 +6425,8 @@ class ActorImage_RotFlameCannon(actorlib.ActorImage_StaticMultiple):  # 304
 
     def dataChanged(self):
 
-        orientation = self.parent.spritedata[5] >> 4
-        length = self.parent.spritedata[5] & 15
+        orientation = self.parent.actordata[5] >> 4
+        length = self.parent.actordata[5] & 15
         orientation = '' if orientation == 0 else 'Flipped'
 
         if length > 4:
@@ -6471,7 +6471,7 @@ class ActorImage_RotSpotlight(actorlib.ActorImage_StaticMultiple):  # 306
 
     def dataChanged(self):
 
-        angle = self.parent.spritedata[3] & 15
+        angle = self.parent.actordata[3] & 15
         self.image = ImageCache[f'RotSpotlight{angle}']
 
         super().dataChanged()
@@ -6508,8 +6508,8 @@ class ActorImage_SynchroFlameJet(actorlib.ActorImage_StaticMultiple):  # 309
             offImage.transformed(transform270).mirrored(True, False))
 
     def dataChanged(self):
-        mode = self.parent.spritedata[4] & 1
-        direction = self.parent.spritedata[5] & 3
+        mode = self.parent.actordata[4] & 1
+        direction = self.parent.actordata[5] & 3
 
         mode = 'Off' if mode else 'On'
         self.offset = (
@@ -6538,7 +6538,7 @@ class ActorImage_ArrowSign(actorlib.ActorImage_StaticMultiple):  # 310
             ImageCache[f'ArrowSign{i}'] = actorlib.GetPixmap(f'arrow_sign_{i}.png')
 
     def dataChanged(self):
-        direction = self.parent.spritedata[5] & 0xF
+        direction = self.parent.actordata[5] & 0xF
         if direction > 7:
             direction = 0
 
@@ -6583,7 +6583,7 @@ class ActorImage_BubbleGen(actorlib.ActorImage):  # 314
         bubbleEccentricityX = 16
         bubbleEccentricityY = 48
 
-        size = self.parent.spritedata[5] & 0xF
+        size = self.parent.actordata[5] & 0xF
         if size > 3:
             return
 
@@ -6648,7 +6648,7 @@ class ActorImage_BoltBox(actorlib.ActorImage):  # 316
         ImageCache['BoltBoxBR'] = actorlib.GetPixmap('boltbox_br.png')
 
     def dataChanged(self):
-        size = self.parent.spritedata[5]
+        size = self.parent.actordata[5]
         self.width = (size & 0xF) * 16 + 32
         self.height = ((size & 0xF0) >> 4) * 16 + 32
 
@@ -6691,7 +6691,7 @@ class ActorImage_BoxGenerator(actorlib.ActorImage_StaticMultiple):  # 318
         if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
-        boxType = self.parent.spritedata[4] & 1
+        boxType = self.parent.actordata[4] & 1
 
         if boxType == 0:
             typeStr = 'Box01'
@@ -6724,7 +6724,7 @@ class ActorImage_ArrowBlock(actorlib.ActorImage_StaticMultiple):  # 321
         ImageCache['ArrowBlock3'] = actorlib.GetPixmap('arrow_block_right.png')
 
     def dataChanged(self):
-        direction = self.parent.spritedata[5] & 3
+        direction = self.parent.actordata[5] & 3
         self.image = ImageCache[f'ArrowBlock{direction}']
 
         super().dataChanged()
@@ -6763,9 +6763,9 @@ class ActorImage_BooCircle(actorlib.ActorImage):  # 323
         opacity = 0.5
 
         # Read the data
-        outrad = self.parent.spritedata[2] & 15
-        inrad = self.parent.spritedata[3] >> 4
-        ghostnum = 1 + (self.parent.spritedata[3] & 15)
+        outrad = self.parent.actordata[2] & 15
+        inrad = self.parent.actordata[3] >> 4
+        ghostnum = 1 + (self.parent.actordata[3] & 15)
         differentRads = inrad != outrad
 
         # Give up if the data is invalid
@@ -6902,7 +6902,7 @@ class ActorImage_KingBill(actorlib.ActorImage):  # 326
         if not isinstance(self.aux[0], actorlib.AuxiliaryPainterPath):
             return
 
-        direction = self.parent.spritedata[5] & 3
+        direction = self.parent.actordata[5] & 3
 
         self.aux[0].setPath(self.paths[direction])
 
@@ -6957,7 +6957,7 @@ class ActorImage_BubbleCannon(actorlib.ActorImage_StaticMultiple):  # 328
         ImageCache['BubbleCannon1'] = actorlib.GetPixmap('bubble_cannon_big.png')
 
     def dataChanged(self):
-        size = self.parent.spritedata[5] & 1
+        size = self.parent.actordata[5] & 1
         self.image = ImageCache[f'BubbleCannon{size}']
         self.offset = (
             (-17, -15),
@@ -6978,7 +6978,7 @@ class ActorImage_RopeLadder(actorlib.ActorImage_StaticMultiple):  # 330
 
     def dataChanged(self):
 
-        size = self.parent.spritedata[5]
+        size = self.parent.actordata[5]
         if size > 2:
             size = 0
 
@@ -7007,7 +7007,7 @@ class ActorImage_DishPlatform(actorlib.ActorImage_StaticMultiple):  # 331
 
         posY = -12
 
-        size = self.parent.spritedata[4] & 15
+        size = self.parent.actordata[4] & 15
         if size == 0:
             posX = -215
             width = 454
@@ -7055,7 +7055,7 @@ class ActorImage_CheepGiant(actorlib.ActorImage):  # 334
         if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
-        type = self.parent.spritedata[5] & 0xF
+        type = self.parent.actordata[5] & 0xF
         if type in (1, 7):
             self.image = ImageCache['CheepGiantGreen']
         elif type == 8:
@@ -7068,7 +7068,7 @@ class ActorImage_CheepGiant(actorlib.ActorImage):  # 334
         self.xOffset = 0 if type != 5 else -8
 
         if type == 3:
-            distance = ((self.parent.spritedata[3] & 0xF) + 1) * 16
+            distance = ((self.parent.actordata[3] & 0xF) + 1) * 16
             self.aux[0].setSize((distance * 2) + 16, 16)
             self.aux[0].setPos(-distance * 1.5, 8)
         else:
@@ -7099,8 +7099,8 @@ class ActorImage_CheepSchool(actorlib.ActorImage_Static):  # 335
         ImageCache['CheepRedLeft'] = actorlib.GetPixmap('cheep_red.png')
 
     def dataChanged(self):
-        formation = self.parent.spritedata[4] & 0xF
-        shape = self.parent.spritedata[5] & 0xF
+        formation = self.parent.actordata[4] & 0xF
+        shape = self.parent.actordata[5] & 0xF
         noPreview = formation == 0 or formation > 3
 
         for aux in self.aux:
@@ -7189,8 +7189,8 @@ class ActorImage_MovingBulletBillLauncher(actorlib.ActorImage):  # 338
         self.xOffset = 0
         self.width = 16
 
-        self.cannonHeight = (self.parent.spritedata[5] & 0xF0) >> 4
-        self.cannonHeightTwo = self.parent.spritedata[5] & 0xF
+        self.cannonHeight = (self.parent.actordata[5] & 0xF0) >> 4
+        self.cannonHeightTwo = self.parent.actordata[5] & 0xF
 
         if self.cannonHeight >= self.cannonHeightTwo:
             self.height = (self.cannonHeight + 2) * 16
@@ -7221,11 +7221,11 @@ class ActorImage_MovingBulletBillLauncher(actorlib.ActorImage):  # 338
 
 class ActorImage_Pipe_MovingUp(ActorImage_Pipe):  # 339
     def dataChanged(self):
-        self.length1 = (self.parent.spritedata[5] >> 4) + 2
-        self.length2 = (self.parent.spritedata[5] & 0xF) + 2
+        self.length1 = (self.parent.actordata[5] >> 4) + 2
+        self.length2 = (self.parent.actordata[5] & 0xF) + 2
         self.color = (
             'Green', 'Red', 'Yellow', 'Blue',
-        )[self.parent.spritedata[3] & 3]
+        )[self.parent.actordata[3] & 3]
 
         super().dataChanged()
 
@@ -7256,7 +7256,7 @@ class ActorImage_BigShell(actorlib.ActorImage_StaticMultiple):  # 341
         actorlib.loadIfNotInImageCache('BigShellInside', 'bigshell_inside.png')
 
     def dataChanged(self):
-        style = self.parent.spritedata[5] & 1
+        style = self.parent.actordata[5] & 1
 
         if style == 0:
             self.image = ImageCache['BigShellGrass']
@@ -7280,7 +7280,7 @@ class ActorImage_Muncher(actorlib.ActorImage_StaticMultiple):  # 342
 
     def dataChanged(self):
 
-        frozen = self.parent.spritedata[5] & 1
+        frozen = self.parent.actordata[5] & 1
         if frozen == 1:
             self.image = ImageCache['MuncherF']
             self.offset = (0, 0)
@@ -7298,7 +7298,7 @@ class ActorImage_Fuzzy(actorlib.ActorImage_StaticMultiple):  # 343
         actorlib.loadIfNotInImageCache('FuzzyGiant', 'fuzzy_giant.png')
 
     def dataChanged(self):
-        giant = self.parent.spritedata[4] & 1
+        giant = self.parent.actordata[4] & 1
 
         self.image = ImageCache['FuzzyGiant'] if giant else ImageCache['Fuzzy']
         self.offset = (-18, -18) if giant else (-7, -7)
@@ -7344,7 +7344,7 @@ class ActorImage_HangingChainPlatform(actorlib.ActorImage_StaticMultiple):  # 34
         ImageCache['HangingChainPlatform2'] = actorlib.GetPixmap('hanging_chain_platform_large.png')
 
     def dataChanged(self):
-        size = (self.parent.spritedata[4] & 3) % 3
+        size = (self.parent.actordata[4] & 3) % 3
         self.offset = (
             (-26, -12),
             (-42, -12),
@@ -7419,11 +7419,11 @@ class ActorImage_Pipe_MovingDown(ActorImage_Pipe):  # 353
         self.direction = 'D'
 
     def dataChanged(self):
-        self.length1 = (self.parent.spritedata[5] >> 4) + 2
-        self.length2 = (self.parent.spritedata[5] & 0xF) + 2
+        self.length1 = (self.parent.actordata[5] >> 4) + 2
+        self.length2 = (self.parent.actordata[5] & 0xF) + 2
         self.color = (
             'Green', 'Red', 'Yellow', 'Blue',
-        )[self.parent.spritedata[3] & 3]
+        )[self.parent.actordata[3] & 3]
 
         super().dataChanged()
 
@@ -7448,8 +7448,8 @@ class ActorImage_BrownTowerBlockNormal(ActorImage_BrownTowerBlock):  # 356
             return
 
         # now set up the track
-        direction = self.parent.spritedata[2] & 3
-        distance = (self.parent.spritedata[4] & 0xF0) >> 4
+        direction = self.parent.actordata[2] & 3
+        distance = (self.parent.actordata[4] & 0xF0) >> 4
 
         if direction <= 1:  # horizontal
             self.aux[0].direction = 1
@@ -7474,7 +7474,7 @@ class ActorImage_Fruit(actorlib.ActorImage_StaticMultiple):  # 357
 
     def dataChanged(self):
 
-        style = self.parent.spritedata[5] & 1
+        style = self.parent.actordata[5] & 1
         if style == 0:
             self.image = ImageCache['Fruit']
         else:
@@ -7493,7 +7493,7 @@ class ActorImage_LavaParticles(ActorImage_LiquidOrFog):  # 358
         ImageCache['LavaParticlesC'] = actorlib.GetPixmap('lava_particles_c.png')
 
     def dataChanged(self):
-        type = (self.parent.spritedata[5] & 0xF) % 3
+        type = (self.parent.actordata[5] & 0xF) % 3
         self.mid = (
             ImageCache['LavaParticlesA'],
             ImageCache['LavaParticlesB'],
@@ -7542,7 +7542,7 @@ class ActorImage_CrystalBlock(actorlib.ActorImage_StaticMultiple):  # 361
             ImageCache[f'CrystalBlock{size}'] = actorlib.GetPixmap(f'crystal_block_{size}.png')
 
     def dataChanged(self):
-        size = self.parent.spritedata[4] & 3
+        size = self.parent.actordata[4] & 3
 
         if size == 0:
             self.offset = (-7 / 1.5, -10 / 1.5)
@@ -7571,9 +7571,9 @@ class ActorImage_ColoredBox(actorlib.ActorImage):  # 362
                 ImageCache[f'CBox{color}{direction}'] = actorlib.GetPixmap(f'cbox_{direction}_{color}.png')
 
     def dataChanged(self):
-        self.color = (self.parent.spritedata[3] >> 4) & 3
+        self.color = (self.parent.actordata[3] >> 4) & 3
 
-        size = self.parent.spritedata[4]
+        size = self.parent.actordata[4]
         width = size >> 4
         height = size & 0xF
 
@@ -7641,7 +7641,7 @@ class ActorImage_CubeKinokoRot(actorlib.ActorImage_StaticMultiple):  # 366
 
     def dataChanged(self):
 
-        style = self.parent.spritedata[4] & 1
+        style = self.parent.actordata[4] & 1
         if style == 0:
             self.image = ImageCache['CubeKinokoR']
         else:
@@ -7695,8 +7695,8 @@ class ActorImage_FlashRaft(actorlib.ActorImage_StaticMultiple):  # 368
         ):
             return
 
-        pathcontrolled = self.parent.spritedata[5] & 1
-        midway = (self.parent.spritedata[5] >> 4) & 1
+        pathcontrolled = self.parent.actordata[5] & 1
+        midway = (self.parent.actordata[5] >> 4) & 1
 
         self.aux[2].setSize(24, 24, 161, 24) if pathcontrolled else self.aux[2].setSize(0, 0)
 
@@ -7722,7 +7722,7 @@ class ActorImage_SlidingPenguin(actorlib.ActorImage_StaticMultiple):  # 369
 
     def dataChanged(self):
 
-        direction = self.parent.spritedata[5] & 1
+        direction = self.parent.actordata[5] & 1
         if direction == 0:
             self.image = ImageCache['PenguinL']
         else:
@@ -7807,7 +7807,7 @@ class ActorImage_SnowWind(ActorImage_LiquidOrFog):  # 374
 
     def paintZone(self):
         # For now, we only paint snow
-        return self.parent.spritedata[5] == 0 and self.zoneId != -1
+        return self.parent.actordata[5] == 0 and self.zoneId != -1
 
 
 class ActorImage_WendyKoopaCastleBoss(actorlib.ActorImage):  # 375
@@ -7843,9 +7843,9 @@ class ActorImage_MovingFence(actorlib.ActorImage):  # 376
         if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
-        self.shape = (self.parent.spritedata[4] >> 4) & 3
-        direction = self.parent.spritedata[5] & 1
-        distance = (self.parent.spritedata[5] & 0xF0) >> 4
+        self.shape = (self.parent.actordata[4] >> 4) & 3
+        direction = self.parent.actordata[5] & 1
+        distance = (self.parent.actordata[5] & 0xF0) >> 4
 
         self.size = (
             (64, 64),
@@ -7874,7 +7874,7 @@ class ActorImage_MovingFence(actorlib.ActorImage):  # 376
 
 class ActorImage_Pipe_Up(ActorImage_PipeStationary):  # 377
     def dataChanged(self):
-        self.length = (self.parent.spritedata[5] & 0xF) + 2
+        self.length = (self.parent.actordata[5] & 0xF) + 2
         super().dataChanged()
 
 
@@ -7884,7 +7884,7 @@ class ActorImage_Pipe_Down(ActorImage_PipeStationary):  # 378
         self.direction = 'D'
 
     def dataChanged(self):
-        self.length = (self.parent.spritedata[5] & 0xF) + 2
+        self.length = (self.parent.actordata[5] & 0xF) + 2
         super().dataChanged()
 
 
@@ -7894,7 +7894,7 @@ class ActorImage_Pipe_Right(ActorImage_PipeStationary):  # 379
         self.direction = 'R'
 
     def dataChanged(self):
-        self.length = (self.parent.spritedata[5] & 0xF) + 2
+        self.length = (self.parent.actordata[5] & 0xF) + 2
         super().dataChanged()
 
 
@@ -7904,7 +7904,7 @@ class ActorImage_Pipe_Left(ActorImage_PipeStationary):  # 380
         self.direction = 'L'
 
     def dataChanged(self):
-        self.length = (self.parent.spritedata[5] & 0xF) + 2
+        self.length = (self.parent.actordata[5] & 0xF) + 2
         super().dataChanged()
 
 
@@ -7965,7 +7965,7 @@ class ActorImage_IceBlock(actorlib.ActorImage_StaticMultiple):  # 385
 
     def dataChanged(self):
 
-        size = self.parent.spritedata[5]
+        size = self.parent.actordata[5]
         height = (size & 0x30) >> 4
         width = size & 3
 
@@ -7991,7 +7991,7 @@ class ActorImage_PowBlock(actorlib.ActorImage_Static):  # 386
 
 class ActorImage_Bush(actorlib.ActorImage_StaticMultiple):  # 387
     def __init__(self, parent):
-        # this sprite image should actually show behind layer 1...
+        # this actor image should actually show behind layer 1...
         super().__init__(parent, 1.5)
         self.parent.setZValue(24999)
 
@@ -8005,7 +8005,7 @@ class ActorImage_Bush(actorlib.ActorImage_StaticMultiple):  # 387
 
     def dataChanged(self):
 
-        props = self.parent.spritedata[5]
+        props = self.parent.actordata[5]
         style = (props >> 4) & 1
         size = props & 3
 
@@ -8099,8 +8099,8 @@ class ActorImage_SpinyCheep(actorlib.ActorImage_StaticMultiple):  # 395
     def dataChanged(self):
         super().dataChanged()
         # It can face right if set to chase players, but not when forced to face left
-        chasePly = self.parent.spritedata[5] & 0xF
-        forceLeft = (self.parent.spritedata[2] >> 4) & 8
+        chasePly = self.parent.actordata[5] & 0xF
+        forceLeft = (self.parent.actordata[2] >> 4) & 8
 
         if chasePly and not forceLeft:
             self.image = ImageCache['SpinyCheepRight']
@@ -8127,7 +8127,7 @@ class ActorImage_MoveWhenOn(actorlib.ActorImage):  # 396
 
     def dataChanged(self):
         # get width
-        self.raw_size = self.parent.spritedata[5] & 0xF
+        self.raw_size = self.parent.actordata[5] & 0xF
         if self.raw_size == 0:
             self.xOffset = -16
             self.width = 32
@@ -8170,8 +8170,8 @@ class ActorImage_GhostHouseBox(actorlib.ActorImage):  # 397
             ImageCache[f'GHBox{direction}'] = actorlib.GetPixmap(f'ghbox_{direction}.png')
 
     def dataChanged(self):
-        height = self.parent.spritedata[4] >> 4
-        width = self.parent.spritedata[5] & 15
+        height = self.parent.actordata[4] >> 4
+        width = self.parent.actordata[5] & 15
 
         self.width = (width + 2) * 16
         self.height = (height + 2) * 16
@@ -8311,7 +8311,7 @@ class ActorImage_BossControllerCastleBoss(actorlib.ActorImage):  # 407
             or not isinstance(self.aux[3], actorlib.AuxiliaryImage)
         ):
             return
-        boss = (self.parent.spritedata[5] & 0xF) % 7
+        boss = (self.parent.actordata[5] & 0xF) % 7
 
         self.aux[0].setPos(*(
                 (0, -216),
@@ -8345,16 +8345,16 @@ class ActorImage_ToadHouseBalloonUnused(ActorImage_ToadHouseBalloon):  # 411
         if self.image is None:
             return
 
-        self.livesNum = (self.parent.spritedata[4] >> 4) & 3
+        self.livesNum = (self.parent.actordata[4] >> 4) & 3
 
         self.yOffset = 8 - (self.image.height() / 3)
 
 
 class ActorImage_ToadHouseBalloonUsed(ActorImage_ToadHouseBalloon):  # 412
     def dataChanged(self):
-        self.livesNum = (self.parent.spritedata[4] >> 4) & 3
-        self.hasHandle = not ((self.parent.spritedata[5] >> 4) & 1)
-        shiftPos = self.parent.spritedata[3] & 1
+        self.livesNum = (self.parent.actordata[4] >> 4) & 3
+        self.hasHandle = not ((self.parent.actordata[5] >> 4) & 1)
+        shiftPos = self.parent.actordata[3] & 1
         posAdj = 8 if shiftPos else 0
 
         super().dataChanged()
@@ -8394,8 +8394,8 @@ class ActorImage_Gabon(actorlib.ActorImage_StaticMultiple):  # 414
         actorlib.loadIfNotInImageCache('GabonSpike', 'gabon_spike.png')
 
     def dataChanged(self):
-        throwdir = self.parent.spritedata[5] & 1
-        facing = self.parent.spritedata[4] & 1
+        throwdir = self.parent.actordata[5] & 1
+        facing = self.parent.actordata[4] & 1
 
         if throwdir == 0:
             self.image = ImageCache['GabonSpike']
@@ -8496,7 +8496,7 @@ class ActorImage_GiantGlowBlock(actorlib.ActorImage):  # 420
         if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
-        type = self.parent.spritedata[4] >> 4
+        type = self.parent.actordata[4] >> 4
         if type == 0:
             self.aux[0].image = ImageCache['GiantGlowBlockOn']
             self.aux[0].setSize(100, 100, -23, -23)
@@ -8546,7 +8546,7 @@ class ActorImage_PalmTree(actorlib.ActorImage_StaticMultiple):  # 424
 
     def dataChanged(self):
 
-        size = self.parent.spritedata[5] & 7
+        size = self.parent.actordata[5] & 7
         self.image = ImageCache[f'PalmTree{size}']
         self.yOffset = 16 - (self.image.height() / 1.5)
 
@@ -8572,7 +8572,7 @@ class ActorImage_Jellybeam(actorlib.ActorImage_Static):  # 425
         if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
-        distance = self.parent.spritedata[5] & 3
+        distance = self.parent.actordata[5] & 3
         self.aux[0].setSize(16, (distance * 32) + 118)
         self.aux[0].setPos(self.width * 0.75 - 12, self.height * 0.75 - 16)
 
@@ -8671,7 +8671,7 @@ class ActorImage_WarpCannon(actorlib.ActorImage_StaticMultiple):  # 434
 
     def dataChanged(self):
 
-        dest = self.parent.spritedata[5] & 3
+        dest = self.parent.actordata[5] & 3
         if dest == 3:
             dest = 0
         self.image = ImageCache[f'Warp{dest}']
@@ -8690,12 +8690,12 @@ class ActorImage_GhostFog(ActorImage_LiquidOrFog):  # 435
         actorlib.loadIfNotInImageCache('GhostFog', 'fog_ghost.png')
 
     def dataChanged(self):
-        self.locId = self.parent.spritedata[5] & 0x7F
+        self.locId = self.parent.actordata[5] & 0x7F
         super().dataChanged()
 
     def positionChanged(self):
-        # This sprite's cutoff works a bit differently. The effect is always
-        # fixed to the top of the zone, but only the part below the sprite image
+        # This actor's cutoff works a bit differently. The effect is always
+        # fixed to the top of the zone, but only the part below the actor image
         # is rendered.
         # BUG: This is not recreated.
         self.top = self.parent.objy
@@ -8716,7 +8716,7 @@ class ActorImage_PurplePole(actorlib.ActorImage):  # 437
         ImageCache['VertPoleBottom'] = actorlib.GetPixmap('purple_pole_bottom.png')
 
     def dataChanged(self):
-        length = self.parent.spritedata[5]
+        length = self.parent.actordata[5]
         self.height = (length + 3) * 16
 
     def paint(self, painter):
@@ -8745,7 +8745,7 @@ class ActorImage_ShapeBlocks(actorlib.ActorImage_StaticMultiple):  # 438
         if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
-        type = (self.parent.spritedata[4] & 15) % 5
+        type = (self.parent.actordata[4] & 15) % 5
 
         offsets = (
             (-112, -112),
@@ -8793,7 +8793,7 @@ class ActorImage_HorizontalRope(actorlib.ActorImage):  # 440
         actorlib.loadIfNotInImageCache('HorzRopeEnd', 'horizontal_rope_end.png')
 
     def dataChanged(self):
-        length = self.parent.spritedata[5]
+        length = self.parent.actordata[5]
         self.width = (length + 3) * 16
 
     def paint(self, painter):
@@ -8827,12 +8827,12 @@ class ActorImage_MushroomPlatform(actorlib.ActorImage):  # 441
 
     def dataChanged(self):
         # get size/color
-        self.color = self.parent.spritedata[4] & 1
-        self.shroomsize = (self.parent.spritedata[5] >> 4) & 1
+        self.color = self.parent.actordata[4] & 1
+        self.shroomsize = (self.parent.actordata[5] >> 4) & 1
         self.height = 16 * (self.shroomsize + 1)
 
         # get width
-        width = self.parent.spritedata[5] & 0xF
+        width = self.parent.actordata[5] & 0xF
         if self.shroomsize == 0:
             self.width = (width << 4) + 32
             self.offset = (
@@ -8939,7 +8939,7 @@ class ActorImage_MetalBar(actorlib.ActorImage_Static):  # 448
 
 class ActorImage_Pipe_EnterableUp(ActorImage_PipeStationary):  # 450
     def dataChanged(self):
-        self.length = (self.parent.spritedata[5] & 0xF) + 2
+        self.length = (self.parent.actordata[5] & 0xF) + 2
         super().dataChanged()
 
 
@@ -8990,7 +8990,7 @@ class ActorImage_Seaweed(actorlib.ActorImage_StaticMultiple):  # 453
         SeaweedSizes = [0, 1, 2, 2, 3, 3]
         SeaweedXOffsets = [-15, -25, -29, -38]
 
-        style = (self.parent.spritedata[5] & 0xF) % 6
+        style = (self.parent.actordata[5] & 0xF) % 6
         size = SeaweedSizes[style]
 
         self.image = ImageCache[f'Seaweed{size}']
@@ -9028,7 +9028,7 @@ class ActorImage_BossBridge(actorlib.ActorImage_StaticMultiple):  # 456
         ImageCache['BossBridgeR'] = actorlib.GetPixmap('boss_bridge_right.png')
 
     def dataChanged(self):
-        style = (self.parent.spritedata[5] & 3) % 3
+        style = (self.parent.actordata[5] & 3) % 3
         self.image = (
             ImageCache['BossBridgeM'],
             ImageCache['BossBridgeR'],
@@ -9082,8 +9082,8 @@ class ActorImage_SilverGearBlock(actorlib.ActorImage_StaticMultiple):  # 460
             ImageCache[f'SilverGearBlockDown{gear}'] = QtGui.QPixmap.fromImage(image.mirrored(True, True))
 
     def dataChanged(self):
-        style = self.parent.spritedata[5] & 3
-        flipped = (self.parent.spritedata[5] >> 4) & 1
+        style = self.parent.actordata[5] & 3
+        flipped = (self.parent.actordata[5] >> 4) & 1
 
         if flipped:
             self.image = ImageCache[f'SilverGearBlockDown{style}']
@@ -9134,11 +9134,11 @@ class ActorImage_EnormousBlock(actorlib.ActorImage):  # 462
             or not isinstance(self.aux[2], actorlib.AuxiliaryTrackObject)
         ):
             return
-        # get sprite data
-        size = (self.parent.spritedata[5] >> 1) & 7
-        direction = self.parent.spritedata[2] & 1
-        distance = (self.parent.spritedata[4] >> 4) + 1
-        side = self.parent.spritedata[5] & 1
+
+        size = (self.parent.actordata[5] >> 1) & 7
+        direction = self.parent.actordata[2] & 1
+        distance = (self.parent.actordata[4] >> 4) + 1
+        side = self.parent.actordata[5] & 1
 
         # update the platform
         realsize = ((18, 28), (18, 16), (18, 41), (18, 47), (24, 31))[size]
@@ -9186,7 +9186,7 @@ class ActorImage_SwingingVine(actorlib.ActorImage_StaticMultiple):  # 464
         actorlib.loadIfNotInImageCache('SwingChain', 'swing_chain.png')
 
     def dataChanged(self):
-        style = self.parent.spritedata[5] & 1
+        style = self.parent.actordata[5] & 1
         self.image = ImageCache['SwingVine'] if not style else ImageCache['SwingChain']
 
         super().dataChanged()
@@ -9211,8 +9211,8 @@ class ActorImage_LavaIronBlock(actorlib.ActorImage_Static):  # 466
         if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
-        direction = self.parent.spritedata[2] & 3
-        distance = (self.parent.spritedata[4] & 0xF0) >> 4
+        direction = self.parent.actordata[2] & 3
+        distance = (self.parent.actordata[4] & 0xF0) >> 4
 
         if direction <= 1: # horizontal
             self.aux[0].direction = 1
@@ -9251,8 +9251,8 @@ class ActorImage_MovingGemBlock(actorlib.ActorImage_Static):  # 467
         if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
-        direction = self.parent.spritedata[2] & 1
-        distance = (self.parent.spritedata[4] & 0xF0) >> 4
+        direction = self.parent.actordata[2] & 1
+        distance = (self.parent.actordata[4] & 0xF0) >> 4
 
         self.aux[0].setSize(16, (distance * 16) + 16)
         if direction == 0: # up
@@ -9280,7 +9280,7 @@ class ActorImage_BoltPlatform(actorlib.ActorImage):  # 469
         self.offset = (0, -2)
         super().dataChanged()
 
-        length = self.parent.spritedata[5] & 0xF
+        length = self.parent.actordata[5] & 0xF
         self.width = (length + 2) * 16
 
     def paint(self, painter):
@@ -9350,7 +9350,7 @@ class ActorImage_IceFloe(actorlib.ActorImage_StaticMultiple):  # 475
 
     def dataChanged(self):
 
-        size = self.parent.spritedata[5] & 15
+        size = self.parent.actordata[5] & 15
 
         if size > 12:
             size = 0
@@ -9403,7 +9403,7 @@ class ActorImage_SuperGuideBlock(actorlib.ActorImage_StaticMultiple):  # 477
         actorlib.loadIfNotInImageCache('SuperGuide', 'superguide_block.png')
 
     def dataChanged(self):
-        midway = self.parent.spritedata[5] & 1
+        midway = self.parent.actordata[5] & 1
         if midway:
             self.alpha = 0.5
         else:
@@ -9433,10 +9433,10 @@ class ActorImage_BowserSwitchLg(actorlib.ActorImage_StaticMultiple):  # 479
         ImageCache['ELSwitchU'] = QtGui.QPixmap.fromImage(elg.mirrored(True, True))
 
     def dataChanged(self):
-        midway = (self.parent.spritedata[2] >> 6) & 1
-        upsideDown = self.parent.spritedata[5] & 1
-        shiftY = self.parent.spritedata[3] & 0xF
-        shiftX = (self.parent.spritedata[5] >> 4) & 0xF
+        midway = (self.parent.actordata[2] >> 6) & 1
+        upsideDown = self.parent.actordata[5] & 1
+        shiftY = self.parent.actordata[3] & 0xF
+        shiftX = (self.parent.actordata[5] >> 4) & 0xF
 
         if midway:
             self.alpha = 0.5
@@ -9506,7 +9506,7 @@ class ActorImage_FinalBossRubble(actorlib.ActorImage_StaticMultiple):  # 481
             ImageCache[f'FinalBossRubble{size}'] = QtGui.QPixmap.fromImage(image)
 
     def dataChanged(self):
-        size = self.parent.spritedata[5] & 1
+        size = self.parent.actordata[5] & 1
 
         self.image = ImageCache[f'FinalBossRubble{size}']
 
@@ -9538,7 +9538,7 @@ class ActorImage_FinalBossEffects(actorlib.ActorImage):  # 482
         if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
-        style = self.parent.spritedata[5] & 15
+        style = self.parent.actordata[5] & 15
 
         # Styles greater than 2 load nothing
         if style > 2:

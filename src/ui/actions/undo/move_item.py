@@ -51,7 +51,7 @@ class MoveItemUndoAction(UndoAction):
         main_window = globals_.mainWindow
 
         if isinstance(obj, ActorItem):
-            # Sprites are weird so they handle this themselves
+            # Actors are weird so they handle this themselves
             obj.setNewObjPos(newX, newY)
 
         elif isinstance(obj, ObjectItem):

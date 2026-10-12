@@ -28,7 +28,7 @@ class InstanceDefinition_LocationItem(InstanceDefinition):
 
 class LocationItem(LevelEditorItem):
     """
-    Level editor item that represents a sprite location
+    Level editor item that represents a location
     """
     instanceDef = InstanceDefinition_LocationItem
     sizeChanged = None  # Callback: sizeChanged(ActorItem obj, int width, int height)
@@ -242,9 +242,9 @@ class LocationItem(LevelEditorItem):
             location_rect = self.sceneTransform().mapRect(self.DrawRect)
             from actors import ActorImage_LiquidOrFog as liquidOrFogType
 
-            for sprite in globals_.Area.actors:
-                if isinstance(sprite.ImageObj, liquidOrFogType) and self.id == sprite.ImageObj.locId:
-                    sprite.ImageObj.realViewLocation(painter, location_rect)
+            for actor in globals_.Area.actors:
+                if isinstance(actor.ImageObj, liquidOrFogType) and self.id == actor.ImageObj.locId:
+                    actor.ImageObj.realViewLocation(painter, location_rect)
 
         # Draw the purple rectangle
         if not self.isSelected():
@@ -328,8 +328,8 @@ class LocationItem(LevelEditorItem):
 
                 # This code causes an error or something.
                 # if RealViewEnabled:
-                #     for sprite in globals_.Area.actors:
-                #         if self.id in sprite.ImageObj.locationIDs and sprite.ImageObj.updateSceneAfterLocationMoved:
+                #     for actor in globals_.Area.actors:
+                #         if self.id in actor.ImageObj.locationIDs and actor.ImageObj.updateSceneAfterLocationMoved:
                 #             self.scene().update()
 
             event.accept()

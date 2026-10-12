@@ -376,7 +376,7 @@ class Area:
                 unknown_actor_ids.add(type_)
 
         self.actors = actors
-        self.force_loaded_actors = self.loaded_actors - {actor.sprite_num for actor in actors}
+        self.force_loaded_actors = self.loaded_actors - {actor.actor_num for actor in actors}
 
         # Store unknown actor IDs for later warning
         self.unknown_actor_ids = unknown_actor_ids
@@ -728,19 +728,19 @@ class Area:
                 actor.zoneID = 0
 
             try:
-                sprstruct.pack_into(buffer, offset, f_int(actor.sprite_num) % 0xFFFF, f_int(actor.objx), f_int(actor.objy),
-                                    actor.spritedata[:6], actor.zoneID, bytes([actor.spritedata[7]]))
+                sprstruct.pack_into(buffer, offset, f_int(actor.actor_num) % 0xFFFF, f_int(actor.objx), f_int(actor.objy),
+                                    actor.actordata[:6], actor.zoneID, bytes([actor.actordata[7]]))
             except:
                 # Hopefully this will solve the mysterious bug, and will
                 # soon no longer be necessary.
                 raise ValueError('SaveActors struct.error. Current actor data dump:\n' + \
                                  str(offset) + '\n' + \
-                                 str(actor.sprite_num) + '\n' + \
+                                 str(actor.actor_num) + '\n' + \
                                  str(actor.objx) + '\n' + \
                                  str(actor.objy) + '\n' + \
-                                 str(actor.spritedata[:6]) + '\n' + \
+                                 str(actor.actordata[:6]) + '\n' + \
                                  str(actor.zoneID) + '\n' + \
-                                 str(bytes([actor.spritedata[7]])) + '\n',
+                                 str(bytes([actor.actordata[7]])) + '\n',
                                  )
             offset += 16
         buffer[offset] = 0xFF
@@ -753,7 +753,7 @@ class Area:
         """
         Saves the list of loaded actors back to block 9
         """
-        ls = sorted({actor.sprite_num for actor in self.actors} | self.force_loaded_actors)
+        ls = sorted({actor.actor_num for actor in self.actors} | self.force_loaded_actors)
 
         offset = 0
         sprstruct = struct.Struct('>Hxx')
@@ -871,14 +871,14 @@ class Area:
 
         for actor in self.actors:
             # Check if actor data exists for this type
-            if not (0 <= actor.sprite_num < globals_.NumActors) or globals_.Actors[actor.sprite_num] is None:
+            if not (0 <= actor.actor_num < globals_.NumActors) or globals_.Actors[actor.actor_num] is None:
                 # Unknown actor, skip it
                 continue
 
-            sdef = globals_.Actors[actor.sprite_num]
+            sdef = globals_.Actors[actor.actor_num]
 
             # Find what values are used by this actor
-            data = actor.spritedata
+            data = actor.actordata
 
             for field in sdef.fields:
                 if not isinstance(field, (ListActorField, ValueActorField)):
@@ -909,12 +909,12 @@ class Area:
         self.actors.remove(actor)
 
         # Skip unknown actors
-        if actor.sprite_num >= globals_.NumActors or globals_.Actors[actor.sprite_num] is None:
+        if actor.actor_num >= globals_.NumActors or globals_.Actors[actor.actor_num] is None:
             return
 
         # Remove the ids the actor used from the id list
         decoder = PropertyDecoder(ActorField())
-        sdef = globals_.Actors[actor.sprite_num]
+        sdef = globals_.Actors[actor.actor_num]
 
         # Find what values are used by this actor
         for field in sdef.fields:
@@ -927,7 +927,7 @@ class Area:
                 # Only look at settings with idtypes
                 continue
 
-            value = decoder.retrieve(actor.spritedata, field.bit)
+            value = decoder.retrieve(actor.actordata, field.bit)
 
             # 3. Decrement the counter for this idtype
             counter = self.actor_idtypes[idtype]
