@@ -302,8 +302,8 @@ class ZoneItem(LevelEditorItem):
         # Paint liquids/fog
         if globals_.SpritesShown and globals_.SpriteImagesShown and globals_.RealViewEnabled:
             zoneRect = self.mapRectToScene(self.DrawRect)
-            from sprites import SpriteImage_BubbleGen as bubbleGenType
-            from sprites import SpriteImage_LiquidOrFog as liquidOrFogType
+            from actors import SpriteImage_BubbleGen as bubbleGenType
+            from actors import SpriteImage_LiquidOrFog as liquidOrFogType
 
             for sprite in globals_.Area.sprites:
                 if isinstance(sprite.ImageObj, liquidOrFogType) and sprite.ImageObj.paintZone() and self.id == sprite.ImageObj.zoneId:

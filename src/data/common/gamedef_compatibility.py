@@ -13,8 +13,17 @@ def update_main(path: str):
     # their own filenames, but it's probably fine...
     fix_strings = [
         ('name="spritedata"',  'name="actordata"'),
-        ('path="spritedata.xml"', 'path="actordata.xml"')
+        ('path="spritedata.xml"', 'path="actordata.xml"'),
+        ('name="sprites"',  'name="actors"'),
+        ('path="sprites.py"', 'path="actors.py"'),
+        ('path="sprites"',  'path="actors"'),
     ]
+
+    # Check for a sprites folder and rename it
+    sprites_path = os.path.join(os.path.dirname(path), 'sprites')
+    if os.path.isdir(sprites_path):
+        dest = os.path.join(os.path.dirname(path), 'actors')
+        os.rename(sprites_path, dest)
 
     for old, new in fix_strings:
         data = data.replace(old, new)
@@ -23,11 +32,17 @@ def update_main(path: str):
         file_out.write(data)
 
 
-def update_sprites_module(filename: str):
+def update_actors_module(path: str):
     """
-    Fixes compatibility issues with sprites.py modules made for older versions of Reggie Next
+    Fixes compatibility issues with actors.py modules made for older versions of Reggie Next
     """
-    with open(filename, "r", encoding="utf-8") as f:
+    # Move sprites.py to actors.py
+    sprites_path = os.path.join(os.path.dirname(path), 'sprites.py')
+    if os.path.isfile(sprites_path):
+        shutil.copy2(sprites_path, path)
+        os.remove(sprites_path)
+
+    with open(path, "r", encoding="utf-8") as f:
         orig_data = f.read()
 
     # Fix the import
@@ -71,7 +86,7 @@ def update_sprites_module(filename: str):
     new_data = new_data.replace("AuxiliarySpriteItem", "AuxiliaryActorItem")
 
     # All done, save the file
-    with open(filename, 'w') as file_out:
+    with open(path, 'w') as file_out:
         file_out.write(new_data)
 
 

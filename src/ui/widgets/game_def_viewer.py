@@ -55,7 +55,7 @@ class GameDefViewer(QtWidgets.QWidget):
         """
         Updates all info
         """
-        sprite_folders = globals_.gamedef.recursiveFiles('sprites', is_folder=True)[0]
+        sprite_folders = globals_.gamedef.recursiveFiles('actors', is_folder=True)[0]
 
         if not globals_.gamedef.custom or sprite_folders:
             img = GetIcon('rocket').pixmap(16, 16)

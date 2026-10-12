@@ -8,7 +8,7 @@ from xml.etree import ElementTree as etree
 from PyQt6 import QtWidgets
 
 import spritelib as SLib
-import sprites
+import actors
 from data import globals_
 from data.common.loaders import (
     LoadBgANames,
@@ -27,7 +27,7 @@ from data.common.loaders import (
 from data.common.settings import setSetting, setting
 from data.common.sprites import LoadBasics
 from data.common.utils import get_reggiedata_folder
-from data.common.gamedef_compatibility import update_main, update_sprites_module
+from data.common.gamedef_compatibility import update_main, update_actors_module
 
 
 # Gamedef File - has 2 values: name (str) and patch (bool)
@@ -78,7 +78,7 @@ class ReggieGameDefinition:
         self.description = globals_.trans.string('Gamedefs', 14)  # 'A new Mario adventure!<br>' and the date
         self.version = '2'
 
-        self.sprites = sprites
+        self.actors = actors
 
         reggiedata_folder = get_reggiedata_folder()
         self.files = {
@@ -98,7 +98,7 @@ class ReggieGameDefinition:
         self.folders = {
             'bga': gdf(None, False),
             'bgb': gdf(None, False),
-            'sprites': gdf(None, False),
+            'actors': gdf(None, False),
             'external': gdf(None, False),
         }
 
@@ -184,25 +184,24 @@ class ReggieGameDefinition:
         # Get rid of the XML stuff
         del tree, root
 
-        # Load sprites.py if provided
-        if 'sprites' in self.files:
-            # Fix any potential incompatibilities
-            update_sprites_module(self.files['sprites'].path)
+        # Load actors.py if provided
+        if 'actors' in self.files:
+            update_actors_module(self.files['actors'].path)
 
-            with open(self.files['sprites'].path, 'r', encoding='utf-8') as f:
+            with open(self.files['actors'].path, 'r', encoding='utf-8') as f:
                 filedata = f.read()
 
             # https://stackoverflow.com/a/53080237 with modifications
             if self.name is None:
                 return
 
-            spec = importlib.util.spec_from_loader(self.name + "->sprites", loader=None)
+            spec = importlib.util.spec_from_loader(self.name + "->actors", loader=None)
             if spec is not None:
                 new_module = importlib.util.module_from_spec(spec)
 
                 exec(filedata, new_module.__dict__)
                 sys.modules[new_module.__name__] = new_module
-                self.sprites = new_module
+                self.actors = new_module
 
     def bgFile(self, name: str, layer: str):
         """
@@ -413,15 +412,15 @@ class ReggieGameDefinition:
         Gets all image classes
         """
         if not self.custom:
-            return self.sprites.ImageClasses
+            return self.actors.ImageClasses
 
         if self.base is not None:
             images = dict(self.base.getImageClasses())
         else:
             images = {}
 
-        if hasattr(self.sprites, 'ImageClasses'):
-            images.update(self.sprites.ImageClasses)
+        if hasattr(self.actors, 'ImageClasses'):
+            images.update(self.actors.ImageClasses)
         return images
 
 
@@ -522,10 +521,10 @@ def LoadGameDef(name: str | None = None):
     LoadTilesetNames(True)
     LoadTilesetInfo(True)
 
-    # Always load the sprites folders so the correct sprite images can be
+    # Always load the actors folders so the correct sprite images can be
     # loaded when Reggie is started. This avoids loading all sprite images
     # again and also simplifies the sprite image code.
-    SLib.SpritesFolders = globals_.gamedef.recursiveFiles('sprites', is_folder=True)[0]
+    SLib.ActorsFolders = globals_.gamedef.recursiveFiles('actors', is_folder=True)[0]
 
     if globals_.Area.areanum != -1:
         SLib.ImageCache.clear()

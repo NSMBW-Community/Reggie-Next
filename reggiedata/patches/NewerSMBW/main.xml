@@ -4,7 +4,7 @@
     <!-- Folders -->
     <folder name="bga" path="bga" />
     <folder name="bgb" path="bgb" />
-    <folder name="sprites" path="sprites" />
+    <folder name="actors" path="actors" />
     <folder name="external" path="external" />
 
     <!-- Files -->
@@ -14,7 +14,7 @@
     <file name="levelnames" path="levelnames.xml" patch="False" />
     <file name="music" path="music.txt" patch="False" />
     <file name="actordata" path="actordata.xml" />
-    <file name="sprites" path="sprites.py" />
+    <file name="actors" path="actors.py" />
     <file name="spritecategories" path="spritecategories.xml" />
     <file name="tilesets" path="tilesets.xml" />
     <file name="tilesetinfo" path="tilesetinfo.xml" />

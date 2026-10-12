@@ -51,7 +51,7 @@ ImageCache: dict[str, QtGui.QPixmap] = {}
 Tiles: dict[int, TilesetTile | None] = {}
 SpriteImagesLoaded: set[int] = set()
 
-SpritesFolders: list[str] = []
+ActorsFolders: list[str] = []
 RealViewEnabled: bool = False
 Area: AreaType | None = None
 
@@ -63,21 +63,21 @@ Area: AreaType | None = None
 
 def main() -> None:
     """
-    Resets Sprites.py to its original settings
+    Resets actors.py to its original settings
     """
-    global OutlinePen, OutlineBrush, SpritesFolders
+    global OutlinePen, OutlineBrush, ActorsFolders
     OutlinePen = QtGui.QPen(OutlineColor if OutlineColor is not None else QtCore.Qt.GlobalColor.white, 4)
     OutlineBrush = QtGui.QBrush(OutlineColor)
 
     for i in range(256):
         Tiles[i] = None
 
-    # Don't make a new dict instance for ImageCache because sprites.py
+    # Don't make a new dict instance for ImageCache because actors.py
     # won't receive it, which causes bugs.
     ImageCache.clear()
     SpriteImagesLoaded.clear()
 
-    SpritesFolders = []
+    ActorsFolders = []
 
 
 def GetSpriteImageFilePath(imgname: str) -> str:
@@ -85,8 +85,8 @@ def GetSpriteImageFilePath(imgname: str) -> str:
     Returns the path to the image 'imgname' from the first matching sprite image folder.
     """
     imgname = str(imgname)
-    path = os.path.join(get_reggiedata_folder(), 'sprites', imgname)
-    for folder in reversed(SpritesFolders):
+    path = os.path.join(get_reggiedata_folder(), 'actors', imgname)
+    for folder in reversed(ActorsFolders):
         tryPath = os.path.join(folder, imgname)
         if os.path.isfile(tryPath):
             path = tryPath

@@ -23,8 +23,8 @@
 # along with Reggie Next.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# sprites.py
-# Contains code to render sprite images from New Super Mario Bros. Wii
+# actors.py
+# Contains code to render actor images from New Super Mario Bros. Wii
 
 
 ################################################################

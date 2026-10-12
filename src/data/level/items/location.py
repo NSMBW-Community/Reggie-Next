@@ -240,7 +240,7 @@ class LocationItem(LevelEditorItem):
         # Paint liquids/fog
         if globals_.SpritesShown and globals_.SpriteImagesShown and globals_.RealViewEnabled:
             location_rect = self.sceneTransform().mapRect(self.DrawRect)
-            from sprites import SpriteImage_LiquidOrFog as liquidOrFogType
+            from actors import SpriteImage_LiquidOrFog as liquidOrFogType
 
             for sprite in globals_.Area.sprites:
                 if isinstance(sprite.ImageObj, liquidOrFogType) and self.id == sprite.ImageObj.locId:
