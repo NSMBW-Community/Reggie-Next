@@ -113,8 +113,8 @@ class Stamp:
 
         # Paint all actors
         for actor in actors:
-            offx = ((spr.objx + actor.ImageObj.xOffset) * 1.5) + drawOffsetX
-            offy = ((spr.objy + actor.ImageObj.yOffset) * 1.5) + drawOffsetY
+            offx = ((actor.objx + actor.ImageObj.xOffset) * 1.5) + drawOffsetX
+            offy = ((actor.objy + actor.ImageObj.yOffset) * 1.5) + drawOffsetY
 
             painter.save()
             painter.translate(offx, offy)

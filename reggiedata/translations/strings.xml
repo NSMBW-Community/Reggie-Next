@@ -947,7 +947,7 @@
         <string id="0">Switch Actor IDs</string>
         <string id="1">From Actor:</string>
         <string id="2">To Actor:</string>
-        <string id="3">Swap</string>
+        <string id="3">Switch</string>
         <string id="4">Close</string>
     </section>
     <section id="Themes">
