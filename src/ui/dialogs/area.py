@@ -471,7 +471,7 @@ class LoadedActorsTab(QtWidgets.QWidget):
         customLayout.addWidget(self.removeButton, 1, 0, 1, 2)
         customLayout.addWidget(self.customList, 2, 0, 1, 2)
 
-        self.autoModel = LoadedSpritesTab.StaticModel(self.getDefaultActorNames())
+        self.autoModel = LoadedActorsTab.StaticModel(self.getDefaultActorNames())
 
         autoList = QtWidgets.QListView()
         autoList.setModel(self.autoModel)
@@ -503,7 +503,7 @@ class LoadedActorsTab(QtWidgets.QWidget):
 
         usedIDs = set(actor.actor_num for actor in globals_.Area.actors)
 
-        return self.stringifySprites(sorted(usedIDs))
+        return self.stringifyActors(sorted(usedIDs))
 
     def getForceActorNames(self):
         """
@@ -513,7 +513,7 @@ class LoadedActorsTab(QtWidgets.QWidget):
         if globals_.Area.areanum == -1:
             return []
 
-        return self.stringifySprites(sorted(globals_.Area.force_loaded_actors))
+        return self.stringifyActors(sorted(globals_.Area.force_loaded_actors))
 
     def stringifyActors(self, actorIDs):
         """
