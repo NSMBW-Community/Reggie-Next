@@ -2,7 +2,7 @@ import struct
 
 from PyQt6 import QtWidgets
 
-import spritelib as SLib
+import actorlib
 from data import globals_
 from data.common.loaders import CreateTilesets, LoadTileset
 from data.level.abstract_path import AbstractPath
@@ -276,7 +276,7 @@ class Area:
         Sorts the sprite list by zone ID so it will work in-game
         """
         def compKey(zonelist: list[ZoneItem], sprite: ActorItem) -> int:
-            id_ = SLib.MapPositionToZoneID(zonelist, sprite.objx, sprite.objy)
+            id_ = actorlib.MapPositionToZoneID(zonelist, sprite.objx, sprite.objy)
             sprite.zoneID = zonelist[id_].id if id_ != -1 else -1
             return id_
 
@@ -654,7 +654,7 @@ class Area:
         offset = 0
         entstruct = struct.Struct('>HHxxxxBBBBxBBBHBB')
         buffer = bytearray(len(self.entrances) * 20)
-        f_MapPositionToZoneID = SLib.MapPositionToZoneID
+        f_MapPositionToZoneID = actorlib.MapPositionToZoneID
         zonelist = self.zones
         for entrance in self.entrances:
             zoneID = f_MapPositionToZoneID(zonelist, entrance.objx, entrance.objy, True)

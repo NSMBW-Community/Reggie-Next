@@ -36,22 +36,24 @@ import random
 
 from PyQt6 import QtCore, QtGui
 
-import data.common.sprites as common
-import spritelib as SLib
+import data.common.actors as common
+import actorlib
 from data import globals_
 
+from data.level.items.zone import ZoneItem
+
 Qt = QtCore.Qt
-ImageCache = SLib.ImageCache
+ImageCache = actorlib.ImageCache
 
 
 ################################################################
 ################################################################
 # ---- Low-Level Classes ----
 
-class SpriteImage_WoodenPlatform(SLib.SpriteImage):  # 23, 31, 50, 103, 106, 122
+class ActorImage_WoodenPlatform(actorlib.ActorImage):  # 23, 31, 50, 103, 106, 122
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
         self.xOffset = -2 / 1.5
         self.color = 0
 
@@ -60,16 +62,16 @@ class SpriteImage_WoodenPlatform(SLib.SpriteImage):  # 23, 31, 50, 103, 106, 122
         # Load the two batches separately because another sprite only
         # loads the first three.
         if 'WoodenPlatformL' not in ImageCache:
-            ImageCache['WoodenPlatformL'] = SLib.GetPixmap('wood_platform_left.png')
-            ImageCache['WoodenPlatformM'] = SLib.GetPixmap('wood_platform_middle.png')
-            ImageCache['WoodenPlatformR'] = SLib.GetPixmap('wood_platform_right.png')
+            ImageCache['WoodenPlatformL'] = actorlib.GetPixmap('wood_platform_left.png')
+            ImageCache['WoodenPlatformM'] = actorlib.GetPixmap('wood_platform_middle.png')
+            ImageCache['WoodenPlatformR'] = actorlib.GetPixmap('wood_platform_right.png')
         if 'StonePlatformL' not in ImageCache:
-            ImageCache['StonePlatformL'] = SLib.GetPixmap('stone_platform_left.png')
-            ImageCache['StonePlatformM'] = SLib.GetPixmap('stone_platform_middle.png')
-            ImageCache['StonePlatformR'] = SLib.GetPixmap('stone_platform_right.png')
-            ImageCache['BonePlatformL'] = SLib.GetPixmap('bone_platform_left.png')
-            ImageCache['BonePlatformM'] = SLib.GetPixmap('bone_platform_middle.png')
-            ImageCache['BonePlatformR'] = SLib.GetPixmap('bone_platform_right.png')
+            ImageCache['StonePlatformL'] = actorlib.GetPixmap('stone_platform_left.png')
+            ImageCache['StonePlatformM'] = actorlib.GetPixmap('stone_platform_middle.png')
+            ImageCache['StonePlatformR'] = actorlib.GetPixmap('stone_platform_right.png')
+            ImageCache['BonePlatformL'] = actorlib.GetPixmap('bone_platform_left.png')
+            ImageCache['BonePlatformM'] = actorlib.GetPixmap('bone_platform_middle.png')
+            ImageCache['BonePlatformR'] = actorlib.GetPixmap('bone_platform_right.png')
 
 
     def paint(self, painter):
@@ -96,23 +98,23 @@ class SpriteImage_WoodenPlatform(SLib.SpriteImage):  # 23, 31, 50, 103, 106, 122
             painter.drawPixmap(0, 0, ImageCache[color + 'PlatformL'])
 
 
-class SpriteImage_DSStoneBlock(SLib.SpriteImage):  # 27, 28
+class ActorImage_DSStoneBlock(actorlib.ActorImage):  # 27, 28
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
     @staticmethod
     def loadImages():
         if 'DSBlockTopLeft' in ImageCache:
             return
-        ImageCache['DSBlockTopLeft'] = SLib.GetPixmap('dsblock_topleft.png')
-        ImageCache['DSBlockTop'] = SLib.GetPixmap('dsblock_top.png')
-        ImageCache['DSBlockTopRight'] = SLib.GetPixmap('dsblock_topright.png')
-        ImageCache['DSBlockLeft'] = SLib.GetPixmap('dsblock_left.png')
-        ImageCache['DSBlockRight'] = SLib.GetPixmap('dsblock_right.png')
-        ImageCache['DSBlockBottomLeft'] = SLib.GetPixmap('dsblock_bottomleft.png')
-        ImageCache['DSBlockBottom'] = SLib.GetPixmap('dsblock_bottom.png')
-        ImageCache['DSBlockBottomRight'] = SLib.GetPixmap('dsblock_bottomright.png')
+        ImageCache['DSBlockTopLeft'] = actorlib.GetPixmap('dsblock_topleft.png')
+        ImageCache['DSBlockTop'] = actorlib.GetPixmap('dsblock_top.png')
+        ImageCache['DSBlockTopRight'] = actorlib.GetPixmap('dsblock_topright.png')
+        ImageCache['DSBlockLeft'] = actorlib.GetPixmap('dsblock_left.png')
+        ImageCache['DSBlockRight'] = actorlib.GetPixmap('dsblock_right.png')
+        ImageCache['DSBlockBottomLeft'] = actorlib.GetPixmap('dsblock_bottomleft.png')
+        ImageCache['DSBlockBottom'] = actorlib.GetPixmap('dsblock_bottom.png')
+        ImageCache['DSBlockBottomRight'] = actorlib.GetPixmap('dsblock_bottomright.png')
 
     def dataChanged(self):
         # get size
@@ -141,7 +143,7 @@ class SpriteImage_DSStoneBlock(SLib.SpriteImage):  # 27, 28
         painter.drawPixmap(right_x, bottom_y, ImageCache['DSBlockBottomRight'])
 
 
-class SpriteImage_StarCoin(SLib.SpriteImage_Static):  # 32, 155, 389
+class ActorImage_StarCoin(actorlib.ActorImage_Static):  # 32, 155, 389
     def __init__(self, parent, scale=1.5):
         super().__init__(
             parent,
@@ -151,12 +153,12 @@ class SpriteImage_StarCoin(SLib.SpriteImage_Static):  # 32, 155, 389
         )
 
 
-class SpriteImage_OldStoneBlock(SLib.SpriteImage):  # 30, 81, 82, 83, 84, 85, 86
+class ActorImage_OldStoneBlock(actorlib.ActorImage):  # 30, 81, 82, 83, 84, 85, 86
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Horizontal))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, 16, 16, actorlib.AuxiliaryTrackObject.Horizontal))
         self.spikesL = False
         self.spikesR = False
         self.spikesT = False
@@ -168,22 +170,22 @@ class SpriteImage_OldStoneBlock(SLib.SpriteImage):  # 30, 81, 82, 83, 84, 85, 86
     def loadImages():
         if 'OldStoneTL' in ImageCache:
             return
-        ImageCache['OldStoneTL'] = SLib.GetPixmap('oldstone_tl.png')
-        ImageCache['OldStoneT'] = SLib.GetPixmap('oldstone_t.png')
-        ImageCache['OldStoneTR'] = SLib.GetPixmap('oldstone_tr.png')
-        ImageCache['OldStoneL'] = SLib.GetPixmap('oldstone_l.png')
-        ImageCache['OldStoneM'] = SLib.GetPixmap('oldstone_m.png')
-        ImageCache['OldStoneR'] = SLib.GetPixmap('oldstone_r.png')
-        ImageCache['OldStoneBL'] = SLib.GetPixmap('oldstone_bl.png')
-        ImageCache['OldStoneB'] = SLib.GetPixmap('oldstone_b.png')
-        ImageCache['OldStoneBR'] = SLib.GetPixmap('oldstone_br.png')
-        ImageCache['SpikeU'] = SLib.GetPixmap('spike_up.png')
-        ImageCache['SpikeL'] = SLib.GetPixmap('spike_left.png')
-        ImageCache['SpikeR'] = SLib.GetPixmap('spike_right.png')
-        ImageCache['SpikeD'] = SLib.GetPixmap('spike_down.png')
+        ImageCache['OldStoneTL'] = actorlib.GetPixmap('oldstone_tl.png')
+        ImageCache['OldStoneT'] = actorlib.GetPixmap('oldstone_t.png')
+        ImageCache['OldStoneTR'] = actorlib.GetPixmap('oldstone_tr.png')
+        ImageCache['OldStoneL'] = actorlib.GetPixmap('oldstone_l.png')
+        ImageCache['OldStoneM'] = actorlib.GetPixmap('oldstone_m.png')
+        ImageCache['OldStoneR'] = actorlib.GetPixmap('oldstone_r.png')
+        ImageCache['OldStoneBL'] = actorlib.GetPixmap('oldstone_bl.png')
+        ImageCache['OldStoneB'] = actorlib.GetPixmap('oldstone_b.png')
+        ImageCache['OldStoneBR'] = actorlib.GetPixmap('oldstone_br.png')
+        ImageCache['SpikeU'] = actorlib.GetPixmap('spike_up.png')
+        ImageCache['SpikeL'] = actorlib.GetPixmap('spike_left.png')
+        ImageCache['SpikeR'] = actorlib.GetPixmap('spike_right.png')
+        ImageCache['SpikeD'] = actorlib.GetPixmap('spike_down.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
         size = self.parent.spritedata[5]
@@ -268,7 +270,7 @@ class SpriteImage_OldStoneBlock(SLib.SpriteImage):  # 30, 81, 82, 83, 84, 85, 86
         painter.drawPixmap(column3x, row3y, ImageCache['OldStoneBR'])
 
 
-class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 374, 435
+class ActorImage_LiquidOrFog(actorlib.ActorImage):  # 53, 64, 138, 139, 216, 358, 374, 435
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -289,7 +291,7 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
         if globals_.Area.areanum == -1:
             return
 
-        self.zoneId = SLib.MapPositionToZoneID(globals_.Area.zones, self.parent.objx, self.parent.objy, True)
+        self.zoneId = actorlib.MapPositionToZoneID(globals_.Area.zones, self.parent.objx, self.parent.objy, True)
 
     def positionChanged(self):
         self.findZone()
@@ -409,10 +411,10 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
             painter.drawTiledPixmap(draw_rect, self.mid, QtCore.QPointF(0, -location_rect.top() - crestHeight))
 
 
-class SpriteImage_UnusedBlockPlatform(SLib.SpriteImage):  # 97, 107, 132, 160
+class ActorImage_UnusedBlockPlatform(actorlib.ActorImage):  # 97, 107, 132, 160
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
         self.size = (48, 48)
         self.isDark = False
@@ -420,8 +422,8 @@ class SpriteImage_UnusedBlockPlatform(SLib.SpriteImage):  # 97, 107, 132, 160
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('UnusedPlatform', 'unused_platform.png')
-        SLib.loadIfNotInImageCache('UnusedPlatformDark', 'unused_platform_dark.png')
+        actorlib.loadIfNotInImageCache('UnusedPlatform', 'unused_platform.png')
+        actorlib.loadIfNotInImageCache('UnusedPlatformDark', 'unused_platform_dark.png')
 
     def paint(self, painter):
         if not self.drawPlatformImage:
@@ -435,7 +437,7 @@ class SpriteImage_UnusedBlockPlatform(SLib.SpriteImage):  # 97, 107, 132, 160
         painter.drawPixmap(0, 0, pixmap)
 
 
-class SpriteImage_Amp(SLib.SpriteImage_Static):  # 104, 108
+class ActorImage_Amp(actorlib.ActorImage_Static):  # 104, 108
     def __init__(self, parent, scale=1.5):
         super().__init__(
             parent,
@@ -444,23 +446,23 @@ class SpriteImage_Amp(SLib.SpriteImage_Static):  # 104, 108
 
         self.dimensions = (-5 / 1.5, -5 / 1.5, 34 / 1.5, 34 / 1.5)
 
-        ampAux = SLib.AuxiliaryImage(parent, 59, 50)
+        ampAux = actorlib.AuxiliaryImage(parent, 59, 50)
         ampAux.image = ImageCache['Amp']
         ampAux.setPos(-13, -13)
         self.aux.append(ampAux)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Amp', 'amp.png')
+        actorlib.loadIfNotInImageCache('Amp', 'amp.png')
 
     def dataChanged(self):
         pass
 
 
-class SpriteImage_Skewer(SLib.SpriteImage):  # 137, 140, 141, 142
+class ActorImage_Skewer(actorlib.ActorImage):  # 137, 140, 141, 142
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
         self.HorzSpikeLength = ((36 * 16) + 41) / 1.5
         self.VertSpikeLength = ((36 * 16) + 39) / 1.5
@@ -471,13 +473,13 @@ class SpriteImage_Skewer(SLib.SpriteImage):  # 137, 140, 141, 142
     def loadImages():
         if 'SkewerM0up' not in ImageCache:
             for dir in ['up', 'down', 'left', 'right']:
-                ImageCache['SkewerM0' + dir] = SLib.GetPixmap(f'skewer_{dir}_m_0.png')
-                ImageCache['SkewerM1' + dir] = SLib.GetPixmap(f'skewer_{dir}_m_1.png')
-                ImageCache['SkewerE0' + dir] = SLib.GetPixmap(f'skewer_{dir}_e_0.png')
-                ImageCache['SkewerE1' + dir] = SLib.GetPixmap(f'skewer_{dir}_e_1.png')
+                ImageCache['SkewerM0' + dir] = actorlib.GetPixmap(f'skewer_{dir}_m_0.png')
+                ImageCache['SkewerM1' + dir] = actorlib.GetPixmap(f'skewer_{dir}_m_1.png')
+                ImageCache['SkewerE0' + dir] = actorlib.GetPixmap(f'skewer_{dir}_e_0.png')
+                ImageCache['SkewerE1' + dir] = actorlib.GetPixmap(f'skewer_{dir}_e_1.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
         rawdistance = self.parent.spritedata[3] >> 4
@@ -536,21 +538,21 @@ class SpriteImage_Skewer(SLib.SpriteImage):  # 137, 140, 141, 142
             painter.drawPixmap(int((self.width * 1.5) - endsizeH), 0, end)
 
 
-class SpriteImage_ScrewMushroom(SLib.SpriteImage):  # 172, 382
+class ActorImage_ScrewMushroom(actorlib.ActorImage):  # 172, 382
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
         self.hasBolt = False
         self.size = (124, 180)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Bolt', 'bolt.png')
+        actorlib.loadIfNotInImageCache('Bolt', 'bolt.png')
         if 'ScrewShroomT' not in ImageCache:
-            ImageCache['ScrewShroomT'] = SLib.GetPixmap('screw_shroom_top.png')
-            ImageCache['ScrewShroomM'] = SLib.GetPixmap('screw_shroom_middle.png')
-            ImageCache['ScrewShroomB'] = SLib.GetPixmap('screw_shroom_bottom.png')
+            ImageCache['ScrewShroomT'] = actorlib.GetPixmap('screw_shroom_top.png')
+            ImageCache['ScrewShroomM'] = actorlib.GetPixmap('screw_shroom_middle.png')
+            ImageCache['ScrewShroomB'] = actorlib.GetPixmap('screw_shroom_bottom.png')
 
     def dataChanged(self):
         mushroomId = self.parent.spritedata[2] >> 4 & 0xf
@@ -577,17 +579,17 @@ class SpriteImage_ScrewMushroom(SLib.SpriteImage):  # 172, 382
         painter.drawPixmap(78, y + 240, ImageCache['ScrewShroomB'])
 
 
-class SpriteImage_Door(SLib.SpriteImage):  # 182, 259, 276, 277, 278
+class ActorImage_Door(actorlib.ActorImage):  # 182, 259, 276, 277, 278
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
         self.doorName = 'Door'
         self.doorDimensions = (0, 0, 32, 48)
         self.entranceOffset = (0, 48)
 
-        entranceOutlineRect = SLib.AuxiliaryRectOutline(parent, 24, 24)
-        entranceOutlineRect.setIsBehindSprite(False)
+        entranceOutlineRect = actorlib.AuxiliaryRectOutline(parent, 24, 24)
+        entranceOutlineRect.setIsBehindActor(False)
         self.aux.append(entranceOutlineRect)
 
     @staticmethod
@@ -603,7 +605,7 @@ class SpriteImage_Door(SLib.SpriteImage):  # 182, 259, 276, 277, 278
         transform270.rotate(270)
 
         for door, filename in doors.items():
-            image = SLib.GetImage(f'{filename}.png')
+            image = actorlib.GetImage(f'{filename}.png')
             if image is None:
                 continue
             ImageCache[door + 'U'] = QtGui.QPixmap.fromImage(image)
@@ -612,7 +614,7 @@ class SpriteImage_Door(SLib.SpriteImage):  # 182, 259, 276, 277, 278
             ImageCache[door + 'L'] = QtGui.QPixmap.fromImage(image.transformed(transform270))
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryRectOutline):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryRectOutline):
             return
 
         rotstatus = self.parent.spritedata[4]
@@ -674,22 +676,22 @@ class SpriteImage_Door(SLib.SpriteImage):  # 182, 259, 276, 277, 278
         painter.setOpacity(1)
 
 
-class SpriteImage_GiantBubble(SLib.SpriteImage):  # 205, 226
+class ActorImage_GiantBubble(actorlib.ActorImage):  # 205, 226
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
         self.parent.setZValue(24999)
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Horizontal))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, 16, 16, actorlib.AuxiliaryTrackObject.Horizontal))
 
     @staticmethod
     def loadImages():
         if 'GiantBubble0' in ImageCache:
             return
         for shape in range(3):
-            ImageCache[f'GiantBubble{shape}'] = SLib.GetPixmap(f'giant_bubble_{shape}.png')
+            ImageCache[f'GiantBubble{shape}'] = actorlib.GetPixmap(f'giant_bubble_{shape}.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
         self.shape = self.parent.spritedata[4] >> 4
@@ -723,16 +725,16 @@ class SpriteImage_GiantBubble(SLib.SpriteImage):  # 205, 226
         painter.drawPixmap(0, 0, ImageCache[f'GiantBubble{self.shape}'])
 
 
-class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402, 403, 422, 423
+class ActorImage_Block(actorlib.ActorImage):  # 207, 208, 209, 221, 255, 256, 402, 403, 422, 423
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
-        rot_block_aux_image = SLib.AuxiliaryImage(parent, 24, 24)
+        rot_block_aux_image = actorlib.AuxiliaryImage(parent, 24, 24)
         rot_block_aux_image.setPos(0, 0)
         self.aux.append(rot_block_aux_image)
 
-        rot_item_aux_image = SLib.AuxiliaryImage(parent, 24, 24)
+        rot_item_aux_image = actorlib.AuxiliaryImage(parent, 24, 24)
         rot_item_aux_image.setPos(0, 0)
         self.aux.append(rot_item_aux_image)
 
@@ -752,7 +754,7 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
         # 0 = Empty, 1 = Coin, 2 = Mushroom, 3 = Fire Flower, 4 = Propeller, 5 = Penguin Suit,
         # 6 = Mini Shroom, 7 = Star, 8 = Continuous Star, 9 = Yoshi Egg, 10 = 10 Coins,
         # 11 = 1-up, 12 = Vine, 13 = Spring, 14 = Shroom/Coin, 15 = Ice Flower, 16 = Toad, 17 = Hammer
-        if not isinstance(self.aux[0], SLib.AuxiliaryImage) or not isinstance(self.aux[1], SLib.AuxiliaryImage):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryImage) or not isinstance(self.aux[1], actorlib.AuxiliaryImage):
             return
 
         if self.contentsOverride is not None:
@@ -788,7 +790,7 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
             transform.translate(-12, -12)
             self.transform = transform
 
-            self.aux[0].image = SLib.GetTile(self.tilenum).transformed(transform, QtCore.Qt.TransformationMode.SmoothTransformation)
+            self.aux[0].image = actorlib.GetTile(self.tilenum).transformed(transform, QtCore.Qt.TransformationMode.SmoothTransformation)
             self.aux[0].setSize(self.aux[0].image.width(), self.aux[0].image.height())
 
             self.aux[1].image = ImageCache[f'BlockContents{contents}'].transformed(transform, QtCore.Qt.TransformationMode.SmoothTransformation)
@@ -807,7 +809,7 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
             self.setSize((36 / 1.5, 36 / 1.5))
 
     def paint(self, painter):
-        if self.image is None or not isinstance(self.aux[0], SLib.AuxiliaryImage):
+        if self.image is None or not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
         if self.transparent:
@@ -820,15 +822,15 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
 
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
         if self.rotates:
-            self.aux[0].image = SLib.GetTile(self.tilenum).transformed(self.transform, QtCore.Qt.TransformationMode.SmoothTransformation)
+            self.aux[0].image = actorlib.GetTile(self.tilenum).transformed(self.transform, QtCore.Qt.TransformationMode.SmoothTransformation)
             self.aux[0].setSize(self.aux[0].image.width(), self.aux[0].image.height())
         else:
-            if self.tilenum < len(SLib.Tiles):
-                painter.drawPixmap(0, 0, SLib.GetTile(self.tilenum).scaled(scale, scale))
+            if self.tilenum < len(actorlib.Tiles):
+                painter.drawPixmap(0, 0, actorlib.GetTile(self.tilenum).scaled(scale, scale))
             painter.drawPixmap(img_offs, img_offs, self.image)
 
 
-class SpriteImage_SpecialCoin(SLib.SpriteImage_Static):  # 253, 371, 390
+class ActorImage_SpecialCoin(actorlib.ActorImage_Static):  # 253, 371, 390
     def __init__(self, parent, scale=1.5):
         super().__init__(
             parent,
@@ -837,13 +839,13 @@ class SpriteImage_SpecialCoin(SLib.SpriteImage_Static):  # 253, 371, 390
         )
 
 
-class SpriteImage_Pipe(SLib.SpriteImage):  # 254, 339, 353, 377, 378, 379, 380, 450
+class ActorImage_Pipe(actorlib.ActorImage):  # 254, 339, 353, 377, 378, 379, 380, 450
     Top = 0
     Bottom = 1
 
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
         self.parent.setZValue(24999)
 
@@ -857,12 +859,12 @@ class SpriteImage_Pipe(SLib.SpriteImage):  # 254, 339, 353, 377, 378, 379, 380, 
         if 'PipeTopGreen' not in ImageCache:
             for color in ('Green', 'Red', 'Yellow', 'Blue'):
                 color_l = color.lower()
-                ImageCache[f'PipeTop{color}'] = SLib.GetPixmap(f'pipe_{color_l}_top.png')
-                ImageCache[f'PipeMiddleV{color}'] = SLib.GetPixmap(f'pipe_{color_l}_middle.png')
-                ImageCache[f'PipeBottom{color}'] = SLib.GetPixmap(f'pipe_{color_l}_bottom.png')
-                ImageCache[f'PipeLeft{color}'] = SLib.GetPixmap(f'pipe_{color_l}_left.png')
-                ImageCache[f'PipeMiddleH{color}'] = SLib.GetPixmap(f'pipe_{color_l}_center.png')
-                ImageCache[f'PipeRight{color}'] = SLib.GetPixmap(f'pipe_{color_l}_right.png')
+                ImageCache[f'PipeTop{color}'] = actorlib.GetPixmap(f'pipe_{color_l}_top.png')
+                ImageCache[f'PipeMiddleV{color}'] = actorlib.GetPixmap(f'pipe_{color_l}_middle.png')
+                ImageCache[f'PipeBottom{color}'] = actorlib.GetPixmap(f'pipe_{color_l}_bottom.png')
+                ImageCache[f'PipeLeft{color}'] = actorlib.GetPixmap(f'pipe_{color_l}_left.png')
+                ImageCache[f'PipeMiddleH{color}'] = actorlib.GetPixmap(f'pipe_{color_l}_center.png')
+                ImageCache[f'PipeRight{color}'] = actorlib.GetPixmap(f'pipe_{color_l}_right.png')
 
     def dataChanged(self):
         # sprite types:
@@ -968,7 +970,7 @@ class SpriteImage_Pipe(SLib.SpriteImage):  # 254, 339, 353, 377, 378, 379, 380, 
             painter.drawPixmap(0, 0, ImageCache[f'PipeLeft{color}'])
 
 
-class SpriteImage_PipeStationary(SpriteImage_Pipe):  # 377, 378, 379, 380, 450
+class ActorImage_PipeStationary(ActorImage_Pipe):  # 377, 378, 379, 380, 450
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
         self.length = 4
@@ -984,7 +986,7 @@ class SpriteImage_PipeStationary(SpriteImage_Pipe):  # 377, 378, 379, 380, 450
         super().dataChanged()
 
 
-class SpriteImage_UnusedGiantDoor(SLib.SpriteImage_Static):  # 319, 320
+class ActorImage_UnusedGiantDoor(actorlib.ActorImage_Static):  # 319, 320
     def __init__(self, parent, scale=1.5):
         super().__init__(
             parent,
@@ -994,19 +996,19 @@ class SpriteImage_UnusedGiantDoor(SLib.SpriteImage_Static):  # 319, 320
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('UnusedGiantDoor', 'unused_giant_door.png')
+        actorlib.loadIfNotInImageCache('UnusedGiantDoor', 'unused_giant_door.png')
 
 
-class SpriteImage_BrownTowerBlock(SLib.SpriteImage):  # 354, 356
+class ActorImage_BrownTowerBlock(actorlib.ActorImage):  # 354, 356
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
     @staticmethod
     def loadImages():
         for vert in 'TMB':
             for horz in 'LMR':
-                SLib.loadIfNotInImageCache(
+                actorlib.loadIfNotInImageCache(
                     f'BrownBlock{vert}{horz}',
                     f'brown_block_{vert}{horz}.png'
                 )
@@ -1053,17 +1055,17 @@ class SpriteImage_BrownTowerBlock(SLib.SpriteImage):  # 354, 356
         painter.drawTiledPixmap(12, 12, width - 24, height - 24, ImageCache['BrownBlockMM'], mid_offset_x, mid_offset_y)
 
 
-class SpriteImage_RollingHillWithPipe(SLib.SpriteImage):  # 355, 360
+class ActorImage_RollingHillWithPipe(actorlib.ActorImage):  # 355, 360
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
-        self.aux.append(SLib.AuxiliaryCircleOutline(parent, 800))
+        self.aux.append(actorlib.AuxiliaryCircleOutline(parent, 800))
 
 
-class SpriteImage_LongSkewer(SLib.SpriteImage):  # 398, 400
+class ActorImage_LongSkewer(actorlib.ActorImage):  # 398, 400
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
         self.parent.setZValue(24999) # to see sprites behind it easily
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
         # 55 mid sections + an end section = 2021
         self.dir = 'left'
@@ -1073,15 +1075,15 @@ class SpriteImage_LongSkewer(SLib.SpriteImage):  # 398, 400
         if 'LongSkewerM0left' in ImageCache:
             return
         for dir in ['left', 'right']:
-            ImageCache[f'LongSkewerM0{dir}'] = SLib.GetPixmap(f'skewer_{dir}_m_0.png')
-            ImageCache[f'LongSkewerM1{dir}'] = SLib.GetPixmap(f'skewer_{dir}_m_1.png')
-            ImageCache[f'LongSkewerE0{dir}'] = SLib.GetPixmap(f'skewer_{dir}_e_0.png')
-            ImageCache[f'LongSkewerE1{dir}'] = SLib.GetPixmap(f'skewer_{dir}_e_1.png')
+            ImageCache[f'LongSkewerM0{dir}'] = actorlib.GetPixmap(f'skewer_{dir}_m_0.png')
+            ImageCache[f'LongSkewerM1{dir}'] = actorlib.GetPixmap(f'skewer_{dir}_m_1.png')
+            ImageCache[f'LongSkewerE0{dir}'] = actorlib.GetPixmap(f'skewer_{dir}_e_0.png')
+            ImageCache[f'LongSkewerE1{dir}'] = actorlib.GetPixmap(f'skewer_{dir}_e_1.png')
 
     def dataChanged(self):
         if (
-            not isinstance(self.aux[0], SLib.AuxiliaryTrackObject)
-            or not isinstance(self.aux[1], SLib.AuxiliaryImage)
+            not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject)
+            or not isinstance(self.aux[1], actorlib.AuxiliaryImage)
         ):
             return
 
@@ -1116,7 +1118,7 @@ class SpriteImage_LongSkewer(SLib.SpriteImage):  # 398, 400
         self.aux[1].alpha = 0.9
 
 
-class SpriteImage_MassiveSkewer(SLib.SpriteImage):  # 401, 404
+class ActorImage_MassiveSkewer(actorlib.ActorImage):  # 401, 404
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
         self.parent.setZValue(24999) # to see sprites behind it easily
@@ -1130,16 +1132,16 @@ class SpriteImage_MassiveSkewer(SLib.SpriteImage):  # 401, 404
         if 'MassiveSkewerM0up' in ImageCache:
             return
         for dir in ['up', 'down']:
-            ImageCache['MassiveSkewerM0'] = SLib.GetPixmap('massive_skewer_m_0.png')
-            ImageCache['MassiveSkewerM1'] = SLib.GetPixmap('massive_skewer_m_1.png')
-            ImageCache[f'MassiveSkewerE0{dir}'] = SLib.GetPixmap(f'massive_skewer_{dir}_e_0.png')
-            ImageCache[f'MassiveSkewerE1{dir}'] = SLib.GetPixmap(f'massive_skewer_{dir}_e_1.png')
+            ImageCache['MassiveSkewerM0'] = actorlib.GetPixmap('massive_skewer_m_0.png')
+            ImageCache['MassiveSkewerM1'] = actorlib.GetPixmap('massive_skewer_m_1.png')
+            ImageCache[f'MassiveSkewerE0{dir}'] = actorlib.GetPixmap(f'massive_skewer_{dir}_e_0.png')
+            ImageCache[f'MassiveSkewerE1{dir}'] = actorlib.GetPixmap(f'massive_skewer_{dir}_e_1.png')
 
     def dataChanged(self):
         if (
-            not isinstance(self.aux[0], SLib.AuxiliaryTrackObject)
-            or not isinstance(self.aux[1], SLib.AuxiliaryRectOutline)
-            or not isinstance(self.aux[2], SLib.AuxiliaryImage)
+            not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject)
+            or not isinstance(self.aux[1], actorlib.AuxiliaryRectOutline)
+            or not isinstance(self.aux[2], actorlib.AuxiliaryImage)
         ):
             return
 
@@ -1181,7 +1183,7 @@ class SpriteImage_MassiveSkewer(SLib.SpriteImage):  # 401, 404
         self.aux[2].alpha = 0.5
 
 
-class SpriteImage_ToadHouseBalloon(SLib.SpriteImage_StaticMultiple):  # 411, 412
+class ActorImage_ToadHouseBalloon(actorlib.ActorImage_StaticMultiple):  # 411, 412
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
         self.hasHandle = False
@@ -1195,7 +1197,7 @@ class SpriteImage_ToadHouseBalloon(SLib.SpriteImage_StaticMultiple):  # 411, 412
         for handleCacheStr, handleFileStr in (('', ''), ('Handle', 'handle_')):
             for num in range(4):
                 ImageCache['ToadHouseBalloon' + handleCacheStr + str(num)] = \
-                    SLib.GetPixmap(f'mg_house_balloon_{handleFileStr}{num}.png')
+                    actorlib.GetPixmap(f'mg_house_balloon_{handleFileStr}{num}.png')
 
     def dataChanged(self):
         self.image = ImageCache['ToadHouseBalloon' + ('Handle' if self.hasHandle else '') + str(self.livesNum)]
@@ -1206,10 +1208,10 @@ class SpriteImage_ToadHouseBalloon(SLib.SpriteImage_StaticMultiple):  # 411, 412
 
 # ---- High-Level Classes ----
 
-class SpriteImage_MeasureJump(SLib.SpriteImage):
+class ActorImage_MeasureJump(actorlib.ActorImage):
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        jumpAuxImage = SLib.AuxiliaryImage(parent, 312, 191)
+        jumpAuxImage = actorlib.AuxiliaryImage(parent, 312, 191)
         jumpAuxImage.image = ImageCache["JumpRun1"]
         jumpAuxImage.setPos(0, 0)
         self.aux.append(jumpAuxImage)
@@ -1220,11 +1222,11 @@ class SpriteImage_MeasureJump(SLib.SpriteImage):
             return
 
         for i in range(1, 4):
-            ImageCache[f'JumpRun{i}'] = SLib.GetPixmap(f'jump_run_{i}.png')
-            ImageCache[f'JumpRunSpin{i}'] = SLib.GetPixmap(f'jump_run_spin_{i}.png')
+            ImageCache[f'JumpRun{i}'] = actorlib.GetPixmap(f'jump_run_{i}.png')
+            ImageCache[f'JumpRunSpin{i}'] = actorlib.GetPixmap(f'jump_run_spin_{i}.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryImage):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
         jumptype = self.parent.spritedata[2] & 3
@@ -1253,7 +1255,7 @@ class SpriteImage_MeasureJump(SLib.SpriteImage):
             self.aux[0].setPos(0, 0)
 
 
-class SpriteImage_CharacterSpawner(SLib.SpriteImage_StaticMultiple):  # 9
+class ActorImage_CharacterSpawner(actorlib.ActorImage_StaticMultiple):  # 9
     def dataChanged(self):
         direction = self.parent.spritedata[2] & 1
         character = self.parent.spritedata[5] & 3
@@ -1270,7 +1272,7 @@ class SpriteImage_CharacterSpawner(SLib.SpriteImage_StaticMultiple):  # 9
         super().dataChanged()
 
 
-class SpriteImage_Goomba(SLib.SpriteImage_Static):  # 20
+class ActorImage_Goomba(actorlib.ActorImage_Static):  # 20
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -1281,10 +1283,10 @@ class SpriteImage_Goomba(SLib.SpriteImage_Static):  # 20
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Goomba', 'goomba.png')
+        actorlib.loadIfNotInImageCache('Goomba', 'goomba.png')
 
 
-class SpriteImage_ParaGoomba(SLib.SpriteImage_Static):  # 21
+class ActorImage_ParaGoomba(actorlib.ActorImage_Static):  # 21
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -1295,18 +1297,18 @@ class SpriteImage_ParaGoomba(SLib.SpriteImage_Static):  # 21
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('ParaGoomba', 'para_goomba.png')
+        actorlib.loadIfNotInImageCache('ParaGoomba', 'para_goomba.png')
 
 
-class SpriteImage_HorzMovingPlatform(SpriteImage_WoodenPlatform):  # 23
+class ActorImage_HorzMovingPlatform(ActorImage_WoodenPlatform):  # 23
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
         self.width = (((self.parent.spritedata[5] & 0xF) + 1) << 4) + (4 / 1.5)
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, self.width, 16, SLib.AuxiliaryTrackObject.Horizontal))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, self.width, 16, actorlib.AuxiliaryTrackObject.Horizontal))
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
         # get width and distance
@@ -1332,13 +1334,13 @@ class SpriteImage_HorzMovingPlatform(SpriteImage_WoodenPlatform):  # 23
         self.aux[0].update()
 
 
-class SpriteImage_BuzzyBeetle(SLib.SpriteImage_StaticMultiple):  # 24
+class ActorImage_BuzzyBeetle(actorlib.ActorImage_StaticMultiple):  # 24
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BuzzyBeetle', 'buzzy_beetle.png')
-        SLib.loadIfNotInImageCache('BuzzyBeetleU', 'buzzy_beetle_u.png')
-        SLib.loadIfNotInImageCache('BuzzyBeetleShell', 'buzzy_beetle_shell.png')
-        SLib.loadIfNotInImageCache('BuzzyBeetleShellU', 'buzzy_beetle_shell_u.png')
+        actorlib.loadIfNotInImageCache('BuzzyBeetle', 'buzzy_beetle.png')
+        actorlib.loadIfNotInImageCache('BuzzyBeetleU', 'buzzy_beetle_u.png')
+        actorlib.loadIfNotInImageCache('BuzzyBeetleShell', 'buzzy_beetle_shell.png')
+        actorlib.loadIfNotInImageCache('BuzzyBeetleShellU', 'buzzy_beetle_shell_u.png')
 
     def dataChanged(self):
 
@@ -1359,13 +1361,13 @@ class SpriteImage_BuzzyBeetle(SLib.SpriteImage_StaticMultiple):  # 24
         super().dataChanged()
 
 
-class SpriteImage_Spiny(SLib.SpriteImage_StaticMultiple):  # 25
+class ActorImage_Spiny(actorlib.ActorImage_StaticMultiple):  # 25
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Spiny', 'spiny.png')
-        SLib.loadIfNotInImageCache('SpinyShell', 'spiny_shell.png')
-        SLib.loadIfNotInImageCache('SpinyShellU', 'spiny_shell_u.png')
-        SLib.loadIfNotInImageCache('SpinyBall', 'spiny_ball.png')
+        actorlib.loadIfNotInImageCache('Spiny', 'spiny.png')
+        actorlib.loadIfNotInImageCache('SpinyShell', 'spiny_shell.png')
+        actorlib.loadIfNotInImageCache('SpinyShellU', 'spiny_shell_u.png')
+        actorlib.loadIfNotInImageCache('SpinyBall', 'spiny_ball.png')
 
     def dataChanged(self):
 
@@ -1386,7 +1388,7 @@ class SpriteImage_Spiny(SLib.SpriteImage_StaticMultiple):  # 25
         super().dataChanged()
 
 
-class SpriteImage_UpsideDownSpiny(SLib.SpriteImage_Static):  # 26
+class ActorImage_UpsideDownSpiny(actorlib.ActorImage_Static):  # 26
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -1396,19 +1398,19 @@ class SpriteImage_UpsideDownSpiny(SLib.SpriteImage_Static):  # 26
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('SpinyU', 'spiny_u.png')
+        actorlib.loadIfNotInImageCache('SpinyU', 'spiny_u.png')
 
 
-class SpriteImage_DSStoneBlock_Vert(SpriteImage_DSStoneBlock):  # 27
+class ActorImage_DSStoneBlock_Vert(ActorImage_DSStoneBlock):  # 27
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 32, 16, SLib.AuxiliaryTrackObject.Vertical))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, 32, 16, actorlib.AuxiliaryTrackObject.Vertical))
         self.size = (32, 16)
 
     def dataChanged(self):
         super().dataChanged()
-        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
         # get height and distance
@@ -1428,16 +1430,16 @@ class SpriteImage_DSStoneBlock_Vert(SpriteImage_DSStoneBlock):  # 27
         self.aux[0].update()
 
 
-class SpriteImage_DSStoneBlock_Horz(SpriteImage_DSStoneBlock):  # 28
+class ActorImage_DSStoneBlock_Horz(ActorImage_DSStoneBlock):  # 28
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 32, 16, SLib.AuxiliaryTrackObject.Horizontal))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, 32, 16, actorlib.AuxiliaryTrackObject.Horizontal))
         self.size = (32, 16)
 
     def dataChanged(self):
         super().dataChanged()
-        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
         # get height and distance
@@ -1457,19 +1459,19 @@ class SpriteImage_DSStoneBlock_Horz(SpriteImage_DSStoneBlock):  # 28
         self.aux[0].update()
 
 
-class SpriteImage_OldStoneBlock_NoSpikes(SpriteImage_OldStoneBlock):  # 30
+class ActorImage_OldStoneBlock_NoSpikes(ActorImage_OldStoneBlock):  # 30
     pass
 
 
-class SpriteImage_VertMovingPlatform(SpriteImage_WoodenPlatform):  # 31
+class ActorImage_VertMovingPlatform(ActorImage_WoodenPlatform):  # 31
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
         self.width = (((self.parent.spritedata[5] & 0xF) + 1) << 4) + (4 / 1.5)
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, self.width, 16, SLib.AuxiliaryTrackObject.Vertical))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, self.width, 16, actorlib.AuxiliaryTrackObject.Vertical))
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
         # get width and distance
@@ -1495,11 +1497,11 @@ class SpriteImage_VertMovingPlatform(SpriteImage_WoodenPlatform):  # 31
         self.aux[0].update()
 
 
-class SpriteImage_StarCoinRegular(SpriteImage_StarCoin):  # 32
+class ActorImage_StarCoinRegular(ActorImage_StarCoin):  # 32
     pass
 
 
-class SpriteImage_QSwitch(common.SpriteImage_Switch):  # 40
+class ActorImage_QSwitch(common.ActorImage_Switch):  # 40
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.switchType = 'Q'
@@ -1509,7 +1511,7 @@ class SpriteImage_QSwitch(common.SpriteImage_Switch):  # 40
         super().dataChanged()
 
 
-class SpriteImage_PSwitch(common.SpriteImage_Switch):  # 41
+class ActorImage_PSwitch(common.ActorImage_Switch):  # 41
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.switchType = 'P'
@@ -1519,7 +1521,7 @@ class SpriteImage_PSwitch(common.SpriteImage_Switch):  # 41
         super().dataChanged()
 
 
-class SpriteImage_ExcSwitch(common.SpriteImage_Switch):  # 42
+class ActorImage_ExcSwitch(common.ActorImage_Switch):  # 42
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.switchType = 'E'
@@ -1529,7 +1531,7 @@ class SpriteImage_ExcSwitch(common.SpriteImage_Switch):  # 42
         super().dataChanged()
 
 
-class SpriteImage_QSwitchBlock(SpriteImage_Block):  # 43
+class ActorImage_QSwitchBlock(ActorImage_Block):  # 43
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.tilenum = 48
@@ -1543,7 +1545,7 @@ class SpriteImage_QSwitchBlock(SpriteImage_Block):  # 43
         super().dataChanged()
 
 
-class SpriteImage_PSwitchBlock(SpriteImage_Block):  # 44
+class ActorImage_PSwitchBlock(ActorImage_Block):  # 44
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.tilenum = 48
@@ -1556,7 +1558,7 @@ class SpriteImage_PSwitchBlock(SpriteImage_Block):  # 44
         super().dataChanged()
 
 
-class SpriteImage_ExcSwitchBlock(SpriteImage_Block):  # 45
+class ActorImage_ExcSwitchBlock(ActorImage_Block):  # 45
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.tilenum = 48
@@ -1569,12 +1571,12 @@ class SpriteImage_ExcSwitchBlock(SpriteImage_Block):  # 45
         super().dataChanged()
 
 
-class SpriteImage_Podoboo(SLib.SpriteImage):  # 46
+class ActorImage_Podoboo(actorlib.ActorImage):  # 46
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
-        podobooAuxImage = SLib.AuxiliaryImage(parent, 48, 48)
+        podobooAuxImage = actorlib.AuxiliaryImage(parent, 48, 48)
         podobooAuxImage.image = ImageCache['Podoboo0']
         podobooAuxImage.setPos(-6, -6)
         podobooAuxImage.hover = False
@@ -1584,10 +1586,10 @@ class SpriteImage_Podoboo(SLib.SpriteImage):  # 46
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Podoboo0', 'podoboo.png')
+        actorlib.loadIfNotInImageCache('Podoboo0', 'podoboo.png')
 
 
-class SpriteImage_Thwomp(SLib.SpriteImage_Static):  # 47
+class ActorImage_Thwomp(actorlib.ActorImage_Static):  # 47
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -1598,10 +1600,10 @@ class SpriteImage_Thwomp(SLib.SpriteImage_Static):  # 47
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Thwomp', 'thwomp.png')
+        actorlib.loadIfNotInImageCache('Thwomp', 'thwomp.png')
 
 
-class SpriteImage_GiantThwomp(SLib.SpriteImage_Static):  # 48
+class ActorImage_GiantThwomp(actorlib.ActorImage_Static):  # 48
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -1612,15 +1614,15 @@ class SpriteImage_GiantThwomp(SLib.SpriteImage_Static):  # 48
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('GiantThwomp', 'giant_thwomp.png')
+        actorlib.loadIfNotInImageCache('GiantThwomp', 'giant_thwomp.png')
 
 
-class SpriteImage_UnusedSeesaw(SLib.SpriteImage):  # 49
+class ActorImage_UnusedSeesaw(actorlib.ActorImage):  # 49
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
-        rotationAreaAux = SLib.AuxiliaryRotationAreaOutline(parent, 48)
+        rotationAreaAux = actorlib.AuxiliaryRotationAreaOutline(parent, 48)
         rotationAreaAux.setPos(128, -36)
         self.aux.append(rotationAreaAux)
 
@@ -1629,10 +1631,10 @@ class SpriteImage_UnusedSeesaw(SLib.SpriteImage):  # 49
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('UnusedPlatformDark', 'unused_platform_dark.png')
+        actorlib.loadIfNotInImageCache('UnusedPlatformDark', 'unused_platform_dark.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryRotationAreaOutline):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryRotationAreaOutline):
             return
 
         w = self.parent.spritedata[5] & 15
@@ -1678,7 +1680,7 @@ class SpriteImage_UnusedSeesaw(SLib.SpriteImage):  # 49
         painter.drawPixmap(0, 0, self.image)
 
 
-class SpriteImage_FallingPlatform(SpriteImage_WoodenPlatform):  # 50
+class ActorImage_FallingPlatform(ActorImage_WoodenPlatform):  # 50
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
@@ -1710,7 +1712,7 @@ class SpriteImage_FallingPlatform(SpriteImage_WoodenPlatform):  # 50
             self.color = 0
 
 
-class SpriteImage_TiltingGirder(SLib.SpriteImage_Static):  # 51
+class ActorImage_TiltingGirder(actorlib.ActorImage_Static):  # 51
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -1721,16 +1723,16 @@ class SpriteImage_TiltingGirder(SLib.SpriteImage_Static):  # 51
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('TiltingGirder', 'tilting_girder.png')
+        actorlib.loadIfNotInImageCache('TiltingGirder', 'tilting_girder.png')
 
 
-class SpriteImage_UnusedRotPlatforms(SLib.SpriteImage):  # 52
+class ActorImage_UnusedRotPlatforms(actorlib.ActorImage):  # 52
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
         posList = [(-60, -144), (-60, 144), (-204, 0), (84, 0)]
         for index in range(4):
-            img = SLib.AuxiliaryImage(parent, 144, 24)
+            img = actorlib.AuxiliaryImage(parent, 144, 24)
             img.setPos(posList[index][0], posList[index][1])
             img.image = ImageCache["UnusedRotPlatform"]
             self.aux.append(img)
@@ -1740,7 +1742,7 @@ class SpriteImage_UnusedRotPlatforms(SLib.SpriteImage):  # 52
         if 'UnusedRotPlatform' in ImageCache:
             return
 
-        SLib.loadIfNotInImageCache('UnusedPlatformDark', 'unused_platform_dark.png')
+        actorlib.loadIfNotInImageCache('UnusedPlatformDark', 'unused_platform_dark.png')
 
         platform = ImageCache['UnusedPlatformDark'].scaled(
             144, 24,
@@ -1754,7 +1756,7 @@ class SpriteImage_UnusedRotPlatforms(SLib.SpriteImage):  # 52
         ImageCache['UnusedRotPlatform'] = img
 
 
-class SpriteImage_Quicksand(SpriteImage_LiquidOrFog):  # 53
+class ActorImage_Quicksand(ActorImage_LiquidOrFog):  # 53
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -1767,8 +1769,8 @@ class SpriteImage_Quicksand(SpriteImage_LiquidOrFog):  # 53
     def loadImages():
         if 'LiquidSand' in ImageCache:
             return
-        ImageCache['LiquidSand'] = SLib.GetPixmap('liquid_sand.png')
-        ImageCache['LiquidSandCrest'] = SLib.GetPixmap('liquid_sand_crest.png')
+        ImageCache['LiquidSand'] = actorlib.GetPixmap('liquid_sand.png')
+        ImageCache['LiquidSandCrest'] = actorlib.GetPixmap('liquid_sand_crest.png')
 
     def dataChanged(self):
         self.locId = self.parent.spritedata[5] & 0x7F
@@ -1790,7 +1792,7 @@ class SpriteImage_Quicksand(SpriteImage_LiquidOrFog):  # 53
         super().positionChanged()
 
 
-class SpriteImage_Lakitu(SLib.SpriteImage_Static):  # 54
+class ActorImage_Lakitu(actorlib.ActorImage_Static):  # 54
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -1801,10 +1803,10 @@ class SpriteImage_Lakitu(SLib.SpriteImage_Static):  # 54
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Lakitu', 'lakitu.png')
+        actorlib.loadIfNotInImageCache('Lakitu', 'lakitu.png')
 
 
-class SpriteImage_UnusedRisingSeesaw(SLib.SpriteImage_StaticMultiple):  # 55
+class ActorImage_UnusedRisingSeesaw(actorlib.ActorImage_StaticMultiple):  # 55
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -1817,7 +1819,7 @@ class SpriteImage_UnusedRisingSeesaw(SLib.SpriteImage_StaticMultiple):  # 55
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('UnusedPlatformDark', 'unused_platform_dark.png')
+        actorlib.loadIfNotInImageCache('UnusedPlatformDark', 'unused_platform_dark.png')
 
     def dataChanged(self):
         midway = (self.parent.spritedata[3] >> 4) & 1
@@ -1827,7 +1829,7 @@ class SpriteImage_UnusedRisingSeesaw(SLib.SpriteImage_StaticMultiple):  # 55
             self.alpha = 1.0
 
 
-class SpriteImage_RisingTiltGirder(SLib.SpriteImage_StaticMultiple):  # 56
+class ActorImage_RisingTiltGirder(actorlib.ActorImage_StaticMultiple):  # 56
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -1838,7 +1840,7 @@ class SpriteImage_RisingTiltGirder(SLib.SpriteImage_StaticMultiple):  # 56
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('RisingTiltGirder', 'rising_girder.png')
+        actorlib.loadIfNotInImageCache('RisingTiltGirder', 'rising_girder.png')
 
     def dataChanged(self):
         midway = self.parent.spritedata[5] & 1
@@ -1848,15 +1850,15 @@ class SpriteImage_RisingTiltGirder(SLib.SpriteImage_StaticMultiple):  # 56
             self.alpha = 1.0
 
 
-class SpriteImage_KoopaTroopa(SLib.SpriteImage_StaticMultiple):  # 57
+class ActorImage_KoopaTroopa(actorlib.ActorImage_StaticMultiple):  # 57
     @staticmethod
     def loadImages():
         if 'KoopaG' in ImageCache:
             return
-        ImageCache['KoopaG'] = SLib.GetPixmap('koopa_green.png')
-        ImageCache['KoopaR'] = SLib.GetPixmap('koopa_red.png')
-        ImageCache['KoopaShellG'] = SLib.GetPixmap('koopa_green_shell.png')
-        ImageCache['KoopaShellR'] = SLib.GetPixmap('koopa_red_shell.png')
+        ImageCache['KoopaG'] = actorlib.GetPixmap('koopa_green.png')
+        ImageCache['KoopaR'] = actorlib.GetPixmap('koopa_red.png')
+        ImageCache['KoopaShellG'] = actorlib.GetPixmap('koopa_green_shell.png')
+        ImageCache['KoopaShellR'] = actorlib.GetPixmap('koopa_red_shell.png')
 
     def dataChanged(self):
         # get properties
@@ -1874,22 +1876,22 @@ class SpriteImage_KoopaTroopa(SLib.SpriteImage_StaticMultiple):  # 57
         super().dataChanged()
 
 
-class SpriteImage_KoopaParatroopa(SLib.SpriteImage_StaticMultiple):  # 58
+class ActorImage_KoopaParatroopa(actorlib.ActorImage_StaticMultiple):  # 58
     def __init__(self, parent):
         super().__init__(parent, 1.5, None, (-7, -12))
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 0, 0, 0))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, 0, 0, 0))
 
     @staticmethod
     def loadImages():
         if 'ParakoopaG' not in ImageCache:
-            ImageCache['ParakoopaG'] = SLib.GetPixmap('parakoopa_green.png')
-            ImageCache['ParakoopaR'] = SLib.GetPixmap('parakoopa_red.png')
+            ImageCache['ParakoopaG'] = actorlib.GetPixmap('parakoopa_green.png')
+            ImageCache['ParakoopaR'] = actorlib.GetPixmap('parakoopa_red.png')
         if 'KoopaShellG' not in ImageCache:
-            ImageCache['KoopaShellG'] = SLib.GetPixmap('koopa_green_shell.png')
-            ImageCache['KoopaShellR'] = SLib.GetPixmap('koopa_red_shell.png')
+            ImageCache['KoopaShellG'] = actorlib.GetPixmap('koopa_green_shell.png')
+            ImageCache['KoopaShellR'] = actorlib.GetPixmap('koopa_red_shell.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
         # get properties
@@ -1918,14 +1920,14 @@ class SpriteImage_KoopaParatroopa(SLib.SpriteImage_StaticMultiple):  # 58
             turnImmediately = self.parent.spritedata[4] & 1 == 1
 
             if mode == 1:
-                track.direction = SLib.AuxiliaryTrackObject.Horizontal
+                track.direction = actorlib.AuxiliaryTrackObject.Horizontal
                 track.setSize(9 * 16, 16)
                 if turnImmediately:
                     track.setPos(self.width / 2, self.height / 2)
                 else:
                     track.setPos(-4 * 24 + self.width / 2, self.height / 2)
             else:
-                track.direction = SLib.AuxiliaryTrackObject.Vertical
+                track.direction = actorlib.AuxiliaryTrackObject.Vertical
                 track.setSize(16, 9 * 16)
                 if turnImmediately:
                     track.setPos(self.width / 2, self.height / 2)
@@ -1939,7 +1941,7 @@ class SpriteImage_KoopaParatroopa(SLib.SpriteImage_StaticMultiple):  # 58
         super().dataChanged()
 
 
-class SpriteImage_LineTiltGirder(SLib.SpriteImage_StaticMultiple):  # 59
+class ActorImage_LineTiltGirder(actorlib.ActorImage_StaticMultiple):  # 59
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -1950,14 +1952,14 @@ class SpriteImage_LineTiltGirder(SLib.SpriteImage_StaticMultiple):  # 59
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('LineGirder', 'line_tilt_girder.png')
+        actorlib.loadIfNotInImageCache('LineGirder', 'line_tilt_girder.png')
 
     def dataChanged(self):
         midway = (self.parent.spritedata[3] >> 4) & 1
         self.alpha = 0.5 if midway else 1.0
 
 
-class SpriteImage_SpikeTop(SLib.SpriteImage_StaticMultiple):  # 60
+class ActorImage_SpikeTop(actorlib.ActorImage_StaticMultiple):  # 60
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -1970,7 +1972,7 @@ class SpriteImage_SpikeTop(SLib.SpriteImage_StaticMultiple):  # 60
     def loadImages():
         if 'SpikeTop00' in ImageCache:
             return
-        SpikeTop = SLib.GetImage('spiketop.png')
+        SpikeTop = actorlib.GetImage('spiketop.png')
         if SpikeTop is None:
             return
 
@@ -2008,12 +2010,12 @@ class SpriteImage_SpikeTop(SLib.SpriteImage_StaticMultiple):  # 60
         super().dataChanged()
 
 
-class SpriteImage_BigBoo(SLib.SpriteImage):  # 61
+class ActorImage_BigBoo(actorlib.ActorImage):  # 61
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
-        bigBooAuxImage = SLib.AuxiliaryImage(parent, 243, 248)
+        bigBooAuxImage = actorlib.AuxiliaryImage(parent, 243, 248)
         bigBooAuxImage.image = ImageCache['BigBoo']
         bigBooAuxImage.setPos(-48, -48)
         bigBooAuxImage.hover = False
@@ -2023,22 +2025,22 @@ class SpriteImage_BigBoo(SLib.SpriteImage):  # 61
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BigBoo', 'bigboo.png')
+        actorlib.loadIfNotInImageCache('BigBoo', 'bigboo.png')
 
 
-class SpriteImage_SpinningFirebar(SLib.SpriteImage):  # 62
+class ActorImage_SpinningFirebar(actorlib.ActorImage):  # 62
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
-        self.aux.append(SLib.AuxiliaryCircleOutline(parent, 12, Qt.AlignmentFlag.AlignCenter))
+        self.actorbox.shown = False
+        self.aux.append(actorlib.AuxiliaryCircleOutline(parent, 12, Qt.AlignmentFlag.AlignCenter))
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('FirebarBase', 'firebar_base_0.png')
-        SLib.loadIfNotInImageCache('FirebarBaseWide', 'firebar_base_1.png')
+        actorlib.loadIfNotInImageCache('FirebarBase', 'firebar_base_0.png')
+        actorlib.loadIfNotInImageCache('FirebarBaseWide', 'firebar_base_1.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryCircleOutline):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryCircleOutline):
             return
 
         size = self.parent.spritedata[5] & 0xF
@@ -2063,7 +2065,7 @@ class SpriteImage_SpinningFirebar(SLib.SpriteImage):  # 62
         painter.drawPixmap(0, 0, self.image)
 
 
-class SpriteImage_SpikeBall(SLib.SpriteImage_Static):  # 63
+class ActorImage_SpikeBall(actorlib.ActorImage_Static):  # 63
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -2074,10 +2076,10 @@ class SpriteImage_SpikeBall(SLib.SpriteImage_Static):  # 63
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('SpikeBall', 'spike_ball.png')
+        actorlib.loadIfNotInImageCache('SpikeBall', 'spike_ball.png')
 
 
-class SpriteImage_OutdoorsFog(SpriteImage_LiquidOrFog):  # 64
+class ActorImage_OutdoorsFog(ActorImage_LiquidOrFog):  # 64
     def __init__(self, parent):
         super().__init__(parent)
         self.mid = ImageCache['OutdoorsFog']
@@ -2085,7 +2087,7 @@ class SpriteImage_OutdoorsFog(SpriteImage_LiquidOrFog):  # 64
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('OutdoorsFog', 'fog_outdoors.png')
+        actorlib.loadIfNotInImageCache('OutdoorsFog', 'fog_outdoors.png')
 
     def dataChanged(self):
         self.locId = self.parent.spritedata[5] & 0x7F
@@ -2096,7 +2098,7 @@ class SpriteImage_OutdoorsFog(SpriteImage_LiquidOrFog):  # 64
         super().positionChanged()
 
 
-class SpriteImage_PipePiranhaUp(SLib.SpriteImage_Static):  # 65
+class ActorImage_PipePiranhaUp(actorlib.ActorImage_Static):  # 65
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -2107,10 +2109,10 @@ class SpriteImage_PipePiranhaUp(SLib.SpriteImage_Static):  # 65
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('PipePlantUp', 'piranha_pipe_up.png')
+        actorlib.loadIfNotInImageCache('PipePlantUp', 'piranha_pipe_up.png')
 
 
-class SpriteImage_PipePiranhaDown(SLib.SpriteImage_Static):  # 66
+class ActorImage_PipePiranhaDown(actorlib.ActorImage_Static):  # 66
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -2121,10 +2123,10 @@ class SpriteImage_PipePiranhaDown(SLib.SpriteImage_Static):  # 66
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('PipePlantDown', 'piranha_pipe_down.png')
+        actorlib.loadIfNotInImageCache('PipePlantDown', 'piranha_pipe_down.png')
 
 
-class SpriteImage_PipePiranhaRight(SLib.SpriteImage_Static):  # 67
+class ActorImage_PipePiranhaRight(actorlib.ActorImage_Static):  # 67
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -2135,10 +2137,10 @@ class SpriteImage_PipePiranhaRight(SLib.SpriteImage_Static):  # 67
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('PipePlantRight', 'piranha_pipe_right.png')
+        actorlib.loadIfNotInImageCache('PipePlantRight', 'piranha_pipe_right.png')
 
 
-class SpriteImage_PipePiranhaLeft(SLib.SpriteImage_Static):  # 68
+class ActorImage_PipePiranhaLeft(actorlib.ActorImage_Static):  # 68
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -2149,10 +2151,10 @@ class SpriteImage_PipePiranhaLeft(SLib.SpriteImage_Static):  # 68
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('PipePlantLeft', 'piranha_pipe_left.png')
+        actorlib.loadIfNotInImageCache('PipePlantLeft', 'piranha_pipe_left.png')
 
 
-class SpriteImage_PipeFiretrapUp(SLib.SpriteImage_Static):  # 69
+class ActorImage_PipeFiretrapUp(actorlib.ActorImage_Static):  # 69
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -2163,10 +2165,10 @@ class SpriteImage_PipeFiretrapUp(SLib.SpriteImage_Static):  # 69
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('PipeFiretrapUp', 'firetrap_pipe_up.png')
+        actorlib.loadIfNotInImageCache('PipeFiretrapUp', 'firetrap_pipe_up.png')
 
 
-class SpriteImage_PipeFiretrapDown(SLib.SpriteImage_Static):  # 70
+class ActorImage_PipeFiretrapDown(actorlib.ActorImage_Static):  # 70
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -2177,10 +2179,10 @@ class SpriteImage_PipeFiretrapDown(SLib.SpriteImage_Static):  # 70
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('PipeFiretrapDown', 'firetrap_pipe_down.png')
+        actorlib.loadIfNotInImageCache('PipeFiretrapDown', 'firetrap_pipe_down.png')
 
 
-class SpriteImage_PipeFiretrapRight(SLib.SpriteImage_Static):  # 71
+class ActorImage_PipeFiretrapRight(actorlib.ActorImage_Static):  # 71
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -2191,10 +2193,10 @@ class SpriteImage_PipeFiretrapRight(SLib.SpriteImage_Static):  # 71
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('PipeFiretrapRight', 'firetrap_pipe_right.png')
+        actorlib.loadIfNotInImageCache('PipeFiretrapRight', 'firetrap_pipe_right.png')
 
 
-class SpriteImage_PipeFiretrapLeft(SLib.SpriteImage_Static):  # 72
+class ActorImage_PipeFiretrapLeft(actorlib.ActorImage_Static):  # 72
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -2205,18 +2207,18 @@ class SpriteImage_PipeFiretrapLeft(SLib.SpriteImage_Static):  # 72
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('PipeFiretrapLeft', 'firetrap_pipe_left.png')
+        actorlib.loadIfNotInImageCache('PipeFiretrapLeft', 'firetrap_pipe_left.png')
 
 
-class SpriteImage_GroundPiranha(SLib.SpriteImage_StaticMultiple):  # 73
+class ActorImage_GroundPiranha(actorlib.ActorImage_StaticMultiple):  # 73
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.xOffset = -20
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('GroundPiranha', 'ground_piranha.png')
-        SLib.loadIfNotInImageCache('GroundPiranhaU', 'ground_piranha_ceiling.png')
+        actorlib.loadIfNotInImageCache('GroundPiranha', 'ground_piranha.png')
+        actorlib.loadIfNotInImageCache('GroundPiranhaU', 'ground_piranha_ceiling.png')
 
     def dataChanged(self):
 
@@ -2231,15 +2233,15 @@ class SpriteImage_GroundPiranha(SLib.SpriteImage_StaticMultiple):  # 73
         super().dataChanged()
 
 
-class SpriteImage_BigGroundPiranha(SLib.SpriteImage_StaticMultiple):  # 74
+class ActorImage_BigGroundPiranha(actorlib.ActorImage_StaticMultiple):  # 74
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.xOffset = -64
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BigGroundPiranha', 'big_ground_piranha.png')
-        SLib.loadIfNotInImageCache('BigGroundPiranhaU', 'big_ground_piranha_ceiling.png')
+        actorlib.loadIfNotInImageCache('BigGroundPiranha', 'big_ground_piranha.png')
+        actorlib.loadIfNotInImageCache('BigGroundPiranhaU', 'big_ground_piranha_ceiling.png')
 
     def dataChanged(self):
 
@@ -2254,15 +2256,15 @@ class SpriteImage_BigGroundPiranha(SLib.SpriteImage_StaticMultiple):  # 74
         super().dataChanged()
 
 
-class SpriteImage_GroundFiretrap(SLib.SpriteImage_StaticMultiple):  # 75
+class ActorImage_GroundFiretrap(actorlib.ActorImage_StaticMultiple):  # 75
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.xOffset = 5
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('GroundFiretrap', 'ground_firetrap.png')
-        SLib.loadIfNotInImageCache('GroundFiretrapU', 'ground_firetrap_ceiling.png')
+        actorlib.loadIfNotInImageCache('GroundFiretrap', 'ground_firetrap.png')
+        actorlib.loadIfNotInImageCache('GroundFiretrapU', 'ground_firetrap_ceiling.png')
 
     def dataChanged(self):
 
@@ -2277,15 +2279,15 @@ class SpriteImage_GroundFiretrap(SLib.SpriteImage_StaticMultiple):  # 75
         super().dataChanged()
 
 
-class SpriteImage_BigGroundFiretrap(SLib.SpriteImage_StaticMultiple):  # 76
+class ActorImage_BigGroundFiretrap(actorlib.ActorImage_StaticMultiple):  # 76
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.xOffset = -12
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BigGroundFiretrap', 'big_ground_firetrap.png')
-        SLib.loadIfNotInImageCache('BigGroundFiretrapU', 'big_ground_firetrap_ceiling.png')
+        actorlib.loadIfNotInImageCache('BigGroundFiretrap', 'big_ground_firetrap.png')
+        actorlib.loadIfNotInImageCache('BigGroundFiretrapU', 'big_ground_firetrap_ceiling.png')
 
     def dataChanged(self):
 
@@ -2300,7 +2302,7 @@ class SpriteImage_BigGroundFiretrap(SLib.SpriteImage_StaticMultiple):  # 76
         super().dataChanged()
 
 
-class SpriteImage_ShipKey(SLib.SpriteImage_Static):  # 77
+class ActorImage_ShipKey(actorlib.ActorImage_Static):  # 77
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -2311,10 +2313,10 @@ class SpriteImage_ShipKey(SLib.SpriteImage_Static):  # 77
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('ShipKey', 'ship_key.png')
+        actorlib.loadIfNotInImageCache('ShipKey', 'ship_key.png')
 
 
-class SpriteImage_CloudTrampoline(SLib.SpriteImage_StaticMultiple):  # 78
+class ActorImage_CloudTrampoline(actorlib.ActorImage_StaticMultiple):  # 78
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -2325,8 +2327,8 @@ class SpriteImage_CloudTrampoline(SLib.SpriteImage_StaticMultiple):  # 78
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('CloudTrBig', 'cloud_trampoline_big.png')
-        SLib.loadIfNotInImageCache('CloudTrSmall', 'cloud_trampoline_small.png')
+        actorlib.loadIfNotInImageCache('CloudTrBig', 'cloud_trampoline_big.png')
+        actorlib.loadIfNotInImageCache('CloudTrSmall', 'cloud_trampoline_small.png')
 
     def dataChanged(self):
 
@@ -2339,7 +2341,7 @@ class SpriteImage_CloudTrampoline(SLib.SpriteImage_StaticMultiple):  # 78
         super().dataChanged()
 
 
-class SpriteImage_FireBro(SLib.SpriteImage_Static):  # 80
+class ActorImage_FireBro(actorlib.ActorImage_Static):  # 80
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -2350,54 +2352,54 @@ class SpriteImage_FireBro(SLib.SpriteImage_Static):  # 80
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('FireBro', 'firebro.png')
+        actorlib.loadIfNotInImageCache('FireBro', 'firebro.png')
 
 
-class SpriteImage_OldStoneBlock_SpikesLeft(SpriteImage_OldStoneBlock):  # 81
+class ActorImage_OldStoneBlock_SpikesLeft(ActorImage_OldStoneBlock):  # 81
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.spikesL = True
 
 
-class SpriteImage_OldStoneBlock_SpikesRight(SpriteImage_OldStoneBlock):  # 82
+class ActorImage_OldStoneBlock_SpikesRight(ActorImage_OldStoneBlock):  # 82
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.spikesR = True
 
 
-class SpriteImage_OldStoneBlock_SpikesLeftRight(SpriteImage_OldStoneBlock):  # 83
+class ActorImage_OldStoneBlock_SpikesLeftRight(ActorImage_OldStoneBlock):  # 83
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.spikesL = True
         self.spikesR = True
 
 
-class SpriteImage_OldStoneBlock_SpikesTop(SpriteImage_OldStoneBlock):  # 84
+class ActorImage_OldStoneBlock_SpikesTop(ActorImage_OldStoneBlock):  # 84
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.spikesT = True
 
 
-class SpriteImage_OldStoneBlock_SpikesBottom(SpriteImage_OldStoneBlock):  # 85
+class ActorImage_OldStoneBlock_SpikesBottom(ActorImage_OldStoneBlock):  # 85
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.spikesB = True
 
 
-class SpriteImage_OldStoneBlock_SpikesTopBottom(SpriteImage_OldStoneBlock):  # 86
+class ActorImage_OldStoneBlock_SpikesTopBottom(ActorImage_OldStoneBlock):  # 86
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.spikesT = True
         self.spikesB = True
 
 
-class SpriteImage_TrampolineWall(SLib.SpriteImage_StaticMultiple):  # 87
+class ActorImage_TrampolineWall(actorlib.ActorImage_StaticMultiple):  # 87
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('UnusedPlatformDark', 'unused_platform_dark.png')
+        actorlib.loadIfNotInImageCache('UnusedPlatformDark', 'unused_platform_dark.png')
 
     def dataChanged(self):
         height = (self.parent.spritedata[5] & 15) + 1
@@ -2411,15 +2413,15 @@ class SpriteImage_TrampolineWall(SLib.SpriteImage_StaticMultiple):  # 87
         super().dataChanged()
 
 
-class SpriteImage_BulletBillLauncher(SLib.SpriteImage):  # 92
+class ActorImage_BulletBillLauncher(actorlib.ActorImage):  # 92
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BBLauncherT', 'bullet_launcher_top.png')
-        SLib.loadIfNotInImageCache('BBLauncherM', 'bullet_launcher_middle.png')
+        actorlib.loadIfNotInImageCache('BBLauncherT', 'bullet_launcher_top.png')
+        actorlib.loadIfNotInImageCache('BBLauncherM', 'bullet_launcher_middle.png')
 
     def dataChanged(self):
         height = (self.parent.spritedata[5] & 0xF0) >> 4
@@ -2432,7 +2434,7 @@ class SpriteImage_BulletBillLauncher(SLib.SpriteImage):  # 92
         painter.drawTiledPixmap(0, 48, 24, int(self.height * 1.5 - 48), ImageCache['BBLauncherM'])
 
 
-class SpriteImage_BanzaiBillLauncher(SLib.SpriteImage_Static):  # 93
+class ActorImage_BanzaiBillLauncher(actorlib.ActorImage_Static):  # 93
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -2443,10 +2445,10 @@ class SpriteImage_BanzaiBillLauncher(SLib.SpriteImage_Static):  # 93
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BanzaiLauncher', 'banzai_launcher.png')
+        actorlib.loadIfNotInImageCache('BanzaiLauncher', 'banzai_launcher.png')
 
 
-class SpriteImage_BoomerangBro(SLib.SpriteImage_Static):  # 94
+class ActorImage_BoomerangBro(actorlib.ActorImage_Static):  # 94
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -2457,10 +2459,10 @@ class SpriteImage_BoomerangBro(SLib.SpriteImage_Static):  # 94
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BoomerangBro', 'boomerangbro.png')
+        actorlib.loadIfNotInImageCache('BoomerangBro', 'boomerangbro.png')
 
 
-class SpriteImage_HammerBroNormal(SLib.SpriteImage_Static):  # 95
+class ActorImage_HammerBroNormal(actorlib.ActorImage_Static):  # 95
     def __init__(self, parent, scale=1.5):
         super().__init__(
             parent,
@@ -2471,17 +2473,17 @@ class SpriteImage_HammerBroNormal(SLib.SpriteImage_Static):  # 95
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('HammerBro', 'hammerbro.png')
+        actorlib.loadIfNotInImageCache('HammerBro', 'hammerbro.png')
 
 
-class SpriteImage_RotationControllerSwaying(SLib.SpriteImage):  # 96
+class ActorImage_RotationControllerSwaying(actorlib.ActorImage):  # 96
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.parent.setZValue(100000)
-        self.aux.append(SLib.AuxiliaryRotationAreaOutline(parent, 48))
+        self.aux.append(actorlib.AuxiliaryRotationAreaOutline(parent, 48))
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryRotationAreaOutline):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryRotationAreaOutline):
             return
 
         # get the swing arc: 4 == 90 degrees (45 left from the origin, 45 right)
@@ -2497,7 +2499,7 @@ class SpriteImage_RotationControllerSwaying(SLib.SpriteImage):  # 96
         self.aux[0].update()
 
 
-class SpriteImage_RotationControlledSolidBetaPlatform(SpriteImage_UnusedBlockPlatform):  # 97
+class ActorImage_RotationControlledSolidBetaPlatform(ActorImage_UnusedBlockPlatform):  # 97
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.isDark = True
@@ -2507,16 +2509,16 @@ class SpriteImage_RotationControlledSolidBetaPlatform(SpriteImage_UnusedBlockPla
         height = self.parent.spritedata[4] & 0xF
 
         if width == 0 or height == 0:
-            self.spritebox.shown = True
+            self.actorbox.shown = True
             self.drawPlatformImage = False
             del self.size
         else:
-            self.spritebox.shown = False
+            self.actorbox.shown = False
             self.drawPlatformImage = True
             self.size = (width * 16, height * 16)
 
 
-class SpriteImage_GiantSpikeBall(SLib.SpriteImage_Static):  # 98
+class ActorImage_GiantSpikeBall(actorlib.ActorImage_Static):  # 98
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -2527,27 +2529,27 @@ class SpriteImage_GiantSpikeBall(SLib.SpriteImage_Static):  # 98
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('GiantSpikeBall', 'giant_spike_ball.png')
+        actorlib.loadIfNotInImageCache('GiantSpikeBall', 'giant_spike_ball.png')
 
 
-class SpriteImage_PipeEnemyGenerator(SLib.SpriteImage):  # 99
+class ActorImage_PipeEnemyGenerator(actorlib.ActorImage):  # 99
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
     def dataChanged(self):
-        self.spritebox.size = (16, 16)
+        self.actorbox.size = (16, 16)
         direction = (self.parent.spritedata[5] & 0xF) & 3
         if direction in (0, 1):  # vertical pipe
-            self.spritebox.size = (32, 16)
+            self.actorbox.size = (32, 16)
         elif direction in (2, 3):  # horizontal pipe
-            self.spritebox.size = (16, 32)
+            self.actorbox.size = (16, 32)
 
         self.yOffset = 0
         if direction in (2, 3):
             self.yOffset = -16
 
 
-class SpriteImage_Swooper(SLib.SpriteImage_Static):  # 100
+class ActorImage_Swooper(actorlib.ActorImage_Static):  # 100
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -2558,10 +2560,10 @@ class SpriteImage_Swooper(SLib.SpriteImage_Static):  # 100
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Swooper', 'swooper.png')
+        actorlib.loadIfNotInImageCache('Swooper', 'swooper.png')
 
 
-class SpriteImage_Bobomb(SLib.SpriteImage_Static):  # 101
+class ActorImage_Bobomb(actorlib.ActorImage_Static):  # 101
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -2572,10 +2574,10 @@ class SpriteImage_Bobomb(SLib.SpriteImage_Static):  # 101
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Bobomb', 'bobomb.png')
+        actorlib.loadIfNotInImageCache('Bobomb', 'bobomb.png')
 
 
-class SpriteImage_Broozer(SLib.SpriteImage_Static):  # 102
+class ActorImage_Broozer(actorlib.ActorImage_Static):  # 102
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -2586,17 +2588,17 @@ class SpriteImage_Broozer(SLib.SpriteImage_Static):  # 102
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Broozer', 'broozer.png')
+        actorlib.loadIfNotInImageCache('Broozer', 'broozer.png')
 
 
-class SpriteImage_PlatformGenerator(SpriteImage_WoodenPlatform):  # 103
+class ActorImage_PlatformGenerator(ActorImage_WoodenPlatform):  # 103
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.yOffset = 16
-        self.aux.append(SLib.AuxiliaryImage(parent, 24, 24))
+        self.aux.append(actorlib.AuxiliaryImage(parent, 24, 24))
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryImage):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
         self.width = self.parent.spritedata[5] & 0xF0
@@ -2633,19 +2635,19 @@ class SpriteImage_PlatformGenerator(SpriteImage_WoodenPlatform):  # 103
         self.aux[0].image = ImageCache[f'DirectionArrow{dirStr}']
         self.aux[0].setPos(int(((self.width - 16) / 2) * 1.5), 0)
 
-        self.aux[0].setIsBehindSprite(False)
+        self.aux[0].setIsBehindActor(False)
         self.aux[0].alpha = 0.25
         self.aux[0].hover = False
 
 
-class SpriteImage_AmpNormal(SpriteImage_Amp):  # 104
+class ActorImage_AmpNormal(ActorImage_Amp):  # 104
     pass
 
 
-class SpriteImage_Pokey(SLib.SpriteImage):  # 105
+class ActorImage_Pokey(actorlib.ActorImage):  # 105
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
         self.dimensions = (-4, 0, 24, 32)
 
@@ -2653,9 +2655,9 @@ class SpriteImage_Pokey(SLib.SpriteImage):  # 105
     def loadImages():
         if 'PokeyTop' in ImageCache:
             return
-        ImageCache['PokeyTop'] = SLib.GetPixmap('pokey_top.png')
-        ImageCache['PokeyMiddle'] = SLib.GetPixmap('pokey_middle.png')
-        ImageCache['PokeyBottom'] = SLib.GetPixmap('pokey_bottom.png')
+        ImageCache['PokeyTop'] = actorlib.GetPixmap('pokey_top.png')
+        ImageCache['PokeyMiddle'] = actorlib.GetPixmap('pokey_middle.png')
+        ImageCache['PokeyBottom'] = actorlib.GetPixmap('pokey_bottom.png')
 
     def dataChanged(self):
         # get the height
@@ -2669,7 +2671,7 @@ class SpriteImage_Pokey(SLib.SpriteImage):  # 105
         painter.drawPixmap(0, int(self.height * 1.5 - 24), ImageCache['PokeyBottom'])
 
 
-class SpriteImage_LinePlatform(SpriteImage_WoodenPlatform):  # 106
+class ActorImage_LinePlatform(ActorImage_WoodenPlatform):  # 106
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.yOffset = 8
@@ -2699,7 +2701,7 @@ class SpriteImage_LinePlatform(SpriteImage_WoodenPlatform):  # 106
         self.color = color
 
 
-class SpriteImage_RotationControlledPassBetaPlatform(SpriteImage_UnusedBlockPlatform):  # 107
+class ActorImage_RotationControlledPassBetaPlatform(ActorImage_UnusedBlockPlatform):  # 107
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.isDark = True
@@ -2713,11 +2715,11 @@ class SpriteImage_RotationControlledPassBetaPlatform(SpriteImage_UnusedBlockPlat
         self.height = height * 16
 
 
-class SpriteImage_AmpLine(SpriteImage_Amp):  # 108
+class ActorImage_AmpLine(ActorImage_Amp):  # 108
     pass
 
 
-class SpriteImage_ChainBall(SLib.SpriteImage_StaticMultiple):  # 109
+class ActorImage_ChainBall(actorlib.ActorImage_StaticMultiple):  # 109
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
@@ -2725,10 +2727,10 @@ class SpriteImage_ChainBall(SLib.SpriteImage_StaticMultiple):  # 109
     def loadImages():
         if 'ChainBallU' in ImageCache:
             return
-        ImageCache['ChainBallU'] = SLib.GetPixmap('chainball_up.png')
-        ImageCache['ChainBallR'] = SLib.GetPixmap('chainball_right.png')
-        ImageCache['ChainBallD'] = SLib.GetPixmap('chainball_down.png')
-        ImageCache['ChainBallL'] = SLib.GetPixmap('chainball_left.png')
+        ImageCache['ChainBallU'] = actorlib.GetPixmap('chainball_up.png')
+        ImageCache['ChainBallR'] = actorlib.GetPixmap('chainball_right.png')
+        ImageCache['ChainBallD'] = actorlib.GetPixmap('chainball_down.png')
+        ImageCache['ChainBallL'] = actorlib.GetPixmap('chainball_left.png')
 
     def dataChanged(self):
         direction = self.parent.spritedata[5] & 3
@@ -2756,12 +2758,12 @@ class SpriteImage_ChainBall(SLib.SpriteImage_StaticMultiple):  # 109
         super().dataChanged()
 
 
-class SpriteImage_Sunlight(SLib.SpriteImage):  # 110
+class ActorImage_Sunlight(actorlib.ActorImage):  # 110
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
         i = ImageCache['Sunlight']
-        sunlightAux = SLib.AuxiliaryImage_FollowsRect(parent, i.width(), i.height())
+        sunlightAux = actorlib.AuxiliaryImage_FollowsRect(parent, i.width(), i.height())
         sunlightAux.realimage = i
         sunlightAux.alignment = Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight
         sunlightAux.hover = False
@@ -2796,26 +2798,29 @@ class SpriteImage_Sunlight(SLib.SpriteImage):  # 110
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Sunlight', 'sunlight.png')
+        actorlib.loadIfNotInImageCache('Sunlight', 'sunlight.png')
 
     def paint(self, painter):
         self.moveSunlight()
-        SLib.SpriteImage.paint(self, painter)
+        actorlib.ActorImage.paint(self, painter)
 
     def moveSunlight(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryImage_FollowsRect):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryImage_FollowsRect):
             return
 
         try:
-            SLib.loadIfNotInImageCache('Sunlight', 'sunlight.png')
+            actorlib.loadIfNotInImageCache('Sunlight', 'sunlight.png')
 
-            if not SLib.RealViewEnabled:
+            if not actorlib.RealViewEnabled:
                 self.aux[0].realimage = None
                 return
 
             zone = self.parent.nearestZone(True)
             if zone is None:
                 self.aux[0].realimage = None
+                return
+
+            if not isinstance(zone, ZoneItem):
                 return
 
             zoneRect = QtCore.QRectF(zone.objx * 1.5, zone.objy * 1.5, zone.width * 1.5, zone.height * 1.5)
@@ -2841,7 +2846,7 @@ class SpriteImage_Sunlight(SLib.SpriteImage):  # 110
             pass
 
 
-class SpriteImage_Blooper(SLib.SpriteImage_Static):  # 111
+class ActorImage_Blooper(actorlib.ActorImage_Static):  # 111
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -2852,10 +2857,10 @@ class SpriteImage_Blooper(SLib.SpriteImage_Static):  # 111
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Blooper', 'blooper.png')
+        actorlib.loadIfNotInImageCache('Blooper', 'blooper.png')
 
 
-class SpriteImage_BlooperBabies(SLib.SpriteImage_Static):  # 112
+class ActorImage_BlooperBabies(actorlib.ActorImage_Static):  # 112
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -2866,17 +2871,17 @@ class SpriteImage_BlooperBabies(SLib.SpriteImage_Static):  # 112
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BlooperBabies', 'blooper_babies.png')
+        actorlib.loadIfNotInImageCache('BlooperBabies', 'blooper_babies.png')
 
 
-class SpriteImage_Flagpole(SLib.SpriteImage):  # 113
+class ActorImage_Flagpole(actorlib.ActorImage):  # 113
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
         self.image = ImageCache['Flagpole']
 
-        self.aux.append(SLib.AuxiliaryImage(parent, 144, 149))
+        self.aux.append(actorlib.AuxiliaryImage(parent, 144, 149))
         self.offset = (-34, -144)
         self.size = (73 / 1.5, 160)
 
@@ -2884,15 +2889,15 @@ class SpriteImage_Flagpole(SLib.SpriteImage):  # 113
     def loadImages():
         if 'Flagpole' in ImageCache:
             return
-        ImageCache['Flagpole'] = SLib.GetPixmap('flagpole.png')
-        ImageCache['FlagpoleSecret'] = SLib.GetPixmap('flagpole_secret.png')
-        ImageCache['Castle'] = SLib.GetPixmap('castle.png')
-        ImageCache['CastleSecret'] = SLib.GetPixmap('castle_secret.png')
-        ImageCache['SnowCastle'] = SLib.GetPixmap('snow_castle.png')
-        ImageCache['SnowCastleSecret'] = SLib.GetPixmap('snow_castle_secret.png')
+        ImageCache['Flagpole'] = actorlib.GetPixmap('flagpole.png')
+        ImageCache['FlagpoleSecret'] = actorlib.GetPixmap('flagpole_secret.png')
+        ImageCache['Castle'] = actorlib.GetPixmap('castle.png')
+        ImageCache['CastleSecret'] = actorlib.GetPixmap('castle_secret.png')
+        ImageCache['SnowCastle'] = actorlib.GetPixmap('snow_castle.png')
+        ImageCache['SnowCastleSecret'] = actorlib.GetPixmap('snow_castle_secret.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryImage):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
         # get the info (mimic the way the game does it)
@@ -2932,7 +2937,7 @@ class SpriteImage_Flagpole(SLib.SpriteImage):  # 113
         painter.drawPixmap(0, 0, self.image)
 
 
-class SpriteImage_FlameCannon(SLib.SpriteImage_StaticMultiple):  # 114
+class ActorImage_FlameCannon(actorlib.ActorImage_StaticMultiple):  # 114
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
@@ -2947,7 +2952,7 @@ class SpriteImage_FlameCannon(SLib.SpriteImage_StaticMultiple):  # 114
         transform90.rotate(90)
         transform270.rotate(270)
 
-        image = SLib.GetImage('continuous_flame_cannon.png')
+        image = actorlib.GetImage('continuous_flame_cannon.png')
         if image is None:
             return
 
@@ -2976,25 +2981,25 @@ class SpriteImage_FlameCannon(SLib.SpriteImage_StaticMultiple):  # 114
         super().dataChanged()
 
 
-class SpriteImage_Cheep(SLib.SpriteImage):  # 115
+class ActorImage_Cheep(actorlib.ActorImage):  # 115
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
-        self.aux.append(SLib.AuxiliaryTrackObject(self.parent, 24, 24, SLib.AuxiliaryTrackObject.Horizontal))
+        self.aux.append(actorlib.AuxiliaryTrackObject(self.parent, 24, 24, actorlib.AuxiliaryTrackObject.Horizontal))
 
     @staticmethod
     def loadImages():
         if 'CheepGreen' in ImageCache:
             return
-        ImageCache['CheepRedLeft'] = SLib.GetPixmap('cheep_red.png')
-        ImageCache['CheepRedRight'] = QtGui.QPixmap.fromImage(SLib.GetImage('cheep_red.png').mirrored(True, False))
-        ImageCache['CheepRedAtYou'] = SLib.GetPixmap('cheep_red_atyou.png')
-        ImageCache['CheepGreen'] = SLib.GetPixmap('cheep_green.png')
-        ImageCache['CheepYellow'] = SLib.GetPixmap('cheep_yellow.png')
+        ImageCache['CheepRedLeft'] = actorlib.GetPixmap('cheep_red.png')
+        ImageCache['CheepRedRight'] = QtGui.QPixmap.fromImage(actorlib.GetImage('cheep_red.png').mirrored(True, False))
+        ImageCache['CheepRedAtYou'] = actorlib.GetPixmap('cheep_red_atyou.png')
+        ImageCache['CheepGreen'] = actorlib.GetPixmap('cheep_green.png')
+        ImageCache['CheepYellow'] = actorlib.GetPixmap('cheep_yellow.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
         type = self.parent.spritedata[5] & 0xF
@@ -3022,37 +3027,37 @@ class SpriteImage_Cheep(SLib.SpriteImage):  # 115
         painter.drawPixmap(0, 0, self.image)
 
 
-class SpriteImage_CoinCheep(SLib.SpriteImage):  # 116
+class ActorImage_CoinCheep(actorlib.ActorImage):  # 116
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
     @staticmethod
     def loadImages():
         if 'CheepRedLeft' in ImageCache:
             return
-        ImageCache['CheepRedLeft'] = SLib.GetPixmap('cheep_red.png')
-        ImageCache['CheepRedRight'] = QtGui.QPixmap.fromImage(SLib.GetImage('cheep_red.png').mirrored(True, False))
-        ImageCache['CheepRedAtYou'] = SLib.GetPixmap('cheep_red_atyou.png')
-        ImageCache['CheepGreen'] = SLib.GetPixmap('cheep_green.png')
-        ImageCache['CheepYellow'] = SLib.GetPixmap('cheep_yellow.png')
+        ImageCache['CheepRedLeft'] = actorlib.GetPixmap('cheep_red.png')
+        ImageCache['CheepRedRight'] = QtGui.QPixmap.fromImage(actorlib.GetImage('cheep_red.png').mirrored(True, False))
+        ImageCache['CheepRedAtYou'] = actorlib.GetPixmap('cheep_red_atyou.png')
+        ImageCache['CheepGreen'] = actorlib.GetPixmap('cheep_green.png')
+        ImageCache['CheepYellow'] = actorlib.GetPixmap('cheep_yellow.png')
 
     def dataChanged(self):
 
         waitFlag = self.parent.spritedata[5] & 1
         if waitFlag:
-            self.spritebox.shown = False
+            self.actorbox.shown = False
             self.image = ImageCache['CheepRedAtYou']
         else:
             type = self.parent.spritedata[2] >> 4
             if type & 3 == 3:
-                self.spritebox.shown = True
+                self.actorbox.shown = True
                 self.image = None
             elif type < 7:
-                self.spritebox.shown = False
+                self.actorbox.shown = False
                 self.image = self.image = ImageCache['CheepRedRight']
             else:
-                self.spritebox.shown = False
+                self.actorbox.shown = False
                 self.image = self.image = ImageCache['CheepRedLeft']
 
         if self.image is not None:
@@ -3064,7 +3069,7 @@ class SpriteImage_CoinCheep(SLib.SpriteImage):  # 116
         painter.drawPixmap(0, 0, self.image)
 
 
-class SpriteImage_PulseFlameCannon(SLib.SpriteImage_StaticMultiple):  # 117
+class ActorImage_PulseFlameCannon(actorlib.ActorImage_StaticMultiple):  # 117
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.height = 112
@@ -3078,7 +3083,7 @@ class SpriteImage_PulseFlameCannon(SLib.SpriteImage_StaticMultiple):  # 117
         transform90.rotate(90)
         transform270.rotate(270)
 
-        onImage = SLib.GetImage('synchro_flame_jet.png')
+        onImage = actorlib.GetImage('synchro_flame_jet.png')
         if onImage is None:
             return
 
@@ -3109,7 +3114,7 @@ class SpriteImage_PulseFlameCannon(SLib.SpriteImage_StaticMultiple):  # 117
         super().dataChanged()
 
 
-class SpriteImage_DryBones(SLib.SpriteImage_Static):  # 118
+class ActorImage_DryBones(actorlib.ActorImage_Static):  # 118
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -3120,10 +3125,10 @@ class SpriteImage_DryBones(SLib.SpriteImage_Static):  # 118
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('DryBones', 'drybones.png')
+        actorlib.loadIfNotInImageCache('DryBones', 'drybones.png')
 
 
-class SpriteImage_GiantDryBones(SLib.SpriteImage_Static):  # 119
+class ActorImage_GiantDryBones(actorlib.ActorImage_Static):  # 119
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -3134,10 +3139,10 @@ class SpriteImage_GiantDryBones(SLib.SpriteImage_Static):  # 119
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('GiantDryBones', 'giant_drybones.png')
+        actorlib.loadIfNotInImageCache('GiantDryBones', 'giant_drybones.png')
 
 
-class SpriteImage_SledgeBro(SLib.SpriteImage_Static):  # 120
+class ActorImage_SledgeBro(actorlib.ActorImage_Static):  # 120
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -3148,11 +3153,11 @@ class SpriteImage_SledgeBro(SLib.SpriteImage_Static):  # 120
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('SledgeBro', 'sledgebro.png')
+        actorlib.loadIfNotInImageCache('SledgeBro', 'sledgebro.png')
 
 
 # TODO: Properly implement 'down & right' track
-class SpriteImage_OneWayPlatform(SpriteImage_WoodenPlatform):  # 122
+class ActorImage_OneWayPlatform(ActorImage_WoodenPlatform):  # 122
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         width = self.parent.spritedata[5] & 0xF
@@ -3160,10 +3165,10 @@ class SpriteImage_OneWayPlatform(SpriteImage_WoodenPlatform):  # 122
             width = 1
         self.width = width * 32 + 32
 
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, self.width, 16, SLib.AuxiliaryTrackObject.Horizontal))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, self.width, 16, actorlib.AuxiliaryTrackObject.Horizontal))
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
         width = self.parent.spritedata[5] & 0xF
@@ -3209,19 +3214,19 @@ class SpriteImage_OneWayPlatform(SpriteImage_WoodenPlatform):  # 122
             self.aux[0].setSize(0, 0)
 
 
-class SpriteImage_UnusedCastlePlatform(SLib.SpriteImage):  # 123
+class ActorImage_UnusedCastlePlatform(actorlib.ActorImage):  # 123
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.parent.setZValue(24999)
 
-        self.aux.append(SLib.AuxiliaryImage(parent, 384, 410))
+        self.aux.append(actorlib.AuxiliaryImage(parent, 384, 410))
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('UnusedCastlePlatform', 'unused_castle_platform.png')
+        actorlib.loadIfNotInImageCache('UnusedCastlePlatform', 'unused_castle_platform.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryImage):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
         rawSize = self.parent.spritedata[4] >> 4
@@ -3238,15 +3243,15 @@ class SpriteImage_UnusedCastlePlatform(SLib.SpriteImage):  # 123
         self.aux[0].setPos(-(self.aux[0].image.width() / 2), (-topRadiusInBlocks * 16) * 1.5)
 
 
-class SpriteImage_FenceKoopaHorz(SLib.SpriteImage_StaticMultiple):  # 125
+class ActorImage_FenceKoopaHorz(actorlib.ActorImage_StaticMultiple):  # 125
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.offset = (-3, -12)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('FenceKoopaHG', 'fencekoopa_horz.png')
-        SLib.loadIfNotInImageCache('FenceKoopaHR', 'fencekoopa_horz_red.png')
+        actorlib.loadIfNotInImageCache('FenceKoopaHG', 'fencekoopa_horz.png')
+        actorlib.loadIfNotInImageCache('FenceKoopaHR', 'fencekoopa_horz_red.png')
 
     def dataChanged(self):
         color = self.parent.spritedata[5] & 1
@@ -3258,7 +3263,7 @@ class SpriteImage_FenceKoopaHorz(SLib.SpriteImage_StaticMultiple):  # 125
         super().dataChanged()
 
 
-class SpriteImage_FenceKoopaVert(SLib.SpriteImage_StaticMultiple):  # 126
+class ActorImage_FenceKoopaVert(actorlib.ActorImage_StaticMultiple):  # 126
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
@@ -3266,8 +3271,8 @@ class SpriteImage_FenceKoopaVert(SLib.SpriteImage_StaticMultiple):  # 126
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('FenceKoopaVG', 'fencekoopa_vert.png')
-        SLib.loadIfNotInImageCache('FenceKoopaVR', 'fencekoopa_vert_red.png')
+        actorlib.loadIfNotInImageCache('FenceKoopaVG', 'fencekoopa_vert.png')
+        actorlib.loadIfNotInImageCache('FenceKoopaVR', 'fencekoopa_vert_red.png')
 
     def dataChanged(self):
 
@@ -3280,7 +3285,7 @@ class SpriteImage_FenceKoopaVert(SLib.SpriteImage_StaticMultiple):  # 126
         super().dataChanged()
 
 
-class SpriteImage_FlipFence(SLib.SpriteImage_Static):  # 127
+class ActorImage_FlipFence(actorlib.ActorImage_Static):  # 127
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -3292,10 +3297,10 @@ class SpriteImage_FlipFence(SLib.SpriteImage_Static):  # 127
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('FlipFence', 'flipfence.png')
+        actorlib.loadIfNotInImageCache('FlipFence', 'flipfence.png')
 
 
-class SpriteImage_FlipFenceLong(SLib.SpriteImage_Static):  # 128
+class ActorImage_FlipFenceLong(actorlib.ActorImage_Static):  # 128
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -3307,10 +3312,10 @@ class SpriteImage_FlipFenceLong(SLib.SpriteImage_Static):  # 128
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('FlipFenceLong', 'flipfence_long.png')
+        actorlib.loadIfNotInImageCache('FlipFenceLong', 'flipfence_long.png')
 
 
-class SpriteImage_4Spinner(SLib.SpriteImage_Static):  # 129
+class ActorImage_4Spinner(actorlib.ActorImage_Static):  # 129
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -3321,14 +3326,14 @@ class SpriteImage_4Spinner(SLib.SpriteImage_Static):  # 129
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('4Spinner', '4spinner.png')
+        actorlib.loadIfNotInImageCache('4Spinner', '4spinner.png')
 
     def dataChanged(self):
         super().dataChanged()
         self.alpha = 0.6 if (self.parent.spritedata[2] >> 4) & 1 else 1
 
 
-class SpriteImage_Wiggler(SLib.SpriteImage_Static):  # 130
+class ActorImage_Wiggler(actorlib.ActorImage_Static):  # 130
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -3339,15 +3344,15 @@ class SpriteImage_Wiggler(SLib.SpriteImage_Static):  # 130
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Wiggler', 'wiggler.png')
+        actorlib.loadIfNotInImageCache('Wiggler', 'wiggler.png')
 
 
-class SpriteImage_Boo(SLib.SpriteImage):  # 131
+class ActorImage_Boo(actorlib.ActorImage):  # 131
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
-        booAuxImage = SLib.AuxiliaryImage(parent, 50, 51)
+        booAuxImage = actorlib.AuxiliaryImage(parent, 50, 51)
         booAuxImage.image = ImageCache['Boo1']
         booAuxImage.setPos(-6, -6)
 
@@ -3357,21 +3362,21 @@ class SpriteImage_Boo(SLib.SpriteImage):  # 131
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Boo1', 'boo1.png')
+        actorlib.loadIfNotInImageCache('Boo1', 'boo1.png')
 
 
-class SpriteImage_UnusedBlockPlatform1(SpriteImage_UnusedBlockPlatform):  # 132
+class ActorImage_UnusedBlockPlatform1(ActorImage_UnusedBlockPlatform):  # 132
     def dataChanged(self):
         self.width = ((self.parent.spritedata[5] & 0xF) + 1) * 16
         self.height = ((self.parent.spritedata[5] >> 4) + 1) * 16
 
 
-class SpriteImage_StalagmitePlatform(SLib.SpriteImage):  # 133
+class ActorImage_StalagmitePlatform(actorlib.ActorImage):  # 133
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
-        stalagmiteAuxImage = SLib.AuxiliaryImage(parent, 48, 156)
+        stalagmiteAuxImage = actorlib.AuxiliaryImage(parent, 48, 156)
         stalagmiteAuxImage.image = ImageCache['StalagmitePlatformBottom']
         stalagmiteAuxImage.setPos(24, 60)
 
@@ -3382,8 +3387,8 @@ class SpriteImage_StalagmitePlatform(SLib.SpriteImage):  # 133
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('StalagmitePlatformTop', 'stalagmite_platform_top.png')
-        SLib.loadIfNotInImageCache('StalagmitePlatformBottom', 'stalagmite_platform_bottom.png')
+        actorlib.loadIfNotInImageCache('StalagmitePlatformTop', 'stalagmite_platform_top.png')
+        actorlib.loadIfNotInImageCache('StalagmitePlatformBottom', 'stalagmite_platform_bottom.png')
 
     def paint(self, painter):
         if self.image is None:
@@ -3392,7 +3397,7 @@ class SpriteImage_StalagmitePlatform(SLib.SpriteImage):  # 133
         painter.drawPixmap(0, 0, self.image)
 
 
-class SpriteImage_Crow(SLib.SpriteImage_Static):  # 134
+class ActorImage_Crow(actorlib.ActorImage_Static):  # 134
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -3403,14 +3408,14 @@ class SpriteImage_Crow(SLib.SpriteImage_Static):  # 134
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Crow', 'crow.png')
+        actorlib.loadIfNotInImageCache('Crow', 'crow.png')
 
 
-class SpriteImage_HangingPlatform(SLib.SpriteImage_Static):  # 135
+class ActorImage_HangingPlatform(actorlib.ActorImage_Static):  # 135
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
-        hangingPlatformAuxImage = SLib.AuxiliaryImage(parent, 11, 378)
+        hangingPlatformAuxImage = actorlib.AuxiliaryImage(parent, 11, 378)
         hangingPlatformAuxImage.image = ImageCache['HangingPlatformTop']
         hangingPlatformAuxImage.setPos(138, -378)
         self.aux.append(hangingPlatformAuxImage)
@@ -3420,22 +3425,22 @@ class SpriteImage_HangingPlatform(SLib.SpriteImage_Static):  # 135
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('HangingPlatformTop', 'hanging_platform_top.png')
-        SLib.loadIfNotInImageCache('HangingPlatformBottom', 'hanging_platform_bottom.png')
+        actorlib.loadIfNotInImageCache('HangingPlatformTop', 'hanging_platform_top.png')
+        actorlib.loadIfNotInImageCache('HangingPlatformBottom', 'hanging_platform_bottom.png')
 
 
-class SpriteImage_RotBulletLauncher(SLib.SpriteImage):  # 136
+class ActorImage_RotBulletLauncher(actorlib.ActorImage):  # 136
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
         self.dimensions = (-8 / 1.5, 0, 40 / 1.5, 16)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('RotLauncherCannonL', 'bullet_cannon_rot_L.png')
-        SLib.loadIfNotInImageCache('RotLauncherCannonR', 'bullet_cannon_rot_R.png')
-        SLib.loadIfNotInImageCache('RotLauncherPivot', 'bullet_cannon_rot_P.png')
+        actorlib.loadIfNotInImageCache('RotLauncherCannonL', 'bullet_cannon_rot_L.png')
+        actorlib.loadIfNotInImageCache('RotLauncherCannonR', 'bullet_cannon_rot_R.png')
+        actorlib.loadIfNotInImageCache('RotLauncherPivot', 'bullet_cannon_rot_P.png')
 
     def dataChanged(self):
         pieces = self.parent.spritedata[3] & 15
@@ -3471,16 +3476,16 @@ class SpriteImage_RotBulletLauncher(SLib.SpriteImage):  # 136
                 painter.drawPixmap(xo, int(ysize - (piece + 1) * 24 - 1), image)
 
 
-class SpriteImage_SkewerDown(SpriteImage_Skewer):  # 137
+class ActorImage_SkewerDown(ActorImage_Skewer):  # 137
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.dir = 'down'
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 64, SLib.AuxiliaryTrackObject.Vertical))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, 16, 64, actorlib.AuxiliaryTrackObject.Vertical))
 
         self.dimensions = (0, 16 - self.VertSpikeLength, 66, self.VertSpikeLength)
 
 
-class SpriteImage_Water(SpriteImage_LiquidOrFog):  # 138
+class ActorImage_Water(ActorImage_LiquidOrFog):  # 138
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -3495,11 +3500,11 @@ class SpriteImage_Water(SpriteImage_LiquidOrFog):  # 138
     def loadImages():
         if 'LiquidWater' in ImageCache:
             return
-        ImageCache['LiquidWater'] = SLib.GetPixmap('liquid_water.png')
-        ImageCache['LiquidWaterCrest'] = SLib.GetPixmap('liquid_water_crest.png')
-        ImageCache['LiquidWaterRise'] = SLib.GetPixmap('liquid_water_rise.png')
-        ImageCache['LiquidWaterRiseCrest'] = SLib.GetPixmap('liquid_water_rise_crest.png')
-        ImageCache['LiquidWaterFull'] = SLib.GetPixmap('liquid_water_full.png')
+        ImageCache['LiquidWater'] = actorlib.GetPixmap('liquid_water.png')
+        ImageCache['LiquidWaterCrest'] = actorlib.GetPixmap('liquid_water_crest.png')
+        ImageCache['LiquidWaterRise'] = actorlib.GetPixmap('liquid_water_rise.png')
+        ImageCache['LiquidWaterRiseCrest'] = actorlib.GetPixmap('liquid_water_rise_crest.png')
+        ImageCache['LiquidWaterFull'] = actorlib.GetPixmap('liquid_water_full.png')
 
     def dataChanged(self):
         self.locId = self.parent.spritedata[5] & 0x7F
@@ -3522,7 +3527,7 @@ class SpriteImage_Water(SpriteImage_LiquidOrFog):  # 138
         super().positionChanged()
 
 
-class SpriteImage_Lava(SpriteImage_LiquidOrFog):  # 139
+class ActorImage_Lava(ActorImage_LiquidOrFog):  # 139
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -3537,10 +3542,10 @@ class SpriteImage_Lava(SpriteImage_LiquidOrFog):  # 139
     def loadImages():
         if 'LiquidLava' in ImageCache:
             return
-        ImageCache['LiquidLava'] = SLib.GetPixmap('liquid_lava.png')
-        ImageCache['LiquidLavaCrest'] = SLib.GetPixmap('liquid_lava_crest.png')
-        ImageCache['LiquidLavaRise'] = SLib.GetPixmap('liquid_lava_rise.png')
-        ImageCache['LiquidLavaRiseCrest'] = SLib.GetPixmap('liquid_lava_rise_crest.png')
+        ImageCache['LiquidLava'] = actorlib.GetPixmap('liquid_lava.png')
+        ImageCache['LiquidLavaCrest'] = actorlib.GetPixmap('liquid_lava_crest.png')
+        ImageCache['LiquidLavaRise'] = actorlib.GetPixmap('liquid_lava_rise.png')
+        ImageCache['LiquidLavaRiseCrest'] = actorlib.GetPixmap('liquid_lava_rise_crest.png')
 
     def dataChanged(self):
         self.locId = self.parent.spritedata[5] & 0x7F
@@ -3558,34 +3563,34 @@ class SpriteImage_Lava(SpriteImage_LiquidOrFog):  # 139
         super().positionChanged()
 
 
-class SpriteImage_SkewerUp(SpriteImage_Skewer):  # 140
+class ActorImage_SkewerUp(ActorImage_Skewer):  # 140
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.dir = 'up'
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 64, SLib.AuxiliaryTrackObject.Vertical))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, 16, 64, actorlib.AuxiliaryTrackObject.Vertical))
 
         self.dimensions = (0, 0, 66, self.VertSpikeLength)
 
 
-class SpriteImage_SkewerRight(SpriteImage_Skewer):  # 141
+class ActorImage_SkewerRight(ActorImage_Skewer):  # 141
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.dir = 'right'
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 64, 16, SLib.AuxiliaryTrackObject.Horizontal))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, 64, 16, actorlib.AuxiliaryTrackObject.Horizontal))
 
         self.dimensions = (16 - self.HorzSpikeLength, 0, self.HorzSpikeLength, 66)
 
 
-class SpriteImage_SkewerLeft(SpriteImage_Skewer):  # 142
+class ActorImage_SkewerLeft(ActorImage_Skewer):  # 142
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.dir = 'left'
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 64, 16, SLib.AuxiliaryTrackObject.Horizontal))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, 64, 16, actorlib.AuxiliaryTrackObject.Horizontal))
 
         self.dimensions = (0, 0, self.HorzSpikeLength, 66)
 
 
-class SpriteImage_Arrow(SLib.SpriteImage_StaticMultiple):  # 143
+class ActorImage_Arrow(actorlib.ActorImage_StaticMultiple):  # 143
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
@@ -3594,7 +3599,7 @@ class SpriteImage_Arrow(SLib.SpriteImage_StaticMultiple):  # 143
         if 'Arrow0' in ImageCache:
             return
         for i in range(8):
-            ImageCache[f'Arrow{i}'] = SLib.GetPixmap(f'arrow_{i}.png')
+            ImageCache[f'Arrow{i}'] = actorlib.GetPixmap(f'arrow_{i}.png')
 
     def dataChanged(self):
         ArrowOffsets = [(4, 1), (7, 7), (1, 4), (7, -2), (4, 0), (-2, -2), (0, 4), (-2, 7)]
@@ -3610,7 +3615,7 @@ class SpriteImage_Arrow(SLib.SpriteImage_StaticMultiple):  # 143
         super().dataChanged()
 
 
-class SpriteImage_RedCoin(SLib.SpriteImage_Static):  # 144
+class ActorImage_RedCoin(actorlib.ActorImage_Static):  # 144
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -3619,7 +3624,7 @@ class SpriteImage_RedCoin(SLib.SpriteImage_Static):  # 144
         )
 
 
-class SpriteImage_FloatingBarrel(SLib.SpriteImage_Static):  # 145
+class ActorImage_FloatingBarrel(actorlib.ActorImage_Static):  # 145
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -3631,26 +3636,26 @@ class SpriteImage_FloatingBarrel(SLib.SpriteImage_Static):  # 145
         self.width = (img.width() / self.scale) + 1
         self.height = (img.height() / self.scale) + 2
 
-        floatingBarrelAuxImage = SLib.AuxiliaryImage(parent, img.width(), img.height())
+        floatingBarrelAuxImage = actorlib.AuxiliaryImage(parent, img.width(), img.height())
         floatingBarrelAuxImage.image = img
         self.aux.append(floatingBarrelAuxImage)
 
         path = QtGui.QPainterPath()
         path.lineTo(QtCore.QPointF(self.width * 1.5, 0))
 
-        self.aux.append(SLib.AuxiliaryPainterPath(parent, path, img.width(),
-            SLib.OutlinePen.width() if SLib.OutlinePen else 1, 0, 36))
+        self.aux.append(actorlib.AuxiliaryPainterPath(parent, path, img.width(),
+            actorlib.OutlinePen.width() if actorlib.OutlinePen else 1, 0, 36))
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('FloatingBarrel', 'barrel_floating.png')
+        actorlib.loadIfNotInImageCache('FloatingBarrel', 'barrel_floating.png')
 
     def dataChanged(self):
-        # Don't let SLib.SpriteImage_Static reset size
-        SLib.SpriteImage.dataChanged(self)
+        # Don't let actorlib.ActorImage_Static reset size
+        actorlib.ActorImage.dataChanged(self)
 
 
-class SpriteImage_ChainChomp(SLib.SpriteImage_Static):  # 146
+class ActorImage_ChainChomp(actorlib.ActorImage_Static):  # 146
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -3661,16 +3666,16 @@ class SpriteImage_ChainChomp(SLib.SpriteImage_Static):  # 146
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('ChainChomp', 'chain_chomp.png')
+        actorlib.loadIfNotInImageCache('ChainChomp', 'chain_chomp.png')
 
 
-class SpriteImage_Coin(SLib.SpriteImage_StaticMultiple):  # 147
+class ActorImage_Coin(actorlib.ActorImage_StaticMultiple):  # 147
     @staticmethod
     def loadImages():
         if 'CoinF' in ImageCache:
             return
 
-        iceblock = SLib.GetPixmap('iceblock00.png')
+        iceblock = actorlib.GetPixmap('iceblock00.png')
         if iceblock is None:
             return
 
@@ -3684,7 +3689,7 @@ class SpriteImage_Coin(SLib.SpriteImage_StaticMultiple):  # 147
         del paint
         ImageCache['CoinF'] = pix
 
-        ImageCache['CoinBubble'] = SLib.GetPixmap('coin_bubble.png')
+        ImageCache['CoinBubble'] = actorlib.GetPixmap('coin_bubble.png')
 
     def dataChanged(self):
         type = self.parent.spritedata[5] & 0xF
@@ -3705,7 +3710,7 @@ class SpriteImage_Coin(SLib.SpriteImage_StaticMultiple):  # 147
         super().dataChanged()
 
 
-class SpriteImage_Spring(SLib.SpriteImage_Static):  # 148
+class ActorImage_Spring(actorlib.ActorImage_Static):  # 148
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -3715,7 +3720,7 @@ class SpriteImage_Spring(SLib.SpriteImage_Static):  # 148
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Spring', 'spring.png')
+        actorlib.loadIfNotInImageCache('Spring', 'spring.png')
 
     def dataChanged(self):
         offset = (self.parent.spritedata[5] >> 4) & 1
@@ -3724,13 +3729,13 @@ class SpriteImage_Spring(SLib.SpriteImage_Static):  # 148
         super().dataChanged()
 
 
-class SpriteImage_RotationControllerSpinning(SLib.SpriteImage):  # 149
+class ActorImage_RotationControllerSpinning(actorlib.ActorImage):  # 149
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.parent.setZValue(100000)
 
 
-class SpriteImage_Porcupuffer(SLib.SpriteImage_Static):  # 151
+class ActorImage_Porcupuffer(actorlib.ActorImage_Static):  # 151
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -3741,10 +3746,10 @@ class SpriteImage_Porcupuffer(SLib.SpriteImage_Static):  # 151
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Porcupuffer', 'porcu_puffer.png')
+        actorlib.loadIfNotInImageCache('Porcupuffer', 'porcu_puffer.png')
 
 
-class SpriteImage_QSwitchUnused(common.SpriteImage_Switch):  # 153
+class ActorImage_QSwitchUnused(common.ActorImage_Switch):  # 153
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.switchType = 'Q'
@@ -3754,16 +3759,16 @@ class SpriteImage_QSwitchUnused(common.SpriteImage_Switch):  # 153
         super().dataChanged()
 
 
-class SpriteImage_StarCoinLineControlled(SpriteImage_StarCoin):  # 155
+class ActorImage_StarCoinLineControlled(ActorImage_StarCoin):  # 155
     pass
 
 
-class SpriteImage_RedCoinRing(SLib.SpriteImage):  # 156
+class ActorImage_RedCoinRing(actorlib.ActorImage):  # 156
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
-        redCoinRingAuxImage = SLib.AuxiliaryImage(parent, 76, 95)
+        redCoinRingAuxImage = actorlib.AuxiliaryImage(parent, 76, 95)
         redCoinRingAuxImage.image = ImageCache['RedCoinRing']
         redCoinRingAuxImage.setPos(-10, -15)
         redCoinRingAuxImage.hover = False
@@ -3773,7 +3778,7 @@ class SpriteImage_RedCoinRing(SLib.SpriteImage):  # 156
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('RedCoinRing', 'redcoinring.png')
+        actorlib.loadIfNotInImageCache('RedCoinRing', 'redcoinring.png')
 
         overlays = (
             ('Fire', ImageCache['BlockContents3']),
@@ -3794,19 +3799,19 @@ class SpriteImage_RedCoinRing(SLib.SpriteImage):  # 156
         shifted = self.parent.spritedata[5] & 1
         self.xOffset = -2 if shifted else -10
 
-        if not isinstance(self.aux[0], SLib.AuxiliaryImage):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
         itemStrs = ('Fire', 'Prop', 'Peng', 'IceF')
         self.aux[0].image = ImageCache['RedCoinRing' + itemStrs[item]]
 
 
-class SpriteImage_BigBrick(SLib.SpriteImage_StaticMultiple):  # 157
+class ActorImage_BigBrick(actorlib.ActorImage_StaticMultiple):  # 157
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BigBrick', 'big_brick.png')
-        SLib.loadIfNotInImageCache('ShipKey', 'ship_key.png')
-        SLib.loadIfNotInImageCache('5Coin', '5_coin.png')
+        actorlib.loadIfNotInImageCache('BigBrick', 'big_brick.png')
+        actorlib.loadIfNotInImageCache('ShipKey', 'ship_key.png')
+        actorlib.loadIfNotInImageCache('5Coin', '5_coin.png')
 
         if 'YoshiFire' not in ImageCache:
             pix = QtGui.QPixmap(48, 24)
@@ -3846,14 +3851,14 @@ class SpriteImage_BigBrick(SLib.SpriteImage_StaticMultiple):  # 157
         super().dataChanged()
 
 
-class SpriteImage_FireSnake(SLib.SpriteImage_StaticMultiple):  # 158
+class ActorImage_FireSnake(actorlib.ActorImage_StaticMultiple):  # 158
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('FireSnakeWait', 'fire_snake_0.png')
-        SLib.loadIfNotInImageCache('FireSnake', 'fire_snake_1.png')
+        actorlib.loadIfNotInImageCache('FireSnakeWait', 'fire_snake_0.png')
+        actorlib.loadIfNotInImageCache('FireSnake', 'fire_snake_1.png')
 
     def dataChanged(self):
 
@@ -3870,7 +3875,7 @@ class SpriteImage_FireSnake(SLib.SpriteImage_StaticMultiple):  # 158
         super().dataChanged()
 
 
-class SpriteImage_UnusedBlockPlatform2(SpriteImage_UnusedBlockPlatform):  # 160
+class ActorImage_UnusedBlockPlatform2(ActorImage_UnusedBlockPlatform):  # 160
     def dataChanged(self):
         self.width = ((self.parent.spritedata[4] & 0xF) + 1) * 16
         self.height = ((self.parent.spritedata[4] >> 4) + 1) * 16
@@ -3878,7 +3883,7 @@ class SpriteImage_UnusedBlockPlatform2(SpriteImage_UnusedBlockPlatform):  # 160
         self.yOffset = ((self.parent.spritedata[3] >> 4) & 0xF)
 
 
-class SpriteImage_PipeBubbles(SLib.SpriteImage_StaticMultiple):  # 161
+class ActorImage_PipeBubbles(actorlib.ActorImage_StaticMultiple):  # 161
     @staticmethod
     def loadImages():
         if 'PipeBubblesU' in ImageCache:
@@ -3890,7 +3895,7 @@ class SpriteImage_PipeBubbles(SLib.SpriteImage_StaticMultiple):  # 161
         transform180.rotate(180)
         transform270.rotate(270)
 
-        image = SLib.GetImage('pipe_bubbles.png')
+        image = actorlib.GetImage('pipe_bubbles.png')
         if image is None:
             return
 
@@ -3920,14 +3925,14 @@ class SpriteImage_PipeBubbles(SLib.SpriteImage_StaticMultiple):  # 161
         super().dataChanged()
 
 
-class SpriteImage_SnakeBlock(SLib.SpriteImage):  # 166
+class ActorImage_SnakeBlock(actorlib.ActorImage):  # 166
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('SnakeBlock', 'snake_block.png')
+        actorlib.loadIfNotInImageCache('SnakeBlock', 'snake_block.png')
 
     def dataChanged(self):
         length = self.parent.spritedata[5] & 15
@@ -3940,7 +3945,7 @@ class SpriteImage_SnakeBlock(SLib.SpriteImage):  # 166
         painter.drawPixmap(int((self.width * 1.5) - 24), 0, endpiece)
 
 
-class SpriteImage_ChestnutGoomba(SLib.SpriteImage_Static):  # 170
+class ActorImage_ChestnutGoomba(actorlib.ActorImage_Static):  # 170
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -3951,10 +3956,10 @@ class SpriteImage_ChestnutGoomba(SLib.SpriteImage_Static):  # 170
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('ChestnutGoomba', 'chestnut_goomba.png')
+        actorlib.loadIfNotInImageCache('ChestnutGoomba', 'chestnut_goomba.png')
 
 
-class SpriteImage_PowerupBubble(SLib.SpriteImage_Static):  # 171
+class ActorImage_PowerupBubble(actorlib.ActorImage_Static):  # 171
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -3965,16 +3970,16 @@ class SpriteImage_PowerupBubble(SLib.SpriteImage_Static):  # 171
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('MushroomBubble', 'powerup_bubble.png')
+        actorlib.loadIfNotInImageCache('MushroomBubble', 'powerup_bubble.png')
 
 
-class SpriteImage_ScrewMushroomWithBolt(SpriteImage_ScrewMushroom):  # 172
+class ActorImage_ScrewMushroomWithBolt(ActorImage_ScrewMushroom):  # 172
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.hasBolt = True
 
 
-class SpriteImage_GiantFloatingLog(SLib.SpriteImage_Static):  # 173
+class ActorImage_GiantFloatingLog(actorlib.ActorImage_Static):  # 173
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -3985,17 +3990,17 @@ class SpriteImage_GiantFloatingLog(SLib.SpriteImage_Static):  # 173
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('GiantFloatingLog', 'giant_floating_log.png')
+        actorlib.loadIfNotInImageCache('GiantFloatingLog', 'giant_floating_log.png')
 
 
-class SpriteImage_OneWayGate(SLib.SpriteImage_StaticMultiple):  # 174
+class ActorImage_OneWayGate(actorlib.ActorImage_StaticMultiple):  # 174
     @staticmethod
     def loadImages():
         if '1WayGate00' in ImageCache:
             return
 
         # This loop generates all one-way gate images from a single image
-        gate = SLib.GetImage('one_way_gate.png')
+        gate = actorlib.GetImage('one_way_gate.png')
         if gate is None:
             return
 
@@ -4052,16 +4057,16 @@ class SpriteImage_OneWayGate(SLib.SpriteImage_StaticMultiple):  # 174
         super().dataChanged()
 
 
-class SpriteImage_FlyingQBlock(SLib.SpriteImage):  # 175
+class ActorImage_FlyingQBlock(actorlib.ActorImage):  # 175
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
         self.dimensions = (-12, -16, 42, 32)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('FlyingQBlock', 'flying_qblock.png')
+        actorlib.loadIfNotInImageCache('FlyingQBlock', 'flying_qblock.png')
 
     def paint(self, painter):
         theme = self.parent.spritedata[4] >> 4
@@ -4080,7 +4085,7 @@ class SpriteImage_FlyingQBlock(SLib.SpriteImage):  # 175
         painter.drawPixmap(18, 23, ImageCache[f'BlockContents{content}'])
 
 
-class SpriteImage_RouletteBlock(SLib.SpriteImage_StaticMultiple):  # 176
+class ActorImage_RouletteBlock(actorlib.ActorImage_StaticMultiple):  # 176
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -4091,7 +4096,7 @@ class SpriteImage_RouletteBlock(SLib.SpriteImage_StaticMultiple):  # 176
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('RouletteBlock', 'roulette.png')
+        actorlib.loadIfNotInImageCache('RouletteBlock', 'roulette.png')
 
         overlays = (
             ('Fire', ImageCache['BlockContents3']),
@@ -4115,7 +4120,7 @@ class SpriteImage_RouletteBlock(SLib.SpriteImage_StaticMultiple):  # 176
         super().dataChanged()
 
 
-class SpriteImage_FireChomp(SLib.SpriteImage_Static):  # 177
+class ActorImage_FireChomp(actorlib.ActorImage_Static):  # 177
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -4126,25 +4131,25 @@ class SpriteImage_FireChomp(SLib.SpriteImage_Static):  # 177
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('FireChomp', 'fire_chomp.png')
+        actorlib.loadIfNotInImageCache('FireChomp', 'fire_chomp.png')
 
 
-class SpriteImage_ScalePlatform(SLib.SpriteImage):  # 178
+class ActorImage_ScalePlatform(actorlib.ActorImage):  # 178
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.offset = (0, -16 / 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
     @staticmethod
     def loadImages():
         if 'WoodenPlatformL' not in ImageCache:
-            ImageCache['WoodenPlatformL'] = SLib.GetPixmap('wood_platform_left.png')
-            ImageCache['WoodenPlatformM'] = SLib.GetPixmap('wood_platform_middle.png')
-            ImageCache['WoodenPlatformR'] = SLib.GetPixmap('wood_platform_right.png')
+            ImageCache['WoodenPlatformL'] = actorlib.GetPixmap('wood_platform_left.png')
+            ImageCache['WoodenPlatformM'] = actorlib.GetPixmap('wood_platform_middle.png')
+            ImageCache['WoodenPlatformR'] = actorlib.GetPixmap('wood_platform_right.png')
         if 'ScaleRopeH' not in ImageCache:
-            ImageCache['ScaleRopeH'] = SLib.GetPixmap('scale_rope_horz.png')
-            ImageCache['ScaleRopeV'] = SLib.GetPixmap('scale_rope_vert.png')
-            ImageCache['ScalePulley'] = SLib.GetPixmap('scale_pulley.png')
+            ImageCache['ScaleRopeH'] = actorlib.GetPixmap('scale_rope_horz.png')
+            ImageCache['ScaleRopeV'] = actorlib.GetPixmap('scale_rope_vert.png')
+            ImageCache['ScalePulley'] = actorlib.GetPixmap('scale_pulley.png')
 
     def dataChanged(self):
         info1 = self.parent.spritedata[4]
@@ -4202,13 +4207,13 @@ class SpriteImage_ScalePlatform(SLib.SpriteImage):  # 178
             painter.drawPixmap(x + platformWidth - 22, y, ImageCache['WoodenPlatformR'])
 
 
-class SpriteImage_SpecialExit(SLib.SpriteImage):  # 179
+class ActorImage_SpecialExit(actorlib.ActorImage):  # 179
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 0, 0))
+        self.aux.append(actorlib.AuxiliaryRectOutline(parent, 0, 0))
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryRectOutline):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryRectOutline):
             return
 
         w = (self.parent.spritedata[4] & 15) + 1
@@ -4219,7 +4224,7 @@ class SpriteImage_SpecialExit(SLib.SpriteImage):  # 179
         self.aux[0].setSize(w * 24, h * 24)
 
 
-class SpriteImage_CheepChomp(SLib.SpriteImage_Static):  # 180
+class ActorImage_CheepChomp(actorlib.ActorImage_Static):  # 180
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -4230,16 +4235,16 @@ class SpriteImage_CheepChomp(SLib.SpriteImage_Static):  # 180
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('CheepChomp', 'cheep_chomp.png')
+        actorlib.loadIfNotInImageCache('CheepChomp', 'cheep_chomp.png')
 
 
-class SpriteImage_EventDoor(SpriteImage_Door):  # 182
+class ActorImage_EventDoor(ActorImage_Door):  # 182
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.alpha = 0.5
 
 
-class SpriteImage_ToadBalloon(SLib.SpriteImage_Static):  # 185
+class ActorImage_ToadBalloon(actorlib.ActorImage_Static):  # 185
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -4250,10 +4255,10 @@ class SpriteImage_ToadBalloon(SLib.SpriteImage_Static):  # 185
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('ToadBalloon', 'toad_balloon.png')
+        actorlib.loadIfNotInImageCache('ToadBalloon', 'toad_balloon.png')
 
 
-class SpriteImage_PlayerBlock(SLib.SpriteImage_Static):  # 187
+class ActorImage_PlayerBlock(actorlib.ActorImage_Static):  # 187
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -4263,10 +4268,10 @@ class SpriteImage_PlayerBlock(SLib.SpriteImage_Static):  # 187
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('PlayerBlock', 'player_block.png')
+        actorlib.loadIfNotInImageCache('PlayerBlock', 'player_block.png')
 
 
-class SpriteImage_MidwayFlag(SLib.SpriteImage_Static):  # 188
+class ActorImage_MidwayFlag(actorlib.ActorImage_Static):  # 188
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -4277,10 +4282,10 @@ class SpriteImage_MidwayFlag(SLib.SpriteImage_Static):  # 188
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('MidwayFlag', 'midway_flag.png')
+        actorlib.loadIfNotInImageCache('MidwayFlag', 'midway_flag.png')
 
 
-class SpriteImage_LarryKoopa(SLib.SpriteImage_Static):  # 189
+class ActorImage_LarryKoopa(actorlib.ActorImage_Static):  # 189
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -4291,10 +4296,10 @@ class SpriteImage_LarryKoopa(SLib.SpriteImage_Static):  # 189
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('LarryKoopa', 'Larry_Koopa.png')
+        actorlib.loadIfNotInImageCache('LarryKoopa', 'Larry_Koopa.png')
 
 
-class SpriteImage_TiltingGirderUnused(SLib.SpriteImage_Static):  # 190
+class ActorImage_TiltingGirderUnused(actorlib.ActorImage_Static):  # 190
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -4305,56 +4310,56 @@ class SpriteImage_TiltingGirderUnused(SLib.SpriteImage_Static):  # 190
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('TiltingGirder', 'tilting_girder.png')
+        actorlib.loadIfNotInImageCache('TiltingGirder', 'tilting_girder.png')
 
 
-class SpriteImage_TileEvent(common.SpriteImage_TileEvent):  # 191
+class ActorImage_TileEvent(common.ActorImage_TileEvent):  # 191
     def __init__(self, parent):
         super().__init__(parent)
         self.notAllowedTypes = [2, 5, 7]
 
     def getTileFromType(self, type):
         if type == 0:
-            return SLib.GetTile(55)
+            return actorlib.GetTile(55)
 
         if type == 1:
-            return SLib.GetTile(48)
+            return actorlib.GetTile(48)
 
         if type == 3:
-            return SLib.GetTile(52)
+            return actorlib.GetTile(52)
 
         if type == 4:
-            return SLib.GetTile(51)
+            return actorlib.GetTile(51)
 
         if type == 6:
-            return SLib.GetTile(45)
+            return actorlib.GetTile(45)
 
         if type == 12:
-            return SLib.GetTile(256 * 3 + 67)
+            return actorlib.GetTile(256 * 3 + 67)
 
         if type == 14:
-            return SLib.GetTile(256)
+            return actorlib.GetTile(256)
 
         return None
 
 
-class SpriteImage_LarryKoopaCastleBoss(SLib.SpriteImage):  # 192
+class ActorImage_LarryKoopaCastleBoss(actorlib.ActorImage):  # 192
     def __init__(self, parent):
         super().__init__(parent)
         self.parent.setZValue(24999)
 
-        larryKoopaAuxImage = SLib.AuxiliaryImage(parent, 528, 240)
+        larryKoopaAuxImage = actorlib.AuxiliaryImage(parent, 528, 240)
         larryKoopaAuxImage.image = ImageCache['LarryKoopaCastleBoss']
         larryKoopaAuxImage.setPos(48, 192)
         self.aux.append(larryKoopaAuxImage)
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 0, 288))
+        self.aux.append(actorlib.AuxiliaryRectOutline(parent, 24, 24, 0, 288))
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('LarryKoopaCastleBoss', 'larry_castle_boss.png')
+        actorlib.loadIfNotInImageCache('LarryKoopaCastleBoss', 'larry_castle_boss.png')
 
 
-class SpriteImage_Urchin(SLib.SpriteImage_Static):  # 193
+class ActorImage_Urchin(actorlib.ActorImage_Static):  # 193
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -4363,35 +4368,35 @@ class SpriteImage_Urchin(SLib.SpriteImage_Static):  # 193
             (-12, -14),
         )
 
-        track = SLib.AuxiliaryTrackObject(
-            parent, 16, 16, SLib.AuxiliaryTrackObject.Vertical
+        track = actorlib.AuxiliaryTrackObject(
+            parent, 16, 16, actorlib.AuxiliaryTrackObject.Vertical
         )
         track.setPos(self.width * 0.75 - 12, self.height * 0.75 - 12)
-        track.setIsBehindSprite(False)
+        track.setIsBehindActor(False)
         self.aux.append(track)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Urchin', 'urchin.png')
+        actorlib.loadIfNotInImageCache('Urchin', 'urchin.png')
 
     def dataChanged(self):
         super().dataChanged()
-        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
         distance = ((self.parent.spritedata[5] & 0xF0) << 1) | 8
         horizontal = (self.parent.spritedata[5] & 1) == 1
 
         if horizontal:
-            self.aux[0].direction = SLib.AuxiliaryTrackObject.Horizontal
+            self.aux[0].direction = actorlib.AuxiliaryTrackObject.Horizontal
             self.aux[0].setSize(distance + 8, 16)
             self.aux[0].setPos((self.width - distance) * 0.75 - 8, self.height * 0.75 - 12)
         else:
-            self.aux[0].direction = SLib.AuxiliaryTrackObject.Vertical
+            self.aux[0].direction = actorlib.AuxiliaryTrackObject.Vertical
             self.aux[0].setSize(16, distance + 8)
             self.aux[0].setPos(self.width * 0.75 - 12, (self.height - distance) * 0.75 - 8)
 
-class SpriteImage_MegaUrchin(SLib.SpriteImage_Static):  # 194
+class ActorImage_MegaUrchin(actorlib.ActorImage_Static):  # 194
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -4400,42 +4405,42 @@ class SpriteImage_MegaUrchin(SLib.SpriteImage_Static):  # 194
             (-48, -46),
         )
 
-        track = SLib.AuxiliaryTrackObject(
-            parent, 16, 16, SLib.AuxiliaryTrackObject.Vertical
+        track = actorlib.AuxiliaryTrackObject(
+            parent, 16, 16, actorlib.AuxiliaryTrackObject.Vertical
         )
         track.setPos(self.width * 0.75 - 12, self.height * 0.75 - 12)
-        track.setIsBehindSprite(False)
+        track.setIsBehindActor(False)
         self.aux.append(track)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('MegaUrchin', 'mega_urchin.png')
+        actorlib.loadIfNotInImageCache('MegaUrchin', 'mega_urchin.png')
 
     def dataChanged(self):
         super().dataChanged()
-        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
         distance = ((self.parent.spritedata[5] & 0xF0) << 1) | 8
         horizontal = (self.parent.spritedata[5] & 1) == 1
 
         if horizontal:
-            self.aux[0].direction = SLib.AuxiliaryTrackObject.Horizontal
+            self.aux[0].direction = actorlib.AuxiliaryTrackObject.Horizontal
             self.aux[0].setSize(distance + 8, 16)
             self.aux[0].setPos((self.width - distance) * 0.75 - 8, self.height * 0.75 - 12)
         else:
-            self.aux[0].direction = SLib.AuxiliaryTrackObject.Vertical
+            self.aux[0].direction = actorlib.AuxiliaryTrackObject.Vertical
             self.aux[0].setSize(16, distance + 8)
             self.aux[0].setPos(self.width * 0.75 - 12, (self.height - distance) * 0.75 - 8)
 
 
-class SpriteImage_HuckitCrab(SLib.SpriteImage_StaticMultiple):  # 195
+class ActorImage_HuckitCrab(actorlib.ActorImage_StaticMultiple):  # 195
     @staticmethod
     def loadImages():
         if 'HuckitCrabR' in ImageCache:
             return
 
-        huckit_crab = SLib.GetImage('huckit_crab.png')
+        huckit_crab = actorlib.GetImage('huckit_crab.png')
         if huckit_crab is None:
             return
 
@@ -4455,7 +4460,7 @@ class SpriteImage_HuckitCrab(SLib.SpriteImage_StaticMultiple):  # 195
         super().dataChanged()
 
 
-class SpriteImage_Fishbones(SLib.SpriteImage_StaticMultiple):  # 196
+class ActorImage_Fishbones(actorlib.ActorImage_StaticMultiple):  # 196
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -4463,12 +4468,12 @@ class SpriteImage_Fishbones(SLib.SpriteImage_StaticMultiple):  # 196
             ImageCache['FishbonesL'],
             (0, -2)
         )
-        self.aux.append(SLib.AuxiliaryTrackObject(
-            parent, 16, 16, SLib.AuxiliaryTrackObject.Horizontal
+        self.aux.append(actorlib.AuxiliaryTrackObject(
+            parent, 16, 16, actorlib.AuxiliaryTrackObject.Horizontal
         ))
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
         direction = self.parent.spritedata[5] >> 4
@@ -4496,7 +4501,7 @@ class SpriteImage_Fishbones(SLib.SpriteImage_StaticMultiple):  # 196
     def loadImages():
         if 'FishbonesL' in ImageCache:
             return
-        Fishbones = SLib.GetImage('fishbones.png')
+        Fishbones = actorlib.GetImage('fishbones.png')
         if Fishbones is None:
             return
 
@@ -4504,7 +4509,7 @@ class SpriteImage_Fishbones(SLib.SpriteImage_StaticMultiple):  # 196
         ImageCache['FishbonesR'] = QtGui.QPixmap.fromImage(Fishbones.mirrored(True, False))
 
 
-class SpriteImage_Clam(SLib.SpriteImage_StaticMultiple):  # 197
+class ActorImage_Clam(actorlib.ActorImage_StaticMultiple):  # 197
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.offset = (-29, -54)
@@ -4515,14 +4520,14 @@ class SpriteImage_Clam(SLib.SpriteImage_StaticMultiple):  # 197
             return
 
         if 'PSwitch' not in ImageCache:
-            pSwitch = SLib.GetImage('p_switch.png')
+            pSwitch = actorlib.GetImage('p_switch.png')
             if pSwitch is None:
                 return
 
             ImageCache['PSwitch'] = QtGui.QPixmap.fromImage(pSwitch)
             ImageCache['PSwitchU'] = QtGui.QPixmap.fromImage(pSwitch.mirrored(True, True))
 
-        SLib.loadIfNotInImageCache('ClamEmpty', 'clam.png')
+        actorlib.loadIfNotInImageCache('ClamEmpty', 'clam.png')
 
         overlays = (
             (26, 22, 'Star', ImageCache['StarCoin']),
@@ -4570,7 +4575,7 @@ class SpriteImage_Clam(SLib.SpriteImage_StaticMultiple):  # 197
         super().dataChanged()
 
 
-class SpriteImage_GiantGoomba(SLib.SpriteImage_Static):  # 198
+class ActorImage_GiantGoomba(actorlib.ActorImage_Static):  # 198
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -4581,10 +4586,10 @@ class SpriteImage_GiantGoomba(SLib.SpriteImage_Static):  # 198
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('GiantGoomba', 'giant_goomba.png')
+        actorlib.loadIfNotInImageCache('GiantGoomba', 'giant_goomba.png')
 
 
-class SpriteImage_MegaGoomba(SLib.SpriteImage_Static):  # 199
+class ActorImage_MegaGoomba(actorlib.ActorImage_Static):  # 199
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -4595,10 +4600,10 @@ class SpriteImage_MegaGoomba(SLib.SpriteImage_Static):  # 199
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('MegaGoomba', 'mega_goomba.png')
+        actorlib.loadIfNotInImageCache('MegaGoomba', 'mega_goomba.png')
 
 
-class SpriteImage_Microgoomba(SLib.SpriteImage_Static):  # 200
+class ActorImage_Microgoomba(actorlib.ActorImage_Static):  # 200
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -4609,14 +4614,14 @@ class SpriteImage_Microgoomba(SLib.SpriteImage_Static):  # 200
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Microgoomba', 'microgoomba.png')
+        actorlib.loadIfNotInImageCache('Microgoomba', 'microgoomba.png')
 
 
-class SpriteImage_Icicle(SLib.SpriteImage_StaticMultiple):  # 201
+class ActorImage_Icicle(actorlib.ActorImage_StaticMultiple):  # 201
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('IcicleSmallS', 'icicle_small_static.png')
-        SLib.loadIfNotInImageCache('IcicleLargeS', 'icicle_large_static.png')
+        actorlib.loadIfNotInImageCache('IcicleSmallS', 'icicle_small_static.png')
+        actorlib.loadIfNotInImageCache('IcicleLargeS', 'icicle_large_static.png')
 
     def dataChanged(self):
 
@@ -4629,7 +4634,7 @@ class SpriteImage_Icicle(SLib.SpriteImage_StaticMultiple):  # 201
         super().dataChanged()
 
 
-class SpriteImage_MGCannon(SLib.SpriteImage_Static):  # 202
+class ActorImage_MGCannon(actorlib.ActorImage_Static):  # 202
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -4640,10 +4645,10 @@ class SpriteImage_MGCannon(SLib.SpriteImage_Static):  # 202
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('MGCannon', 'mg_cannon.png')
+        actorlib.loadIfNotInImageCache('MGCannon', 'mg_cannon.png')
 
 
-class SpriteImage_Chest(SLib.SpriteImage_StaticMultiple):  # 203
+class ActorImage_Chest(actorlib.ActorImage_StaticMultiple):  # 203
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -4652,14 +4657,14 @@ class SpriteImage_Chest(SLib.SpriteImage_StaticMultiple):  # 203
             (-12, -10),
         )
 
-        itemAuxImage = SLib.AuxiliaryImage(parent, 24, 24)
-        itemAuxImage.setIsBehindSprite(False)
+        itemAuxImage = actorlib.AuxiliaryImage(parent, 24, 24)
+        itemAuxImage.setIsBehindActor(False)
         itemAuxImage.setPos(18, 8)
         self.aux.append(itemAuxImage)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Chest', 'chest.png')
+        actorlib.loadIfNotInImageCache('Chest', 'chest.png')
 
     def dataChanged(self):
         pipeAlign = (self.parent.spritedata[2] >> 4) & 1
@@ -4668,7 +4673,7 @@ class SpriteImage_Chest(SLib.SpriteImage_StaticMultiple):  # 203
         else:
             self.yOffset = -10
 
-        if not isinstance(self.aux[0], SLib.AuxiliaryImage):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
         # Render item
@@ -4690,15 +4695,15 @@ class SpriteImage_Chest(SLib.SpriteImage_StaticMultiple):  # 203
         super().dataChanged()
 
 
-class SpriteImage_RollObjSpawner(SLib.SpriteImage_StaticMultiple):  # 204
+class ActorImage_RollObjSpawner(actorlib.ActorImage_StaticMultiple):  # 204
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.yOffset = -16
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('SpikeBall', 'spike_ball.png')
-        SLib.loadIfNotInImageCache('RollingBarrel', 'barrel_rolling.png')
+        actorlib.loadIfNotInImageCache('SpikeBall', 'spike_ball.png')
+        actorlib.loadIfNotInImageCache('RollingBarrel', 'barrel_rolling.png')
 
     def dataChanged(self):
         barrel = (self.parent.spritedata[2] >> 4) & 1
@@ -4710,18 +4715,18 @@ class SpriteImage_RollObjSpawner(SLib.SpriteImage_StaticMultiple):  # 204
         super().dataChanged()
 
 
-class SpriteImage_GiantBubbleNormal(SpriteImage_GiantBubble):  # 205
+class ActorImage_GiantBubbleNormal(ActorImage_GiantBubble):  # 205
     pass
 
 
-class SpriteImage_Zoom(SLib.SpriteImage):  # 206
+class ActorImage_Zoom(actorlib.ActorImage):  # 206
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 0, 0))
+        self.aux.append(actorlib.AuxiliaryRectOutline(parent, 0, 0))
 
     def dataChanged(self):
         super().dataChanged()
-        if not isinstance(self.aux[0], SLib.AuxiliaryRectOutline):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryRectOutline):
             return
 
         w = self.parent.spritedata[5]
@@ -4732,13 +4737,13 @@ class SpriteImage_Zoom(SLib.SpriteImage):  # 206
         self.aux[0].setSize(w * 24, h * 24, 0, 24 - (h * 24))
 
 
-class SpriteImage_QBlock(SpriteImage_Block):  # 207
+class ActorImage_QBlock(ActorImage_Block):  # 207
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.tilenum = 49
 
 
-class SpriteImage_QBlockUnused(SpriteImage_Block):  # 208
+class ActorImage_QBlockUnused(ActorImage_Block):  # 208
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.tilenum = 49
@@ -4746,30 +4751,30 @@ class SpriteImage_QBlockUnused(SpriteImage_Block):  # 208
         self.twelveIsMushroom = True
 
 
-class SpriteImage_BrickBlock(SpriteImage_Block):  # 209
+class ActorImage_BrickBlock(ActorImage_Block):  # 209
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.tilenum = 48
 
 
-class SpriteImage_BowserJr1stController(SLib.SpriteImage):  # 211
+class ActorImage_BowserJr1stController(actorlib.ActorImage):  # 211
     def __init__(self, parent):
         super().__init__(parent)
         self.parent.setZValue(24999)
 
-        bowserJr1stAuxImage = SLib.AuxiliaryImage(parent, 672, 80)
+        bowserJr1stAuxImage = actorlib.AuxiliaryImage(parent, 672, 80)
         bowserJr1stAuxImage.image = ImageCache['BowserJr1stController']
         bowserJr1stAuxImage.setPos(-504, -55)
         self.aux.append(bowserJr1stAuxImage)
 
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, -504, -312))
+        self.aux.append(actorlib.AuxiliaryRectOutline(parent, 24, 24, -504, -312))
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BowserJr1stController', 'boss_controller_bowserjr_1.png')
+        actorlib.loadIfNotInImageCache('BowserJr1stController', 'boss_controller_bowserjr_1.png')
 
 
-class SpriteImage_RollingHill(SLib.SpriteImage):  # 212
+class ActorImage_RollingHill(actorlib.ActorImage):  # 212
 
     def __init__(self, parent):
         super().__init__(parent, 1.5)
@@ -4778,10 +4783,10 @@ class SpriteImage_RollingHill(SLib.SpriteImage):  # 212
         size = (self.parent.spritedata[3] >> 4) & 0xF
         realSize = self.RollingHillSizes[size]
 
-        self.aux.append(SLib.AuxiliaryCircleOutline(parent, realSize))
+        self.aux.append(actorlib.AuxiliaryCircleOutline(parent, realSize))
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryCircleOutline):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryCircleOutline):
             return
 
         size = (self.parent.spritedata[3] >> 4) & 0xF
@@ -4795,7 +4800,7 @@ class SpriteImage_RollingHill(SLib.SpriteImage):  # 212
         self.aux[0].update()
 
 
-class SpriteImage_FreefallPlatform(SLib.SpriteImage_Static):  # 214
+class ActorImage_FreefallPlatform(actorlib.ActorImage_Static):  # 214
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -4804,16 +4809,16 @@ class SpriteImage_FreefallPlatform(SLib.SpriteImage_Static):  # 214
         )
         self.parent.setZValue(24999)
 
-        pathNodeAuxRect = SLib.AuxiliaryRectOutline(parent, 24, 24, 0, 0)
-        pathNodeAuxRect.setIsBehindSprite(False)
+        pathNodeAuxRect = actorlib.AuxiliaryRectOutline(parent, 24, 24, 0, 0)
+        pathNodeAuxRect.setIsBehindActor(False)
         self.aux.append(pathNodeAuxRect)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('FreefallGH', 'freefall_gh_platform.png')
+        actorlib.loadIfNotInImageCache('FreefallGH', 'freefall_gh_platform.png')
 
 
-class SpriteImage_Poison(SpriteImage_LiquidOrFog):  # 216
+class ActorImage_Poison(ActorImage_LiquidOrFog):  # 216
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -4828,10 +4833,10 @@ class SpriteImage_Poison(SpriteImage_LiquidOrFog):  # 216
     def loadImages():
         if 'LiquidPoison' in ImageCache:
             return
-        ImageCache['LiquidPoison'] = SLib.GetPixmap('liquid_poison.png')
-        ImageCache['LiquidPoisonCrest'] = SLib.GetPixmap('liquid_poison_crest.png')
-        ImageCache['LiquidPoisonRise'] = SLib.GetPixmap('liquid_poison_rise.png')
-        ImageCache['LiquidPoisonRiseCrest'] = SLib.GetPixmap('liquid_poison_rise_crest.png')
+        ImageCache['LiquidPoison'] = actorlib.GetPixmap('liquid_poison.png')
+        ImageCache['LiquidPoisonCrest'] = actorlib.GetPixmap('liquid_poison_crest.png')
+        ImageCache['LiquidPoisonRise'] = actorlib.GetPixmap('liquid_poison_rise.png')
+        ImageCache['LiquidPoisonRiseCrest'] = actorlib.GetPixmap('liquid_poison_rise_crest.png')
 
     def dataChanged(self):
         self.locId = self.parent.spritedata[5] & 0x7F
@@ -4849,11 +4854,11 @@ class SpriteImage_Poison(SpriteImage_LiquidOrFog):  # 216
         super().positionChanged()
 
 
-class SpriteImage_LineBlock(common.SpriteImage_LineBlock):  # 219
+class ActorImage_LineBlock(common.ActorImage_LineBlock):  # 219
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('LineBlock', 'lineblock.png')
+        actorlib.loadIfNotInImageCache('LineBlock', 'lineblock.png')
 
     def dataChanged(self):
         self.setLineBlockImage(ImageCache['LineBlock'])
@@ -4861,14 +4866,14 @@ class SpriteImage_LineBlock(common.SpriteImage_LineBlock):  # 219
         super().dataChanged()
 
 
-class SpriteImage_InvisibleBlock(SpriteImage_Block):  # 221
+class ActorImage_InvisibleBlock(ActorImage_Block):  # 221
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.eightIsMushroom = True
         self.tilenum = 0x200 * 4
 
 
-class SpriteImage_ConveyorSpike(SLib.SpriteImage_Static):  # 222
+class ActorImage_ConveyorSpike(actorlib.ActorImage_Static):  # 222
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -4878,14 +4883,14 @@ class SpriteImage_ConveyorSpike(SLib.SpriteImage_Static):  # 222
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('SpikeU', 'spike_up.png')
+        actorlib.loadIfNotInImageCache('SpikeU', 'spike_up.png')
 
 
-class SpriteImage_SpringBlock(SLib.SpriteImage_StaticMultiple):  # 223
+class ActorImage_SpringBlock(actorlib.ActorImage_StaticMultiple):  # 223
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('SpringBlock1', 'spring_block.png')
-        SLib.loadIfNotInImageCache('SpringBlock2', 'spring_block_alt.png')
+        actorlib.loadIfNotInImageCache('SpringBlock1', 'spring_block.png')
+        actorlib.loadIfNotInImageCache('SpringBlock2', 'spring_block_alt.png')
 
     def dataChanged(self):
         type = self.parent.spritedata[5] & 1
@@ -4894,12 +4899,12 @@ class SpriteImage_SpringBlock(SLib.SpriteImage_StaticMultiple):  # 223
         super().dataChanged()
 
 
-class SpriteImage_JumboRay(SLib.SpriteImage_StaticMultiple):  # 224
+class ActorImage_JumboRay(actorlib.ActorImage_StaticMultiple):  # 224
     @staticmethod
     def loadImages():
         if 'JumboRayL' in ImageCache:
             return
-        Ray = SLib.GetImage('jumbo_ray.png')
+        Ray = actorlib.GetImage('jumbo_ray.png')
         if Ray is None:
             return
 
@@ -4919,26 +4924,26 @@ class SpriteImage_JumboRay(SLib.SpriteImage_StaticMultiple):  # 224
         super().dataChanged()
 
 
-class SpriteImage_FloatingCoin(SpriteImage_SpecialCoin):  # 225
+class ActorImage_FloatingCoin(ActorImage_SpecialCoin):  # 225
     pass
 
 
-class SpriteImage_GiantBubbleUnused(SpriteImage_GiantBubble):  # 226
+class ActorImage_GiantBubbleUnused(ActorImage_GiantBubble):  # 226
     pass
 
 
-class SpriteImage_PipeCannon(SLib.SpriteImage):  # 227
+class ActorImage_PipeCannon(actorlib.ActorImage):  # 227
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
         # self.aux[0] is the pipe image
-        pipeAuxImage = SLib.AuxiliaryImage(parent, 24, 24)
+        pipeAuxImage = actorlib.AuxiliaryImage(parent, 24, 24)
         pipeAuxImage.hover = False
         self.aux.append(pipeAuxImage)
 
         # self.aux[1] is the trajectory indicator
-        trajectoryIndicatorAuxImage = SLib.AuxiliaryPainterPath(parent, QtGui.QPainterPath(), 24, 24)
+        trajectoryIndicatorAuxImage = actorlib.AuxiliaryPainterPath(parent, QtGui.QPainterPath(), 24, 24)
         trajectoryIndicatorAuxImage.fillFlag = False
         self.aux.append(trajectoryIndicatorAuxImage)
         pipeAuxImage.setZValue(trajectoryIndicatorAuxImage.zValue() + 1)
@@ -4950,7 +4955,7 @@ class SpriteImage_PipeCannon(SLib.SpriteImage):  # 227
         if 'PipeCannon0' in ImageCache:
             return
         for i in range(7):
-            pipeCannon = SLib.GetImage(f'pipe_cannon_{i}.png')
+            pipeCannon = actorlib.GetImage(f'pipe_cannon_{i}.png')
             if pipeCannon is None:
                 continue
 
@@ -4958,8 +4963,8 @@ class SpriteImage_PipeCannon(SLib.SpriteImage):  # 227
 
     def dataChanged(self):
         if (
-            not isinstance(self.aux[0], SLib.AuxiliaryImage)
-            or not isinstance(self.aux[1], SLib.AuxiliaryPainterPath)
+            not isinstance(self.aux[0], actorlib.AuxiliaryImage)
+            or not isinstance(self.aux[1], actorlib.AuxiliaryPainterPath)
         ):
             return
 
@@ -5023,20 +5028,20 @@ class SpriteImage_PipeCannon(SLib.SpriteImage):  # 227
             self.aux[1].setPath(path)
 
 
-class SpriteImage_ExtendShroom(SLib.SpriteImage):  # 228
+class ActorImage_ExtendShroom(actorlib.ActorImage):  # 228
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
         self.parent.setZValue(24999)
 
     @staticmethod
     def loadImages():
         if 'ExtendShroomB' in ImageCache:
             return
-        ImageCache['ExtendShroomB'] = SLib.GetPixmap('extend_shroom_big.png')
-        ImageCache['ExtendShroomS'] = SLib.GetPixmap('extend_shroom_small.png')
-        ImageCache['ExtendShroomC'] = SLib.GetPixmap('extend_shroom_cont.png')
-        ImageCache['ExtendShroomStem'] = SLib.GetPixmap('extend_shroom_stem.png')
+        ImageCache['ExtendShroomB'] = actorlib.GetPixmap('extend_shroom_big.png')
+        ImageCache['ExtendShroomS'] = actorlib.GetPixmap('extend_shroom_small.png')
+        ImageCache['ExtendShroomC'] = actorlib.GetPixmap('extend_shroom_cont.png')
+        ImageCache['ExtendShroomStem'] = actorlib.GetPixmap('extend_shroom_stem.png')
 
     def dataChanged(self):
 
@@ -5081,7 +5086,7 @@ class SpriteImage_ExtendShroom(SLib.SpriteImage):  # 228
         )
 
 
-class SpriteImage_SandPillar(SLib.SpriteImage_Static):  # 229
+class ActorImage_SandPillar(actorlib.ActorImage_Static):  # 229
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -5093,10 +5098,10 @@ class SpriteImage_SandPillar(SLib.SpriteImage_Static):  # 229
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('SandPillar', 'sand_pillar.png')
+        actorlib.loadIfNotInImageCache('SandPillar', 'sand_pillar.png')
 
 
-class SpriteImage_Bramball(SLib.SpriteImage_Static):  # 230
+class ActorImage_Bramball(actorlib.ActorImage_Static):  # 230
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -5107,27 +5112,27 @@ class SpriteImage_Bramball(SLib.SpriteImage_Static):  # 230
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Bramball', 'bramball.png')
+        actorlib.loadIfNotInImageCache('Bramball', 'bramball.png')
 
 
-class SpriteImage_WiggleShroom(SLib.SpriteImage):  # 231
+class ActorImage_WiggleShroom(actorlib.ActorImage):  # 231
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
         self.parent.setZValue(24999)
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Vertical))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, 16, 16, actorlib.AuxiliaryTrackObject.Vertical))
 
     @staticmethod
     def loadImages():
         if 'WiggleShroomL' in ImageCache:
             return
-        ImageCache['WiggleShroomL'] = SLib.GetPixmap('wiggle_shroom_left.png')
-        ImageCache['WiggleShroomM'] = SLib.GetPixmap('wiggle_shroom_middle.png')
-        ImageCache['WiggleShroomR'] = SLib.GetPixmap('wiggle_shroom_right.png')
-        ImageCache['WiggleShroomS'] = SLib.GetPixmap('wiggle_shroom_stem.png')
+        ImageCache['WiggleShroomL'] = actorlib.GetPixmap('wiggle_shroom_left.png')
+        ImageCache['WiggleShroomM'] = actorlib.GetPixmap('wiggle_shroom_middle.png')
+        ImageCache['WiggleShroomR'] = actorlib.GetPixmap('wiggle_shroom_right.png')
+        ImageCache['WiggleShroomS'] = actorlib.GetPixmap('wiggle_shroom_stem.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
         width = (self.parent.spritedata[4] & 0xF0) >> 4
@@ -5161,7 +5166,7 @@ class SpriteImage_WiggleShroom(SLib.SpriteImage):  # 231
         painter.drawTiledPixmap(int((xsize / 2) - 12), 24, 24, int((self.height * 1.5) - 24), self.wigglestem)
 
 
-class SpriteImage_MechaKoopa(SLib.SpriteImage_Static):  # 232
+class ActorImage_MechaKoopa(actorlib.ActorImage_Static):  # 232
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -5172,19 +5177,19 @@ class SpriteImage_MechaKoopa(SLib.SpriteImage_Static):  # 232
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('MechaKoopa', 'mechakoopa.png')
+        actorlib.loadIfNotInImageCache('MechaKoopa', 'mechakoopa.png')
 
 
-class SpriteImage_Bulber(SLib.SpriteImage):  # 233
+class ActorImage_Bulber(actorlib.ActorImage):  # 233
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
         self.dimensions = (-35 / 1.5, -26 / 1.5, 59, 50)
 
-        self.aux.append(SLib.AuxiliaryTrackObject(self.parent, 244, 244, SLib.AuxiliaryTrackObject.Horizontal))
+        self.aux.append(actorlib.AuxiliaryTrackObject(self.parent, 244, 244, actorlib.AuxiliaryTrackObject.Horizontal))
 
-        bulberAuxImage = SLib.AuxiliaryImage(parent, 243, 248)
+        bulberAuxImage = actorlib.AuxiliaryImage(parent, 243, 248)
         bulberAuxImage.image = ImageCache['BulberL']
         self.aux.append(bulberAuxImage)
 
@@ -5192,7 +5197,7 @@ class SpriteImage_Bulber(SLib.SpriteImage):  # 233
     def loadImages():
         if 'BulberL' in ImageCache:
             return
-        Bulber = SLib.GetImage('bulber.png')
+        Bulber = actorlib.GetImage('bulber.png')
         if Bulber is None:
             return
 
@@ -5201,8 +5206,8 @@ class SpriteImage_Bulber(SLib.SpriteImage):  # 233
 
     def dataChanged(self):
         if (
-            not isinstance(self.aux[0], SLib.AuxiliaryTrackObject)
-            or not isinstance(self.aux[1], SLib.AuxiliaryImage)
+            not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject)
+            or not isinstance(self.aux[1], actorlib.AuxiliaryImage)
         ):
             return
 
@@ -5226,7 +5231,7 @@ class SpriteImage_Bulber(SLib.SpriteImage):  # 233
             self.aux[1].setPos(-8, 0)
 
 
-class SpriteImage_PCoin(SLib.SpriteImage_Static):  # 237
+class ActorImage_PCoin(actorlib.ActorImage_Static):  # 237
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -5235,7 +5240,7 @@ class SpriteImage_PCoin(SLib.SpriteImage_Static):  # 237
         )
 
 
-class SpriteImage_Foo(SLib.SpriteImage_Static):  # 238
+class ActorImage_Foo(actorlib.ActorImage_Static):  # 238
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -5246,10 +5251,10 @@ class SpriteImage_Foo(SLib.SpriteImage_Static):  # 238
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Foo', 'foo.png')
+        actorlib.loadIfNotInImageCache('Foo', 'foo.png')
 
 
-class SpriteImage_GiantWiggler(SLib.SpriteImage_Static):  # 240
+class ActorImage_GiantWiggler(actorlib.ActorImage_Static):  # 240
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -5260,10 +5265,10 @@ class SpriteImage_GiantWiggler(SLib.SpriteImage_Static):  # 240
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('GiantWiggler', 'giant_wiggler.png')
+        actorlib.loadIfNotInImageCache('GiantWiggler', 'giant_wiggler.png')
 
 
-class SpriteImage_FallingLedgeBar(SLib.SpriteImage_Static):  # 242
+class ActorImage_FallingLedgeBar(actorlib.ActorImage_Static):  # 242
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -5273,20 +5278,20 @@ class SpriteImage_FallingLedgeBar(SLib.SpriteImage_Static):  # 242
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('FallingLedgeBar', 'falling_ledge_bar.png')
+        actorlib.loadIfNotInImageCache('FallingLedgeBar', 'falling_ledge_bar.png')
 
 
 # TODO: Make 'Filled Arrow' preview; Consider if it would be worth it to preview the formation repeats
-class SpriteImage_CheepFormation(SLib.SpriteImage_Static):  # 247
+class ActorImage_CheepFormation(actorlib.ActorImage_Static):  # 247
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = True
+        self.actorbox.shown = True
 
         # Create auxes
         for _ in range(16):
-            cheepRedLeftAuxImage = SLib.AuxiliaryImage(parent, 26, 24)
+            cheepRedLeftAuxImage = actorlib.AuxiliaryImage(parent, 26, 24)
             cheepRedLeftAuxImage.image = ImageCache['CheepRedLeft']
-            cheepRedLeftAuxImage.setIsBehindSprite(False)
+            cheepRedLeftAuxImage.setIsBehindActor(False)
             cheepRedLeftAuxImage.hover = False
             self.aux.append(cheepRedLeftAuxImage)
 
@@ -5294,8 +5299,8 @@ class SpriteImage_CheepFormation(SLib.SpriteImage_Static):  # 247
     def loadImages():
         if 'CheepRedLeft' in ImageCache:
             return
-        ImageCache['CheepRedLeft'] = SLib.GetPixmap('cheep_red.png')
-        ImageCache['CheepRedRight'] = QtGui.QPixmap.fromImage(SLib.GetImage('cheep_red.png').mirrored(True, False))
+        ImageCache['CheepRedLeft'] = actorlib.GetPixmap('cheep_red.png')
+        ImageCache['CheepRedRight'] = QtGui.QPixmap.fromImage(actorlib.GetImage('cheep_red.png').mirrored(True, False))
 
     def dataChanged(self):
         isLeft = (self.parent.spritedata[4] >> 4) & 0x1
@@ -5307,7 +5312,7 @@ class SpriteImage_CheepFormation(SLib.SpriteImage_Static):  # 247
 
         # Setup stuff
         for i, aux in enumerate(self.aux):
-            if not isinstance(aux, SLib.AuxiliaryImage):
+            if not isinstance(aux, actorlib.AuxiliaryImage):
                 continue
 
             dirs = ['CheepRedRight', 'CheepRedLeft']
@@ -5328,7 +5333,7 @@ class SpriteImage_CheepFormation(SLib.SpriteImage_Static):  # 247
             ]
 
             for i, aux in enumerate(self.aux):
-                if not isinstance(aux, SLib.AuxiliaryImage):
+                if not isinstance(aux, actorlib.AuxiliaryImage):
                     continue
 
                 yAdj = 0.75 if doStretch else 0.5
@@ -5336,12 +5341,12 @@ class SpriteImage_CheepFormation(SLib.SpriteImage_Static):  # 247
                 aux.setPos(abs(positions[i])*1.5 * xAdj, -positions[i]*1.5 * yAdj)
         elif formation == 1: # Filled Arrow
             for aux in self.aux:
-                if not isinstance(aux, SLib.AuxiliaryImage):
+                if not isinstance(aux, actorlib.AuxiliaryImage):
                     continue
                 aux.alpha = 0.0
         else: # Vertical, Diagonals
             for i, aux in enumerate(self.aux):
-                if not isinstance(aux, SLib.AuxiliaryImage):
+                if not isinstance(aux, actorlib.AuxiliaryImage):
                     continue
 
                 xAdj = 1 if isLeft else -1
@@ -5356,17 +5361,17 @@ class SpriteImage_CheepFormation(SLib.SpriteImage_Static):  # 247
         super().dataChanged()
 
 
-class SpriteImage_EventDeactivBlock(SpriteImage_Block):  # 252
+class ActorImage_EventDeactivBlock(ActorImage_Block):  # 252
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.tilenum = 49 # ? block
 
 
-class SpriteImage_RotControlledCoin(SpriteImage_SpecialCoin):  # 253
+class ActorImage_RotControlledCoin(ActorImage_SpecialCoin):  # 253
     pass
 
 
-class SpriteImage_RotControlledPipe(SpriteImage_Pipe):  # 254
+class ActorImage_RotControlledPipe(ActorImage_Pipe):  # 254
     def dataChanged(self):
         self.length1 = self.length2 = (self.parent.spritedata[4] >> 4) + 2
         dir = self.parent.spritedata[4] & 3
@@ -5374,7 +5379,7 @@ class SpriteImage_RotControlledPipe(SpriteImage_Pipe):  # 254
         super().dataChanged()
 
 
-class SpriteImage_RotatingQBlock(SpriteImage_Block):  # 255
+class ActorImage_RotatingQBlock(ActorImage_Block):  # 255
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.tilenum = 49
@@ -5383,7 +5388,7 @@ class SpriteImage_RotatingQBlock(SpriteImage_Block):  # 255
         self.rotates = True
 
 
-class SpriteImage_RotatingBrickBlock(SpriteImage_Block):  # 256
+class ActorImage_RotatingBrickBlock(ActorImage_Block):  # 256
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.tilenum = 48
@@ -5392,14 +5397,14 @@ class SpriteImage_RotatingBrickBlock(SpriteImage_Block):  # 256
         self.rotates = True
 
 
-class SpriteImage_MoveWhenOnMetalLavaBlock(SLib.SpriteImage_StaticMultiple):  # 257
+class ActorImage_MoveWhenOnMetalLavaBlock(actorlib.ActorImage_StaticMultiple):  # 257
     @staticmethod
     def loadImages():
         if 'MetalLavaBlock0' in ImageCache:
             return
-        ImageCache['MetalLavaBlock0'] = SLib.GetPixmap('lava_iron_block_0.png')
-        ImageCache['MetalLavaBlock1'] = SLib.GetPixmap('lava_iron_block_1.png')
-        ImageCache['MetalLavaBlock2'] = SLib.GetPixmap('lava_iron_block_2.png')
+        ImageCache['MetalLavaBlock0'] = actorlib.GetPixmap('lava_iron_block_0.png')
+        ImageCache['MetalLavaBlock1'] = actorlib.GetPixmap('lava_iron_block_1.png')
+        ImageCache['MetalLavaBlock2'] = actorlib.GetPixmap('lava_iron_block_2.png')
 
     def dataChanged(self):
         size = (self.parent.spritedata[5] & 0xF) % 3
@@ -5408,17 +5413,17 @@ class SpriteImage_MoveWhenOnMetalLavaBlock(SLib.SpriteImage_StaticMultiple):  # 
         super().dataChanged()
 
 
-class SpriteImage_RegularDoor(SpriteImage_Door):  # 259
+class ActorImage_RegularDoor(ActorImage_Door):  # 259
     pass
 
 
-class SpriteImage_MovementController_TwoWayLine(SLib.SpriteImage):  # 260
+class ActorImage_MovementController_TwoWayLine(actorlib.ActorImage):  # 260
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Horizontal))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, 16, 16, actorlib.AuxiliaryTrackObject.Horizontal))
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
         direction = self.parent.spritedata[3] & 3
@@ -5439,18 +5444,18 @@ class SpriteImage_MovementController_TwoWayLine(SLib.SpriteImage):  # 260
             self.aux[0].setPos(0, (-distance * 24) + 24)
 
 
-class SpriteImage_OldStoneBlock_MovementControlled(SpriteImage_OldStoneBlock):  # 261
+class ActorImage_OldStoneBlock_MovementControlled(ActorImage_OldStoneBlock):  # 261
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.hasMovementAux = False
 
 
-class SpriteImage_PoltergeistItem(SLib.SpriteImage):  # 262
+class ActorImage_PoltergeistItem(actorlib.ActorImage):  # 262
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
-        poltergeistBlockAuxImage = SLib.AuxiliaryImage(parent, 60, 60)
+        poltergeistBlockAuxImage = actorlib.AuxiliaryImage(parent, 60, 60)
         poltergeistBlockAuxImage.image = ImageCache['PoltergeistBlock']
         poltergeistBlockAuxImage.setPos(-28, -28) # (image_width_of_glow - tile-width) / 2; Same for every value that is a multiple of 14 here
         poltergeistBlockAuxImage.hover = False
@@ -5461,11 +5466,11 @@ class SpriteImage_PoltergeistItem(SLib.SpriteImage):  # 262
         if 'PoltergeistBlock' in ImageCache:
             return
 
-        SLib.loadIfNotInImageCache('GhostHouseStand', 'ghost_house_stand.png')
-        SLib.loadIfNotInImageCache('PoltergeistBlock', 'poltergeist_block.png')
+        actorlib.loadIfNotInImageCache('GhostHouseStand', 'ghost_house_stand.png')
+        actorlib.loadIfNotInImageCache('PoltergeistBlock', 'poltergeist_block.png')
 
-        polterstand = SLib.GetPixmap('poltergeist_light.png')
-        polterblock = SLib.GetPixmap('poltergeist_light.png')
+        polterstand = actorlib.GetPixmap('poltergeist_light.png')
+        polterblock = actorlib.GetPixmap('poltergeist_light.png')
 
         standpainter = QtGui.QPainter(polterstand)
         blockpainter = QtGui.QPainter(polterblock)
@@ -5480,7 +5485,7 @@ class SpriteImage_PoltergeistItem(SLib.SpriteImage):  # 262
         ImageCache['PoltergeistBlock'] = polterblock
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryImage):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
         style = self.parent.spritedata[5] & 15
@@ -5498,7 +5503,7 @@ class SpriteImage_PoltergeistItem(SLib.SpriteImage):  # 262
             self.aux[0].setPos(-28, -14)
 
 
-class SpriteImage_WaterPiranha(SLib.SpriteImage_Static):  # 263
+class ActorImage_WaterPiranha(actorlib.ActorImage_Static):  # 263
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -5508,14 +5513,14 @@ class SpriteImage_WaterPiranha(SLib.SpriteImage_Static):  # 263
         )
 
         # Highest point
-        ballAuxImage = SLib.AuxiliaryImage(parent, 38, 30)
+        ballAuxImage = actorlib.AuxiliaryImage(parent, 38, 30)
         ballAuxImage.image = ImageCache['WaterPiranhaBall']
         ballAuxImage.setPos(2, -170)
         ballAuxImage.hover = True
         self.aux.append(ballAuxImage)
 
         # Lowest point
-        lowestAuxImage = SLib.AuxiliaryImage(parent, 38, 30)
+        lowestAuxImage = actorlib.AuxiliaryImage(parent, 38, 30)
         lowestAuxImage.image = ImageCache['WaterPiranhaBall']
         lowestAuxImage.setPos(2, -24)
         lowestAuxImage.alpha = 0.5
@@ -5524,11 +5529,11 @@ class SpriteImage_WaterPiranha(SLib.SpriteImage_Static):  # 263
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('WaterPiranhaBody', 'water_piranha_body.png')
-        SLib.loadIfNotInImageCache('WaterPiranhaBall', 'water_piranha_ball.png')
+        actorlib.loadIfNotInImageCache('WaterPiranhaBody', 'water_piranha_body.png')
+        actorlib.loadIfNotInImageCache('WaterPiranhaBall', 'water_piranha_ball.png')
 
 
-class SpriteImage_WalkingPiranha(SLib.SpriteImage_Static):  # 264
+class ActorImage_WalkingPiranha(actorlib.ActorImage_Static):  # 264
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -5536,17 +5541,17 @@ class SpriteImage_WalkingPiranha(SLib.SpriteImage_Static):  # 264
             ImageCache['WalkPiranha'],
             (-4 / 1.5, -50),
         )
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, self.width, 16, SLib.AuxiliaryTrackObject.Horizontal))
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, self.width, 16, SLib.AuxiliaryTrackObject.Horizontal))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, self.width, 16, actorlib.AuxiliaryTrackObject.Horizontal))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, self.width, 16, actorlib.AuxiliaryTrackObject.Horizontal))
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('WalkPiranha', 'walk_piranha.png')
+        actorlib.loadIfNotInImageCache('WalkPiranha', 'walk_piranha.png')
 
     def dataChanged(self):
         if (
-            not isinstance(self.aux[0], SLib.AuxiliaryTrackObject)
-            or not isinstance(self.aux[1], SLib.AuxiliaryTrackObject)
+            not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject)
+            or not isinstance(self.aux[1], actorlib.AuxiliaryTrackObject)
         ):
             return
 
@@ -5564,11 +5569,11 @@ class SpriteImage_WalkingPiranha(SLib.SpriteImage_Static):  # 264
         super().dataChanged()
 
 
-class SpriteImage_FallingIcicle(SLib.SpriteImage_StaticMultiple):  # 265
+class ActorImage_FallingIcicle(actorlib.ActorImage_StaticMultiple):  # 265
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('IcicleSmall', 'icicle_small.png')
-        SLib.loadIfNotInImageCache('IcicleLarge', 'icicle_large.png')
+        actorlib.loadIfNotInImageCache('IcicleSmall', 'icicle_small.png')
+        actorlib.loadIfNotInImageCache('IcicleLarge', 'icicle_large.png')
 
     def dataChanged(self):
         super().dataChanged()
@@ -5582,32 +5587,32 @@ class SpriteImage_FallingIcicle(SLib.SpriteImage_StaticMultiple):  # 265
             self.height = 36
 
 
-class SpriteImage_RotatingFence(SLib.SpriteImage):  # 266
+class ActorImage_RotatingFence(actorlib.ActorImage):  # 266
     def __init__(self, parent):
         w, h = ImageCache['RotatingFence'].width(), ImageCache['RotatingFence'].height()
         super().__init__(parent)
         self.parent.setZValue(24999)
 
-        rotatingFenceAuxImage = SLib.AuxiliaryImage(parent, w, h)
+        rotatingFenceAuxImage = actorlib.AuxiliaryImage(parent, w, h)
         rotatingFenceAuxImage.image = ImageCache['RotatingFence']
         rotatingFenceAuxImage.setPos(-((w / 2) + 90) / 1.5, -((h / 2) + 90) / 1.5)
         self.aux.append(rotatingFenceAuxImage)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('RotatingFence', 'rotating_chainlink.png')
+        actorlib.loadIfNotInImageCache('RotatingFence', 'rotating_chainlink.png')
 
 
-class SpriteImage_TiltGrate(SLib.SpriteImage_StaticMultiple):  # 267
+class ActorImage_TiltGrate(actorlib.ActorImage_StaticMultiple):  # 267
     @staticmethod
     def loadImages():
         if 'TiltGrateU' in ImageCache:
             return
 
-        ImageCache['TiltGrateU'] = SLib.GetPixmap('tilt_grate_up.png')
-        ImageCache['TiltGrateD'] = SLib.GetPixmap('tilt_grate_down.png')
-        ImageCache['TiltGrateL'] = SLib.GetPixmap('tilt_grate_left.png')
-        ImageCache['TiltGrateR'] = SLib.GetPixmap('tilt_grate_right.png')
+        ImageCache['TiltGrateU'] = actorlib.GetPixmap('tilt_grate_up.png')
+        ImageCache['TiltGrateD'] = actorlib.GetPixmap('tilt_grate_down.png')
+        ImageCache['TiltGrateL'] = actorlib.GetPixmap('tilt_grate_left.png')
+        ImageCache['TiltGrateR'] = actorlib.GetPixmap('tilt_grate_right.png')
 
     def dataChanged(self):
         direction = self.parent.spritedata[5] & 3
@@ -5634,7 +5639,7 @@ class SpriteImage_TiltGrate(SLib.SpriteImage_StaticMultiple):  # 267
         super().dataChanged()
 
 
-class SpriteImage_LavaGeyser(SLib.SpriteImage_StaticMultiple):  # 268
+class ActorImage_LavaGeyser(actorlib.ActorImage_StaticMultiple):  # 268
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
@@ -5646,7 +5651,7 @@ class SpriteImage_LavaGeyser(SLib.SpriteImage_StaticMultiple):  # 268
         if 'LavaGeyser0' in ImageCache:
             return
         for i in range(7):
-            lavaGeyser = SLib.GetImage(f'lava_geyser_{i}.png')
+            lavaGeyser = actorlib.GetImage(f'lava_geyser_{i}.png')
             if lavaGeyser is None:
                 continue
 
@@ -5676,7 +5681,7 @@ class SpriteImage_LavaGeyser(SLib.SpriteImage_StaticMultiple):  # 268
         super().dataChanged()
 
 
-class SpriteImage_Parabomb(SLib.SpriteImage_Static):  # 269
+class ActorImage_Parabomb(actorlib.ActorImage_Static):  # 269
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -5687,17 +5692,17 @@ class SpriteImage_Parabomb(SLib.SpriteImage_Static):  # 269
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Parabomb', 'parabomb.png')
+        actorlib.loadIfNotInImageCache('Parabomb', 'parabomb.png')
 
 
-class SpriteImage_ScaredyRat(SLib.SpriteImage):  # 271
+class ActorImage_ScaredyRat(actorlib.ActorImage):  # 271
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('ScaredyRat', 'scaredy_rat.png')
+        actorlib.loadIfNotInImageCache('ScaredyRat', 'scaredy_rat.png')
 
     def dataChanged(self):
         number = (self.parent.spritedata[5] >> 4) & 3
@@ -5721,7 +5726,7 @@ class SpriteImage_ScaredyRat(SLib.SpriteImage):  # 271
         painter.drawTiledPixmap(0, 0, int(self.width * 1.5), 24, rat)
 
 
-class SpriteImage_IceBro(SLib.SpriteImage_Static):  # 272
+class ActorImage_IceBro(actorlib.ActorImage_Static):  # 272
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -5732,22 +5737,22 @@ class SpriteImage_IceBro(SLib.SpriteImage_Static):  # 272
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('IceBro', 'icebro.png')
+        actorlib.loadIfNotInImageCache('IceBro', 'icebro.png')
 
 
-class SpriteImage_CastleGear(SLib.SpriteImage):  # 274
+class ActorImage_CastleGear(actorlib.ActorImage):  # 274
     def __init__(self, parent):
         super().__init__(parent)
-        self.aux.append(SLib.AuxiliaryImage(parent, 456, 456))
+        self.aux.append(actorlib.AuxiliaryImage(parent, 456, 456))
         self.parent.setZValue(24999)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('CastleGearL', 'castle_gear_large.png')
-        SLib.loadIfNotInImageCache('CastleGearS', 'castle_gear_small.png')
+        actorlib.loadIfNotInImageCache('CastleGearL', 'castle_gear_large.png')
+        actorlib.loadIfNotInImageCache('CastleGearS', 'castle_gear_small.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryImage):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
         big = (self.parent.spritedata[4] & 0xF) & 1
@@ -5759,7 +5764,7 @@ class SpriteImage_CastleGear(SLib.SpriteImage):  # 274
             self.aux[0].image = ImageCache['CastleGearS']
             self.aux[0].setPos(-145, -145)
 
-class SpriteImage_FiveEnemyRaft(SLib.SpriteImage_Static):  # 275
+class ActorImage_FiveEnemyRaft(actorlib.ActorImage_Static):  # 275
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -5770,17 +5775,17 @@ class SpriteImage_FiveEnemyRaft(SLib.SpriteImage_Static):  # 275
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('FiveEnemyRaft', '5_enemy_max_raft.png')
+        actorlib.loadIfNotInImageCache('FiveEnemyRaft', '5_enemy_max_raft.png')
 
 
-class SpriteImage_GhostDoor(SpriteImage_Door):  # 276
+class ActorImage_GhostDoor(ActorImage_Door):  # 276
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.doorName = 'GhostDoor'
         self.doorDimensions = (0, 0, 34, 48)
 
 
-class SpriteImage_TowerDoor(SpriteImage_Door):  # 277
+class ActorImage_TowerDoor(ActorImage_Door):  # 277
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.doorName = 'TowerDoor'
@@ -5788,7 +5793,7 @@ class SpriteImage_TowerDoor(SpriteImage_Door):  # 277
         self.entranceOffset = (15, 66)
 
 
-class SpriteImage_CastleDoor(SpriteImage_Door):  # 278
+class ActorImage_CastleDoor(ActorImage_Door):  # 278
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.doorName = 'CastleDoor'
@@ -5796,14 +5801,14 @@ class SpriteImage_CastleDoor(SpriteImage_Door):  # 278
         self.entranceOffset = (15, 66)
 
 
-class SpriteImage_GiantIceBlock(SLib.SpriteImage_StaticMultiple):  # 280
+class ActorImage_GiantIceBlock(actorlib.ActorImage_StaticMultiple):  # 280
     @staticmethod
     def loadImages():
         if 'BigIceBlockEmpty' in ImageCache:
             return
-        ImageCache['BigIceBlockEmpty'] = SLib.GetPixmap('big_ice_block_empty.png')
-        ImageCache['BigIceBlockBobomb'] = SLib.GetPixmap('big_ice_block_bobomb.png')
-        ImageCache['BigIceBlockSpikeBall'] = SLib.GetPixmap('big_ice_block_spikeball.png')
+        ImageCache['BigIceBlockEmpty'] = actorlib.GetPixmap('big_ice_block_empty.png')
+        ImageCache['BigIceBlockBobomb'] = actorlib.GetPixmap('big_ice_block_bobomb.png')
+        ImageCache['BigIceBlockSpikeBall'] = actorlib.GetPixmap('big_ice_block_spikeball.png')
 
     def dataChanged(self):
 
@@ -5821,7 +5826,7 @@ class SpriteImage_GiantIceBlock(SLib.SpriteImage_StaticMultiple):  # 280
         super().dataChanged()
 
 
-class SpriteImage_RiseFallWater(SpriteImage_LiquidOrFog):  # 285
+class ActorImage_RiseFallWater(ActorImage_LiquidOrFog):  # 285
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -5837,10 +5842,10 @@ class SpriteImage_RiseFallWater(SpriteImage_LiquidOrFog):  # 285
     def loadImages():
         if 'LiquidWater' in ImageCache:
             return
-        ImageCache['LiquidWater'] = SLib.GetPixmap('liquid_water.png')
-        ImageCache['LiquidWaterCrest'] = SLib.GetPixmap('liquid_water_crest.png')
-        ImageCache['LiquidWaterRise'] = SLib.GetPixmap('liquid_water_rise.png')
-        ImageCache['LiquidWaterRiseCrest'] = SLib.GetPixmap('liquid_water_rise_crest.png')
+        ImageCache['LiquidWater'] = actorlib.GetPixmap('liquid_water.png')
+        ImageCache['LiquidWaterCrest'] = actorlib.GetPixmap('liquid_water_crest.png')
+        ImageCache['LiquidWaterRise'] = actorlib.GetPixmap('liquid_water_rise.png')
+        ImageCache['LiquidWaterRiseCrest'] = actorlib.GetPixmap('liquid_water_rise_crest.png')
 
     def dataChanged(self):
 
@@ -5897,14 +5902,14 @@ class SpriteImage_RiseFallWater(SpriteImage_LiquidOrFog):  # 285
         super().positionChanged()
 
 
-class SpriteImage_WoodCircle(SLib.SpriteImage_StaticMultiple):  # 286
+class ActorImage_WoodCircle(actorlib.ActorImage_StaticMultiple):  # 286
     @staticmethod
     def loadImages():
         if 'WoodCircle0' in ImageCache:
             return
-        ImageCache['WoodCircle0'] = SLib.GetPixmap('wood_circle_0.png')
-        ImageCache['WoodCircle1'] = SLib.GetPixmap('wood_circle_1.png')
-        ImageCache['WoodCircle2'] = SLib.GetPixmap('wood_circle_2.png')
+        ImageCache['WoodCircle0'] = actorlib.GetPixmap('wood_circle_0.png')
+        ImageCache['WoodCircle1'] = actorlib.GetPixmap('wood_circle_1.png')
+        ImageCache['WoodCircle2'] = actorlib.GetPixmap('wood_circle_2.png')
 
     def dataChanged(self):
         super().dataChanged()
@@ -5921,15 +5926,15 @@ class SpriteImage_WoodCircle(SLib.SpriteImage_StaticMultiple):  # 286
         )[size]
 
 
-class SpriteImage_PathIceBlock(SLib.SpriteImage_StaticMultiple):  # 287
+class ActorImage_PathIceBlock(actorlib.ActorImage_StaticMultiple):  # 287
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
         self.alpha = 0.8
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('PathIceBlock', 'unused_path_ice_block.png')
+        actorlib.loadIfNotInImageCache('PathIceBlock', 'unused_path_ice_block.png')
 
     def dataChanged(self):
         width = (self.parent.spritedata[5] & 0xF) + 1
@@ -5940,7 +5945,7 @@ class SpriteImage_PathIceBlock(SLib.SpriteImage_StaticMultiple):  # 287
         super().dataChanged()
 
 
-class SpriteImage_RollingBarrel(SLib.SpriteImage_Static):  # 288
+class ActorImage_RollingBarrel(actorlib.ActorImage_Static):  # 288
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -5951,14 +5956,14 @@ class SpriteImage_RollingBarrel(SLib.SpriteImage_Static):  # 288
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('RollingBarrel', 'barrel_rolling.png')
+        actorlib.loadIfNotInImageCache('RollingBarrel', 'barrel_rolling.png')
 
 
-class SpriteImage_Box(SLib.SpriteImage_StaticMultiple):  # 289
+class ActorImage_Box(actorlib.ActorImage_StaticMultiple):  # 289
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('ShipKey', 'ship_key.png')
-        SLib.loadIfNotInImageCache('5Coin', '5_coin.png')
+        actorlib.loadIfNotInImageCache('ShipKey', 'ship_key.png')
+        actorlib.loadIfNotInImageCache('5Coin', '5_coin.png')
 
         if 'YoshiFire' not in ImageCache:
             pix = QtGui.QPixmap(48, 24)
@@ -5973,7 +5978,7 @@ class SpriteImage_Box(SLib.SpriteImage_StaticMultiple):  # 289
             return
         for style, stylestr in ((0, 'wood'), (1, 'metal')):
             for size, sizestr in zip(range(4), ('small', 'wide', 'tall', 'big')):
-                box = SLib.GetImage(f'box_{stylestr}_{sizestr}.png')
+                box = actorlib.GetImage(f'box_{stylestr}_{sizestr}.png')
                 if box is None:
                     continue
 
@@ -6024,15 +6029,15 @@ class SpriteImage_Box(SLib.SpriteImage_StaticMultiple):  # 289
         super().dataChanged()
 
 
-class SpriteImage_Parabeetle(SLib.SpriteImage_StaticMultiple):  # 291
+class ActorImage_Parabeetle(actorlib.ActorImage_StaticMultiple):  # 291
     @staticmethod
     def loadImages():
         if 'ParabeetleRight' in ImageCache:
             return
-        ImageCache['ParabeetleRight'] = SLib.GetPixmap('parabeetle_right.png')
-        ImageCache['ParabeetleLeft'] = SLib.GetPixmap('parabeetle_left.png')
-        ImageCache['ParabeetleMoreRight'] = SLib.GetPixmap('parabeetle_moreright.png')
-        ImageCache['ParabeetleAtYou'] = SLib.GetPixmap('parabeetle_atyou.png')
+        ImageCache['ParabeetleRight'] = actorlib.GetPixmap('parabeetle_right.png')
+        ImageCache['ParabeetleLeft'] = actorlib.GetPixmap('parabeetle_left.png')
+        ImageCache['ParabeetleMoreRight'] = actorlib.GetPixmap('parabeetle_moreright.png')
+        ImageCache['ParabeetleAtYou'] = actorlib.GetPixmap('parabeetle_atyou.png')
 
     def dataChanged(self):
         direction = self.parent.spritedata[5] & 0xf
@@ -6054,15 +6059,15 @@ class SpriteImage_Parabeetle(SLib.SpriteImage_StaticMultiple):  # 291
         super().dataChanged()
 
 
-class SpriteImage_HeavyParabeetle(SLib.SpriteImage_StaticMultiple):  # 292
+class ActorImage_HeavyParabeetle(actorlib.ActorImage_StaticMultiple):  # 292
     @staticmethod
     def loadImages():
         if 'HeavyParabeetleRight' in ImageCache:
             return
-        ImageCache['HeavyParabeetleRight'] = SLib.GetPixmap('heavy_parabeetle_right.png')
-        ImageCache['HeavyParabeetleLeft'] = SLib.GetPixmap('heavy_parabeetle_left.png')
-        ImageCache['HeavyParabeetleMoreRight'] = SLib.GetPixmap('heavy_parabeetle_moreright.png')
-        ImageCache['HeavyParabeetleAtYou'] = SLib.GetPixmap('heavy_parabeetle_atyou.png')
+        ImageCache['HeavyParabeetleRight'] = actorlib.GetPixmap('heavy_parabeetle_right.png')
+        ImageCache['HeavyParabeetleLeft'] = actorlib.GetPixmap('heavy_parabeetle_left.png')
+        ImageCache['HeavyParabeetleMoreRight'] = actorlib.GetPixmap('heavy_parabeetle_moreright.png')
+        ImageCache['HeavyParabeetleAtYou'] = actorlib.GetPixmap('heavy_parabeetle_atyou.png')
 
     def dataChanged(self):
 
@@ -6085,7 +6090,7 @@ class SpriteImage_HeavyParabeetle(SLib.SpriteImage_StaticMultiple):  # 292
         super().dataChanged()
 
 
-class SpriteImage_IceCube(SLib.SpriteImage_Static):  # 294
+class ActorImage_IceCube(actorlib.ActorImage_Static):  # 294
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -6095,13 +6100,13 @@ class SpriteImage_IceCube(SLib.SpriteImage_Static):  # 294
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('IceCube', 'ice_cube.png')
+        actorlib.loadIfNotInImageCache('IceCube', 'ice_cube.png')
 
 
-class SpriteImage_NutPlatform(SLib.SpriteImage_StaticMultiple):  # 295
+class ActorImage_NutPlatform(actorlib.ActorImage_StaticMultiple):  # 295
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('NutPlatform', 'nut_platform.png')
+        actorlib.loadIfNotInImageCache('NutPlatform', 'nut_platform.png')
 
     def dataChanged(self):
         offsetUp = self.parent.spritedata[5] >> 4
@@ -6128,7 +6133,7 @@ class SpriteImage_NutPlatform(SLib.SpriteImage_StaticMultiple):  # 295
         super().dataChanged()
 
 
-class SpriteImage_MegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 296
+class ActorImage_MegaBuzzy(actorlib.ActorImage_StaticMultiple):  # 296
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.offset = (-43, -74)
@@ -6137,9 +6142,9 @@ class SpriteImage_MegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 296
     def loadImages():
         if 'MegaBuzzyR' in ImageCache:
             return
-        ImageCache['MegaBuzzyR'] = SLib.GetPixmap('megabuzzy_right.png')
-        ImageCache['MegaBuzzyL'] = SLib.GetPixmap('megabuzzy_left.png')
-        SLib.loadIfNotInImageCache('MegaBuzzyF', 'megabuzzy_front.png')
+        ImageCache['MegaBuzzyR'] = actorlib.GetPixmap('megabuzzy_right.png')
+        ImageCache['MegaBuzzyL'] = actorlib.GetPixmap('megabuzzy_left.png')
+        actorlib.loadIfNotInImageCache('MegaBuzzyF', 'megabuzzy_front.png')
 
     def dataChanged(self):
 
@@ -6154,19 +6159,19 @@ class SpriteImage_MegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 296
         super().dataChanged()
 
 
-class SpriteImage_DragonCoaster(SLib.SpriteImage):  # 297
+class ActorImage_DragonCoaster(actorlib.ActorImage):  # 297
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
         self.height = 22
 
     @staticmethod
     def loadImages():
         if 'DragonHead' in ImageCache:
             return
-        ImageCache['DragonHead'] = SLib.GetPixmap('dragon_coaster_head.png')
-        ImageCache['DragonBody'] = SLib.GetPixmap('dragon_coaster_body.png')
-        ImageCache['DragonTail'] = SLib.GetPixmap('dragon_coaster_tail.png')
+        ImageCache['DragonHead'] = actorlib.GetPixmap('dragon_coaster_head.png')
+        ImageCache['DragonBody'] = actorlib.GetPixmap('dragon_coaster_body.png')
+        ImageCache['DragonTail'] = actorlib.GetPixmap('dragon_coaster_tail.png')
 
     def dataChanged(self):
         raw_size = self.parent.spritedata[5] & 7
@@ -6195,7 +6200,7 @@ class SpriteImage_DragonCoaster(SLib.SpriteImage):  # 297
             painter.drawPixmap(0, 0, ImageCache['DragonTail'])
 
 
-class SpriteImage_LongCannon(SLib.SpriteImage_StaticMultiple):  # 298
+class ActorImage_LongCannon(actorlib.ActorImage_StaticMultiple):  # 298
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
@@ -6204,23 +6209,23 @@ class SpriteImage_LongCannon(SLib.SpriteImage_StaticMultiple):  # 298
         # TODO: make LongCannonER and BLongCannonER
         if 'LongCannonFL' in ImageCache:
             return
-        ImageCache['LongCannonFL'] = SLib.GetPixmap('cannon_front_left.png')
-        ImageCache['LongCannonFR'] = SLib.GetPixmap('cannon_front_right.png')
-        ImageCache['LongCannonM'] = SLib.GetPixmap('cannon_middle.png')
-        ImageCache['LongCannonEL'] = SLib.GetPixmap('cannon_end_left.png')
+        ImageCache['LongCannonFL'] = actorlib.GetPixmap('cannon_front_left.png')
+        ImageCache['LongCannonFR'] = actorlib.GetPixmap('cannon_front_right.png')
+        ImageCache['LongCannonM'] = actorlib.GetPixmap('cannon_middle.png')
+        ImageCache['LongCannonEL'] = actorlib.GetPixmap('cannon_end_left.png')
 
-        ImageCache['BLongCannonFL'] = SLib.GetPixmap('cannonbig_front_left.png')
-        ImageCache['BLongCannonFR'] = SLib.GetPixmap('cannonbig_front_right.png')
-        ImageCache['BLongCannonM'] = SLib.GetPixmap('cannonbig_middle.png')
-        ImageCache['BLongCannonEL'] = SLib.GetPixmap('cannonbig_end_left.png')
+        ImageCache['BLongCannonFL'] = actorlib.GetPixmap('cannonbig_front_left.png')
+        ImageCache['BLongCannonFR'] = actorlib.GetPixmap('cannonbig_front_right.png')
+        ImageCache['BLongCannonM'] = actorlib.GetPixmap('cannonbig_middle.png')
+        ImageCache['BLongCannonEL'] = actorlib.GetPixmap('cannonbig_end_left.png')
 
-        ImageCache['LongCannonFU'] = SLib.GetPixmap('cannon_front_up.png')
-        ImageCache['BLongCannonFU'] = SLib.GetPixmap('cannonbig_front_up.png')
+        ImageCache['LongCannonFU'] = actorlib.GetPixmap('cannon_front_up.png')
+        ImageCache['BLongCannonFU'] = actorlib.GetPixmap('cannonbig_front_up.png')
 
         ImageCache['LongCannonER'] = ImageCache['LongCannonEL']
         ImageCache['BLongCannonER'] = ImageCache['BLongCannonEL']
-        #ImageCache['LongCannonER'] = SLib.GetPixmap('cannon_end_right.png')
-        #ImageCache['BLongCannonER'] = SLib.GetPixmap('cannonbig_end_right.png')
+        #ImageCache['LongCannonER'] = actorlib.GetPixmap('cannon_end_right.png')
+        #ImageCache['BLongCannonER'] = actorlib.GetPixmap('cannonbig_end_right.png')
 
     def dataChanged(self):
         super().dataChanged()
@@ -6269,7 +6274,7 @@ class SpriteImage_LongCannon(SLib.SpriteImage_StaticMultiple):  # 298
         big_s = 'B' if self.big else ''
 
         middle = ImageCache[big_s + 'LongCannonM']
-        solid = SLib.GetTile(1)
+        solid = actorlib.GetTile(1)
         if self.dir == 0: # right
             front = ImageCache[big_s + 'LongCannonFR']
             end = ImageCache[big_s + 'LongCannonEL']
@@ -6315,7 +6320,7 @@ class SpriteImage_LongCannon(SLib.SpriteImage_StaticMultiple):  # 298
             painter.drawPixmap(24 * self.numMiddle + self.tilesize, 0, end)
 
 
-class SpriteImage_CannonMulti(SLib.SpriteImage_StaticMultiple):  # 299
+class ActorImage_CannonMulti(actorlib.ActorImage_StaticMultiple):  # 299
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
@@ -6323,8 +6328,8 @@ class SpriteImage_CannonMulti(SLib.SpriteImage_StaticMultiple):  # 299
     def loadImages():
         if 'CannonMultiU0' in ImageCache:
             return
-        CannonUR = SLib.GetImage('cannon_multi_0.png')
-        CannonUL = SLib.GetImage('cannon_multi_1.png')
+        CannonUR = actorlib.GetImage('cannon_multi_0.png')
+        CannonUL = actorlib.GetImage('cannon_multi_1.png')
         if CannonUR is None or CannonUL is None:
             return
 
@@ -6347,11 +6352,11 @@ class SpriteImage_CannonMulti(SLib.SpriteImage_StaticMultiple):  # 299
         super().dataChanged()
 
 
-class SpriteImage_RotCannon(SLib.SpriteImage_StaticMultiple):  # 300
+class ActorImage_RotCannon(actorlib.ActorImage_StaticMultiple):  # 300
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('RotCannon', 'rot_cannon.png')
-        SLib.loadIfNotInImageCache('RotCannonU', 'rot_cannon_u.png')
+        actorlib.loadIfNotInImageCache('RotCannon', 'rot_cannon.png')
+        actorlib.loadIfNotInImageCache('RotCannonU', 'rot_cannon_u.png')
 
     def dataChanged(self):
 
@@ -6366,11 +6371,11 @@ class SpriteImage_RotCannon(SLib.SpriteImage_StaticMultiple):  # 300
         super().dataChanged()
 
 
-class SpriteImage_RotCannonPipe(SLib.SpriteImage_StaticMultiple):  # 301
+class ActorImage_RotCannonPipe(actorlib.ActorImage_StaticMultiple):  # 301
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('RotCannonPipe', 'rot_cannon_pipe.png')
-        SLib.loadIfNotInImageCache('RotCannonPipeU', 'rot_cannon_pipe_u.png')
+        actorlib.loadIfNotInImageCache('RotCannonPipe', 'rot_cannon_pipe.png')
+        actorlib.loadIfNotInImageCache('RotCannonPipeU', 'rot_cannon_pipe_u.png')
 
     def dataChanged(self):
 
@@ -6385,11 +6390,11 @@ class SpriteImage_RotCannonPipe(SLib.SpriteImage_StaticMultiple):  # 301
         super().dataChanged()
 
 
-class SpriteImage_MontyMole(SLib.SpriteImage_StaticMultiple):  # 303
+class ActorImage_MontyMole(actorlib.ActorImage_StaticMultiple):  # 303
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Mole', 'monty_mole.png')
-        SLib.loadIfNotInImageCache('MoleCave', 'monty_mole_hole.png')
+        actorlib.loadIfNotInImageCache('Mole', 'monty_mole.png')
+        actorlib.loadIfNotInImageCache('MoleCave', 'monty_mole_hole.png')
 
     def dataChanged(self):
 
@@ -6404,13 +6409,13 @@ class SpriteImage_MontyMole(SLib.SpriteImage_StaticMultiple):  # 303
         super().dataChanged()
 
 
-class SpriteImage_RotFlameCannon(SLib.SpriteImage_StaticMultiple):  # 304
+class ActorImage_RotFlameCannon(actorlib.ActorImage_StaticMultiple):  # 304
     @staticmethod
     def loadImages():
         if 'RotFlameCannon0' in ImageCache:
             return
         for i in range(5):
-            originalImg = SLib.GetImage(f'rotating_flame_cannon_{i}.png')
+            originalImg = actorlib.GetImage(f'rotating_flame_cannon_{i}.png')
             if originalImg is None:
                 continue
 
@@ -6436,23 +6441,23 @@ class SpriteImage_RotFlameCannon(SLib.SpriteImage_StaticMultiple):  # 304
         super().dataChanged()
 
 
-class SpriteImage_LightCircle(SLib.SpriteImage):  # 305
+class ActorImage_LightCircle(actorlib.ActorImage):  # 305
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
-        lightCircleAuxImage = SLib.AuxiliaryImage(parent, 128, 128)
+        lightCircleAuxImage = actorlib.AuxiliaryImage(parent, 128, 128)
         lightCircleAuxImage.image = ImageCache['LightCircle']
         lightCircleAuxImage.setPos(-60, -60)
         lightCircleAuxImage.hover = False
-        lightCircleAuxImage.setIsBehindSprite(False)
+        lightCircleAuxImage.setIsBehindActor(False)
         self.aux.append(lightCircleAuxImage)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('LightCircle', 'light_circle.png')
+        actorlib.loadIfNotInImageCache('LightCircle', 'light_circle.png')
 
 
-class SpriteImage_RotSpotlight(SLib.SpriteImage_StaticMultiple):  # 306
+class ActorImage_RotSpotlight(actorlib.ActorImage_StaticMultiple):  # 306
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.offset = (-22, -64)
@@ -6462,7 +6467,7 @@ class SpriteImage_RotSpotlight(SLib.SpriteImage_StaticMultiple):  # 306
         if 'RotSpotlight0' in ImageCache:
             return
         for i in range(16):
-            ImageCache[f'RotSpotlight{i}'] = SLib.GetPixmap(f'rotational_spotlight_{i}.png')
+            ImageCache[f'RotSpotlight{i}'] = actorlib.GetPixmap(f'rotational_spotlight_{i}.png')
 
     def dataChanged(self):
 
@@ -6472,11 +6477,11 @@ class SpriteImage_RotSpotlight(SLib.SpriteImage_StaticMultiple):  # 306
         super().dataChanged()
 
 
-class SpriteImage_HammerBroPlatform(SpriteImage_HammerBroNormal):  # 308
+class ActorImage_HammerBroPlatform(ActorImage_HammerBroNormal):  # 308
     pass
 
 
-class SpriteImage_SynchroFlameJet(SLib.SpriteImage_StaticMultiple):  # 309
+class ActorImage_SynchroFlameJet(actorlib.ActorImage_StaticMultiple):  # 309
     @staticmethod
     def loadImages():
         if 'SynchroFlameJetOnR' in ImageCache:
@@ -6486,8 +6491,8 @@ class SpriteImage_SynchroFlameJet(SLib.SpriteImage_StaticMultiple):  # 309
         transform90.rotate(90)
         transform270.rotate(270)
 
-        onImage = SLib.GetImage('synchro_flame_jet.png')
-        offImage = SLib.GetImage('synchro_flame_jet_off.png')
+        onImage = actorlib.GetImage('synchro_flame_jet.png')
+        offImage = actorlib.GetImage('synchro_flame_jet_off.png')
         if onImage is None or offImage is None:
             return
 
@@ -6520,7 +6525,7 @@ class SpriteImage_SynchroFlameJet(SLib.SpriteImage_StaticMultiple):  # 309
         super().dataChanged()
 
 
-class SpriteImage_ArrowSign(SLib.SpriteImage_StaticMultiple):  # 310
+class ActorImage_ArrowSign(actorlib.ActorImage_StaticMultiple):  # 310
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.offset = (-8, -16)
@@ -6530,7 +6535,7 @@ class SpriteImage_ArrowSign(SLib.SpriteImage_StaticMultiple):  # 310
         if 'ArrowSign0' in ImageCache:
             return
         for i in range(8):
-            ImageCache[f'ArrowSign{i}'] = SLib.GetPixmap(f'arrow_sign_{i}.png')
+            ImageCache[f'ArrowSign{i}'] = actorlib.GetPixmap(f'arrow_sign_{i}.png')
 
     def dataChanged(self):
         direction = self.parent.spritedata[5] & 0xF
@@ -6541,7 +6546,7 @@ class SpriteImage_ArrowSign(SLib.SpriteImage_StaticMultiple):  # 310
         super().dataChanged()
 
 
-class SpriteImage_MegaIcicle(SLib.SpriteImage_Static):  # 311
+class ActorImage_MegaIcicle(actorlib.ActorImage_Static):  # 311
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -6552,14 +6557,14 @@ class SpriteImage_MegaIcicle(SLib.SpriteImage_Static):  # 311
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('MegaIcicle', 'mega_icicle.png')
+        actorlib.loadIfNotInImageCache('MegaIcicle', 'mega_icicle.png')
 
 
-class SpriteImage_BubbleGen(SLib.SpriteImage):  # 314
+class ActorImage_BubbleGen(actorlib.ActorImage):  # 314
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BubbleGenEffect', 'bubble_gen.png')
+        actorlib.loadIfNotInImageCache('BubbleGenEffect', 'bubble_gen.png')
 
     def dataChanged(self):
         scene = self.parent.scene()
@@ -6609,7 +6614,7 @@ class SpriteImage_BubbleGen(SLib.SpriteImage):  # 314
             painter.drawPixmap(int(x), int(y), Image)
 
 
-class SpriteImage_Bolt(SLib.SpriteImage_Static):  # 315
+class ActorImage_Bolt(actorlib.ActorImage_Static):  # 315
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -6620,27 +6625,27 @@ class SpriteImage_Bolt(SLib.SpriteImage_Static):  # 315
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Bolt', 'bolt.png')
+        actorlib.loadIfNotInImageCache('Bolt', 'bolt.png')
 
 
-class SpriteImage_BoltBox(SLib.SpriteImage):  # 316
+class ActorImage_BoltBox(actorlib.ActorImage):  # 316
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
     @staticmethod
     def loadImages():
         if 'BoltBoxTL' in ImageCache:
             return
-        ImageCache['BoltBoxTL'] = SLib.GetPixmap('boltbox_tl.png')
-        ImageCache['BoltBoxT'] = SLib.GetPixmap('boltbox_t.png')
-        ImageCache['BoltBoxTR'] = SLib.GetPixmap('boltbox_tr.png')
-        ImageCache['BoltBoxL'] = SLib.GetPixmap('boltbox_l.png')
-        ImageCache['BoltBoxM'] = SLib.GetPixmap('boltbox_m.png')
-        ImageCache['BoltBoxR'] = SLib.GetPixmap('boltbox_r.png')
-        ImageCache['BoltBoxBL'] = SLib.GetPixmap('boltbox_bl.png')
-        ImageCache['BoltBoxB'] = SLib.GetPixmap('boltbox_b.png')
-        ImageCache['BoltBoxBR'] = SLib.GetPixmap('boltbox_br.png')
+        ImageCache['BoltBoxTL'] = actorlib.GetPixmap('boltbox_tl.png')
+        ImageCache['BoltBoxT'] = actorlib.GetPixmap('boltbox_t.png')
+        ImageCache['BoltBoxTR'] = actorlib.GetPixmap('boltbox_tr.png')
+        ImageCache['BoltBoxL'] = actorlib.GetPixmap('boltbox_l.png')
+        ImageCache['BoltBoxM'] = actorlib.GetPixmap('boltbox_m.png')
+        ImageCache['BoltBoxR'] = actorlib.GetPixmap('boltbox_r.png')
+        ImageCache['BoltBoxBL'] = actorlib.GetPixmap('boltbox_bl.png')
+        ImageCache['BoltBoxB'] = actorlib.GetPixmap('boltbox_b.png')
+        ImageCache['BoltBoxBR'] = actorlib.GetPixmap('boltbox_br.png')
 
     def dataChanged(self):
         size = self.parent.spritedata[5]
@@ -6664,12 +6669,12 @@ class SpriteImage_BoltBox(SLib.SpriteImage):  # 316
         painter.drawPixmap(xsize - 24, ysize - 24, ImageCache['BoltBoxBR'])
 
 
-class SpriteImage_BoxGenerator(SLib.SpriteImage_StaticMultiple):  # 318
+class ActorImage_BoxGenerator(actorlib.ActorImage_StaticMultiple):  # 318
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.yOffset = -64
 
-        boxAuxImage = SLib.AuxiliaryImage(parent, 96, 48)
+        boxAuxImage = actorlib.AuxiliaryImage(parent, 96, 48)
         boxAuxImage.setPos(0, 64)
         boxAuxImage.alpha = 0.5
         boxAuxImage.hover = True
@@ -6677,13 +6682,13 @@ class SpriteImage_BoxGenerator(SLib.SpriteImage_StaticMultiple):  # 318
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BoxGenerator', 'box_generator.png')
+        actorlib.loadIfNotInImageCache('BoxGenerator', 'box_generator.png')
 
-        SLib.loadIfNotInImageCache('Box01', 'box_wood_wide.png')
-        SLib.loadIfNotInImageCache('Box11', 'box_metal_wide.png')
+        actorlib.loadIfNotInImageCache('Box01', 'box_wood_wide.png')
+        actorlib.loadIfNotInImageCache('Box11', 'box_metal_wide.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryImage):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
         boxType = self.parent.spritedata[4] & 1
@@ -6700,23 +6705,23 @@ class SpriteImage_BoxGenerator(SLib.SpriteImage_StaticMultiple):  # 318
         super().dataChanged()
 
 
-class SpriteImage_UnusedWiimoteDoor(SpriteImage_UnusedGiantDoor):  # 319
+class ActorImage_UnusedWiimoteDoor(ActorImage_UnusedGiantDoor):  # 319
     pass
 
 
-class SpriteImage_UnusedSlidingWiimoteDoor(SpriteImage_UnusedGiantDoor):  # 320
+class ActorImage_UnusedSlidingWiimoteDoor(ActorImage_UnusedGiantDoor):  # 320
     pass
 
 
-class SpriteImage_ArrowBlock(SLib.SpriteImage_StaticMultiple):  # 321
+class ActorImage_ArrowBlock(actorlib.ActorImage_StaticMultiple):  # 321
     @staticmethod
     def loadImages():
         if 'ArrowBlock0' in ImageCache:
             return
-        ImageCache['ArrowBlock0'] = SLib.GetPixmap('arrow_block_up.png')
-        ImageCache['ArrowBlock1'] = SLib.GetPixmap('arrow_block_down.png')
-        ImageCache['ArrowBlock2'] = SLib.GetPixmap('arrow_block_left.png')
-        ImageCache['ArrowBlock3'] = SLib.GetPixmap('arrow_block_right.png')
+        ImageCache['ArrowBlock0'] = actorlib.GetPixmap('arrow_block_up.png')
+        ImageCache['ArrowBlock1'] = actorlib.GetPixmap('arrow_block_down.png')
+        ImageCache['ArrowBlock2'] = actorlib.GetPixmap('arrow_block_left.png')
+        ImageCache['ArrowBlock3'] = actorlib.GetPixmap('arrow_block_right.png')
 
     def dataChanged(self):
         direction = self.parent.spritedata[5] & 3
@@ -6725,13 +6730,13 @@ class SpriteImage_ArrowBlock(SLib.SpriteImage_StaticMultiple):  # 321
         super().dataChanged()
 
 
-class SpriteImage_BooCircle(SLib.SpriteImage):  # 323
+class ActorImage_BooCircle(actorlib.ActorImage):  # 323
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
         self.BooAuxImage = QtGui.QPixmap(1024, 1024)
         self.BooAuxImage.fill(Qt.GlobalColor.transparent)
-        booAuxImage = SLib.AuxiliaryImage(parent, 1024, 1024)
+        booAuxImage = actorlib.AuxiliaryImage(parent, 1024, 1024)
         booAuxImage.image = self.BooAuxImage
         offsetX = ImageCache['Boo1'].width() / 4
         offsetY = ImageCache['Boo1'].height() / 4
@@ -6743,13 +6748,13 @@ class SpriteImage_BooCircle(SLib.SpriteImage):  # 323
     def loadImages():
         if 'Boo2' in ImageCache:
             return
-        ImageCache['Boo1'] = SLib.GetPixmap('boo1.png')
-        ImageCache['Boo2'] = SLib.GetPixmap('boo2.png')
-        ImageCache['Boo3'] = SLib.GetPixmap('boo3.png')
-        ImageCache['Boo4'] = SLib.GetPixmap('boo4.png')
+        ImageCache['Boo1'] = actorlib.GetPixmap('boo1.png')
+        ImageCache['Boo2'] = actorlib.GetPixmap('boo2.png')
+        ImageCache['Boo3'] = actorlib.GetPixmap('boo3.png')
+        ImageCache['Boo4'] = actorlib.GetPixmap('boo4.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryImage):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
         # Constants (change these to fine-tune the boo positions)
@@ -6805,7 +6810,7 @@ class SpriteImage_BooCircle(SLib.SpriteImage):  # 323
         self.aux[0].image = pix
 
 
-class SpriteImage_GhostHouseStand(SLib.SpriteImage_Static):  # 325
+class ActorImage_GhostHouseStand(actorlib.ActorImage_Static):  # 325
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -6816,14 +6821,14 @@ class SpriteImage_GhostHouseStand(SLib.SpriteImage_Static):  # 325
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('GhostHouseStand', 'ghost_house_stand.png')
+        actorlib.loadIfNotInImageCache('GhostHouseStand', 'ghost_house_stand.png')
 
 
-class SpriteImage_KingBill(SLib.SpriteImage):  # 326
+class ActorImage_KingBill(actorlib.ActorImage):  # 326
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
-        kingBillAuxPath = SLib.AuxiliaryPainterPath(parent, QtGui.QPainterPath(), 24, 24)
+        kingBillAuxPath = actorlib.AuxiliaryPainterPath(parent, QtGui.QPainterPath(), 24, 24)
         kingBillAuxPath.setSize(24 * 17, 24 * 17)
         self.aux.append(kingBillAuxPath)
 
@@ -6894,7 +6899,7 @@ class SpriteImage_KingBill(SLib.SpriteImage):  # 326
             self.paths.append(PainterPath)
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryPainterPath):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryPainterPath):
             return
 
         direction = self.parent.spritedata[5] & 3
@@ -6912,7 +6917,7 @@ class SpriteImage_KingBill(SLib.SpriteImage):  # 326
         super().dataChanged()
 
 
-class SpriteImage_LinePlatformBolt(SLib.SpriteImage_Static):  # 327
+class ActorImage_LinePlatformBolt(actorlib.ActorImage_Static):  # 327
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -6926,10 +6931,10 @@ class SpriteImage_LinePlatformBolt(SLib.SpriteImage_Static):  # 327
         if 'LinePlatformBoltLeft' in ImageCache:
             return
 
-        ImageCache['LinePlatformBoltLeft'] = SLib.GetPixmap('line_platform_with_bolt_left.png')
-        ImageCache['LinePlatformBoltCenter'] = SLib.GetPixmap('line_platform_with_bolt_center.png')
-        ImageCache['LinePlatformBoltRight'] = SLib.GetPixmap('line_platform_with_bolt_right.png')
-        SLib.loadIfNotInImageCache('Bolt', 'bolt.png')
+        ImageCache['LinePlatformBoltLeft'] = actorlib.GetPixmap('line_platform_with_bolt_left.png')
+        ImageCache['LinePlatformBoltCenter'] = actorlib.GetPixmap('line_platform_with_bolt_center.png')
+        ImageCache['LinePlatformBoltRight'] = actorlib.GetPixmap('line_platform_with_bolt_right.png')
+        actorlib.loadIfNotInImageCache('Bolt', 'bolt.png')
 
     def dataChanged(self):
         pass
@@ -6943,13 +6948,13 @@ class SpriteImage_LinePlatformBolt(SLib.SpriteImage_Static):  # 327
         painter.drawPixmap(144, 24, ImageCache['LinePlatformBoltRight'])
 
 
-class SpriteImage_BubbleCannon(SLib.SpriteImage_StaticMultiple):  # 328
+class ActorImage_BubbleCannon(actorlib.ActorImage_StaticMultiple):  # 328
     @staticmethod
     def loadImages():
         if 'BubbleCannon0' in ImageCache:
             return
-        ImageCache['BubbleCannon0'] = SLib.GetPixmap('bubble_cannon_small.png')
-        ImageCache['BubbleCannon1'] = SLib.GetPixmap('bubble_cannon_big.png')
+        ImageCache['BubbleCannon0'] = actorlib.GetPixmap('bubble_cannon_small.png')
+        ImageCache['BubbleCannon1'] = actorlib.GetPixmap('bubble_cannon_big.png')
 
     def dataChanged(self):
         size = self.parent.spritedata[5] & 1
@@ -6962,14 +6967,14 @@ class SpriteImage_BubbleCannon(SLib.SpriteImage_StaticMultiple):  # 328
         super().dataChanged()
 
 
-class SpriteImage_RopeLadder(SLib.SpriteImage_StaticMultiple):  # 330
+class ActorImage_RopeLadder(actorlib.ActorImage_StaticMultiple):  # 330
     @staticmethod
     def loadImages():
         if 'RopeLadder0' in ImageCache:
             return
-        ImageCache['RopeLadder0'] = SLib.GetPixmap('ropeladder_0.png')
-        ImageCache['RopeLadder1'] = SLib.GetPixmap('ropeladder_1.png')
-        ImageCache['RopeLadder2'] = SLib.GetPixmap('ropeladder_2.png')
+        ImageCache['RopeLadder0'] = actorlib.GetPixmap('ropeladder_0.png')
+        ImageCache['RopeLadder1'] = actorlib.GetPixmap('ropeladder_1.png')
+        ImageCache['RopeLadder2'] = actorlib.GetPixmap('ropeladder_2.png')
 
     def dataChanged(self):
 
@@ -6983,21 +6988,21 @@ class SpriteImage_RopeLadder(SLib.SpriteImage_StaticMultiple):  # 330
         super().dataChanged()
 
 
-class SpriteImage_DishPlatform(SLib.SpriteImage_StaticMultiple):  # 331
+class ActorImage_DishPlatform(actorlib.ActorImage_StaticMultiple):  # 331
     def __init__(self, parent):
         super().__init__(parent)
         self.parent.setZValue(24999)
-        self.spritebox.shown = True
+        self.actorbox.shown = True
 
-        self.aux.append(SLib.AuxiliaryImage(parent, 304, 195))
+        self.aux.append(actorlib.AuxiliaryImage(parent, 304, 195))
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('DishPlatform0', 'dish_platform_short.png')
-        SLib.loadIfNotInImageCache('DishPlatform1', 'dish_platform_long.png')
+        actorlib.loadIfNotInImageCache('DishPlatform0', 'dish_platform_short.png')
+        actorlib.loadIfNotInImageCache('DishPlatform1', 'dish_platform_long.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryImage):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
         posY = -12
@@ -7017,7 +7022,7 @@ class SpriteImage_DishPlatform(SLib.SpriteImage_StaticMultiple):  # 331
         super().dataChanged()
 
 
-class SpriteImage_PlayerBlockPlatform(SLib.SpriteImage_Static):  # 333
+class ActorImage_PlayerBlockPlatform(actorlib.ActorImage_Static):  # 333
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -7027,27 +7032,27 @@ class SpriteImage_PlayerBlockPlatform(SLib.SpriteImage_Static):  # 333
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('PlayerBlockPlatform', 'player_block_platform.png')
+        actorlib.loadIfNotInImageCache('PlayerBlockPlatform', 'player_block_platform.png')
 
 
-class SpriteImage_CheepGiant(SLib.SpriteImage):  # 334
+class ActorImage_CheepGiant(actorlib.ActorImage):  # 334
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
-        self.aux.append(SLib.AuxiliaryTrackObject(self.parent, 24, 24, SLib.AuxiliaryTrackObject.Horizontal))
+        self.aux.append(actorlib.AuxiliaryTrackObject(self.parent, 24, 24, actorlib.AuxiliaryTrackObject.Horizontal))
 
     @staticmethod
     def loadImages():
         if 'CheepGiantRedLeft' in ImageCache:
             return
-        ImageCache['CheepGiantRedLeft'] = SLib.GetPixmap('cheep_giant_red.png')
-        ImageCache['CheepGiantRedAtYou'] = SLib.GetPixmap('cheep_giant_red_atyou.png')
-        ImageCache['CheepGiantGreen'] = SLib.GetPixmap('cheep_giant_green.png')
-        ImageCache['CheepGiantYellow'] = SLib.GetPixmap('cheep_giant_yellow.png')
+        ImageCache['CheepGiantRedLeft'] = actorlib.GetPixmap('cheep_giant_red.png')
+        ImageCache['CheepGiantRedAtYou'] = actorlib.GetPixmap('cheep_giant_red_atyou.png')
+        ImageCache['CheepGiantGreen'] = actorlib.GetPixmap('cheep_giant_green.png')
+        ImageCache['CheepGiantYellow'] = actorlib.GetPixmap('cheep_giant_yellow.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
         type = self.parent.spritedata[5] & 0xF
@@ -7076,22 +7081,22 @@ class SpriteImage_CheepGiant(SLib.SpriteImage):  # 334
         painter.drawPixmap(0, 0, self.image)
 
 
-class SpriteImage_CheepSchool(SLib.SpriteImage_Static):  # 335
+class ActorImage_CheepSchool(actorlib.ActorImage_Static):  # 335
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = True
+        self.actorbox.shown = True
 
         # Make 4 auxiliaries for our formation Cheeps
-        self.aux.append(SLib.AuxiliaryImage(parent, 26, 24))
-        self.aux.append(SLib.AuxiliaryImage(parent, 26, 24))
-        self.aux.append(SLib.AuxiliaryImage(parent, 26, 24))
-        self.aux.append(SLib.AuxiliaryImage(parent, 26, 24))
+        self.aux.append(actorlib.AuxiliaryImage(parent, 26, 24))
+        self.aux.append(actorlib.AuxiliaryImage(parent, 26, 24))
+        self.aux.append(actorlib.AuxiliaryImage(parent, 26, 24))
+        self.aux.append(actorlib.AuxiliaryImage(parent, 26, 24))
 
     @staticmethod
     def loadImages():
         if 'CheepRedLeft' in ImageCache:
             return
-        ImageCache['CheepRedLeft'] = SLib.GetPixmap('cheep_red.png')
+        ImageCache['CheepRedLeft'] = actorlib.GetPixmap('cheep_red.png')
 
     def dataChanged(self):
         formation = self.parent.spritedata[4] & 0xF
@@ -7099,11 +7104,11 @@ class SpriteImage_CheepSchool(SLib.SpriteImage_Static):  # 335
         noPreview = formation == 0 or formation > 3
 
         for aux in self.aux:
-            if not isinstance(aux, SLib.AuxiliaryImage):
+            if not isinstance(aux, actorlib.AuxiliaryImage):
                 continue
 
             aux.image = ImageCache['CheepRedLeft']
-            aux.setIsBehindSprite(False)
+            aux.setIsBehindActor(False)
             aux.hover = False
             # Hide them if its random or an invalid ID
             aux.alpha = 0.0 if noPreview else 1.0
@@ -7132,14 +7137,14 @@ class SpriteImage_CheepSchool(SLib.SpriteImage_Static):  # 335
         )]
 
         for idx, aux in enumerate(self.aux):
-            if not isinstance(aux, SLib.AuxiliaryImage):
+            if not isinstance(aux, actorlib.AuxiliaryImage):
                 continue
 
             aux.setPos((positions[shape][formation][idx][0]-8) * 1.5, (positions[shape][formation][idx][1]-8) * 1.5)
         super().dataChanged()
 
 
-class SpriteImage_WendyKoopa(SLib.SpriteImage_Static):  # 336
+class ActorImage_WendyKoopa(actorlib.ActorImage_Static):  # 336
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -7150,10 +7155,10 @@ class SpriteImage_WendyKoopa(SLib.SpriteImage_Static):  # 336
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('WendyKoopa', 'Wendy_Koopa.png')
+        actorlib.loadIfNotInImageCache('WendyKoopa', 'Wendy_Koopa.png')
 
 
-class SpriteImage_IggyKoopa(SLib.SpriteImage_Static):  # 337
+class ActorImage_IggyKoopa(actorlib.ActorImage_Static):  # 337
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -7164,19 +7169,19 @@ class SpriteImage_IggyKoopa(SLib.SpriteImage_Static):  # 337
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('IggyKoopa', 'Iggy_Koopa.png')
+        actorlib.loadIfNotInImageCache('IggyKoopa', 'Iggy_Koopa.png')
 
 
 # Copied and edited from Miyamoto, credit to mrbengtsson for original code
-class SpriteImage_MovingBulletBillLauncher(SLib.SpriteImage):  # 338
+class ActorImage_MovingBulletBillLauncher(actorlib.ActorImage):  # 338
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BBLauncherT', 'bullet_launcher_top.png')
-        SLib.loadIfNotInImageCache('BBLauncherM', 'bullet_launcher_middle.png')
+        actorlib.loadIfNotInImageCache('BBLauncherT', 'bullet_launcher_top.png')
+        actorlib.loadIfNotInImageCache('BBLauncherM', 'bullet_launcher_middle.png')
 
 
     def dataChanged(self):
@@ -7214,7 +7219,7 @@ class SpriteImage_MovingBulletBillLauncher(SLib.SpriteImage):  # 338
             painter.drawTiledPixmap(0, 24 * (self.cannonHeight - self.cannonHeightTwo + 2), 24, 48 * self.cannonHeight, ImageCache['BBLauncherM'])
 
 
-class SpriteImage_Pipe_MovingUp(SpriteImage_Pipe):  # 339
+class ActorImage_Pipe_MovingUp(ActorImage_Pipe):  # 339
     def dataChanged(self):
         self.length1 = (self.parent.spritedata[5] >> 4) + 2
         self.length2 = (self.parent.spritedata[5] & 0xF) + 2
@@ -7225,7 +7230,7 @@ class SpriteImage_Pipe_MovingUp(SpriteImage_Pipe):  # 339
         super().dataChanged()
 
 
-class SpriteImage_LemmyKoopa(SLib.SpriteImage_Static):  # 340
+class ActorImage_LemmyKoopa(actorlib.ActorImage_Static):  # 340
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -7236,19 +7241,19 @@ class SpriteImage_LemmyKoopa(SLib.SpriteImage_Static):  # 340
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('LemmyKoopa', 'Lemmy_Koopa.png')
+        actorlib.loadIfNotInImageCache('LemmyKoopa', 'Lemmy_Koopa.png')
 
 
-class SpriteImage_BigShell(SLib.SpriteImage_StaticMultiple):  # 341
+class ActorImage_BigShell(actorlib.ActorImage_StaticMultiple):  # 341
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.offset = (-149 / 1.5, -217 / 1.5)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BigShell', 'bigshell_green.png')
-        SLib.loadIfNotInImageCache('BigShellGrass', 'bigshell_green_grass.png')
-        SLib.loadIfNotInImageCache('BigShellInside', 'bigshell_inside.png')
+        actorlib.loadIfNotInImageCache('BigShell', 'bigshell_green.png')
+        actorlib.loadIfNotInImageCache('BigShellGrass', 'bigshell_green_grass.png')
+        actorlib.loadIfNotInImageCache('BigShellInside', 'bigshell_inside.png')
 
     def dataChanged(self):
         style = self.parent.spritedata[5] & 1
@@ -7267,11 +7272,11 @@ class SpriteImage_BigShell(SLib.SpriteImage_StaticMultiple):  # 341
             painter.drawPixmap(0, 0, 322, 248, ImageCache['BigShellInside'])
 
 
-class SpriteImage_Muncher(SLib.SpriteImage_StaticMultiple):  # 342
+class ActorImage_Muncher(actorlib.ActorImage_StaticMultiple):  # 342
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Muncher', 'muncher.png')
-        SLib.loadIfNotInImageCache('MuncherF', 'muncher_frozen.png')
+        actorlib.loadIfNotInImageCache('Muncher', 'muncher.png')
+        actorlib.loadIfNotInImageCache('MuncherF', 'muncher_frozen.png')
 
     def dataChanged(self):
 
@@ -7286,11 +7291,11 @@ class SpriteImage_Muncher(SLib.SpriteImage_StaticMultiple):  # 342
         super().dataChanged()
 
 
-class SpriteImage_Fuzzy(SLib.SpriteImage_StaticMultiple):  # 343
+class ActorImage_Fuzzy(actorlib.ActorImage_StaticMultiple):  # 343
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Fuzzy', 'fuzzy.png')
-        SLib.loadIfNotInImageCache('FuzzyGiant', 'fuzzy_giant.png')
+        actorlib.loadIfNotInImageCache('Fuzzy', 'fuzzy.png')
+        actorlib.loadIfNotInImageCache('FuzzyGiant', 'fuzzy_giant.png')
 
     def dataChanged(self):
         giant = self.parent.spritedata[4] & 1
@@ -7301,7 +7306,7 @@ class SpriteImage_Fuzzy(SLib.SpriteImage_StaticMultiple):  # 343
         super().dataChanged()
 
 
-class SpriteImage_MortonKoopa(SLib.SpriteImage_Static):  # 344
+class ActorImage_MortonKoopa(actorlib.ActorImage_Static):  # 344
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -7312,10 +7317,10 @@ class SpriteImage_MortonKoopa(SLib.SpriteImage_Static):  # 344
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('MortonKoopa', 'Morton_Koopa.png')
+        actorlib.loadIfNotInImageCache('MortonKoopa', 'Morton_Koopa.png')
 
 
-class SpriteImage_ChainHolder(SLib.SpriteImage_Static):  # 345
+class ActorImage_ChainHolder(actorlib.ActorImage_Static):  # 345
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -7326,17 +7331,17 @@ class SpriteImage_ChainHolder(SLib.SpriteImage_Static):  # 345
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('ChainHolder', 'chain_holder.png')
+        actorlib.loadIfNotInImageCache('ChainHolder', 'chain_holder.png')
 
 
-class SpriteImage_HangingChainPlatform(SLib.SpriteImage_StaticMultiple):  # 346
+class ActorImage_HangingChainPlatform(actorlib.ActorImage_StaticMultiple):  # 346
     @staticmethod
     def loadImages():
         if 'HangingChainPlatform0' in ImageCache:
             return
-        ImageCache['HangingChainPlatform0'] = SLib.GetPixmap('hanging_chain_platform_small.png')
-        ImageCache['HangingChainPlatform1'] = SLib.GetPixmap('hanging_chain_platform_medium.png')
-        ImageCache['HangingChainPlatform2'] = SLib.GetPixmap('hanging_chain_platform_large.png')
+        ImageCache['HangingChainPlatform0'] = actorlib.GetPixmap('hanging_chain_platform_small.png')
+        ImageCache['HangingChainPlatform1'] = actorlib.GetPixmap('hanging_chain_platform_medium.png')
+        ImageCache['HangingChainPlatform2'] = actorlib.GetPixmap('hanging_chain_platform_large.png')
 
     def dataChanged(self):
         size = (self.parent.spritedata[4] & 3) % 3
@@ -7350,7 +7355,7 @@ class SpriteImage_HangingChainPlatform(SLib.SpriteImage_StaticMultiple):  # 346
         super().dataChanged()
 
 
-class SpriteImage_RoyKoopa(SLib.SpriteImage_Static):  # 347
+class ActorImage_RoyKoopa(actorlib.ActorImage_Static):  # 347
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -7361,10 +7366,10 @@ class SpriteImage_RoyKoopa(SLib.SpriteImage_Static):  # 347
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('RoyKoopa', 'Roy_Koopa.png')
+        actorlib.loadIfNotInImageCache('RoyKoopa', 'Roy_Koopa.png')
 
 
-class SpriteImage_LudwigVonKoopa(SLib.SpriteImage_Static):  # 348
+class ActorImage_LudwigVonKoopa(actorlib.ActorImage_Static):  # 348
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -7375,26 +7380,26 @@ class SpriteImage_LudwigVonKoopa(SLib.SpriteImage_Static):  # 348
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('LudwigVonKoopa', 'Ludwig_Von_Koopa.png')
+        actorlib.loadIfNotInImageCache('LudwigVonKoopa', 'Ludwig_Von_Koopa.png')
 
 
-class SpriteImage_MortonKoopaCastleBoss(SLib.SpriteImage):  # 349
+class ActorImage_MortonKoopaCastleBoss(actorlib.ActorImage):  # 349
     def __init__(self, parent):
         super().__init__(parent)
         self.parent.setZValue(24999)
 
-        mortonKoopaAuxImage = SLib.AuxiliaryImage(parent, 552, 408)
+        mortonKoopaAuxImage = actorlib.AuxiliaryImage(parent, 552, 408)
         mortonKoopaAuxImage.image = ImageCache['MortonKoopaCastleBoss']
         mortonKoopaAuxImage.setPos(48, 0)
         self.aux.append(mortonKoopaAuxImage)
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 0, 288))
+        self.aux.append(actorlib.AuxiliaryRectOutline(parent, 24, 24, 0, 288))
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('MortonKoopaCastleBoss', 'morton_castle_boss.png')
+        actorlib.loadIfNotInImageCache('MortonKoopaCastleBoss', 'morton_castle_boss.png')
 
 
-class SpriteImage_RockyWrench(SLib.SpriteImage_Static):  # 352
+class ActorImage_RockyWrench(actorlib.ActorImage_Static):  # 352
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -7405,10 +7410,10 @@ class SpriteImage_RockyWrench(SLib.SpriteImage_Static):  # 352
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('RockyWrench', 'rocky_wrench.png')
+        actorlib.loadIfNotInImageCache('RockyWrench', 'rocky_wrench.png')
 
 
-class SpriteImage_Pipe_MovingDown(SpriteImage_Pipe):  # 353
+class ActorImage_Pipe_MovingDown(ActorImage_Pipe):  # 353
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.direction = 'D'
@@ -7423,23 +7428,23 @@ class SpriteImage_Pipe_MovingDown(SpriteImage_Pipe):  # 353
         super().dataChanged()
 
 
-class SpriteImage_BrownTowerBlockTwoWayLine(SpriteImage_BrownTowerBlock):  # 354
+class ActorImage_BrownTowerBlockTwoWayLine(ActorImage_BrownTowerBlock):  # 354
     pass
 
 
 
-class SpriteImage_RollingHillWith1Pipe(SpriteImage_RollingHillWithPipe):  # 355
+class ActorImage_RollingHillWith1Pipe(ActorImage_RollingHillWithPipe):  # 355
     pass
 
 
-class SpriteImage_BrownTowerBlockNormal(SpriteImage_BrownTowerBlock):  # 356
+class ActorImage_BrownTowerBlockNormal(ActorImage_BrownTowerBlock):  # 356
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Horizontal))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, 16, 16, actorlib.AuxiliaryTrackObject.Horizontal))
 
     def dataChanged(self):
         super().dataChanged()
-        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
         # now set up the track
@@ -7461,11 +7466,11 @@ class SpriteImage_BrownTowerBlockNormal(SpriteImage_BrownTowerBlock):  # 356
             self.aux[0].setPos(0, -distance * 24)
 
 
-class SpriteImage_Fruit(SLib.SpriteImage_StaticMultiple):  # 357
+class ActorImage_Fruit(actorlib.ActorImage_StaticMultiple):  # 357
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Fruit', 'fruit.png')
-        SLib.loadIfNotInImageCache('FruitCookie', 'fruit_cookie.png')
+        actorlib.loadIfNotInImageCache('Fruit', 'fruit.png')
+        actorlib.loadIfNotInImageCache('FruitCookie', 'fruit_cookie.png')
 
     def dataChanged(self):
 
@@ -7478,14 +7483,14 @@ class SpriteImage_Fruit(SLib.SpriteImage_StaticMultiple):  # 357
         super().dataChanged()
 
 
-class SpriteImage_LavaParticles(SpriteImage_LiquidOrFog):  # 358
+class ActorImage_LavaParticles(ActorImage_LiquidOrFog):  # 358
     @staticmethod
     def loadImages():
         if 'LavaParticlesA' in ImageCache:
             return
-        ImageCache['LavaParticlesA'] = SLib.GetPixmap('lava_particles_a.png')
-        ImageCache['LavaParticlesB'] = SLib.GetPixmap('lava_particles_b.png')
-        ImageCache['LavaParticlesC'] = SLib.GetPixmap('lava_particles_c.png')
+        ImageCache['LavaParticlesA'] = actorlib.GetPixmap('lava_particles_a.png')
+        ImageCache['LavaParticlesB'] = actorlib.GetPixmap('lava_particles_b.png')
+        ImageCache['LavaParticlesC'] = actorlib.GetPixmap('lava_particles_c.png')
 
     def dataChanged(self):
         type = (self.parent.spritedata[5] & 0xF) % 3
@@ -7498,12 +7503,12 @@ class SpriteImage_LavaParticles(SpriteImage_LiquidOrFog):  # 358
         super().dataChanged()
 
 
-class SpriteImage_WallLantern(SLib.SpriteImage):  # 359
+class ActorImage_WallLantern(actorlib.ActorImage):  # 359
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
-        wallLanternAuxImage = SLib.AuxiliaryImage(parent, 128, 128)
+        wallLanternAuxImage = actorlib.AuxiliaryImage(parent, 128, 128)
         wallLanternAuxImage.image = ImageCache['WallLanternAux']
         wallLanternAuxImage.setPos(-48, -48)
         wallLanternAuxImage.hover = False
@@ -7514,8 +7519,8 @@ class SpriteImage_WallLantern(SLib.SpriteImage):  # 359
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('WallLantern', 'wall_lantern.png')
-        SLib.loadIfNotInImageCache('WallLanternAux', 'wall_lantern_aux.png')
+        actorlib.loadIfNotInImageCache('WallLantern', 'wall_lantern.png')
+        actorlib.loadIfNotInImageCache('WallLanternAux', 'wall_lantern_aux.png')
 
     def paint(self, painter):
         if self.image is None:
@@ -7524,17 +7529,17 @@ class SpriteImage_WallLantern(SLib.SpriteImage):  # 359
         painter.drawPixmap(0, 0, self.image)
 
 
-class SpriteImage_RollingHillWith8Pipes(SpriteImage_RollingHillWithPipe):  # 360
+class ActorImage_RollingHillWith8Pipes(ActorImage_RollingHillWithPipe):  # 360
     pass
 
 
-class SpriteImage_CrystalBlock(SLib.SpriteImage_StaticMultiple):  # 361
+class ActorImage_CrystalBlock(actorlib.ActorImage_StaticMultiple):  # 361
     @staticmethod
     def loadImages():
         if 'CrystalBlock0' in ImageCache:
             return
         for size in range(3):
-            ImageCache[f'CrystalBlock{size}'] = SLib.GetPixmap(f'crystal_block_{size}.png')
+            ImageCache[f'CrystalBlock{size}'] = actorlib.GetPixmap(f'crystal_block_{size}.png')
 
     def dataChanged(self):
         size = self.parent.spritedata[4] & 3
@@ -7552,10 +7557,10 @@ class SpriteImage_CrystalBlock(SLib.SpriteImage_StaticMultiple):  # 361
         super().dataChanged()
 
 
-class SpriteImage_ColoredBox(SLib.SpriteImage):  # 362
+class ActorImage_ColoredBox(actorlib.ActorImage):  # 362
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
     @staticmethod
     def loadImages():
@@ -7563,7 +7568,7 @@ class SpriteImage_ColoredBox(SLib.SpriteImage):  # 362
             return
         for color in range(4):
             for direction in ('TL', 'T', 'TR', 'L', 'M', 'R', 'BL', 'B', 'BR'):
-                ImageCache[f'CBox{color}{direction}'] = SLib.GetPixmap(f'cbox_{direction}_{color}.png')
+                ImageCache[f'CBox{color}{direction}'] = actorlib.GetPixmap(f'cbox_{direction}_{color}.png')
 
     def dataChanged(self):
         self.color = (self.parent.spritedata[3] >> 4) & 3
@@ -7593,46 +7598,46 @@ class SpriteImage_ColoredBox(SLib.SpriteImage):  # 362
         painter.drawTiledPixmap(25, 25, xsize - 50, ysize - 50, ImageCache[prefix + 'M'])
 
 
-class SpriteImage_RoyKoopaCastleBoss(SLib.SpriteImage):  # 364
+class ActorImage_RoyKoopaCastleBoss(actorlib.ActorImage):  # 364
     def __init__(self, parent):
         super().__init__(parent)
         self.parent.setZValue(24999)
 
-        royKoopaAuxImage = SLib.AuxiliaryImage(parent, 528, 384)
+        royKoopaAuxImage = actorlib.AuxiliaryImage(parent, 528, 384)
         royKoopaAuxImage.image = ImageCache['RoyKoopaCastleBoss']
         royKoopaAuxImage.setPos(72, -96)
         self.aux.append(royKoopaAuxImage)
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 24, 312))
+        self.aux.append(actorlib.AuxiliaryRectOutline(parent, 24, 24, 24, 312))
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('RoyKoopaCastleBoss', 'roy_castle_boss.png')
+        actorlib.loadIfNotInImageCache('RoyKoopaCastleBoss', 'roy_castle_boss.png')
 
 
-class SpriteImage_LudwigVonKoopaCastleBoss(SLib.SpriteImage):  # 365
+class ActorImage_LudwigVonKoopaCastleBoss(actorlib.ActorImage):  # 365
     def __init__(self, parent):
         super().__init__(parent)
         self.parent.setZValue(24999)
 
-        ludwigVonKoopaAuxImage = SLib.AuxiliaryImage(parent, 720, 840)
+        ludwigVonKoopaAuxImage = actorlib.AuxiliaryImage(parent, 720, 840)
         ludwigVonKoopaAuxImage.image = ImageCache['LudwigVonKoopaCastleBoss']
         ludwigVonKoopaAuxImage.setPos(-24, -360)
         self.aux.append(ludwigVonKoopaAuxImage)
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 24, 288))
-        rect2AuxImage = SLib.AuxiliaryRectOutline(parent, 528, 24, 72, 264)
+        self.aux.append(actorlib.AuxiliaryRectOutline(parent, 24, 24, 24, 288))
+        rect2AuxImage = actorlib.AuxiliaryRectOutline(parent, 528, 24, 72, 264)
         rect2AuxImage.fillFlag = False
         self.aux.append(rect2AuxImage)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('LudwigVonKoopaCastleBoss', 'ludwig_castle_boss.png')
+        actorlib.loadIfNotInImageCache('LudwigVonKoopaCastleBoss', 'ludwig_castle_boss.png')
 
 
-class SpriteImage_CubeKinokoRot(SLib.SpriteImage_StaticMultiple):  # 366
+class ActorImage_CubeKinokoRot(actorlib.ActorImage_StaticMultiple):  # 366
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('CubeKinokoG', 'cube_kinoko_g.png')
-        SLib.loadIfNotInImageCache('CubeKinokoR', 'cube_kinoko_r.png')
+        actorlib.loadIfNotInImageCache('CubeKinokoG', 'cube_kinoko_g.png')
+        actorlib.loadIfNotInImageCache('CubeKinokoR', 'cube_kinoko_r.png')
 
     def dataChanged(self):
 
@@ -7645,7 +7650,7 @@ class SpriteImage_CubeKinokoRot(SLib.SpriteImage_StaticMultiple):  # 366
         super().dataChanged()
 
 
-class SpriteImage_CubeKinokoLine(SLib.SpriteImage_Static):  # 367
+class ActorImage_CubeKinokoLine(actorlib.ActorImage_Static):  # 367
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -7655,38 +7660,38 @@ class SpriteImage_CubeKinokoLine(SLib.SpriteImage_Static):  # 367
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('CubeKinokoP', 'cube_kinoko_p.png')
+        actorlib.loadIfNotInImageCache('CubeKinokoP', 'cube_kinoko_p.png')
 
 
-class SpriteImage_FlashRaft(SLib.SpriteImage_StaticMultiple):  # 368
+class ActorImage_FlashRaft(actorlib.ActorImage_StaticMultiple):  # 368
     def __init__(self, parent):
         super().__init__( parent, 1.5, )
 
         self.dimensions = (-5 / 1.5, 0, 322 / 1.5, 36)
 
-        flashRaftAuxImage = SLib.AuxiliaryImage(parent, 344, 87)
+        flashRaftAuxImage = actorlib.AuxiliaryImage(parent, 344, 87)
         flashRaftAuxImage.image = ImageCache['FlashlightRaft']
         flashRaftAuxImage.setPos(-11, -28)
         self.aux.append(flashRaftAuxImage)
-        flashRaftLampAuxImage = SLib.AuxiliaryImage(parent, 132, 120)
+        flashRaftLampAuxImage = actorlib.AuxiliaryImage(parent, 132, 120)
         flashRaftLampAuxImage.image = ImageCache['FlashlightLamp']
         flashRaftLampAuxImage.setPos(-33, -120)
         self.aux.append(flashRaftLampAuxImage)
 
-        pathNodeAuxRect = SLib.AuxiliaryRectOutline(parent, 24, 24, 144, 30)
-        pathNodeAuxRect.setIsBehindSprite(False)
+        pathNodeAuxRect = actorlib.AuxiliaryRectOutline(parent, 24, 24, 144, 30)
+        pathNodeAuxRect.setIsBehindActor(False)
         self.aux.append(pathNodeAuxRect)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('FlashlightRaft', 'flashraft.png')
-        SLib.loadIfNotInImageCache('FlashlightLamp', 'flashraft_light.png')
+        actorlib.loadIfNotInImageCache('FlashlightRaft', 'flashraft.png')
+        actorlib.loadIfNotInImageCache('FlashlightLamp', 'flashraft_light.png')
 
     def dataChanged(self):
         if (
-            not isinstance(self.aux[0], SLib.AuxiliaryImage)
-            or not isinstance(self.aux[1], SLib.AuxiliaryImage)
-            or not isinstance(self.aux[2], SLib.AuxiliaryRectOutline)
+            not isinstance(self.aux[0], actorlib.AuxiliaryImage)
+            or not isinstance(self.aux[1], actorlib.AuxiliaryImage)
+            or not isinstance(self.aux[2], actorlib.AuxiliaryRectOutline)
         ):
             return
 
@@ -7703,12 +7708,12 @@ class SpriteImage_FlashRaft(SLib.SpriteImage_StaticMultiple):  # 368
             self.aux[1].alpha = 1
 
 
-class SpriteImage_SlidingPenguin(SLib.SpriteImage_StaticMultiple):  # 369
+class ActorImage_SlidingPenguin(actorlib.ActorImage_StaticMultiple):  # 369
     @staticmethod
     def loadImages():
         if 'PenguinL' in ImageCache:
             return
-        penguin = SLib.GetImage('sliding_penguin.png')
+        penguin = actorlib.GetImage('sliding_penguin.png')
         if penguin is None:
             return
 
@@ -7726,7 +7731,7 @@ class SpriteImage_SlidingPenguin(SLib.SpriteImage_StaticMultiple):  # 369
         super().dataChanged()
 
 
-class SpriteImage_CloudBlock(SLib.SpriteImage_Static):  # 370
+class ActorImage_CloudBlock(actorlib.ActorImage_Static):  # 370
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -7737,39 +7742,39 @@ class SpriteImage_CloudBlock(SLib.SpriteImage_Static):  # 370
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('CloudBlock', 'cloud_block.png')
+        actorlib.loadIfNotInImageCache('CloudBlock', 'cloud_block.png')
 
 
-class SpriteImage_RollingHillCoin(SpriteImage_SpecialCoin):  # 371
+class ActorImage_RollingHillCoin(ActorImage_SpecialCoin):  # 371
     pass
 
 
-class SpriteImage_IggyKoopaCastleBoss(SLib.SpriteImage):  # 372
+class ActorImage_IggyKoopaCastleBoss(actorlib.ActorImage):  # 372
     def __init__(self, parent):
         super().__init__(parent)
         self.parent.setZValue(24999)
-        iggyKoopaAuxImage = SLib.AuxiliaryImage(parent, 240, 288)
+        iggyKoopaAuxImage = actorlib.AuxiliaryImage(parent, 240, 288)
         iggyKoopaAuxImage.image = ImageCache['IggyKoopaCastleBoss']
         iggyKoopaAuxImage.setSize(240, 288, 360, 48)
         self.aux.append(iggyKoopaAuxImage)
 
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 24, 312))
+        self.aux.append(actorlib.AuxiliaryRectOutline(parent, 24, 24, 24, 312))
 
-        arenaOutline = SLib.AuxiliaryRectOutline(parent, 528, 264, 72, 24)
+        arenaOutline = actorlib.AuxiliaryRectOutline(parent, 528, 264, 72, 24)
         arenaOutline.fillFlag = False
         self.aux.append(arenaOutline)
 
-        w = SLib.OutlinePen.widthF() if SLib.OutlinePen else 1
-        centerPlatformOutline = SLib.AuxiliaryRectOutline(parent, 336 + w, 24 + w, int(168 - w / 2), int(144 - w / 2))
+        w = actorlib.OutlinePen.widthF() if actorlib.OutlinePen else 1
+        centerPlatformOutline = actorlib.AuxiliaryRectOutline(parent, 336 + w, 24 + w, int(168 - w / 2), int(144 - w / 2))
         centerPlatformOutline.fillFlag = False
         self.aux.append(centerPlatformOutline)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('IggyKoopaCastleBoss', 'iggy_castle_boss.png')
+        actorlib.loadIfNotInImageCache('IggyKoopaCastleBoss', 'iggy_castle_boss.png')
 
 
-class SpriteImage_RaftWater(SpriteImage_LiquidOrFog):  # 373
+class ActorImage_RaftWater(ActorImage_LiquidOrFog):  # 373
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -7783,59 +7788,59 @@ class SpriteImage_RaftWater(SpriteImage_LiquidOrFog):  # 373
     def loadImages():
         if 'RaftWaterCrest' in ImageCache:
             return
-        ImageCache['RaftWater'] = SLib.GetPixmap('liquid_water.png')
-        ImageCache['RaftWaterCrest'] = SLib.GetPixmap('liquid_water_crest.png')
+        ImageCache['RaftWater'] = actorlib.GetPixmap('liquid_water.png')
+        ImageCache['RaftWaterCrest'] = actorlib.GetPixmap('liquid_water_crest.png')
 
     def positionChanged(self):
         self.top = self.parent.objy
         super().positionChanged()
 
 
-class SpriteImage_SnowWind(SpriteImage_LiquidOrFog):  # 374
+class ActorImage_SnowWind(ActorImage_LiquidOrFog):  # 374
     def __init__(self, parent):
         super().__init__(parent)
         self.mid = ImageCache['SnowEffect']
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('SnowEffect', 'snow.png')
+        actorlib.loadIfNotInImageCache('SnowEffect', 'snow.png')
 
     def paintZone(self):
         # For now, we only paint snow
         return self.parent.spritedata[5] == 0 and self.zoneId != -1
 
 
-class SpriteImage_WendyKoopaCastleBoss(SLib.SpriteImage):  # 375
+class ActorImage_WendyKoopaCastleBoss(actorlib.ActorImage):  # 375
     def __init__(self, parent):
         super().__init__(parent)
         self.parent.setZValue(24999)
 
-        wendyKoopaAuxImage = SLib.AuxiliaryImage(parent, 648, 528)
+        wendyKoopaAuxImage = actorlib.AuxiliaryImage(parent, 648, 528)
         wendyKoopaAuxImage.image = ImageCache['WendyKoopaCastleBoss']
         wendyKoopaAuxImage.setPos(0, -120)
         self.aux.append(wendyKoopaAuxImage)
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 0, 288))
+        self.aux.append(actorlib.AuxiliaryRectOutline(parent, 24, 24, 0, 288))
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('WendyKoopaCastleBoss', 'wendy_castle_boss.png')
+        actorlib.loadIfNotInImageCache('WendyKoopaCastleBoss', 'wendy_castle_boss.png')
 
 
-class SpriteImage_MovingFence(SLib.SpriteImage):  # 376
+class ActorImage_MovingFence(actorlib.ActorImage):  # 376
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
-        self.spritebox.shown = False
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Horizontal))
+        self.actorbox.shown = False
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, 16, 16, actorlib.AuxiliaryTrackObject.Horizontal))
 
     @staticmethod
     def loadImages():
         if 'MovingFence0' in ImageCache:
             return
         for shape in range(4):
-            ImageCache[f'MovingFence{shape}'] = SLib.GetPixmap(f'moving_fence_{shape}.png')
+            ImageCache[f'MovingFence{shape}'] = actorlib.GetPixmap(f'moving_fence_{shape}.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
         self.shape = (self.parent.spritedata[4] >> 4) & 3
@@ -7867,13 +7872,13 @@ class SpriteImage_MovingFence(SLib.SpriteImage):  # 376
         painter.drawPixmap(0, 0, ImageCache[f'MovingFence{self.shape}'])
 
 
-class SpriteImage_Pipe_Up(SpriteImage_PipeStationary):  # 377
+class ActorImage_Pipe_Up(ActorImage_PipeStationary):  # 377
     def dataChanged(self):
         self.length = (self.parent.spritedata[5] & 0xF) + 2
         super().dataChanged()
 
 
-class SpriteImage_Pipe_Down(SpriteImage_PipeStationary):  # 378
+class ActorImage_Pipe_Down(ActorImage_PipeStationary):  # 378
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.direction = 'D'
@@ -7883,7 +7888,7 @@ class SpriteImage_Pipe_Down(SpriteImage_PipeStationary):  # 378
         super().dataChanged()
 
 
-class SpriteImage_Pipe_Right(SpriteImage_PipeStationary):  # 379
+class ActorImage_Pipe_Right(ActorImage_PipeStationary):  # 379
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.direction = 'R'
@@ -7893,7 +7898,7 @@ class SpriteImage_Pipe_Right(SpriteImage_PipeStationary):  # 379
         super().dataChanged()
 
 
-class SpriteImage_Pipe_Left(SpriteImage_PipeStationary):  # 380
+class ActorImage_Pipe_Left(ActorImage_PipeStationary):  # 380
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.direction = 'L'
@@ -7903,60 +7908,60 @@ class SpriteImage_Pipe_Left(SpriteImage_PipeStationary):  # 380
         super().dataChanged()
 
 
-class SpriteImage_LemmyKoopaCastleBoss(SLib.SpriteImage):  # 381
+class ActorImage_LemmyKoopaCastleBoss(actorlib.ActorImage):  # 381
     def __init__(self, parent):
         super().__init__(parent)
         self.parent.setZValue(24999)
 
-        lemmyKoopaAuxImage = SLib.AuxiliaryImage(parent, 552, 216)
+        lemmyKoopaAuxImage = actorlib.AuxiliaryImage(parent, 552, 216)
         lemmyKoopaAuxImage.image = ImageCache['LemmyKoopaCastleBoss']
         lemmyKoopaAuxImage.setPos(48, 168)
         self.aux.append(lemmyKoopaAuxImage)
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 0, 312))
+        self.aux.append(actorlib.AuxiliaryRectOutline(parent, 24, 24, 0, 312))
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('LemmyKoopaCastleBoss', 'lemmy_castle_boss.png')
+        actorlib.loadIfNotInImageCache('LemmyKoopaCastleBoss', 'lemmy_castle_boss.png')
 
 
-class SpriteImage_ScrewMushroomNoBolt(SpriteImage_ScrewMushroom):  # 382
+class ActorImage_ScrewMushroomNoBolt(ActorImage_ScrewMushroom):  # 382
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.hasBolt = False
 
 
-class SpriteImage_KamekController(SLib.SpriteImage):  # 383
+class ActorImage_KamekController(actorlib.ActorImage):  # 383
     def __init__(self, parent):
         super().__init__(parent)
         self.parent.setZValue(24999)
-        kamekAuxImage = SLib.AuxiliaryImage(parent, 1272, 360)
+        kamekAuxImage = actorlib.AuxiliaryImage(parent, 1272, 360)
         kamekAuxImage.image = ImageCache['KamekController']
         kamekAuxImage.setPos(-144, 48)
         self.aux.append(kamekAuxImage)
-        arenaOutline = SLib.AuxiliaryRectOutline(parent, 1154, 360, 0, 48)
+        arenaOutline = actorlib.AuxiliaryRectOutline(parent, 1154, 360, 0, 48)
         arenaOutline.fillFlag = False
         self.aux.append(arenaOutline)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('KamekController', 'boss_controller_kamek.png')
+        actorlib.loadIfNotInImageCache('KamekController', 'boss_controller_kamek.png')
 
 
-class SpriteImage_PipeCooliganGenerator(SLib.SpriteImage):  # 384
+class ActorImage_PipeCooliganGenerator(actorlib.ActorImage):  # 384
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.size = (16, 32)
-        self.spritebox.yOffset = -16
+        self.actorbox.size = (16, 32)
+        self.actorbox.yOffset = -16
 
 
-class SpriteImage_IceBlock(SLib.SpriteImage_StaticMultiple):  # 385
+class ActorImage_IceBlock(actorlib.ActorImage_StaticMultiple):  # 385
     @staticmethod
     def loadImages():
         if 'IceBlock00' in ImageCache:
             return
         for i in range(4):
             for j in range(4):
-                ImageCache[f'IceBlock{i}{j}'] = SLib.GetPixmap(f'iceblock{i}{j}.png')
+                ImageCache[f'IceBlock{i}{j}'] = actorlib.GetPixmap(f'iceblock{i}{j}.png')
 
     def dataChanged(self):
 
@@ -7971,7 +7976,7 @@ class SpriteImage_IceBlock(SLib.SpriteImage_StaticMultiple):  # 385
         super().dataChanged()
 
 
-class SpriteImage_PowBlock(SLib.SpriteImage_Static):  # 386
+class ActorImage_PowBlock(actorlib.ActorImage_Static):  # 386
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -7981,10 +7986,10 @@ class SpriteImage_PowBlock(SLib.SpriteImage_Static):  # 386
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('POW', 'pow.png')
+        actorlib.loadIfNotInImageCache('POW', 'pow.png')
 
 
-class SpriteImage_Bush(SLib.SpriteImage_StaticMultiple):  # 387
+class ActorImage_Bush(actorlib.ActorImage_StaticMultiple):  # 387
     def __init__(self, parent):
         # this sprite image should actually show behind layer 1...
         super().__init__(parent, 1.5)
@@ -7996,7 +8001,7 @@ class SpriteImage_Bush(SLib.SpriteImage_StaticMultiple):  # 387
             return
         for typenum, typestr in enumerate(('green', 'yellowish')):
             for sizenum, sizestr in enumerate(('small', 'med', 'large', 'xlarge')):
-                ImageCache[f'Bush{typenum}{sizenum}'] = SLib.GetPixmap(f'bush_{typestr}_{sizestr}.png')
+                ImageCache[f'Bush{typenum}{sizenum}'] = actorlib.GetPixmap(f'bush_{typestr}_{sizestr}.png')
 
     def dataChanged(self):
 
@@ -8016,7 +8021,7 @@ class SpriteImage_Bush(SLib.SpriteImage_StaticMultiple):  # 387
         super().dataChanged()
 
 
-class SpriteImage_Barrel(SLib.SpriteImage_Static):  # 388
+class ActorImage_Barrel(actorlib.ActorImage_Static):  # 388
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -8027,33 +8032,33 @@ class SpriteImage_Barrel(SLib.SpriteImage_Static):  # 388
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Barrel', 'barrel.png')
+        actorlib.loadIfNotInImageCache('Barrel', 'barrel.png')
 
 
-class SpriteImage_StarCoinBoltControlled(SpriteImage_StarCoin):  # 389
+class ActorImage_StarCoinBoltControlled(ActorImage_StarCoin):  # 389
     pass
 
 
-class SpriteImage_BoltControlledCoin(SpriteImage_SpecialCoin):  # 390
+class ActorImage_BoltControlledCoin(ActorImage_SpecialCoin):  # 390
     pass
 
 
-class SpriteImage_GlowBlock(SLib.SpriteImage):  # 391
+class ActorImage_GlowBlock(actorlib.ActorImage):  # 391
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
-        glowBlockAuxImage = SLib.AuxiliaryImage(parent, 46, 46)
+        glowBlockAuxImage = actorlib.AuxiliaryImage(parent, 46, 46)
         glowBlockAuxImage.image = ImageCache['GlowBlock']
         glowBlockAuxImage.setPos(-11, -11)
         self.aux.append(glowBlockAuxImage)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('GlowBlock', 'glow_block.png')
+        actorlib.loadIfNotInImageCache('GlowBlock', 'glow_block.png')
 
 
-class SpriteImage_PropellerBlock(SLib.SpriteImage_Static):  # 393
+class ActorImage_PropellerBlock(actorlib.ActorImage_Static):  # 393
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -8064,10 +8069,10 @@ class SpriteImage_PropellerBlock(SLib.SpriteImage_Static):  # 393
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('PropellerBlock', 'propeller_block.png')
+        actorlib.loadIfNotInImageCache('PropellerBlock', 'propeller_block.png')
 
 
-class SpriteImage_LemmyBall(SLib.SpriteImage_Static):  # 394
+class ActorImage_LemmyBall(actorlib.ActorImage_Static):  # 394
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -8078,18 +8083,18 @@ class SpriteImage_LemmyBall(SLib.SpriteImage_Static):  # 394
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('LemmyBall', 'lemmyball.png')
+        actorlib.loadIfNotInImageCache('LemmyBall', 'lemmyball.png')
 
 
-class SpriteImage_SpinyCheep(SLib.SpriteImage_StaticMultiple):  # 395
+class ActorImage_SpinyCheep(actorlib.ActorImage_StaticMultiple):  # 395
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.yOffset = -8 / 1.5
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('SpinyCheep', 'cheep_spiny.png')
-        SLib.loadIfNotInImageCache('SpinyCheepRight', 'cheep_spiny_right.png')
+        actorlib.loadIfNotInImageCache('SpinyCheep', 'cheep_spiny.png')
+        actorlib.loadIfNotInImageCache('SpinyCheepRight', 'cheep_spiny_right.png')
 
     def dataChanged(self):
         super().dataChanged()
@@ -8105,20 +8110,20 @@ class SpriteImage_SpinyCheep(SLib.SpriteImage_StaticMultiple):  # 395
             self.xOffset = -2 / 1.5
 
 
-class SpriteImage_MoveWhenOn(SLib.SpriteImage):  # 396
+class ActorImage_MoveWhenOn(actorlib.ActorImage):  # 396
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
     @staticmethod
     def loadImages():
         if 'MoveWhenOnL' in ImageCache:
             return
-        ImageCache['MoveWhenOnL'] = SLib.GetPixmap('mwo_left.png')
-        ImageCache['MoveWhenOnM'] = SLib.GetPixmap('mwo_middle.png')
-        ImageCache['MoveWhenOnR'] = SLib.GetPixmap('mwo_right.png')
-        ImageCache['MoveWhenOnC'] = SLib.GetPixmap('mwo_circle.png')
-        ImageCache['MoveWhenOnCEmpty'] = SLib.GetPixmap('mwo_circle_empty.png')
+        ImageCache['MoveWhenOnL'] = actorlib.GetPixmap('mwo_left.png')
+        ImageCache['MoveWhenOnM'] = actorlib.GetPixmap('mwo_middle.png')
+        ImageCache['MoveWhenOnR'] = actorlib.GetPixmap('mwo_right.png')
+        ImageCache['MoveWhenOnC'] = actorlib.GetPixmap('mwo_circle.png')
+        ImageCache['MoveWhenOnCEmpty'] = actorlib.GetPixmap('mwo_circle_empty.png')
 
     def dataChanged(self):
         # get width
@@ -8152,17 +8157,17 @@ class SpriteImage_MoveWhenOn(SLib.SpriteImage):  # 396
         painter.drawPixmap(center - 15, 0, ImageCache['MoveWhenOnCEmpty'])
 
 
-class SpriteImage_GhostHouseBox(SLib.SpriteImage):  # 397
+class ActorImage_GhostHouseBox(actorlib.ActorImage):  # 397
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
     @staticmethod
     def loadImages():
         if 'GHBoxTL' in ImageCache:
             return
         for direction in ('TL', 'T', 'TR', 'L', 'M', 'R', 'BL', 'B', 'BR'):
-            ImageCache[f'GHBox{direction}'] = SLib.GetPixmap(f'ghbox_{direction}.png')
+            ImageCache[f'GHBox{direction}'] = actorlib.GetPixmap(f'ghbox_{direction}.png')
 
     def dataChanged(self):
         height = self.parent.spritedata[4] >> 4
@@ -8192,104 +8197,104 @@ class SpriteImage_GhostHouseBox(SLib.SpriteImage):  # 397
         painter.drawTiledPixmap(24, 24, xsize - 48, ysize - 48, ImageCache[prefix + 'M'])
 
 
-class SpriteImage_LongSkewerRight(SpriteImage_LongSkewer):  # 398
+class ActorImage_LongSkewerRight(ActorImage_LongSkewer):  # 398
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.dir = 'right'
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 1296, 16, SLib.AuxiliaryTrackObject.Horizontal))
-        self.aux.append(SLib.AuxiliaryImage(parent, 2021, 99))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, 1296, 16, actorlib.AuxiliaryTrackObject.Horizontal))
+        self.aux.append(actorlib.AuxiliaryImage(parent, 2021, 99))
 
         self.dimensions = (-112, 0, 128, 66) # 6 mid sections + end section
 
 
-class SpriteImage_LongSkewerLeft(SpriteImage_LongSkewer):  # 400
+class ActorImage_LongSkewerLeft(ActorImage_LongSkewer):  # 400
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.dir = 'left'
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 1296, 16, SLib.AuxiliaryTrackObject.Horizontal))
-        self.aux.append(SLib.AuxiliaryImage(parent, 2021, 99))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, 1296, 16, actorlib.AuxiliaryTrackObject.Horizontal))
+        self.aux.append(actorlib.AuxiliaryImage(parent, 2021, 99))
 
         self.dimensions = (0, 0, 128, 66)
 
 
-class SpriteImage_MassiveSkewerDown(SpriteImage_MassiveSkewer):  # 401
+class ActorImage_MassiveSkewerDown(ActorImage_MassiveSkewer):  # 401
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.dir = 'down'
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 80, SLib.AuxiliaryTrackObject.Vertical))
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 240, 2664, 4, 2944))
-        self.aux.append(SLib.AuxiliaryImage(parent, 248, 3016))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, 16, 80, actorlib.AuxiliaryTrackObject.Vertical))
+        self.aux.append(actorlib.AuxiliaryRectOutline(parent, 240, 2664, 4, 2944))
+        self.aux.append(actorlib.AuxiliaryImage(parent, 248, 3016))
 
-class SpriteImage_LineQBlock(SpriteImage_Block):  # 402
+class ActorImage_LineQBlock(ActorImage_Block):  # 402
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.tilenum = 49
         self.twelveIsMushroom = True
 
 
-class SpriteImage_LineBrickBlock(SpriteImage_Block):  # 403
+class ActorImage_LineBrickBlock(ActorImage_Block):  # 403
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.tilenum = 48
 
 
-class SpriteImage_MassiveSkewerUp(SpriteImage_MassiveSkewer):  # 404
+class ActorImage_MassiveSkewerUp(ActorImage_MassiveSkewer):  # 404
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.dir = 'up'
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 80, SLib.AuxiliaryTrackObject.Vertical))
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 240, 2664, 4, -2592))
-        self.aux.append(SLib.AuxiliaryImage(parent, 248, 3016))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, 16, 80, actorlib.AuxiliaryTrackObject.Vertical))
+        self.aux.append(actorlib.AuxiliaryRectOutline(parent, 240, 2664, 4, -2592))
+        self.aux.append(actorlib.AuxiliaryImage(parent, 248, 3016))
 
 
-class SpriteImage_BowserJr2ndController(SLib.SpriteImage):  # 405
+class ActorImage_BowserJr2ndController(actorlib.ActorImage):  # 405
     def __init__(self, parent):
         super().__init__(parent)
         self.parent.setZValue(24999)
 
-        bowserJr2ndAuxImage = SLib.AuxiliaryImage(parent, 672, 384)
+        bowserJr2ndAuxImage = actorlib.AuxiliaryImage(parent, 672, 384)
         bowserJr2ndAuxImage.image = ImageCache['BowserJr2ndController']
         bowserJr2ndAuxImage.setPos(-504, -336)
         self.aux.append(bowserJr2ndAuxImage)
 
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, -504, -312))
+        self.aux.append(actorlib.AuxiliaryRectOutline(parent, 24, 24, -504, -312))
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BowserJr2ndController', 'boss_controller_bowserjr_2.png')
+        actorlib.loadIfNotInImageCache('BowserJr2ndController', 'boss_controller_bowserjr_2.png')
 
 
-class SpriteImage_BowserJr3rdController(SLib.SpriteImage):  # 406
+class ActorImage_BowserJr3rdController(actorlib.ActorImage):  # 406
     def __init__(self, parent):
         super().__init__(parent)
         self.parent.setZValue(24999)
 
-        bowserJr3rdAuxImage = SLib.AuxiliaryImage(parent, 672, 372)
+        bowserJr3rdAuxImage = actorlib.AuxiliaryImage(parent, 672, 372)
         bowserJr3rdAuxImage.image = ImageCache['BowserJr3rdController']
         bowserJr3rdAuxImage.setPos(-324, -192)
         self.aux.append(bowserJr3rdAuxImage)
 
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, -324, -192))
+        self.aux.append(actorlib.AuxiliaryRectOutline(parent, 24, 24, -324, -192))
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BowserJr3rdController', 'boss_controller_bowserjr_3.png')
+        actorlib.loadIfNotInImageCache('BowserJr3rdController', 'boss_controller_bowserjr_3.png')
 
 
-class SpriteImage_BossControllerCastleBoss(SLib.SpriteImage):  # 407
+class ActorImage_BossControllerCastleBoss(actorlib.ActorImage):  # 407
     def __init__(self, parent):
         super().__init__(parent)
 
         self.parent.setZValue(24999)
 
-        shutterDoor1AuxImage = SLib.AuxiliaryImage(parent, 48, 96)
+        shutterDoor1AuxImage = actorlib.AuxiliaryImage(parent, 48, 96)
         shutterDoor1AuxImage.image = ImageCache['ShutterDoor']
-        shutterDoor2AuxImage = SLib.AuxiliaryImage(parent, 48, 96)
+        shutterDoor2AuxImage = actorlib.AuxiliaryImage(parent, 48, 96)
         shutterDoor2AuxImage.image = ImageCache['ShutterDoor']
         shutterDoor2AuxImage.alpha = 0.375
-        shutterDoor3AuxImage = SLib.AuxiliaryImage(parent, 48, 96)
+        shutterDoor3AuxImage = actorlib.AuxiliaryImage(parent, 48, 96)
         shutterDoor3AuxImage.image = ImageCache['ShutterDoor']
-        shutterDoor4AuxImage = SLib.AuxiliaryImage(parent, 48, 96)
+        shutterDoor4AuxImage = actorlib.AuxiliaryImage(parent, 48, 96)
         shutterDoor4AuxImage.image = ImageCache['ShutterDoor']
         shutterDoor4AuxImage.alpha = 0.375
 
@@ -8300,10 +8305,10 @@ class SpriteImage_BossControllerCastleBoss(SLib.SpriteImage):  # 407
 
     def dataChanged(self):
         if (
-            not isinstance(self.aux[0], SLib.AuxiliaryImage)
-            or not isinstance(self.aux[1], SLib.AuxiliaryImage)
-            or not isinstance(self.aux[2], SLib.AuxiliaryImage)
-            or not isinstance(self.aux[3], SLib.AuxiliaryImage)
+            not isinstance(self.aux[0], actorlib.AuxiliaryImage)
+            or not isinstance(self.aux[1], actorlib.AuxiliaryImage)
+            or not isinstance(self.aux[2], actorlib.AuxiliaryImage)
+            or not isinstance(self.aux[3], actorlib.AuxiliaryImage)
         ):
             return
         boss = (self.parent.spritedata[5] & 0xF) % 7
@@ -8331,10 +8336,10 @@ class SpriteImage_BossControllerCastleBoss(SLib.SpriteImage):  # 407
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('ShutterDoor', 'shutter_door.png')
+        actorlib.loadIfNotInImageCache('ShutterDoor', 'shutter_door.png')
 
 
-class SpriteImage_ToadHouseBalloonUnused(SpriteImage_ToadHouseBalloon):  # 411
+class ActorImage_ToadHouseBalloonUnused(ActorImage_ToadHouseBalloon):  # 411
     def dataChanged(self):
         super().dataChanged()
         if self.image is None:
@@ -8345,7 +8350,7 @@ class SpriteImage_ToadHouseBalloonUnused(SpriteImage_ToadHouseBalloon):  # 411
         self.yOffset = 8 - (self.image.height() / 3)
 
 
-class SpriteImage_ToadHouseBalloonUsed(SpriteImage_ToadHouseBalloon):  # 412
+class ActorImage_ToadHouseBalloonUsed(ActorImage_ToadHouseBalloon):  # 412
     def dataChanged(self):
         self.livesNum = (self.parent.spritedata[4] >> 4) & 3
         self.hasHandle = not ((self.parent.spritedata[5] >> 4) & 1)
@@ -8361,7 +8366,7 @@ class SpriteImage_ToadHouseBalloonUsed(SpriteImage_ToadHouseBalloon):  # 412
             self.yOffset = 16 - (self.image.height() / 3) - posAdj
 
 
-class SpriteImage_WendyRing(SLib.SpriteImage_Static):  # 413
+class ActorImage_WendyRing(actorlib.ActorImage_Static):  # 413
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -8372,21 +8377,21 @@ class SpriteImage_WendyRing(SLib.SpriteImage_Static):  # 413
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('WendyRing', 'wendy_ring.png')
+        actorlib.loadIfNotInImageCache('WendyRing', 'wendy_ring.png')
 
 
-class SpriteImage_Gabon(SLib.SpriteImage_StaticMultiple):  # 414
+class ActorImage_Gabon(actorlib.ActorImage_StaticMultiple):  # 414
     @staticmethod
     def loadImages():
         if 'GabonLeft' in ImageCache:
             return
-        gabon = SLib.GetImage('gabon.png')
+        gabon = actorlib.GetImage('gabon.png')
         if gabon is None:
             return
 
         ImageCache['GabonLeft'] = QtGui.QPixmap.fromImage(gabon)
         ImageCache['GabonRight'] = QtGui.QPixmap.fromImage(gabon.mirrored(True, False))
-        SLib.loadIfNotInImageCache('GabonSpike', 'gabon_spike.png')
+        actorlib.loadIfNotInImageCache('GabonSpike', 'gabon_spike.png')
 
     def dataChanged(self):
         throwdir = self.parent.spritedata[5] & 1
@@ -8405,7 +8410,7 @@ class SpriteImage_Gabon(SLib.SpriteImage_StaticMultiple):  # 414
         super().dataChanged()
 
 
-class SpriteImage_BetaLarryKoopa(SLib.SpriteImage_Static):  # 415
+class ActorImage_BetaLarryKoopa(actorlib.ActorImage_Static):  # 415
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -8416,10 +8421,10 @@ class SpriteImage_BetaLarryKoopa(SLib.SpriteImage_Static):  # 415
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('LarryKoopaBeta', 'Larry_Koopa_Unused.png')
+        actorlib.loadIfNotInImageCache('LarryKoopaBeta', 'Larry_Koopa_Unused.png')
 
 
-class SpriteImage_InvisibleOneUp(SLib.SpriteImage_Static):  # 416
+class ActorImage_InvisibleOneUp(actorlib.ActorImage_Static):  # 416
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -8436,7 +8441,7 @@ class SpriteImage_InvisibleOneUp(SLib.SpriteImage_Static):  # 416
         ImageCache['InvisibleOneUp'] = ImageCache['BlockContents11'].scaled(16, 16)
 
 
-class SpriteImage_SpinjumpCoin(SLib.SpriteImage_Static):  # 417
+class ActorImage_SpinjumpCoin(actorlib.ActorImage_Static):  # 417
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -8446,7 +8451,7 @@ class SpriteImage_SpinjumpCoin(SLib.SpriteImage_Static):  # 417
         self.alpha = 0.55
 
 
-class SpriteImage_BanzaiGen(SLib.SpriteImage_Static):  # 418
+class ActorImage_BanzaiGen(actorlib.ActorImage_Static):  # 418
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -8457,10 +8462,10 @@ class SpriteImage_BanzaiGen(SLib.SpriteImage_Static):  # 418
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BanzaiGen', 'banzai_bill_gen.png')
+        actorlib.loadIfNotInImageCache('BanzaiGen', 'banzai_bill_gen.png')
 
 
-class SpriteImage_Bowser(SLib.SpriteImage_Static):  # 419
+class ActorImage_Bowser(actorlib.ActorImage_Static):  # 419
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -8471,24 +8476,24 @@ class SpriteImage_Bowser(SLib.SpriteImage_Static):  # 419
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Bowser', 'bowser.png')
+        actorlib.loadIfNotInImageCache('Bowser', 'bowser.png')
 
 
-class SpriteImage_GiantGlowBlock(SLib.SpriteImage):  # 420
+class ActorImage_GiantGlowBlock(actorlib.ActorImage):  # 420
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
-        self.aux.append(SLib.AuxiliaryImage(parent, 100, 100))
+        self.aux.append(actorlib.AuxiliaryImage(parent, 100, 100))
         self.size = (32, 32)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('GiantGlowBlockOn', 'giant_glow_block.png')
-        SLib.loadIfNotInImageCache('GiantGlowBlockOff', 'giant_glow_block_off.png')
+        actorlib.loadIfNotInImageCache('GiantGlowBlockOn', 'giant_glow_block.png')
+        actorlib.loadIfNotInImageCache('GiantGlowBlockOff', 'giant_glow_block_off.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryImage):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
         type = self.parent.spritedata[4] >> 4
@@ -8500,7 +8505,7 @@ class SpriteImage_GiantGlowBlock(SLib.SpriteImage):  # 420
             self.aux[0].setSize(48, 48)
 
 
-class SpriteImage_UnusedGhostDoor(SLib.SpriteImage_Static):  # 421
+class ActorImage_UnusedGhostDoor(actorlib.ActorImage_Static):  # 421
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -8510,24 +8515,24 @@ class SpriteImage_UnusedGhostDoor(SLib.SpriteImage_Static):  # 421
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('GhostDoorU', 'ghost_door.png')
+        actorlib.loadIfNotInImageCache('GhostDoorU', 'ghost_door.png')
 
 
-class SpriteImage_ToadQBlock(SpriteImage_Block):  # 422
+class ActorImage_ToadQBlock(ActorImage_Block):  # 422
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.tilenum = 49
         self.contentsOverride = 16
 
 
-class SpriteImage_ToadBrickBlock(SpriteImage_Block):  # 423
+class ActorImage_ToadBrickBlock(ActorImage_Block):  # 423
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.tilenum = 48
         self.contentsOverride = 16
 
 
-class SpriteImage_PalmTree(SLib.SpriteImage_StaticMultiple):  # 424
+class ActorImage_PalmTree(actorlib.ActorImage_StaticMultiple):  # 424
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.xOffset = -24
@@ -8537,7 +8542,7 @@ class SpriteImage_PalmTree(SLib.SpriteImage_StaticMultiple):  # 424
         if 'PalmTree0' in ImageCache:
             return
         for i in range(8):
-            ImageCache[f'PalmTree{i}'] = SLib.GetPixmap(f'palmtree_{i}.png')
+            ImageCache[f'PalmTree{i}'] = actorlib.GetPixmap(f'palmtree_{i}.png')
 
     def dataChanged(self):
 
@@ -8548,7 +8553,7 @@ class SpriteImage_PalmTree(SLib.SpriteImage_StaticMultiple):  # 424
         super().dataChanged()
 
 
-class SpriteImage_Jellybeam(SLib.SpriteImage_Static):  # 425
+class ActorImage_Jellybeam(actorlib.ActorImage_Static):  # 425
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -8557,14 +8562,14 @@ class SpriteImage_Jellybeam(SLib.SpriteImage_Static):  # 425
             (-13 / 1.5, -11 / 1.5),
         )
 
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Vertical))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, 16, 16, actorlib.AuxiliaryTrackObject.Vertical))
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Jellybeam', 'jellybeam.png')
+        actorlib.loadIfNotInImageCache('Jellybeam', 'jellybeam.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
         distance = self.parent.spritedata[5] & 3
@@ -8574,7 +8579,7 @@ class SpriteImage_Jellybeam(SLib.SpriteImage_Static):  # 425
         super().dataChanged()
 
 
-class SpriteImage_Kamek(SLib.SpriteImage_Static):  # 427
+class ActorImage_Kamek(actorlib.ActorImage_Static):  # 427
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -8585,10 +8590,10 @@ class SpriteImage_Kamek(SLib.SpriteImage_Static):  # 427
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Kamek', 'kamek.png')
+        actorlib.loadIfNotInImageCache('Kamek', 'kamek.png')
 
 
-class SpriteImage_MGPanel(SLib.SpriteImage_Static):  # 428
+class ActorImage_MGPanel(actorlib.ActorImage_Static):  # 428
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -8599,35 +8604,35 @@ class SpriteImage_MGPanel(SLib.SpriteImage_Static):  # 428
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('MGPanel', 'minigame_flip_panel.png')
+        actorlib.loadIfNotInImageCache('MGPanel', 'minigame_flip_panel.png')
 
 
-class SpriteImage_BowserController(SLib.SpriteImage):  # 431
+class ActorImage_BowserController(actorlib.ActorImage):  # 431
     def __init__(self, parent):
         super().__init__(parent)
 
-        bowserShutterDoor1AuxImage = SLib.AuxiliaryImage(parent, 48, 144)
+        bowserShutterDoor1AuxImage = actorlib.AuxiliaryImage(parent, 48, 144)
         bowserShutterDoor1AuxImage.image = ImageCache['BowserShutterDoor']
         bowserShutterDoor1AuxImage.setPos(1250, -288)
         self.aux.append(bowserShutterDoor1AuxImage)
 
-        bowserShutterDoor2AuxImage = SLib.AuxiliaryImage(parent, 48, 144)
+        bowserShutterDoor2AuxImage = actorlib.AuxiliaryImage(parent, 48, 144)
         bowserShutterDoor2AuxImage.image = ImageCache['BowserShutterDoor']
         bowserShutterDoor2AuxImage.setPos(1250, -144)
         bowserShutterDoor2AuxImage.alpha = 0.5
         self.aux.append(bowserShutterDoor2AuxImage)
 
 
-        arenaOutline = SLib.AuxiliaryRectOutline(parent, 768, 408, 1248, -336)
+        arenaOutline = actorlib.AuxiliaryRectOutline(parent, 768, 408, 1248, -336)
         arenaOutline.fillFlag = False
         self.aux.append(arenaOutline)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BowserShutterDoor', 'bowser_shutter_door.png')
+        actorlib.loadIfNotInImageCache('BowserShutterDoor', 'bowser_shutter_door.png')
 
 
-class SpriteImage_Toad(SLib.SpriteImage_Static):  # 432
+class ActorImage_Toad(actorlib.ActorImage_Static):  # 432
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -8638,10 +8643,10 @@ class SpriteImage_Toad(SLib.SpriteImage_Static):  # 432
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Toad', 'toad.png')
+        actorlib.loadIfNotInImageCache('Toad', 'toad.png')
 
 
-class SpriteImage_FloatingQBlock(SpriteImage_Block):  # 433
+class ActorImage_FloatingQBlock(ActorImage_Block):  # 433
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.tilenum = 49
@@ -8651,7 +8656,7 @@ class SpriteImage_FloatingQBlock(SpriteImage_Block):  # 433
         self.twelveIsMushroom = True
 
 
-class SpriteImage_WarpCannon(SLib.SpriteImage_StaticMultiple):  # 434
+class ActorImage_WarpCannon(actorlib.ActorImage_StaticMultiple):  # 434
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.offset = (5, -25)
@@ -8660,9 +8665,9 @@ class SpriteImage_WarpCannon(SLib.SpriteImage_StaticMultiple):  # 434
     def loadImages():
         if 'Warp0' in ImageCache:
             return
-        ImageCache['Warp0'] = SLib.GetPixmap('warp_w5.png')
-        ImageCache['Warp1'] = SLib.GetPixmap('warp_w6.png')
-        ImageCache['Warp2'] = SLib.GetPixmap('warp_w8.png')
+        ImageCache['Warp0'] = actorlib.GetPixmap('warp_w5.png')
+        ImageCache['Warp1'] = actorlib.GetPixmap('warp_w6.png')
+        ImageCache['Warp2'] = actorlib.GetPixmap('warp_w8.png')
 
     def dataChanged(self):
 
@@ -8674,7 +8679,7 @@ class SpriteImage_WarpCannon(SLib.SpriteImage_StaticMultiple):  # 434
         super().dataChanged()
 
 
-class SpriteImage_GhostFog(SpriteImage_LiquidOrFog):  # 435
+class ActorImage_GhostFog(ActorImage_LiquidOrFog):  # 435
     def __init__(self, parent):
         super().__init__(parent)
         self.mid = ImageCache['GhostFog']
@@ -8682,7 +8687,7 @@ class SpriteImage_GhostFog(SpriteImage_LiquidOrFog):  # 435
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('GhostFog', 'fog_ghost.png')
+        actorlib.loadIfNotInImageCache('GhostFog', 'fog_ghost.png')
 
     def dataChanged(self):
         self.locId = self.parent.spritedata[5] & 0x7F
@@ -8697,18 +8702,18 @@ class SpriteImage_GhostFog(SpriteImage_LiquidOrFog):  # 435
         super().positionChanged()
 
 
-class SpriteImage_PurplePole(SLib.SpriteImage):  # 437
+class ActorImage_PurplePole(actorlib.ActorImage):  # 437
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
     @staticmethod
     def loadImages():
         if 'VertPole' in ImageCache:
             return
-        ImageCache['VertPoleTop'] = SLib.GetPixmap('purple_pole_top.png')
-        ImageCache['VertPole'] = SLib.GetPixmap('purple_pole_middle.png')
-        ImageCache['VertPoleBottom'] = SLib.GetPixmap('purple_pole_bottom.png')
+        ImageCache['VertPoleTop'] = actorlib.GetPixmap('purple_pole_top.png')
+        ImageCache['VertPole'] = actorlib.GetPixmap('purple_pole_middle.png')
+        ImageCache['VertPoleBottom'] = actorlib.GetPixmap('purple_pole_bottom.png')
 
     def dataChanged(self):
         length = self.parent.spritedata[5]
@@ -8720,13 +8725,13 @@ class SpriteImage_PurplePole(SLib.SpriteImage):  # 437
         painter.drawPixmap(0, int(self.height * 1.5 - 24), ImageCache['VertPoleBottom'])
 
 
-class SpriteImage_ShapeBlocks(SLib.SpriteImage_StaticMultiple):  # 438
+class ActorImage_ShapeBlocks(actorlib.ActorImage_StaticMultiple):  # 438
     def __init__(self, parent):
         super().__init__(parent)
         self.parent.setZValue(24999)
-        self.spritebox.shown = True
+        self.actorbox.shown = True
 
-        self.aux.append(SLib.AuxiliaryImage(parent, 360, 360))
+        self.aux.append(actorlib.AuxiliaryImage(parent, 360, 360))
 
     @staticmethod
     def loadImages():
@@ -8734,10 +8739,10 @@ class SpriteImage_ShapeBlocks(SLib.SpriteImage_StaticMultiple):  # 438
             return
 
         for i in range(5):
-            ImageCache[f'ShapeBlock{i}'] = SLib.GetPixmap(f'shape_block_{i}.png')
+            ImageCache[f'ShapeBlock{i}'] = actorlib.GetPixmap(f'shape_block_{i}.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryImage):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
         type = (self.parent.spritedata[4] & 15) % 5
@@ -8763,7 +8768,7 @@ class SpriteImage_ShapeBlocks(SLib.SpriteImage_StaticMultiple):  # 438
         super().dataChanged()
 
 
-class SpriteImage_CagePeachFake(SLib.SpriteImage_Static):  # 439
+class ActorImage_CagePeachFake(actorlib.ActorImage_Static):  # 439
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -8774,18 +8779,18 @@ class SpriteImage_CagePeachFake(SLib.SpriteImage_Static):  # 439
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('CagePeachFake', 'cage_peach_fake.png')
+        actorlib.loadIfNotInImageCache('CagePeachFake', 'cage_peach_fake.png')
 
 
-class SpriteImage_HorizontalRope(SLib.SpriteImage):  # 440
+class ActorImage_HorizontalRope(actorlib.ActorImage):  # 440
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('HorzRope', 'horizontal_rope_middle.png')
-        SLib.loadIfNotInImageCache('HorzRopeEnd', 'horizontal_rope_end.png')
+        actorlib.loadIfNotInImageCache('HorzRope', 'horizontal_rope_middle.png')
+        actorlib.loadIfNotInImageCache('HorzRopeEnd', 'horizontal_rope_end.png')
 
     def dataChanged(self):
         length = self.parent.spritedata[5]
@@ -8798,27 +8803,27 @@ class SpriteImage_HorizontalRope(SLib.SpriteImage):  # 440
         painter.drawPixmap(int(self.width * 1.5 - 24), 0, endpiece)
 
 
-class SpriteImage_MushroomPlatform(SLib.SpriteImage):  # 441
+class ActorImage_MushroomPlatform(actorlib.ActorImage):  # 441
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
     @staticmethod
     def loadImages():
         if 'RedShroomL' in ImageCache:
             return
-        ImageCache['RedShroomL'] = SLib.GetPixmap('red_mushroom_left.png')
-        ImageCache['RedShroomM'] = SLib.GetPixmap('red_mushroom_middle.png')
-        ImageCache['RedShroomR'] = SLib.GetPixmap('red_mushroom_right.png')
-        ImageCache['GreenShroomL'] = SLib.GetPixmap('green_mushroom_left.png')
-        ImageCache['GreenShroomM'] = SLib.GetPixmap('green_mushroom_middle.png')
-        ImageCache['GreenShroomR'] = SLib.GetPixmap('green_mushroom_right.png')
-        ImageCache['BlueShroomL'] = SLib.GetPixmap('blue_mushroom_left.png')
-        ImageCache['BlueShroomM'] = SLib.GetPixmap('blue_mushroom_middle.png')
-        ImageCache['BlueShroomR'] = SLib.GetPixmap('blue_mushroom_right.png')
-        ImageCache['OrangeShroomL'] = SLib.GetPixmap('orange_mushroom_left.png')
-        ImageCache['OrangeShroomM'] = SLib.GetPixmap('orange_mushroom_middle.png')
-        ImageCache['OrangeShroomR'] = SLib.GetPixmap('orange_mushroom_right.png')
+        ImageCache['RedShroomL'] = actorlib.GetPixmap('red_mushroom_left.png')
+        ImageCache['RedShroomM'] = actorlib.GetPixmap('red_mushroom_middle.png')
+        ImageCache['RedShroomR'] = actorlib.GetPixmap('red_mushroom_right.png')
+        ImageCache['GreenShroomL'] = actorlib.GetPixmap('green_mushroom_left.png')
+        ImageCache['GreenShroomM'] = actorlib.GetPixmap('green_mushroom_middle.png')
+        ImageCache['GreenShroomR'] = actorlib.GetPixmap('green_mushroom_right.png')
+        ImageCache['BlueShroomL'] = actorlib.GetPixmap('blue_mushroom_left.png')
+        ImageCache['BlueShroomM'] = actorlib.GetPixmap('blue_mushroom_middle.png')
+        ImageCache['BlueShroomR'] = actorlib.GetPixmap('blue_mushroom_right.png')
+        ImageCache['OrangeShroomL'] = actorlib.GetPixmap('orange_mushroom_left.png')
+        ImageCache['OrangeShroomM'] = actorlib.GetPixmap('orange_mushroom_middle.png')
+        ImageCache['OrangeShroomR'] = actorlib.GetPixmap('orange_mushroom_right.png')
 
     def dataChanged(self):
         # get size/color
@@ -8860,7 +8865,7 @@ class SpriteImage_MushroomPlatform(SLib.SpriteImage):  # 441
         painter.drawPixmap(int(self.width * 1.5) - tilesize, 0, ImageCache[color + 'ShroomR'])
 
 
-class SpriteImage_ReplayBlock(SLib.SpriteImage_Static):  # 443
+class ActorImage_ReplayBlock(actorlib.ActorImage_Static):  # 443
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -8871,10 +8876,10 @@ class SpriteImage_ReplayBlock(SLib.SpriteImage_Static):  # 443
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('ReplayBlock', 'replay_block.png')
+        actorlib.loadIfNotInImageCache('ReplayBlock', 'replay_block.png')
 
 
-class SpriteImage_PreSwingingVine(SLib.SpriteImage_Static):  # 444
+class ActorImage_PreSwingingVine(actorlib.ActorImage_Static):  # 444
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -8884,10 +8889,10 @@ class SpriteImage_PreSwingingVine(SLib.SpriteImage_Static):  # 444
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('PreSwingVine', 'swing_vine.png')
+        actorlib.loadIfNotInImageCache('PreSwingVine', 'swing_vine.png')
 
 
-class SpriteImage_CagePeachReal(SLib.SpriteImage_Static):  # 445
+class ActorImage_CagePeachReal(actorlib.ActorImage_Static):  # 445
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -8898,15 +8903,15 @@ class SpriteImage_CagePeachReal(SLib.SpriteImage_Static):  # 445
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('CagePeachReal', 'cage_peach_real.png')
+        actorlib.loadIfNotInImageCache('CagePeachReal', 'cage_peach_real.png')
 
 
-class SpriteImage_UnderwaterLamp(SLib.SpriteImage):  # 447
+class ActorImage_UnderwaterLamp(actorlib.ActorImage):  # 447
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
-        underwaterLampAuxImage = SLib.AuxiliaryImage(parent, 105, 105)
+        underwaterLampAuxImage = actorlib.AuxiliaryImage(parent, 105, 105)
         underwaterLampAuxImage.image = ImageCache['UnderwaterLamp']
         underwaterLampAuxImage.setPos(-34, -34)
         self.aux.append(underwaterLampAuxImage)
@@ -8915,10 +8920,10 @@ class SpriteImage_UnderwaterLamp(SLib.SpriteImage):  # 447
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('UnderwaterLamp', 'underwater_lamp.png')
+        actorlib.loadIfNotInImageCache('UnderwaterLamp', 'underwater_lamp.png')
 
 
-class SpriteImage_MetalBar(SLib.SpriteImage_Static):  # 448
+class ActorImage_MetalBar(actorlib.ActorImage_Static):  # 448
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -8929,16 +8934,16 @@ class SpriteImage_MetalBar(SLib.SpriteImage_Static):  # 448
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('MetalBar', 'metal_bar.png')
+        actorlib.loadIfNotInImageCache('MetalBar', 'metal_bar.png')
 
 
-class SpriteImage_Pipe_EnterableUp(SpriteImage_PipeStationary):  # 450
+class ActorImage_Pipe_EnterableUp(ActorImage_PipeStationary):  # 450
     def dataChanged(self):
         self.length = (self.parent.spritedata[5] & 0xF) + 2
         super().dataChanged()
 
 
-class SpriteImage_ScaredyRatDespawner(SLib.SpriteImage_Static):  # 451
+class ActorImage_ScaredyRatDespawner(actorlib.ActorImage_Static):  # 451
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -8948,10 +8953,10 @@ class SpriteImage_ScaredyRatDespawner(SLib.SpriteImage_Static):  # 451
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('ScaredyRatDespawner', 'scaredy_rat_despawner.png')
+        actorlib.loadIfNotInImageCache('ScaredyRatDespawner', 'scaredy_rat_despawner.png')
 
 
-class SpriteImage_BowserDoor(SLib.SpriteImage_Static):  # 452
+class ActorImage_BowserDoor(actorlib.ActorImage_Static):  # 452
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -8959,17 +8964,17 @@ class SpriteImage_BowserDoor(SLib.SpriteImage_Static):  # 452
             ImageCache['BowserDoor'],
             (-53, -130),
         )
-        arenaOutline = SLib.AuxiliaryRectOutline(parent, 24, 24)
-        arenaOutline.setIsBehindSprite(False)
+        arenaOutline = actorlib.AuxiliaryRectOutline(parent, 24, 24)
+        arenaOutline.setIsBehindActor(False)
         arenaOutline.setPos(91, 243)
         self.aux.append(arenaOutline)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BowserDoor', 'bowser_door.png')
+        actorlib.loadIfNotInImageCache('BowserDoor', 'bowser_door.png')
 
 
-class SpriteImage_Seaweed(SLib.SpriteImage_StaticMultiple):  # 453
+class ActorImage_Seaweed(actorlib.ActorImage_StaticMultiple):  # 453
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.parent.setZValue(24998)
@@ -8979,7 +8984,7 @@ class SpriteImage_Seaweed(SLib.SpriteImage_StaticMultiple):  # 453
         if 'Seaweed0' in ImageCache:
             return
         for i in range(4):
-            ImageCache[f'Seaweed{i}'] = SLib.GetPixmap(f'seaweed_{i}.png')
+            ImageCache[f'Seaweed{i}'] = actorlib.GetPixmap(f'seaweed_{i}.png')
 
     def dataChanged(self):
         SeaweedSizes = [0, 1, 2, 2, 3, 3]
@@ -8997,30 +9002,30 @@ class SpriteImage_Seaweed(SLib.SpriteImage_StaticMultiple):  # 453
         super().dataChanged()
 
 
-class SpriteImage_HammerPlatform(SLib.SpriteImage):  # 455
+class ActorImage_HammerPlatform(actorlib.ActorImage):  # 455
     def __init__(self, parent):
         super().__init__(parent)
         self.parent.setZValue(24999)
 
         w, h = ImageCache['HammerPlatform'].width(), ImageCache['HammerPlatform'].height()
-        hammerPlatformAuxImage = SLib.AuxiliaryImage(parent, w, h)
+        hammerPlatformAuxImage = actorlib.AuxiliaryImage(parent, w, h)
         hammerPlatformAuxImage.image = ImageCache['HammerPlatform']
         hammerPlatformAuxImage.setPos(-24 * 1.5, -8 * 1.5)
         self.aux.append(hammerPlatformAuxImage)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('HammerPlatform', 'hammer_platform.png')
+        actorlib.loadIfNotInImageCache('HammerPlatform', 'hammer_platform.png')
 
 
-class SpriteImage_BossBridge(SLib.SpriteImage_StaticMultiple):  # 456
+class ActorImage_BossBridge(actorlib.ActorImage_StaticMultiple):  # 456
     @staticmethod
     def loadImages():
         if 'BossBridgeL' in ImageCache:
             return
-        ImageCache['BossBridgeL'] = SLib.GetPixmap('boss_bridge_left.png')
-        ImageCache['BossBridgeM'] = SLib.GetPixmap('boss_bridge_middle.png')
-        ImageCache['BossBridgeR'] = SLib.GetPixmap('boss_bridge_right.png')
+        ImageCache['BossBridgeL'] = actorlib.GetPixmap('boss_bridge_left.png')
+        ImageCache['BossBridgeM'] = actorlib.GetPixmap('boss_bridge_middle.png')
+        ImageCache['BossBridgeR'] = actorlib.GetPixmap('boss_bridge_right.png')
 
     def dataChanged(self):
         style = (self.parent.spritedata[5] & 3) % 3
@@ -9033,43 +9038,43 @@ class SpriteImage_BossBridge(SLib.SpriteImage_StaticMultiple):  # 456
         super().dataChanged()
 
 
-class SpriteImage_SpinningThinBars(SLib.SpriteImage):  # 457
+class ActorImage_SpinningThinBars(actorlib.ActorImage):  # 457
     def __init__(self, parent):
         super().__init__(parent)
         self.parent.setZValue(24999)
 
         w, h = ImageCache['SpinningThinBars'].width(), ImageCache['SpinningThinBars'].height()
-        spinningThinBarsAuxImage = SLib.AuxiliaryImage(parent, w, h)
+        spinningThinBarsAuxImage = actorlib.AuxiliaryImage(parent, w, h)
         spinningThinBarsAuxImage.image = ImageCache['SpinningThinBars']
         spinningThinBarsAuxImage.setPos(-115.4 * 1.5, -115.4 * 1.5)
         self.aux.append(spinningThinBarsAuxImage)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('SpinningThinBars', 'spinning_thin_bars.png')
+        actorlib.loadIfNotInImageCache('SpinningThinBars', 'spinning_thin_bars.png')
 
 
-class SpriteImage_LongMetalBar(SLib.SpriteImage):  # 458
+class ActorImage_LongMetalBar(actorlib.ActorImage):  # 458
     def __init__(self, parent):
         super().__init__(parent)
         i = ImageCache['LongMetalBar']
-        longMetalBarAuxImage = SLib.AuxiliaryImage(parent, i.width(), i.height())
+        longMetalBarAuxImage = actorlib.AuxiliaryImage(parent, i.width(), i.height())
         longMetalBarAuxImage.image = i
         longMetalBarAuxImage.setSize(i.width(), i.height(), -252, -24)
         self.aux.append(longMetalBarAuxImage)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('LongMetalBar', 'long_metal_bar.png')
+        actorlib.loadIfNotInImageCache('LongMetalBar', 'long_metal_bar.png')
 
 
-class SpriteImage_SilverGearBlock(SLib.SpriteImage_StaticMultiple):  # 460
+class ActorImage_SilverGearBlock(actorlib.ActorImage_StaticMultiple):  # 460
     @staticmethod
     def loadImages():
         if 'SilverGearBlockDown3' in ImageCache:
             return
         for gear in range(4):
-            image = SLib.GetImage(f'silver_gear_block_{gear}.png')
+            image = actorlib.GetImage(f'silver_gear_block_{gear}.png')
             if image is None:
                 continue
 
@@ -9088,16 +9093,16 @@ class SpriteImage_SilverGearBlock(SLib.SpriteImage_StaticMultiple):  # 460
         super().dataChanged()
 
 
-class SpriteImage_EnormousBlock(SLib.SpriteImage):  # 462
+class ActorImage_EnormousBlock(actorlib.ActorImage):  # 462
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24))
+        self.aux.append(actorlib.AuxiliaryRectOutline(parent, 24, 24))
         self.aux.append(
-            SLib.AuxiliaryPainterPath(parent, QtGui.QPainterPath(), 24, 24)
+            actorlib.AuxiliaryPainterPath(parent, QtGui.QPainterPath(), 24, 24)
         )
         self.aux.append(
-            SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Horizontal)
+            actorlib.AuxiliaryTrackObject(parent, 16, 16, actorlib.AuxiliaryTrackObject.Horizontal)
         )
 
         self.spikes = []
@@ -9124,9 +9129,9 @@ class SpriteImage_EnormousBlock(SLib.SpriteImage):  # 462
 
     def dataChanged(self):
         if (
-            not isinstance(self.aux[0], SLib.AuxiliaryRectOutline)
-            or not isinstance(self.aux[1], SLib.AuxiliaryPainterPath)
-            or not isinstance(self.aux[2], SLib.AuxiliaryTrackObject)
+            not isinstance(self.aux[0], actorlib.AuxiliaryRectOutline)
+            or not isinstance(self.aux[1], actorlib.AuxiliaryPainterPath)
+            or not isinstance(self.aux[2], actorlib.AuxiliaryTrackObject)
         ):
             return
         # get sprite data
@@ -9161,24 +9166,24 @@ class SpriteImage_EnormousBlock(SLib.SpriteImage):  # 462
             self.aux[2].setPos(halfwidth - distance * 24, halfheight)
 
 
-class SpriteImage_Glare(SLib.SpriteImage):  # 463
+class ActorImage_Glare(actorlib.ActorImage):  # 463
     def __init__(self, parent):
         super().__init__(parent)
-        sunGlareAuxImage = SLib.AuxiliaryImage(parent, 1000, 1000)
+        sunGlareAuxImage = actorlib.AuxiliaryImage(parent, 1000, 1000)
         sunGlareAuxImage.image = ImageCache['SunGlare']
         sunGlareAuxImage.setSize(9 * 24, 9 * 24, -4 * 24 - 5, -4 * 24 - 20)
         self.aux.append(sunGlareAuxImage)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('SunGlare', 'glare.png')
+        actorlib.loadIfNotInImageCache('SunGlare', 'glare.png')
 
 
-class SpriteImage_SwingingVine(SLib.SpriteImage_StaticMultiple):  # 464
+class ActorImage_SwingingVine(actorlib.ActorImage_StaticMultiple):  # 464
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('SwingVine', 'swing_vine.png')
-        SLib.loadIfNotInImageCache('SwingChain', 'swing_chain.png')
+        actorlib.loadIfNotInImageCache('SwingVine', 'swing_vine.png')
+        actorlib.loadIfNotInImageCache('SwingChain', 'swing_chain.png')
 
     def dataChanged(self):
         style = self.parent.spritedata[5] & 1
@@ -9187,7 +9192,7 @@ class SpriteImage_SwingingVine(SLib.SpriteImage_StaticMultiple):  # 464
         super().dataChanged()
 
 
-class SpriteImage_LavaIronBlock(SLib.SpriteImage_Static):  # 466
+class ActorImage_LavaIronBlock(actorlib.ActorImage_Static):  # 466
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -9196,14 +9201,14 @@ class SpriteImage_LavaIronBlock(SLib.SpriteImage_Static):  # 466
             (-1, -1),
         )
 
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Horizontal))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, 16, 16, actorlib.AuxiliaryTrackObject.Horizontal))
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('LavaIronBlock', 'lava_iron_block.png')
+        actorlib.loadIfNotInImageCache('LavaIronBlock', 'lava_iron_block.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
         direction = self.parent.spritedata[2] & 3
@@ -9228,7 +9233,7 @@ class SpriteImage_LavaIronBlock(SLib.SpriteImage_Static):  # 466
         super().dataChanged()
 
 
-class SpriteImage_MovingGemBlock(SLib.SpriteImage_Static):  # 467
+class ActorImage_MovingGemBlock(actorlib.ActorImage_Static):  # 467
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -9236,14 +9241,14 @@ class SpriteImage_MovingGemBlock(SLib.SpriteImage_Static):  # 467
             ImageCache['MovingGemBlock'],
         )
 
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Vertical))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, 16, 16, actorlib.AuxiliaryTrackObject.Vertical))
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('MovingGemBlock', 'moving_gem_block.png')
+        actorlib.loadIfNotInImageCache('MovingGemBlock', 'moving_gem_block.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
         direction = self.parent.spritedata[2] & 1
@@ -9258,18 +9263,18 @@ class SpriteImage_MovingGemBlock(SLib.SpriteImage_Static):  # 467
         super().dataChanged()
 
 
-class SpriteImage_BoltPlatform(SLib.SpriteImage):  # 469
+class ActorImage_BoltPlatform(actorlib.ActorImage):  # 469
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
     @staticmethod
     def loadImages():
         if 'BoltPlatformL' in ImageCache:
             return
-        ImageCache['BoltPlatformL'] = SLib.GetPixmap('bolt_platform_left.png')
-        ImageCache['BoltPlatformM'] = SLib.GetPixmap('bolt_platform_middle.png')
-        ImageCache['BoltPlatformR'] = SLib.GetPixmap('bolt_platform_right.png')
+        ImageCache['BoltPlatformL'] = actorlib.GetPixmap('bolt_platform_left.png')
+        ImageCache['BoltPlatformM'] = actorlib.GetPixmap('bolt_platform_middle.png')
+        ImageCache['BoltPlatformR'] = actorlib.GetPixmap('bolt_platform_right.png')
 
     def dataChanged(self):
         self.offset = (0, -2)
@@ -9286,7 +9291,7 @@ class SpriteImage_BoltPlatform(SLib.SpriteImage):  # 469
         painter.drawPixmap(int(self.width * 1.5) - 24, 0, ImageCache['BoltPlatformR'])
 
 
-class SpriteImage_BoltPlatformWire(SLib.SpriteImage_Static):  # 470
+class ActorImage_BoltPlatformWire(actorlib.ActorImage_Static):  # 470
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -9297,10 +9302,10 @@ class SpriteImage_BoltPlatformWire(SLib.SpriteImage_Static):  # 470
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BoltPlatformWire', 'bolt_platform_wire.png')
+        actorlib.loadIfNotInImageCache('BoltPlatformWire', 'bolt_platform_wire.png')
 
 
-class SpriteImage_PotPlatform(SLib.SpriteImage_Static):  # 471
+class ActorImage_PotPlatform(actorlib.ActorImage_Static):  # 471
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -9311,22 +9316,22 @@ class SpriteImage_PotPlatform(SLib.SpriteImage_Static):  # 471
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('PotPlatform', 'pot_platform.png')
+        actorlib.loadIfNotInImageCache('PotPlatform', 'pot_platform.png')
 
 
-class SpriteImage_IceFloeGenerator(SLib.SpriteImage):  # 472
+class ActorImage_IceFloeGenerator(actorlib.ActorImage):  # 472
     def __init__(self, parent):
         super().__init__(parent)
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 96, 120, 0, -96))
+        self.aux.append(actorlib.AuxiliaryRectOutline(parent, 96, 120, 0, -96))
 
 
-class SpriteImage_FloatingIceFloeGenerator(SLib.SpriteImage):  # 473
+class ActorImage_FloatingIceFloeGenerator(actorlib.ActorImage):  # 473
     def __init__(self, parent):
         super().__init__(parent)
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 96, 96, 0, 24))
+        self.aux.append(actorlib.AuxiliaryRectOutline(parent, 96, 96, 0, 24))
 
 
-class SpriteImage_IceFloe(SLib.SpriteImage_StaticMultiple):  # 475
+class ActorImage_IceFloe(actorlib.ActorImage_StaticMultiple):  # 475
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.alpha = 0.65
@@ -9337,7 +9342,7 @@ class SpriteImage_IceFloe(SLib.SpriteImage_StaticMultiple):  # 475
             return
 
         for size in range(13):
-            image = SLib.GetImage(f'ice_floe_{size}.png')
+            image = actorlib.GetImage(f'ice_floe_{size}.png')
             if image is None:
                 continue
 
@@ -9371,7 +9376,7 @@ class SpriteImage_IceFloe(SLib.SpriteImage_StaticMultiple):  # 475
         super().dataChanged()
 
 
-class SpriteImage_FlyingWrench(SLib.SpriteImage_Static):  # 476
+class ActorImage_FlyingWrench(actorlib.ActorImage_Static):  # 476
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -9381,10 +9386,10 @@ class SpriteImage_FlyingWrench(SLib.SpriteImage_Static):  # 476
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Wrench', 'wrench.png')
+        actorlib.loadIfNotInImageCache('Wrench', 'wrench.png')
 
 
-class SpriteImage_SuperGuideBlock(SLib.SpriteImage_StaticMultiple):  # 477
+class ActorImage_SuperGuideBlock(actorlib.ActorImage_StaticMultiple):  # 477
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -9395,7 +9400,7 @@ class SpriteImage_SuperGuideBlock(SLib.SpriteImage_StaticMultiple):  # 477
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('SuperGuide', 'superguide_block.png')
+        actorlib.loadIfNotInImageCache('SuperGuide', 'superguide_block.png')
 
     def dataChanged(self):
         midway = self.parent.spritedata[5] & 1
@@ -9405,7 +9410,7 @@ class SpriteImage_SuperGuideBlock(SLib.SpriteImage_StaticMultiple):  # 477
             self.alpha = 1.0
 
 
-class SpriteImage_BowserSwitchSm(common.SpriteImage_Switch):  # 478
+class ActorImage_BowserSwitchSm(common.ActorImage_Switch):  # 478
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.switchType = 'E'
@@ -9415,12 +9420,12 @@ class SpriteImage_BowserSwitchSm(common.SpriteImage_Switch):  # 478
         super().dataChanged()
 
 
-class SpriteImage_BowserSwitchLg(SLib.SpriteImage_StaticMultiple):  # 479
+class ActorImage_BowserSwitchLg(actorlib.ActorImage_StaticMultiple):  # 479
     @staticmethod
     def loadImages():
         if 'ELSwitch' in ImageCache:
             return
-        elg = SLib.GetImage('e_switch_lg.png')
+        elg = actorlib.GetImage('e_switch_lg.png')
         if elg is None:
             return
 
@@ -9461,20 +9466,20 @@ class SpriteImage_BowserSwitchLg(SLib.SpriteImage_StaticMultiple):  # 479
         super().dataChanged()
 
 
-class SpriteImage_MortonSkewer(SLib.SpriteImage):  # 480
+class ActorImage_MortonSkewer(actorlib.ActorImage):  # 480
     def __init__(self, parent):
         super().__init__(parent)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
         self.dimensions = (0, -368, 64, 410)
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 36, 591, SLib.AuxiliaryTrackObject.Vertical))
+        self.aux.append(actorlib.AuxiliaryTrackObject(parent, 36, 591, actorlib.AuxiliaryTrackObject.Vertical))
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('MortonSkewerM', 'skewer_down_m_0.png')
-        SLib.loadIfNotInImageCache('MortonSkewerE', 'skewer_down_e_0.png')
+        actorlib.loadIfNotInImageCache('MortonSkewerM', 'skewer_down_m_0.png')
+        actorlib.loadIfNotInImageCache('MortonSkewerE', 'skewer_down_e_0.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryTrackObject):
             return
 
         self.aux[0].setPos(36, 591)
@@ -9485,7 +9490,7 @@ class SpriteImage_MortonSkewer(SLib.SpriteImage):  # 480
         painter.drawPixmap(0, 576, ImageCache['MortonSkewerE'])
 
 
-class SpriteImage_FinalBossRubble(SLib.SpriteImage_StaticMultiple):  # 481
+class ActorImage_FinalBossRubble(actorlib.ActorImage_StaticMultiple):  # 481
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -9494,7 +9499,7 @@ class SpriteImage_FinalBossRubble(SLib.SpriteImage_StaticMultiple):  # 481
         if 'FinalBossRubble0' in ImageCache:
             return
         for size in range(2):
-            image = SLib.GetImage(f'final_boss_rubble_{size}.png')
+            image = actorlib.GetImage(f'final_boss_rubble_{size}.png')
             if image is None:
                 continue
 
@@ -9508,10 +9513,10 @@ class SpriteImage_FinalBossRubble(SLib.SpriteImage_StaticMultiple):  # 481
         super().dataChanged()
 
 
-class SpriteImage_FinalBossEffects(SLib.SpriteImage):  # 482
+class ActorImage_FinalBossEffects(actorlib.ActorImage):  # 482
     def __init__(self, parent):
         super().__init__(parent)
-        finalBossEffectsAuxImage = SLib.AuxiliaryImage(parent, 3612, 672)
+        finalBossEffectsAuxImage = actorlib.AuxiliaryImage(parent, 3612, 672)
         finalBossEffectsAuxImage.image = ImageCache['FinalBossEffects0']
         finalBossEffectsAuxImage.setPos(-228, -555)
         self.aux.append(finalBossEffectsAuxImage)
@@ -9523,14 +9528,14 @@ class SpriteImage_FinalBossEffects(SLib.SpriteImage):  # 482
             return
 
         for i in range(3):
-            image = SLib.GetImage(f'final_boss_effects_{i}.png')
+            image = actorlib.GetImage(f'final_boss_effects_{i}.png')
             if image is None:
                 continue
 
             ImageCache[f'FinalBossEffects{i}'] = QtGui.QPixmap.fromImage(image)
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryImage):
+        if not isinstance(self.aux[0], actorlib.AuxiliaryImage):
             return
 
         style = self.parent.spritedata[5] & 15
@@ -9557,379 +9562,379 @@ class SpriteImage_FinalBossEffects(SLib.SpriteImage):  # 482
 
 
 ImageClasses = {
-    0: SpriteImage_MeasureJump,
-    9: SpriteImage_CharacterSpawner,
-    20: SpriteImage_Goomba,
-    21: SpriteImage_ParaGoomba,
-    23: SpriteImage_HorzMovingPlatform,
-    24: SpriteImage_BuzzyBeetle,
-    25: SpriteImage_Spiny,
-    26: SpriteImage_UpsideDownSpiny,
-    27: SpriteImage_DSStoneBlock_Vert,
-    28: SpriteImage_DSStoneBlock_Horz,
-    30: SpriteImage_OldStoneBlock_NoSpikes,
-    31: SpriteImage_VertMovingPlatform,
-    32: SpriteImage_StarCoinRegular,
-    40: SpriteImage_QSwitch,
-    41: SpriteImage_PSwitch,
-    42: SpriteImage_ExcSwitch,
-    43: SpriteImage_QSwitchBlock,
-    44: SpriteImage_PSwitchBlock,
-    45: SpriteImage_ExcSwitchBlock,
-    46: SpriteImage_Podoboo,
-    47: SpriteImage_Thwomp,
-    48: SpriteImage_GiantThwomp,
-    49: SpriteImage_UnusedSeesaw,
-    50: SpriteImage_FallingPlatform,
-    51: SpriteImage_TiltingGirder,
-    52: SpriteImage_UnusedRotPlatforms,
-    53: SpriteImage_Quicksand,
-    54: SpriteImage_Lakitu,
-    55: SpriteImage_UnusedRisingSeesaw,
-    56: SpriteImage_RisingTiltGirder,
-    57: SpriteImage_KoopaTroopa,
-    58: SpriteImage_KoopaParatroopa,
-    59: SpriteImage_LineTiltGirder,
-    60: SpriteImage_SpikeTop,
-    61: SpriteImage_BigBoo,
-    62: SpriteImage_SpinningFirebar,
-    63: SpriteImage_SpikeBall,
-    64: SpriteImage_OutdoorsFog,
-    65: SpriteImage_PipePiranhaUp,
-    66: SpriteImage_PipePiranhaDown,
-    67: SpriteImage_PipePiranhaRight,
-    68: SpriteImage_PipePiranhaLeft,
-    69: SpriteImage_PipeFiretrapUp,
-    70: SpriteImage_PipeFiretrapDown,
-    71: SpriteImage_PipeFiretrapRight,
-    72: SpriteImage_PipeFiretrapLeft,
-    73: SpriteImage_GroundPiranha,
-    74: SpriteImage_BigGroundPiranha,
-    75: SpriteImage_GroundFiretrap,
-    76: SpriteImage_BigGroundFiretrap,
-    77: SpriteImage_ShipKey,
-    78: SpriteImage_CloudTrampoline,
-    80: SpriteImage_FireBro,
-    81: SpriteImage_OldStoneBlock_SpikesLeft,
-    82: SpriteImage_OldStoneBlock_SpikesRight,
-    83: SpriteImage_OldStoneBlock_SpikesLeftRight,
-    84: SpriteImage_OldStoneBlock_SpikesTop,
-    85: SpriteImage_OldStoneBlock_SpikesBottom,
-    86: SpriteImage_OldStoneBlock_SpikesTopBottom,
-    87: SpriteImage_TrampolineWall,
-    92: SpriteImage_BulletBillLauncher,
-    93: SpriteImage_BanzaiBillLauncher,
-    94: SpriteImage_BoomerangBro,
-    95: SpriteImage_HammerBroNormal,
-    96: SpriteImage_RotationControllerSwaying,
-    97: SpriteImage_RotationControlledSolidBetaPlatform,
-    98: SpriteImage_GiantSpikeBall,
-    99: SpriteImage_PipeEnemyGenerator,
-    100: SpriteImage_Swooper,
-    101: SpriteImage_Bobomb,
-    102: SpriteImage_Broozer,
-    103: SpriteImage_PlatformGenerator,
-    104: SpriteImage_AmpNormal,
-    105: SpriteImage_Pokey,
-    106: SpriteImage_LinePlatform,
-    107: SpriteImage_RotationControlledPassBetaPlatform,
-    108: SpriteImage_AmpLine,
-    109: SpriteImage_ChainBall,
-    110: SpriteImage_Sunlight,
-    111: SpriteImage_Blooper,
-    112: SpriteImage_BlooperBabies,
-    113: SpriteImage_Flagpole,
-    114: SpriteImage_FlameCannon,
-    115: SpriteImage_Cheep,
-    116: SpriteImage_CoinCheep,
-    117: SpriteImage_PulseFlameCannon,
-    118: SpriteImage_DryBones,
-    119: SpriteImage_GiantDryBones,
-    120: SpriteImage_SledgeBro,
-    122: SpriteImage_OneWayPlatform,
-    123: SpriteImage_UnusedCastlePlatform,
-    125: SpriteImage_FenceKoopaHorz,
-    126: SpriteImage_FenceKoopaVert,
-    127: SpriteImage_FlipFence,
-    128: SpriteImage_FlipFenceLong,
-    129: SpriteImage_4Spinner,
-    130: SpriteImage_Wiggler,
-    131: SpriteImage_Boo,
-    132: SpriteImage_UnusedBlockPlatform1,
-    133: SpriteImage_StalagmitePlatform,
-    134: SpriteImage_Crow,
-    135: SpriteImage_HangingPlatform,
-    136: SpriteImage_RotBulletLauncher,
-    137: SpriteImage_SkewerDown,
-    138: SpriteImage_Water,
-    139: SpriteImage_Lava,
-    140: SpriteImage_SkewerUp,
-    141: SpriteImage_SkewerRight,
-    142: SpriteImage_SkewerLeft,
-    143: SpriteImage_Arrow,
-    144: SpriteImage_RedCoin,
-    145: SpriteImage_FloatingBarrel,
-    146: SpriteImage_ChainChomp,
-    147: SpriteImage_Coin,
-    148: SpriteImage_Spring,
-    149: SpriteImage_RotationControllerSpinning,
-    151: SpriteImage_Porcupuffer,
-    153: SpriteImage_QSwitchUnused,
-    155: SpriteImage_StarCoinLineControlled,
-    156: SpriteImage_RedCoinRing,
-    157: SpriteImage_BigBrick,
-    158: SpriteImage_FireSnake,
-    160: SpriteImage_UnusedBlockPlatform2,
-    161: SpriteImage_PipeBubbles,
-    166: SpriteImage_SnakeBlock,
-    170: SpriteImage_ChestnutGoomba,
-    171: SpriteImage_PowerupBubble,
-    172: SpriteImage_ScrewMushroomWithBolt,
-    173: SpriteImage_GiantFloatingLog,
-    174: SpriteImage_OneWayGate,
-    175: SpriteImage_FlyingQBlock,
-    176: SpriteImage_RouletteBlock,
-    177: SpriteImage_FireChomp,
-    178: SpriteImage_ScalePlatform,
-    179: SpriteImage_SpecialExit,
-    180: SpriteImage_CheepChomp,
-    182: SpriteImage_EventDoor,
-    185: SpriteImage_ToadBalloon,
-    187: SpriteImage_PlayerBlock,
-    188: SpriteImage_MidwayFlag,
-    189: SpriteImage_LarryKoopa,
-    190: SpriteImage_TiltingGirderUnused,
-    191: SpriteImage_TileEvent,
-    192: SpriteImage_LarryKoopaCastleBoss,
-    193: SpriteImage_Urchin,
-    194: SpriteImage_MegaUrchin,
-    195: SpriteImage_HuckitCrab,
-    196: SpriteImage_Fishbones,
-    197: SpriteImage_Clam,
-    198: SpriteImage_GiantGoomba,
-    199: SpriteImage_MegaGoomba,
-    200: SpriteImage_Microgoomba,
-    201: SpriteImage_Icicle,
-    202: SpriteImage_MGCannon,
-    203: SpriteImage_Chest,
-    204: SpriteImage_RollObjSpawner,
-    205: SpriteImage_GiantBubbleNormal,
-    206: SpriteImage_Zoom,
-    207: SpriteImage_QBlock,
-    208: SpriteImage_QBlockUnused,
-    209: SpriteImage_BrickBlock,
-    211: SpriteImage_BowserJr1stController,
-    212: SpriteImage_RollingHill,
-    214: SpriteImage_FreefallPlatform,
-    216: SpriteImage_Poison,
-    219: SpriteImage_LineBlock,
-    221: SpriteImage_InvisibleBlock,
-    222: SpriteImage_ConveyorSpike,
-    223: SpriteImage_SpringBlock,
-    224: SpriteImage_JumboRay,
-    225: SpriteImage_FloatingCoin,
-    226: SpriteImage_GiantBubbleUnused,
-    227: SpriteImage_PipeCannon,
-    228: SpriteImage_ExtendShroom,
-    229: SpriteImage_SandPillar,
-    230: SpriteImage_Bramball,
-    231: SpriteImage_WiggleShroom,
-    232: SpriteImage_MechaKoopa,
-    233: SpriteImage_Bulber,
-    237: SpriteImage_PCoin,
-    238: SpriteImage_Foo,
-    240: SpriteImage_GiantWiggler,
-    242: SpriteImage_FallingLedgeBar,
-    247: SpriteImage_CheepFormation,
-    252: SpriteImage_EventDeactivBlock,
-    253: SpriteImage_RotControlledCoin,
-    254: SpriteImage_RotControlledPipe,
-    255: SpriteImage_RotatingQBlock,
-    257: SpriteImage_MoveWhenOnMetalLavaBlock,
-    256: SpriteImage_RotatingBrickBlock,
-    259: SpriteImage_RegularDoor,
-    260: SpriteImage_MovementController_TwoWayLine,
-    261: SpriteImage_OldStoneBlock_MovementControlled,
-    262: SpriteImage_PoltergeistItem,
-    263: SpriteImage_WaterPiranha,
-    264: SpriteImage_WalkingPiranha,
-    265: SpriteImage_FallingIcicle,
-    266: SpriteImage_RotatingFence,
-    267: SpriteImage_TiltGrate,
-    268: SpriteImage_LavaGeyser,
-    269: SpriteImage_Parabomb,
-    271: SpriteImage_ScaredyRat,
-    272: SpriteImage_IceBro,
-    274: SpriteImage_CastleGear,
-    275: SpriteImage_FiveEnemyRaft,
-    276: SpriteImage_GhostDoor,
-    277: SpriteImage_TowerDoor,
-    278: SpriteImage_CastleDoor,
-    280: SpriteImage_GiantIceBlock,
-    285: SpriteImage_RiseFallWater,
-    286: SpriteImage_WoodCircle,
-    287: SpriteImage_PathIceBlock,
-    288: SpriteImage_RollingBarrel,
-    289: SpriteImage_Box,
-    291: SpriteImage_Parabeetle,
-    292: SpriteImage_HeavyParabeetle,
-    294: SpriteImage_IceCube,
-    295: SpriteImage_NutPlatform,
-    296: SpriteImage_MegaBuzzy,
-    297: SpriteImage_DragonCoaster,
-    298: SpriteImage_LongCannon,
-    299: SpriteImage_CannonMulti,
-    300: SpriteImage_RotCannon,
-    301: SpriteImage_RotCannonPipe,
-    303: SpriteImage_MontyMole,
-    304: SpriteImage_RotFlameCannon,
-    305: SpriteImage_LightCircle,
-    306: SpriteImage_RotSpotlight,
-    308: SpriteImage_HammerBroPlatform,
-    309: SpriteImage_SynchroFlameJet,
-    310: SpriteImage_ArrowSign,
-    311: SpriteImage_MegaIcicle,
-    314: SpriteImage_BubbleGen,
-    315: SpriteImage_Bolt,
-    316: SpriteImage_BoltBox,
-    318: SpriteImage_BoxGenerator,
-    319: SpriteImage_UnusedWiimoteDoor,
-    320: SpriteImage_UnusedSlidingWiimoteDoor,
-    321: SpriteImage_ArrowBlock,
-    323: SpriteImage_BooCircle,
-    325: SpriteImage_GhostHouseStand,
-    326: SpriteImage_KingBill,
-    327: SpriteImage_LinePlatformBolt,
-    328: SpriteImage_BubbleCannon,
-    330: SpriteImage_RopeLadder,
-    331: SpriteImage_DishPlatform,
-    333: SpriteImage_PlayerBlockPlatform,
-    334: SpriteImage_CheepGiant,
-    335: SpriteImage_CheepSchool,
-    336: SpriteImage_WendyKoopa,
-    337: SpriteImage_IggyKoopa,
-    338: SpriteImage_MovingBulletBillLauncher,
-    339: SpriteImage_Pipe_MovingUp,
-    340: SpriteImage_LemmyKoopa,
-    341: SpriteImage_BigShell,
-    342: SpriteImage_Muncher,
-    343: SpriteImage_Fuzzy,
-    344: SpriteImage_MortonKoopa,
-    345: SpriteImage_ChainHolder,
-    346: SpriteImage_HangingChainPlatform,
-    347: SpriteImage_RoyKoopa,
-    348: SpriteImage_LudwigVonKoopa,
-    349: SpriteImage_MortonKoopaCastleBoss,
-    352: SpriteImage_RockyWrench,
-    353: SpriteImage_Pipe_MovingDown,
-    354: SpriteImage_BrownTowerBlockTwoWayLine,
-    355: SpriteImage_RollingHillWith1Pipe,
-    356: SpriteImage_BrownTowerBlockNormal,
-    357: SpriteImage_Fruit,
-    358: SpriteImage_LavaParticles,
-    359: SpriteImage_WallLantern,
-    360: SpriteImage_RollingHillWith8Pipes,
-    361: SpriteImage_CrystalBlock,
-    362: SpriteImage_ColoredBox,
-    364: SpriteImage_RoyKoopaCastleBoss,
-    365: SpriteImage_LudwigVonKoopaCastleBoss,
-    366: SpriteImage_CubeKinokoRot,
-    367: SpriteImage_CubeKinokoLine,
-    368: SpriteImage_FlashRaft,
-    369: SpriteImage_SlidingPenguin,
-    370: SpriteImage_CloudBlock,
-    371: SpriteImage_RollingHillCoin,
-    372: SpriteImage_IggyKoopaCastleBoss,
-    373: SpriteImage_RaftWater,
-    374: SpriteImage_SnowWind,
-    375: SpriteImage_WendyKoopaCastleBoss,
-    376: SpriteImage_MovingFence,
-    377: SpriteImage_Pipe_Up,
-    378: SpriteImage_Pipe_Down,
-    379: SpriteImage_Pipe_Right,
-    380: SpriteImage_Pipe_Left,
-    381: SpriteImage_LemmyKoopaCastleBoss,
-    382: SpriteImage_ScrewMushroomNoBolt,
-    383: SpriteImage_KamekController,
-    384: SpriteImage_PipeCooliganGenerator,
-    385: SpriteImage_IceBlock,
-    386: SpriteImage_PowBlock,
-    387: SpriteImage_Bush,
-    388: SpriteImage_Barrel,
-    389: SpriteImage_StarCoinBoltControlled,
-    390: SpriteImage_BoltControlledCoin,
-    391: SpriteImage_GlowBlock,
-    393: SpriteImage_PropellerBlock,
-    394: SpriteImage_LemmyBall,
-    395: SpriteImage_SpinyCheep,
-    396: SpriteImage_MoveWhenOn,
-    397: SpriteImage_GhostHouseBox,
-    398: SpriteImage_LongSkewerRight,
-    400: SpriteImage_LongSkewerLeft,
-    401: SpriteImage_MassiveSkewerDown,
-    402: SpriteImage_LineQBlock,
-    403: SpriteImage_LineBrickBlock,
-    404: SpriteImage_MassiveSkewerUp,
-    405: SpriteImage_BowserJr2ndController,
-    406: SpriteImage_BowserJr3rdController,
-    407: SpriteImage_BossControllerCastleBoss,
-    411: SpriteImage_ToadHouseBalloonUnused,
-    412: SpriteImage_ToadHouseBalloonUsed,
-    413: SpriteImage_WendyRing,
-    414: SpriteImage_Gabon,
-    415: SpriteImage_BetaLarryKoopa,
-    416: SpriteImage_InvisibleOneUp,
-    417: SpriteImage_SpinjumpCoin,
-    418: SpriteImage_BanzaiGen,
-    419: SpriteImage_Bowser,
-    420: SpriteImage_GiantGlowBlock,
-    421: SpriteImage_UnusedGhostDoor,
-    422: SpriteImage_ToadQBlock,
-    423: SpriteImage_ToadBrickBlock,
-    424: SpriteImage_PalmTree,
-    425: SpriteImage_Jellybeam,
-    427: SpriteImage_Kamek,
-    428: SpriteImage_MGPanel,
-    431: SpriteImage_BowserController,
-    432: SpriteImage_Toad,
-    433: SpriteImage_FloatingQBlock,
-    434: SpriteImage_WarpCannon,
-    435: SpriteImage_GhostFog,
-    437: SpriteImage_PurplePole,
-    438: SpriteImage_ShapeBlocks,
-    439: SpriteImage_CagePeachFake,
-    440: SpriteImage_HorizontalRope,
-    441: SpriteImage_MushroomPlatform,
-    443: SpriteImage_ReplayBlock,
-    444: SpriteImage_PreSwingingVine,
-    445: SpriteImage_CagePeachReal,
-    447: SpriteImage_UnderwaterLamp,
-    448: SpriteImage_MetalBar,
-    450: SpriteImage_Pipe_EnterableUp,
-    451: SpriteImage_ScaredyRatDespawner,
-    452: SpriteImage_BowserDoor,
-    453: SpriteImage_Seaweed,
-    455: SpriteImage_HammerPlatform,
-    456: SpriteImage_BossBridge,
-    457: SpriteImage_SpinningThinBars,
-    458: SpriteImage_LongMetalBar,
-    460: SpriteImage_SilverGearBlock,
-    462: SpriteImage_EnormousBlock,
-    463: SpriteImage_Glare,
-    464: SpriteImage_SwingingVine,
-    466: SpriteImage_LavaIronBlock,
-    467: SpriteImage_MovingGemBlock,
-    469: SpriteImage_BoltPlatform,
-    470: SpriteImage_BoltPlatformWire,
-    471: SpriteImage_PotPlatform,
-    472: SpriteImage_IceFloeGenerator,
-    473: SpriteImage_FloatingIceFloeGenerator,
-    475: SpriteImage_IceFloe,
-    476: SpriteImage_FlyingWrench,
-    477: SpriteImage_SuperGuideBlock,
-    478: SpriteImage_BowserSwitchSm,
-    479: SpriteImage_BowserSwitchLg,
-    480: SpriteImage_MortonSkewer,
-    481: SpriteImage_FinalBossRubble,
-    482: SpriteImage_FinalBossEffects,
+    0: ActorImage_MeasureJump,
+    9: ActorImage_CharacterSpawner,
+    20: ActorImage_Goomba,
+    21: ActorImage_ParaGoomba,
+    23: ActorImage_HorzMovingPlatform,
+    24: ActorImage_BuzzyBeetle,
+    25: ActorImage_Spiny,
+    26: ActorImage_UpsideDownSpiny,
+    27: ActorImage_DSStoneBlock_Vert,
+    28: ActorImage_DSStoneBlock_Horz,
+    30: ActorImage_OldStoneBlock_NoSpikes,
+    31: ActorImage_VertMovingPlatform,
+    32: ActorImage_StarCoinRegular,
+    40: ActorImage_QSwitch,
+    41: ActorImage_PSwitch,
+    42: ActorImage_ExcSwitch,
+    43: ActorImage_QSwitchBlock,
+    44: ActorImage_PSwitchBlock,
+    45: ActorImage_ExcSwitchBlock,
+    46: ActorImage_Podoboo,
+    47: ActorImage_Thwomp,
+    48: ActorImage_GiantThwomp,
+    49: ActorImage_UnusedSeesaw,
+    50: ActorImage_FallingPlatform,
+    51: ActorImage_TiltingGirder,
+    52: ActorImage_UnusedRotPlatforms,
+    53: ActorImage_Quicksand,
+    54: ActorImage_Lakitu,
+    55: ActorImage_UnusedRisingSeesaw,
+    56: ActorImage_RisingTiltGirder,
+    57: ActorImage_KoopaTroopa,
+    58: ActorImage_KoopaParatroopa,
+    59: ActorImage_LineTiltGirder,
+    60: ActorImage_SpikeTop,
+    61: ActorImage_BigBoo,
+    62: ActorImage_SpinningFirebar,
+    63: ActorImage_SpikeBall,
+    64: ActorImage_OutdoorsFog,
+    65: ActorImage_PipePiranhaUp,
+    66: ActorImage_PipePiranhaDown,
+    67: ActorImage_PipePiranhaRight,
+    68: ActorImage_PipePiranhaLeft,
+    69: ActorImage_PipeFiretrapUp,
+    70: ActorImage_PipeFiretrapDown,
+    71: ActorImage_PipeFiretrapRight,
+    72: ActorImage_PipeFiretrapLeft,
+    73: ActorImage_GroundPiranha,
+    74: ActorImage_BigGroundPiranha,
+    75: ActorImage_GroundFiretrap,
+    76: ActorImage_BigGroundFiretrap,
+    77: ActorImage_ShipKey,
+    78: ActorImage_CloudTrampoline,
+    80: ActorImage_FireBro,
+    81: ActorImage_OldStoneBlock_SpikesLeft,
+    82: ActorImage_OldStoneBlock_SpikesRight,
+    83: ActorImage_OldStoneBlock_SpikesLeftRight,
+    84: ActorImage_OldStoneBlock_SpikesTop,
+    85: ActorImage_OldStoneBlock_SpikesBottom,
+    86: ActorImage_OldStoneBlock_SpikesTopBottom,
+    87: ActorImage_TrampolineWall,
+    92: ActorImage_BulletBillLauncher,
+    93: ActorImage_BanzaiBillLauncher,
+    94: ActorImage_BoomerangBro,
+    95: ActorImage_HammerBroNormal,
+    96: ActorImage_RotationControllerSwaying,
+    97: ActorImage_RotationControlledSolidBetaPlatform,
+    98: ActorImage_GiantSpikeBall,
+    99: ActorImage_PipeEnemyGenerator,
+    100: ActorImage_Swooper,
+    101: ActorImage_Bobomb,
+    102: ActorImage_Broozer,
+    103: ActorImage_PlatformGenerator,
+    104: ActorImage_AmpNormal,
+    105: ActorImage_Pokey,
+    106: ActorImage_LinePlatform,
+    107: ActorImage_RotationControlledPassBetaPlatform,
+    108: ActorImage_AmpLine,
+    109: ActorImage_ChainBall,
+    110: ActorImage_Sunlight,
+    111: ActorImage_Blooper,
+    112: ActorImage_BlooperBabies,
+    113: ActorImage_Flagpole,
+    114: ActorImage_FlameCannon,
+    115: ActorImage_Cheep,
+    116: ActorImage_CoinCheep,
+    117: ActorImage_PulseFlameCannon,
+    118: ActorImage_DryBones,
+    119: ActorImage_GiantDryBones,
+    120: ActorImage_SledgeBro,
+    122: ActorImage_OneWayPlatform,
+    123: ActorImage_UnusedCastlePlatform,
+    125: ActorImage_FenceKoopaHorz,
+    126: ActorImage_FenceKoopaVert,
+    127: ActorImage_FlipFence,
+    128: ActorImage_FlipFenceLong,
+    129: ActorImage_4Spinner,
+    130: ActorImage_Wiggler,
+    131: ActorImage_Boo,
+    132: ActorImage_UnusedBlockPlatform1,
+    133: ActorImage_StalagmitePlatform,
+    134: ActorImage_Crow,
+    135: ActorImage_HangingPlatform,
+    136: ActorImage_RotBulletLauncher,
+    137: ActorImage_SkewerDown,
+    138: ActorImage_Water,
+    139: ActorImage_Lava,
+    140: ActorImage_SkewerUp,
+    141: ActorImage_SkewerRight,
+    142: ActorImage_SkewerLeft,
+    143: ActorImage_Arrow,
+    144: ActorImage_RedCoin,
+    145: ActorImage_FloatingBarrel,
+    146: ActorImage_ChainChomp,
+    147: ActorImage_Coin,
+    148: ActorImage_Spring,
+    149: ActorImage_RotationControllerSpinning,
+    151: ActorImage_Porcupuffer,
+    153: ActorImage_QSwitchUnused,
+    155: ActorImage_StarCoinLineControlled,
+    156: ActorImage_RedCoinRing,
+    157: ActorImage_BigBrick,
+    158: ActorImage_FireSnake,
+    160: ActorImage_UnusedBlockPlatform2,
+    161: ActorImage_PipeBubbles,
+    166: ActorImage_SnakeBlock,
+    170: ActorImage_ChestnutGoomba,
+    171: ActorImage_PowerupBubble,
+    172: ActorImage_ScrewMushroomWithBolt,
+    173: ActorImage_GiantFloatingLog,
+    174: ActorImage_OneWayGate,
+    175: ActorImage_FlyingQBlock,
+    176: ActorImage_RouletteBlock,
+    177: ActorImage_FireChomp,
+    178: ActorImage_ScalePlatform,
+    179: ActorImage_SpecialExit,
+    180: ActorImage_CheepChomp,
+    182: ActorImage_EventDoor,
+    185: ActorImage_ToadBalloon,
+    187: ActorImage_PlayerBlock,
+    188: ActorImage_MidwayFlag,
+    189: ActorImage_LarryKoopa,
+    190: ActorImage_TiltingGirderUnused,
+    191: ActorImage_TileEvent,
+    192: ActorImage_LarryKoopaCastleBoss,
+    193: ActorImage_Urchin,
+    194: ActorImage_MegaUrchin,
+    195: ActorImage_HuckitCrab,
+    196: ActorImage_Fishbones,
+    197: ActorImage_Clam,
+    198: ActorImage_GiantGoomba,
+    199: ActorImage_MegaGoomba,
+    200: ActorImage_Microgoomba,
+    201: ActorImage_Icicle,
+    202: ActorImage_MGCannon,
+    203: ActorImage_Chest,
+    204: ActorImage_RollObjSpawner,
+    205: ActorImage_GiantBubbleNormal,
+    206: ActorImage_Zoom,
+    207: ActorImage_QBlock,
+    208: ActorImage_QBlockUnused,
+    209: ActorImage_BrickBlock,
+    211: ActorImage_BowserJr1stController,
+    212: ActorImage_RollingHill,
+    214: ActorImage_FreefallPlatform,
+    216: ActorImage_Poison,
+    219: ActorImage_LineBlock,
+    221: ActorImage_InvisibleBlock,
+    222: ActorImage_ConveyorSpike,
+    223: ActorImage_SpringBlock,
+    224: ActorImage_JumboRay,
+    225: ActorImage_FloatingCoin,
+    226: ActorImage_GiantBubbleUnused,
+    227: ActorImage_PipeCannon,
+    228: ActorImage_ExtendShroom,
+    229: ActorImage_SandPillar,
+    230: ActorImage_Bramball,
+    231: ActorImage_WiggleShroom,
+    232: ActorImage_MechaKoopa,
+    233: ActorImage_Bulber,
+    237: ActorImage_PCoin,
+    238: ActorImage_Foo,
+    240: ActorImage_GiantWiggler,
+    242: ActorImage_FallingLedgeBar,
+    247: ActorImage_CheepFormation,
+    252: ActorImage_EventDeactivBlock,
+    253: ActorImage_RotControlledCoin,
+    254: ActorImage_RotControlledPipe,
+    255: ActorImage_RotatingQBlock,
+    257: ActorImage_MoveWhenOnMetalLavaBlock,
+    256: ActorImage_RotatingBrickBlock,
+    259: ActorImage_RegularDoor,
+    260: ActorImage_MovementController_TwoWayLine,
+    261: ActorImage_OldStoneBlock_MovementControlled,
+    262: ActorImage_PoltergeistItem,
+    263: ActorImage_WaterPiranha,
+    264: ActorImage_WalkingPiranha,
+    265: ActorImage_FallingIcicle,
+    266: ActorImage_RotatingFence,
+    267: ActorImage_TiltGrate,
+    268: ActorImage_LavaGeyser,
+    269: ActorImage_Parabomb,
+    271: ActorImage_ScaredyRat,
+    272: ActorImage_IceBro,
+    274: ActorImage_CastleGear,
+    275: ActorImage_FiveEnemyRaft,
+    276: ActorImage_GhostDoor,
+    277: ActorImage_TowerDoor,
+    278: ActorImage_CastleDoor,
+    280: ActorImage_GiantIceBlock,
+    285: ActorImage_RiseFallWater,
+    286: ActorImage_WoodCircle,
+    287: ActorImage_PathIceBlock,
+    288: ActorImage_RollingBarrel,
+    289: ActorImage_Box,
+    291: ActorImage_Parabeetle,
+    292: ActorImage_HeavyParabeetle,
+    294: ActorImage_IceCube,
+    295: ActorImage_NutPlatform,
+    296: ActorImage_MegaBuzzy,
+    297: ActorImage_DragonCoaster,
+    298: ActorImage_LongCannon,
+    299: ActorImage_CannonMulti,
+    300: ActorImage_RotCannon,
+    301: ActorImage_RotCannonPipe,
+    303: ActorImage_MontyMole,
+    304: ActorImage_RotFlameCannon,
+    305: ActorImage_LightCircle,
+    306: ActorImage_RotSpotlight,
+    308: ActorImage_HammerBroPlatform,
+    309: ActorImage_SynchroFlameJet,
+    310: ActorImage_ArrowSign,
+    311: ActorImage_MegaIcicle,
+    314: ActorImage_BubbleGen,
+    315: ActorImage_Bolt,
+    316: ActorImage_BoltBox,
+    318: ActorImage_BoxGenerator,
+    319: ActorImage_UnusedWiimoteDoor,
+    320: ActorImage_UnusedSlidingWiimoteDoor,
+    321: ActorImage_ArrowBlock,
+    323: ActorImage_BooCircle,
+    325: ActorImage_GhostHouseStand,
+    326: ActorImage_KingBill,
+    327: ActorImage_LinePlatformBolt,
+    328: ActorImage_BubbleCannon,
+    330: ActorImage_RopeLadder,
+    331: ActorImage_DishPlatform,
+    333: ActorImage_PlayerBlockPlatform,
+    334: ActorImage_CheepGiant,
+    335: ActorImage_CheepSchool,
+    336: ActorImage_WendyKoopa,
+    337: ActorImage_IggyKoopa,
+    338: ActorImage_MovingBulletBillLauncher,
+    339: ActorImage_Pipe_MovingUp,
+    340: ActorImage_LemmyKoopa,
+    341: ActorImage_BigShell,
+    342: ActorImage_Muncher,
+    343: ActorImage_Fuzzy,
+    344: ActorImage_MortonKoopa,
+    345: ActorImage_ChainHolder,
+    346: ActorImage_HangingChainPlatform,
+    347: ActorImage_RoyKoopa,
+    348: ActorImage_LudwigVonKoopa,
+    349: ActorImage_MortonKoopaCastleBoss,
+    352: ActorImage_RockyWrench,
+    353: ActorImage_Pipe_MovingDown,
+    354: ActorImage_BrownTowerBlockTwoWayLine,
+    355: ActorImage_RollingHillWith1Pipe,
+    356: ActorImage_BrownTowerBlockNormal,
+    357: ActorImage_Fruit,
+    358: ActorImage_LavaParticles,
+    359: ActorImage_WallLantern,
+    360: ActorImage_RollingHillWith8Pipes,
+    361: ActorImage_CrystalBlock,
+    362: ActorImage_ColoredBox,
+    364: ActorImage_RoyKoopaCastleBoss,
+    365: ActorImage_LudwigVonKoopaCastleBoss,
+    366: ActorImage_CubeKinokoRot,
+    367: ActorImage_CubeKinokoLine,
+    368: ActorImage_FlashRaft,
+    369: ActorImage_SlidingPenguin,
+    370: ActorImage_CloudBlock,
+    371: ActorImage_RollingHillCoin,
+    372: ActorImage_IggyKoopaCastleBoss,
+    373: ActorImage_RaftWater,
+    374: ActorImage_SnowWind,
+    375: ActorImage_WendyKoopaCastleBoss,
+    376: ActorImage_MovingFence,
+    377: ActorImage_Pipe_Up,
+    378: ActorImage_Pipe_Down,
+    379: ActorImage_Pipe_Right,
+    380: ActorImage_Pipe_Left,
+    381: ActorImage_LemmyKoopaCastleBoss,
+    382: ActorImage_ScrewMushroomNoBolt,
+    383: ActorImage_KamekController,
+    384: ActorImage_PipeCooliganGenerator,
+    385: ActorImage_IceBlock,
+    386: ActorImage_PowBlock,
+    387: ActorImage_Bush,
+    388: ActorImage_Barrel,
+    389: ActorImage_StarCoinBoltControlled,
+    390: ActorImage_BoltControlledCoin,
+    391: ActorImage_GlowBlock,
+    393: ActorImage_PropellerBlock,
+    394: ActorImage_LemmyBall,
+    395: ActorImage_SpinyCheep,
+    396: ActorImage_MoveWhenOn,
+    397: ActorImage_GhostHouseBox,
+    398: ActorImage_LongSkewerRight,
+    400: ActorImage_LongSkewerLeft,
+    401: ActorImage_MassiveSkewerDown,
+    402: ActorImage_LineQBlock,
+    403: ActorImage_LineBrickBlock,
+    404: ActorImage_MassiveSkewerUp,
+    405: ActorImage_BowserJr2ndController,
+    406: ActorImage_BowserJr3rdController,
+    407: ActorImage_BossControllerCastleBoss,
+    411: ActorImage_ToadHouseBalloonUnused,
+    412: ActorImage_ToadHouseBalloonUsed,
+    413: ActorImage_WendyRing,
+    414: ActorImage_Gabon,
+    415: ActorImage_BetaLarryKoopa,
+    416: ActorImage_InvisibleOneUp,
+    417: ActorImage_SpinjumpCoin,
+    418: ActorImage_BanzaiGen,
+    419: ActorImage_Bowser,
+    420: ActorImage_GiantGlowBlock,
+    421: ActorImage_UnusedGhostDoor,
+    422: ActorImage_ToadQBlock,
+    423: ActorImage_ToadBrickBlock,
+    424: ActorImage_PalmTree,
+    425: ActorImage_Jellybeam,
+    427: ActorImage_Kamek,
+    428: ActorImage_MGPanel,
+    431: ActorImage_BowserController,
+    432: ActorImage_Toad,
+    433: ActorImage_FloatingQBlock,
+    434: ActorImage_WarpCannon,
+    435: ActorImage_GhostFog,
+    437: ActorImage_PurplePole,
+    438: ActorImage_ShapeBlocks,
+    439: ActorImage_CagePeachFake,
+    440: ActorImage_HorizontalRope,
+    441: ActorImage_MushroomPlatform,
+    443: ActorImage_ReplayBlock,
+    444: ActorImage_PreSwingingVine,
+    445: ActorImage_CagePeachReal,
+    447: ActorImage_UnderwaterLamp,
+    448: ActorImage_MetalBar,
+    450: ActorImage_Pipe_EnterableUp,
+    451: ActorImage_ScaredyRatDespawner,
+    452: ActorImage_BowserDoor,
+    453: ActorImage_Seaweed,
+    455: ActorImage_HammerPlatform,
+    456: ActorImage_BossBridge,
+    457: ActorImage_SpinningThinBars,
+    458: ActorImage_LongMetalBar,
+    460: ActorImage_SilverGearBlock,
+    462: ActorImage_EnormousBlock,
+    463: ActorImage_Glare,
+    464: ActorImage_SwingingVine,
+    466: ActorImage_LavaIronBlock,
+    467: ActorImage_MovingGemBlock,
+    469: ActorImage_BoltPlatform,
+    470: ActorImage_BoltPlatformWire,
+    471: ActorImage_PotPlatform,
+    472: ActorImage_IceFloeGenerator,
+    473: ActorImage_FloatingIceFloeGenerator,
+    475: ActorImage_IceFloe,
+    476: ActorImage_FlyingWrench,
+    477: ActorImage_SuperGuideBlock,
+    478: ActorImage_BowserSwitchSm,
+    479: ActorImage_BowserSwitchLg,
+    480: ActorImage_MortonSkewer,
+    481: ActorImage_FinalBossRubble,
+    482: ActorImage_FinalBossEffects,
 }

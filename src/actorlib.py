@@ -23,8 +23,8 @@
 # along with Reggie Next.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# spritelib.py
-# Contains general code to render sprite images in the editor UI
+# actorlib.py
+# Contains general code to render actor images in the editor UI
 
 
 ################################################################
@@ -49,7 +49,7 @@ OutlinePen: QtGui.QPen | None = None
 OutlineBrush: QtGui.QBrush | None = None
 ImageCache: dict[str, QtGui.QPixmap] = {}
 Tiles: dict[int, TilesetTile | None] = {}
-SpriteImagesLoaded: set[int] = set()
+ActorImagesLoaded: set[int] = set()
 
 ActorsFolders: list[str] = []
 RealViewEnabled: bool = False
@@ -75,14 +75,14 @@ def main() -> None:
     # Don't make a new dict instance for ImageCache because actors.py
     # won't receive it, which causes bugs.
     ImageCache.clear()
-    SpriteImagesLoaded.clear()
+    ActorImagesLoaded.clear()
 
     ActorsFolders = []
 
 
-def GetSpriteImageFilePath(imgname: str) -> str:
+def GetActorImageFilePath(imgname: str) -> str:
     """
-    Returns the path to the image 'imgname' from the first matching sprite image folder.
+    Returns the path to the image 'imgname' from the first matching actor image folder.
     """
     imgname = str(imgname)
     path = os.path.join(get_reggiedata_folder(), 'actors', imgname)
@@ -96,29 +96,29 @@ def GetSpriteImageFilePath(imgname: str) -> str:
 
 def GetPixmap(imgname: str) -> QtGui.QPixmap:
     """
-    Returns a QPixmap with the image 'imgname' from the first matching sprite image folder.
+    Returns a QPixmap with the image 'imgname' from the first matching actor image folder.
 
     :param imgname: The name of the image to load.
     """
-    path = GetSpriteImageFilePath(imgname)
+    path = GetActorImageFilePath(imgname)
     if os.path.isfile(path):
         return QtGui.QPixmap(path)
 
-    print(f'[Warning] Could not load sprite image ({imgname})!') # TODO probably raise an Exception instead
+    print(f'[Warning] Could not load actor image ({imgname})!') # TODO probably raise an Exception instead
     return QtGui.QPixmap()
 
 
 def GetImage(imgname: str) -> QtGui.QImage:
     """
-    Returns a QImage with the image 'imgname' from the first matching sprite image folder.
+    Returns a QImage with the image 'imgname' from the first matching actor image folder.
 
     :param imgname: The name of the image to load.
     """
-    path = GetSpriteImageFilePath(imgname)
+    path = GetActorImageFilePath(imgname)
     if os.path.isfile(path):
         return QtGui.QImage(path)
 
-    print(f'[Warning] Could not load sprite image ({imgname})!')
+    print(f'[Warning] Could not load actor image ({imgname})!')
     return QtGui.QImage()
 
 
@@ -182,22 +182,22 @@ def MapPositionToZoneID(zones: list, x: float, y: float, get_id: bool = False) -
 ################################################################
 ################################################################
 ################################################################
-##################### SpriteImage Classes ######################
+##################### ActorImage Classes ######################
 
-class SpriteImage:
+class ActorImage:
     """
-    Class that contains information about a sprite image
+    Class that contains information about an actors image
     """
 
     def __init__(self, parent: ActorItem, scale: float = 1.5) -> None:
         """
-        Intializes the sprite image
+        Intializes the actor image
         """
         self.parent = parent
 
         self.alpha: float = 1.0
         self.image: QtGui.QPixmap | None = None
-        self.spritebox = Spritebox(scale)
+        self.actorbox = Actorbox(scale)
         self.xOffset: float = 0
         self.yOffset: float = 0
         self.width: float = 16
@@ -208,22 +208,22 @@ class SpriteImage:
     @staticmethod
     def loadImages() -> None:
         """
-        Loads all images needed by the sprite
+        Loads all images needed by the actor
         """
 
     def dataChanged(self) -> None:
         """
-        Called whenever the sprite data changes
+        Called whenever the actor data changes
         """
 
     def positionChanged(self) -> None:
         """
-        Called whenever the sprite position changes
+        Called whenever the actor position changes
         """
 
     def paint(self, painter: QtGui.QPainter) -> None:
         """
-        Paints the sprite
+        Paints the actor
         """
 
     def remove(self) -> None:
@@ -277,15 +277,15 @@ class SpriteImage:
     )
 
 
-class SpriteImage_Static(SpriteImage):
+class ActorImage_Static(ActorImage):
     """
-    A simple class for drawing a static sprite image
+    A simple class for drawing a static actor image
     """
 
     def __init__(self, parent: ActorItem, scale: float = 1.5, image: QtGui.QPixmap | None = None, offset: tuple[float, float] | None = None) -> None:
         super().__init__(parent, scale)
         self.image = image
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
         if self.image is not None:
             self.width = (self.image.width() / self.scale)
@@ -314,25 +314,24 @@ class SpriteImage_Static(SpriteImage):
         painter.restore()
 
 
-class SpriteImage_StaticMultiple(SpriteImage_Static):
+class ActorImage_StaticMultiple(ActorImage_Static):
     """
-    A class that acts like a SpriteImage_Static but lets you change
+    A class that acts like a ActorImage_Static but lets you change
     the image with the dataChanged() function
     """
 
     def __init__(self, parent: ActorItem, scale: float = 1.5, image: QtGui.QPixmap | None = None, offset: tuple[float, float] | None = None) -> None:
         super().__init__(parent, scale, image, offset)
-        # no other changes needed yet
 
 
 ################################################################
 ################################################################
 ################################################################
-####################### Spritebox Class ########################
+####################### Actorbox Class ########################
 
-class Spritebox:
+class Actorbox:
     """
-    Contains size and other information for a spritebox
+    Contains size and other information for an actorbox
     """
 
     def __init__(self, scale: float = 1.5) -> None:
@@ -412,7 +411,7 @@ class Spritebox:
 
     RoundedRect = property(
         getRR, setRR, delRR,
-        'Property that contains the rounded rect for the spritebox',
+        'Property that contains the rounded rect for the actorbox',
     )
 
     # BoundingRect property
@@ -437,7 +436,7 @@ class Spritebox:
 
     BoundingRect = property(
         getBR, setBR, delBR,
-        'Property that contains the bounding rect for the spritebox',
+        'Property that contains the bounding rect for the actorbox',
     )
 
 
@@ -457,7 +456,7 @@ class AuxiliaryItem(QtWidgets.QGraphicsItem):
 
 class AuxiliaryActorItem(AuxiliaryItem):
     """
-    Base class for auxiliary objects that accompany specific sprite types
+    Base class for auxiliary objects that accompany specific actor types
     """
 
     def __init__(self, parent: QtWidgets.QGraphicsItem) -> None:
@@ -474,11 +473,11 @@ class AuxiliaryActorItem(AuxiliaryItem):
 
         self.BoundingRect = QtCore.QRectF(0, 0, 24, 24)
 
-    def setIsBehindSprite(self, behind: bool) -> None:
+    def setIsBehindActor(self, behind: bool) -> None:
         """
         This allows you to choose whether the auiliary item will display
-        behind the sprite or in front of it. Default is for the item to
-        be behind the sprite.
+        behind the actor or in front of it. Default is for the item to
+        be behind the actor.
         """
         self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemStacksBehindParent, behind)
 
@@ -943,7 +942,7 @@ class AuxiliaryLocationItem(AuxiliaryItem):
         Removes the auxiliary item.
         """
         # Detach this item from its parent so it gets deleted properly. This
-        # causes the last reference to this item to be held by the sprite image
+        # causes the last reference to this item to be held by the actor image
         # this is an auxiliary item to, which causes it to be deleted properly.
         self.setParentItem(None)
 

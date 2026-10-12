@@ -23,8 +23,8 @@
 # along with Reggie Next.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# sprites.py
-# Contains code to render sprite images from different gamedefs.
+# actors.py
+# Contains code to render actor images from different gamedefs.
 # Use this for base classes
 
 
@@ -34,10 +34,10 @@
 # Imports
 from PyQt6 import QtCore, QtGui
 
-import spritelib as SLib
+import actorlib
 
 Qt = QtCore.Qt
-ImageCache = SLib.ImageCache
+ImageCache = actorlib.ImageCache
 
 ################################################################
 ################################################################
@@ -47,20 +47,20 @@ def LoadBasics():
     Loads basic images used in NSMBW. This runs every time a new GameDef is loaded
     """
     # Load some coins, because coins are in almost every Mario level ever
-    ImageCache['Coin'] = SLib.GetPixmap('coin.png')
-    ImageCache['SpecialCoin'] = SLib.GetPixmap('special_coin.png')
-    ImageCache['PCoin'] = SLib.GetPixmap('p_coin.png')
-    ImageCache['RedCoin'] = SLib.GetPixmap('redcoin.png')
-    ImageCache['StarCoin'] = SLib.GetPixmap('starcoin.png')
+    ImageCache['Coin'] = actorlib.GetPixmap('coin.png')
+    ImageCache['SpecialCoin'] = actorlib.GetPixmap('special_coin.png')
+    ImageCache['PCoin'] = actorlib.GetPixmap('p_coin.png')
+    ImageCache['RedCoin'] = actorlib.GetPixmap('redcoin.png')
+    ImageCache['StarCoin'] = actorlib.GetPixmap('starcoin.png')
 
     # Load block contents
-    ContentImage = SLib.GetPixmap('block_contents.png')
+    ContentImage = actorlib.GetPixmap('block_contents.png')
     count = ContentImage.width() // 24
     for i in range(count):
         ImageCache[f'BlockContents{i}'] = ContentImage.copy(i * 24, 0, 24, 24)
 
     # Load the blocks
-    BlockImage = SLib.GetPixmap('blocks.png')
+    BlockImage = actorlib.GetPixmap('blocks.png')
     count = BlockImage.width() // 24
     for i in range(count):
         ImageCache[f'Blocks{i}'] = BlockImage.copy(i * 24, 0, 24, 24)
@@ -69,25 +69,25 @@ def LoadBasics():
     for num in range(4):
         for direction in 'lr':
             ImageCache[f'Character{num + 1}{direction.upper()}'] = \
-                SLib.GetPixmap(f'character_{num + 1}_{direction}.png')
+                actorlib.GetPixmap(f'character_{num + 1}_{direction}.png')
 
     # Load vines, because these are used by entrances
-    SLib.loadIfNotInImageCache('VineTop', 'vine_top.png')
-    SLib.loadIfNotInImageCache('VineMid', 'vine_mid.png')
-    SLib.loadIfNotInImageCache('VineBtm', 'vine_btm.png')
+    actorlib.loadIfNotInImageCache('VineTop', 'vine_top.png')
+    actorlib.loadIfNotInImageCache('VineMid', 'vine_mid.png')
+    actorlib.loadIfNotInImageCache('VineBtm', 'vine_btm.png')
 
     # Load some arrows for previewing movement directions of platforms and stuff
-    SLib.loadIfNotInImageCache('DirectionArrowUp', 'direction_arrow_up.png')
-    SLib.loadIfNotInImageCache('DirectionArrowDown', 'direction_arrow_down.png')
-    SLib.loadIfNotInImageCache('DirectionArrowRight', 'direction_arrow_right.png')
-    SLib.loadIfNotInImageCache('DirectionArrowLeft', 'direction_arrow_left.png')
+    actorlib.loadIfNotInImageCache('DirectionArrowUp', 'direction_arrow_up.png')
+    actorlib.loadIfNotInImageCache('DirectionArrowDown', 'direction_arrow_down.png')
+    actorlib.loadIfNotInImageCache('DirectionArrowRight', 'direction_arrow_right.png')
+    actorlib.loadIfNotInImageCache('DirectionArrowLeft', 'direction_arrow_left.png')
 
 
-class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
+class ActorImage_TileEvent(actorlib.ActorImage_StaticMultiple):  # 191
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.alpha = 0.5
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 0, 0))
+        self.aux.append(actorlib.AuxiliaryRectOutline(parent, 0, 0))
         self.notAllowedTypes: list[int] = []
 
     def dataChanged(self):
@@ -106,7 +106,7 @@ class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
             self.pattern = 0
 
         rect_outline = self.aux[0]
-        if not isinstance(rect_outline, SLib.AuxiliaryRectOutline):
+        if not isinstance(rect_outline, actorlib.AuxiliaryRectOutline):
             return
 
         if self.creationtype == 0: # destroys
@@ -128,7 +128,7 @@ class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
 
         self.tile_num = self.parent.spritedata[4] >> 4
         if self.tile_num in self.notAllowedTypes:
-            self.spritebox.shown = True
+            self.actorbox.shown = True
             self.image = None
 
             if self.width == self.height == 16:
@@ -136,15 +136,15 @@ class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
 
             return
 
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
     def getTileFromType(self, type):
         """
-        Returns the correct tile from SLib.Tiles for the given
+        Returns the correct tile from actorlib.Tiles for the given
         type, or None if no tile should be shown.
         """
         raise NotImplementedError(
-            "Class inheriting SpriteImage_TileEvent does not override " \
+            "Class inheriting ActorImage_TileEvent does not override " \
             "getTileFromType method."
         )
 
@@ -175,13 +175,13 @@ class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
                     painter.drawPixmap(x, y, self.image)
 
         rect_outline = self.aux[0]
-        if isinstance(rect_outline, SLib.AuxiliaryRectOutline):
+        if isinstance(rect_outline, actorlib.AuxiliaryRectOutline):
             rect_outline.paint(painter, None, None)
 
         painter.restore()
 
 
-class SpriteImage_Switch(SLib.SpriteImage_StaticMultiple):  # 40, 41, 42, 153, 478
+class ActorImage_Switch(actorlib.ActorImage_StaticMultiple):  # 40, 41, 42, 153, 478
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
         self.switchType = ''
@@ -191,17 +191,17 @@ class SpriteImage_Switch(SLib.SpriteImage_StaticMultiple):  # 40, 41, 42, 153, 4
     def loadImages():
 
         if 'QSwitch' not in ImageCache:
-            q = SLib.GetImage('q_switch.png')
+            q = actorlib.GetImage('q_switch.png')
             ImageCache['QSwitch'] = QtGui.QPixmap.fromImage(q)
             ImageCache['QSwitchU'] = QtGui.QPixmap.fromImage(q.mirrored(True, True))
 
         if 'PSwitch' not in ImageCache:
-            p = SLib.GetImage('p_switch.png')
+            p = actorlib.GetImage('p_switch.png')
             ImageCache['PSwitch'] = QtGui.QPixmap.fromImage(p)
             ImageCache['PSwitchU'] = QtGui.QPixmap.fromImage(p.mirrored(True, True))
 
         if 'ESwitch' not in ImageCache:
-            e = SLib.GetImage('e_switch.png')
+            e = actorlib.GetImage('e_switch.png')
             ImageCache['ESwitch'] = QtGui.QPixmap.fromImage(e)
             ImageCache['ESwitchU'] = QtGui.QPixmap.fromImage(e.mirrored(True, True))
 
@@ -245,12 +245,12 @@ class SpriteImage_Switch(SLib.SpriteImage_StaticMultiple):  # 40, 41, 42, 153, 4
         super().dataChanged()
 
 
-class SpriteImage_LineBlock(SLib.SpriteImage):  # 219
+class ActorImage_LineBlock(actorlib.ActorImage):  # 219
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
+        self.actorbox.shown = False
 
-        line_block_aux_image = SLib.AuxiliaryImage(parent, 24, 24)
+        line_block_aux_image = actorlib.AuxiliaryImage(parent, 24, 24)
         line_block_aux_image.setPos(0, 32)
         self.aux.append(line_block_aux_image)
 
@@ -338,7 +338,7 @@ class SpriteImage_LineBlock(SLib.SpriteImage):  # 219
 
         line_block_aux_image = self.aux[0]
 
-        if isinstance(line_block_aux_image, SLib.AuxiliaryImage):
+        if isinstance(line_block_aux_image, actorlib.AuxiliaryImage):
             line_block_aux_image.setSize(img_b.width(), img_b.height(), xposB, yposB)
             line_block_aux_image.image = img_b
             line_block_aux_image.alpha = alpha_b

@@ -3,7 +3,7 @@ from typing import Any, cast
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-import spritelib as SLib
+import actorlib
 from data import globals_
 from data.common.utils import find_first_available_id, get_reggiedata_folder
 from data.level.dirty import SetDirty
@@ -98,7 +98,7 @@ class EntranceItem(LevelEditorItem):
             """
             Paints the entrance aux
             """
-            if not painter or not option or not SLib.OutlinePen or not globals_.theme:
+            if not painter or not option or not actorlib.OutlinePen or not globals_.theme:
                 return
 
             painter.setClipRect(option.exposedRect)
@@ -111,7 +111,7 @@ class EntranceItem(LevelEditorItem):
                 path.cubicTo(QtCore.QPointF(40, -24), QtCore.QPointF(50, -24), QtCore.QPointF(60, 36))
                 path.lineTo(QtCore.QPointF(96, 300))
 
-                painter.setPen(SLib.OutlinePen)
+                painter.setPen(actorlib.OutlinePen)
                 painter.drawPath(path)
 
             elif self.parent.enttype == 21:
@@ -119,13 +119,13 @@ class EntranceItem(LevelEditorItem):
 
                 # Draw the top half
                 painter.setOpacity(1)
-                painter.drawPixmap(0, 0, SLib.ImageCache['VineTop'])
-                painter.drawTiledPixmap(12, 48, 24, 168, SLib.ImageCache['VineMid'])
+                painter.drawPixmap(0, 0, actorlib.ImageCache['VineTop'])
+                painter.drawTiledPixmap(12, 48, 24, 168, actorlib.ImageCache['VineMid'])
                 # Draw the bottom half
                 # This is semi-transparent because you can't interact with it.
                 painter.setOpacity(0.5)
-                painter.drawTiledPixmap(12, 216, 24, 456, SLib.ImageCache['VineMid'])
-                painter.drawPixmap(12, 672, SLib.ImageCache['VineBtm'])
+                painter.drawTiledPixmap(12, 216, 24, 456, actorlib.ImageCache['VineMid'])
+                painter.drawPixmap(12, 672, actorlib.ImageCache['VineBtm'])
 
             elif self.parent.enttype == 24:
                 # Jumping facing left
@@ -134,7 +134,7 @@ class EntranceItem(LevelEditorItem):
                 path.cubicTo(QtCore.QPointF(58, -24), QtCore.QPointF(48, -24), QtCore.QPointF(38, 36))
                 path.lineTo(QtCore.QPointF(2, 300))
 
-                painter.setPen(SLib.OutlinePen)
+                painter.setPen(actorlib.OutlinePen)
                 painter.drawPath(path)
 
             elif self.parent.enttype in (3, 4, 5, 6) and ((self.parent.entsettings & 4) != 0):

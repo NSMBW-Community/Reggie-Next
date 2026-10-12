@@ -7,7 +7,7 @@ from xml.etree import ElementTree
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-import spritelib as SLib
+import actorlib
 from data import globals_
 from data.common import archive
 from data.common.keybind import Keybind
@@ -864,8 +864,8 @@ def LoadMenuActions(mw) -> None:
             globals_.trans.stringOneLine('MenuItems', 55), GetKeybind('showsprites'), True
         ),
         MenuAction(
-            'showspriteimages', mw.HandleSpriteImages, GetIcon('rocket-image'), globals_.trans.stringOneLine('MenuItems', 56),
-            globals_.trans.stringOneLine('MenuItems', 57), GetKeybind('showspriteimages'), True
+            'showactorimages', mw.HandleActorImages, GetIcon('rocket-image'), globals_.trans.stringOneLine('MenuItems', 56),
+            globals_.trans.stringOneLine('MenuItems', 57), GetKeybind('showactorimages'), True
         ),
         MenuAction(
             'showentrances', mw.HandleEntrancesVisibility, GetIcon('door'), globals_.trans.stringOneLine('MenuItems', 144),
@@ -1011,7 +1011,7 @@ def LoadToolbarActionsLists() -> None:
         ToolbarAction('collisions', globals_.trans.string('MenuItems', 110), False),
         ToolbarAction('realview', globals_.trans.string('MenuItems', 118), False),
         ToolbarAction('showsprites', globals_.trans.string('MenuItems', 54), True),
-        ToolbarAction('showspriteimages', globals_.trans.string('MenuItems', 56), False),
+        ToolbarAction('showactorimages', globals_.trans.string('MenuItems', 56), False),
         ToolbarAction('showentrances', globals_.trans.string('MenuItems', 144), False),
         ToolbarAction('showlocations', globals_.trans.string('MenuItems', 58), True),
         ToolbarAction('showpaths', globals_.trans.string('MenuItems', 130), True),
@@ -1207,7 +1207,7 @@ def LoadDefaultKeybinds() -> None:
         Keybind("collisions", globals_.trans.string("MenuItems", 110), "Ctrl+8"),
         Keybind("realview", globals_.trans.string("MenuItems", 118), "Ctrl+9"),
         Keybind("showsprites", globals_.trans.string("MenuItems", 54), "Ctrl+4"),
-        Keybind("showspriteimages", globals_.trans.string("MenuItems", 56), "Ctrl+6"),
+        Keybind("showactorimages", globals_.trans.string("MenuItems", 56), "Ctrl+6"),
         Keybind("showentrances", globals_.trans.string("MenuItems", 144), None),
         Keybind("showlocations", globals_.trans.string("MenuItems", 58), "Ctrl+5"),
         Keybind("showcomments", globals_.trans.string("MenuItems", 116), None),
@@ -1315,7 +1315,7 @@ def CreateTilesets() -> None:
     globals_.TilesetAnimTimer.timeout.connect(IncrementTilesetFrame)
     globals_.TilesetAnimTimer.start(90)
     globals_.ObjectDefinitions = [None] * 4
-    SLib.Tiles = globals_.Tiles
+    actorlib.Tiles = globals_.Tiles
 
 
 def LoadTileset(idx: int, name: str, reload_: bool = False) -> None:
@@ -1552,8 +1552,8 @@ def LoadTileset(idx: int, name: str, reload_: bool = False) -> None:
     # Keep track of this filepath
     globals_.TilesetFilesLoaded[idx] = arcname
 
-    # Add Tiles to spritelib
-    SLib.Tiles = globals_.Tiles
+    # Add Tiles to actorlib
+    actorlib.Tiles = globals_.Tiles
 
     return
 

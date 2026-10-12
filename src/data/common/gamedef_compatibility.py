@@ -67,23 +67,40 @@ def update_actors_module(path: str):
         (r"\['BlockContents'\]\[(\d+)\]", r"['BlockContents\1']"),
         (r"\['BlockContents'\]\[(.*?)\]", r"[f'BlockContents{\1}']"),
         # Update GetImg() calls to the proper function
-        (r"SLib\.GetImg\((\w?[\"']?[\w{}%\.]+[\"']?(?: ?% ?(?:(?:\([\w, +-\.()]+\))|(?:[\w +\-\.()]+)))?)(?:, ?False)?\)", r"SLib.GetPixmap(\1)"),
-        (r"SLib\.GetImg\((\w?[\"']?[\w{}%\.]+[\"']?(?: ?% ?(?:(?:\([\w, +-\.()]+\))|(?:[\w +\-\.()]+)))?)(?:, ?True)\)", r"SLib.GetImage(\1)")
+        (r"SLib\.GetImg\((\w?[\"']?[\w{}%\.]+[\"']?(?: ?% ?(?:(?:\([\w, +-\.()]+\))|(?:[\w +\-\.()]+)))?)(?:, ?False)?\)", r"actorlib.GetPixmap(\1)"),
+        (r"SLib\.GetImg\((\w?[\"']?[\w{}%\.]+[\"']?(?: ?% ?(?:(?:\([\w, +-\.()]+\))|(?:[\w +\-\.()]+)))?)(?:, ?True)\)", r"actorlib.GetImage(\1)")
     ]
 
     for pattern, replace in regex_strings:
         new_data = re.sub(pattern, replace, new_data)
 
     # Fix old sprites_common imports
-    new_data = new_data.replace("import sprites_common", "import data.common.sprites")
-    new_data = new_data.replace("import src.data.common.sprites", "import data.common.sprites") # Only happens if updating during the refactoring
+    new_data = new_data.replace("import sprites_common", "import data.common.actors")
 
-    # Fix (very rarely used) references to the sprite ID
+    # These two happen if a patch was updated during the refactoring/renaming phases
+    new_data = new_data.replace("import src.data.common.sprites", "import data.common.actors")
+    new_data = new_data.replace("import data.common.sprites", "import data.common.actors")
+
+    # Fix (very rarely used) references to the actor ID
     new_data = new_data.replace("parent.type", "parent.sprite_num")
 
-    # Sprite -> Actor
-    new_data = new_data.replace("SpriteItem", "ActorItem")
-    new_data = new_data.replace("AuxiliarySpriteItem", "AuxiliaryActorItem")
+    # All Sprite -> Actor changes
+    sprite_strings = [
+        ('SpriteItem', 'ActorItem'),
+        ('AuxiliarySpriteItem', 'AuxiliaryActorItem'),
+        ('SpriteImage', 'ActorImage'),
+        ('spritebox', 'actorbox'),
+        ('setIsBehindSprite', 'setIsBehindActor'),
+        ('import spritelib as SLib', 'import actorlib'),
+        ('SLib', 'actorlib'),
+        #('', ''),
+        #('', ''),
+        #('', ''),
+        #('', ''),
+    ]
+
+    for old, new in sprite_strings:
+        new_data = new_data.replace(old, new)
 
     # All done, save the file
     with open(path, 'w') as file_out:

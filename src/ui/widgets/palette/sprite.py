@@ -12,7 +12,7 @@ from ui.widgets.sidelists.sprite_list import SpriteList
 from ui.widgets.sidelists.sprite_order import SpriteOrderList
 
 from data.level.items.sprite import ActorItem
-from spritelib import SpriteImage
+from actorlib import ActorImage
 
 class SpriteTab(QtWidgets.QTabWidget):
     """
@@ -142,7 +142,7 @@ class SpriteTab(QtWidgets.QTabWidget):
                 if sprite_num in image_classes:
                     spr.setImageObj(image_classes[sprite_num])
                 else:
-                    spr.setImageObj(SpriteImage)
+                    spr.setImageObj(ActorImage)
                 changed = True
 
         if changed:

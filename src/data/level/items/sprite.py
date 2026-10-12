@@ -3,7 +3,7 @@ from typing import Any, cast
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-import spritelib as SLib
+import actorlib
 from data import globals_
 from data.common.utils import clamp
 from data.level.dirty import SetDirty
@@ -61,7 +61,7 @@ class ActorItem(LevelEditorItem):
         self.ChangingPos = False
         self.zoneID = -1
 
-        self.ImageObj = SLib.SpriteImage(self)
+        self.ImageObj = actorlib.ActorImage(self)
 
         if 0 <= sprite_num < globals_.NumSprites:
             self.name = globals_.Sprites[sprite_num].name
@@ -74,7 +74,7 @@ class ActorItem(LevelEditorItem):
         self.setFlag(self.GraphicsItemFlag.ItemIsSelectable, not globals_.SpritesFrozen)
 
         globals_.DirtyOverride += 1
-        if globals_.SpriteImagesShown:
+        if globals_.ActorImagesShown:
             self.setPos(
                 (self.objx + self.ImageObj.xOffset) * 1.5,
                 (self.objy + self.ImageObj.yOffset) * 1.5,
@@ -216,7 +216,7 @@ class ActorItem(LevelEditorItem):
         Sets a new sprite image object for this ActorItem
         """
         for aux_obj in self.ImageObj.aux:
-            aux_obj = cast(SLib.AuxiliaryActorItem, aux_obj)
+            aux_obj = cast(actorlib.AuxiliaryActorItem, aux_obj)
             scene = aux_obj.scene()
 
             if scene is not None:
@@ -225,16 +225,16 @@ class ActorItem(LevelEditorItem):
         self.setZValue(26000)
         self.resetTransform()
 
-        if (self.sprite_num in globals_.gamedef.getImageClasses()) and (self.sprite_num not in SLib.SpriteImagesLoaded):
+        if (self.sprite_num in globals_.gamedef.getImageClasses()) and (self.sprite_num not in actorlib.ActorImagesLoaded):
             globals_.gamedef.getImageClasses()[self.sprite_num].loadImages()
-            SLib.SpriteImagesLoaded.add(self.sprite_num)
+            actorlib.ActorImagesLoaded.add(self.sprite_num)
 
-        self.ImageObj = obj(self) if obj else SLib.SpriteImage(self)
+        self.ImageObj = obj(self) if obj else actorlib.ActorImage(self)
 
         # show auxiliary objects properly
         for aux in self.ImageObj.aux:
-            aux = cast(SLib.AuxiliaryActorItem, aux)
-            aux.setVisible(globals_.SpriteImagesShown)
+            aux = cast(actorlib.AuxiliaryActorItem, aux)
+            aux.setVisible(globals_.ActorImagesShown)
 
         self.UpdateDynamicSizing()
 
@@ -245,7 +245,7 @@ class ActorItem(LevelEditorItem):
         curr_rect = QtCore.QRectF(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
         curr_aux_rects = []
         for aux_obj in self.ImageObj.aux:
-            aux_obj = cast(SLib.AuxiliaryActorItem, aux_obj)
+            aux_obj = cast(actorlib.AuxiliaryActorItem, aux_obj)
 
             curr_aux_rects.append(QtCore.QRectF(
                 aux_obj.x() + self.x(),
@@ -256,7 +256,7 @@ class ActorItem(LevelEditorItem):
 
         self.ImageObj.dataChanged()
 
-        if globals_.SpriteImagesShown:
+        if globals_.ActorImagesShown:
             self.UpdateRects()
             self.ChangingPos = True
             self.setPos(
@@ -284,25 +284,25 @@ class ActorItem(LevelEditorItem):
             self.ImageObj.width * 1.5,
             self.ImageObj.height * 1.5,
         )
-        spriteboxRect = QtCore.QRectF(
+        actorboxRect = QtCore.QRectF(
             0, 0,
-            self.ImageObj.spritebox.BoundingRect.width(),
-            self.ImageObj.spritebox.BoundingRect.height(),
+            self.ImageObj.actorbox.BoundingRect.width(),
+            self.ImageObj.actorbox.BoundingRect.height(),
         )
         imgOffsetRect = imgRect.translated(
             (self.objx + self.ImageObj.xOffset) * 1.5,
             (self.objy + self.ImageObj.yOffset) * 1.5,
         )
-        spriteboxOffsetRect = spriteboxRect.translated(
-            (self.objx * 1.5) + self.ImageObj.spritebox.BoundingRect.topLeft().x(),
-            (self.objy * 1.5) + self.ImageObj.spritebox.BoundingRect.topLeft().y(),
+        actorboxOffsetRect = actorboxRect.translated(
+            (self.objx * 1.5) + self.ImageObj.actorbox.BoundingRect.topLeft().x(),
+            (self.objy * 1.5) + self.ImageObj.actorbox.BoundingRect.topLeft().y(),
         )
 
-        if globals_.SpriteImagesShown:
-            unitedRect = imgRect.united(spriteboxRect)
+        if globals_.ActorImagesShown:
+            unitedRect = imgRect.united(actorboxRect)
 
-            if self.ImageObj.spritebox.shown:
-                unitedOffsetRect = imgOffsetRect.united(spriteboxOffsetRect)
+            if self.ImageObj.actorbox.shown:
+                unitedOffsetRect = imgOffsetRect.united(actorboxOffsetRect)
             else:
                 unitedOffsetRect = imgOffsetRect
 
@@ -326,20 +326,20 @@ class ActorItem(LevelEditorItem):
             # BoundingRect: The sprite can only paint within
             # this area.
             self.BoundingRect = unitedRect.translated(
-                self.ImageObj.spritebox.BoundingRect.topLeft()
+                self.ImageObj.actorbox.BoundingRect.topLeft()
             )
 
         else:
             self.SelectionRect = QtCore.QRectF(0.5, 0.5, 23, 23)
 
             self.LevelRect = QtCore.QRectF(
-                spriteboxOffsetRect.topLeft() / 24,
-                spriteboxOffsetRect.size() / 24,
+                actorboxOffsetRect.topLeft() / 24,
+                actorboxOffsetRect.size() / 24,
             )
 
             # BoundingRect: The sprite can only paint within
             # this area.
-            self.BoundingRect = self.ImageObj.spritebox.BoundingRect
+            self.BoundingRect = self.ImageObj.actorbox.BoundingRect
 
     def getFullRect(self) -> QtCore.QRectF:
         """
@@ -353,7 +353,7 @@ class ActorItem(LevelEditorItem):
             self.y(),
         )
         for aux in self.ImageObj.aux:
-            aux = cast(SLib.AuxiliaryActorItem, aux)
+            aux = cast(actorlib.AuxiliaryActorItem, aux)
 
             br = br.united(
                 aux.boundingRect().translated(
@@ -378,7 +378,7 @@ class ActorItem(LevelEditorItem):
                 return value
 
             # The sprite image offset as a point
-            if globals_.SpriteImagesShown:
+            if globals_.ActorImagesShown:
                 offset_point = QtCore.QPointF(*self.ImageObj.getOffset())
             else:
                 offset_point = QtCore.QPointF()
@@ -442,7 +442,7 @@ class ActorItem(LevelEditorItem):
                 self.LevelRect.moveTo(new_pos / 24)
 
                 for aux_obj in self.ImageObj.aux:
-                    aux_obj = cast(SLib.AuxiliaryActorItem, aux_obj)
+                    aux_obj = cast(actorlib.AuxiliaryActorItem, aux_obj)
 
                     update_rect = QtCore.QRectF(
                         self.pos() + aux_obj.pos(),
@@ -451,7 +451,7 @@ class ActorItem(LevelEditorItem):
                     scene.update(update_rect)
 
                 scene.update(
-                    self.ImageObj.spritebox.BoundingRect.translated(self.pos())
+                    self.ImageObj.actorbox.BoundingRect.translated(self.pos())
                 )
 
                 oldx = self.objx
@@ -482,7 +482,7 @@ class ActorItem(LevelEditorItem):
         """
         self.objx, self.objy = newobjx, newobjy
 
-        if globals_.SpriteImagesShown:
+        if globals_.ActorImagesShown:
             newobjx += self.ImageObj.xOffset
             newobjy += self.ImageObj.yOffset
 
@@ -514,7 +514,7 @@ class ActorItem(LevelEditorItem):
 
             LevelEditorItem.mousePressEvent(self, event)
 
-            if not globals_.SpriteImagesShown:
+            if not globals_.ActorImagesShown:
                 self.setNewObjPos(*old_pos)
 
             return
@@ -541,7 +541,7 @@ class ActorItem(LevelEditorItem):
         if not hasattr(globals_.Area, 'zones'):
             return None
 
-        zone_idx = SLib.MapPositionToZoneID(globals_.Area.zones, self.objx, self.objy)
+        zone_idx = actorlib.MapPositionToZoneID(globals_.Area.zones, self.objx, self.objy)
 
         if zone_idx == -1:
             return None
@@ -576,20 +576,20 @@ class ActorItem(LevelEditorItem):
 
         # Turn aux things on or off
         for aux in self.ImageObj.aux:
-            aux = cast(SLib.AuxiliaryActorItem, aux)
-            aux.setVisible(globals_.SpriteImagesShown)
+            aux = cast(actorlib.AuxiliaryActorItem, aux)
+            aux.setVisible(globals_.ActorImagesShown)
 
-        # Default spritebox
-        drawSpritebox = True
-        spriteboxRect = QtCore.QRectF(1, 1, 22, 22)
+        # Default actorbox
+        drawActorbox = True
+        actorboxRect = QtCore.QRectF(1, 1, 22, 22)
 
-        if globals_.SpriteImagesShown or overrideGlobals:
+        if globals_.ActorImagesShown or overrideGlobals:
             self.ImageObj.paint(painter)
 
-            drawSpritebox = self.ImageObj.spritebox.shown
+            drawActorbox = self.ImageObj.actorbox.shown
 
             # Draw the selected-sprite-image overlay box
-            if self.isSelected() and (not drawSpritebox or self.ImageObj.size != (16, 16)):
+            if self.isSelected() and (not drawActorbox or self.ImageObj.size != (16, 16)):
                 color = globals_.theme.color('sprite_lines_s')
                 if color is not None:
                     painter.setPen(QtGui.QPen(color, 1, QtCore.Qt.PenStyle.DashLine))
@@ -598,12 +598,12 @@ class ActorItem(LevelEditorItem):
                 if color is not None:
                     painter.fillRect(self.SelectionRect, color)
 
-            # Determine the spritebox position
-            if drawSpritebox:
-                spriteboxRect = self.ImageObj.spritebox.RoundedRect
+            # Determine the actorbox position
+            if drawActorbox:
+                actorboxRect = self.ImageObj.actorbox.RoundedRect
 
-        # Draw the spritebox if applicable
-        if drawSpritebox:
+        # Draw the actorbox if applicable
+        if drawActorbox:
             if self.isSelected():
                 painter.setBrush(QtGui.QBrush(globals_.theme.color('spritebox_fill_s')))
                 color = globals_.theme.color('spritebox_lines_s')
@@ -616,12 +616,12 @@ class ActorItem(LevelEditorItem):
                     painter.setPen(QtGui.QPen(color, 1))
 
             if globals_.UseRoundedRectangles:
-                painter.drawRoundedRect(spriteboxRect, 4, 4)
+                painter.drawRoundedRect(actorboxRect, 4, 4)
             else:
-                painter.drawRect(spriteboxRect)
+                painter.drawRect(actorboxRect)
 
             painter.setFont(self.font)
-            painter.drawText(spriteboxRect, QtCore.Qt.AlignmentFlag.AlignCenter, str(self.sprite_num))
+            painter.drawText(actorboxRect, QtCore.Qt.AlignmentFlag.AlignCenter, str(self.sprite_num))
 
     def scene(self) -> QtWidgets.QGraphicsScene | None:
         """

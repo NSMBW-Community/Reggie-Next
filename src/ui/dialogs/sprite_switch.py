@@ -1,7 +1,7 @@
 from PyQt6 import QtWidgets
 
 from data import globals_
-import spritelib as SLib
+import actorlib
 from data.level.dirty import SetDirty
 from ui.theme.reggie_theme import GetIcon
 
@@ -80,7 +80,7 @@ class SpriteSwitchDialog(QtWidgets.QDialog):
                 if sprite.sprite_num in image_classes:
                     sprite.setImageObj(image_classes[sprite.sprite_num])
                 else:
-                    sprite.setImageObj(SLib.SpriteImage)
+                    sprite.setImageObj(actorlib.ActorImage)
 
                 globals_.Area.InitialiseIdTypes()
                 SetDirty()

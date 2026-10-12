@@ -83,8 +83,8 @@ Qt = QtCore.Qt
 # Local imports
 from data import globals_
 
-import spritelib as SLib
-from data.common.sprites import LoadBasics
+import actorlib
+from data.common.actors import LoadBasics
 
 from ui.theme.reggie_theme import SetAppStyle, LoadNumberFont, SetColorScheme, GetAppIcon
 from data.common.loaders import LoadToolbarActionsLists, LoadTheme, LoadDefaultKeybinds, module_path
@@ -217,8 +217,8 @@ def main():
     LoadOverrides()
 
     # Initialise spritelib
-    SLib.OutlineColor = globals_.theme.color('smi')
-    SLib.main()
+    actorlib.OutlineColor = globals_.theme.color('smi')
+    actorlib.main()
 
     # Load the gamedef (including sprite image path, for which we need spritelib)
     LoadGameDef(setting('LastGameDef'))
@@ -246,7 +246,7 @@ def main():
     globals_.PathsFrozen = setting('FreezePaths', False)
     globals_.CommentsFrozen = setting('FreezeComments', False)
     globals_.SpritesShown = setting('ShowSprites', True)
-    globals_.SpriteImagesShown = setting('ShowSpriteImages', True)
+    globals_.ActorImagesShown = setting('ShowActorImages', True)
     globals_.LocationsShown = setting('ShowLocations', True)
     globals_.EntrancesShown = setting('ShowEntrances', True)
     globals_.CommentsShown = setting('ShowComments', True)
@@ -271,7 +271,7 @@ def main():
     globals_.ShowUnknownSpriteWarning = setting('ShowUnknownSpriteWarning', True)
     globals_.MoveItemsWithArrowKeys = setting('MoveItemsWithArrowKeys', True)
     globals_.ShowTilesetPreview = setting('ShowTilesetPreview', True)
-    SLib.RealViewEnabled = globals_.RealViewEnabled
+    actorlib.RealViewEnabled = globals_.RealViewEnabled
 
     # Choose a folder for the game
     # Let the user pick a folder without restarting the editor if they fail

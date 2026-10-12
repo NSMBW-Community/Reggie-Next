@@ -5,7 +5,7 @@ from typing import cast
 from data import globals_
 
 from data.level.dirty import SetDirty
-import spritelib as SLib
+import actorlib
 from data.level.items.entrance import EntranceItem
 from data.level.items.sprite import ActorItem
 from data.level.items.zone import ZoneItem
@@ -491,7 +491,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         if start is None:
             return False
 
-        first_zone_idx = SLib.MapPositionToZoneID(globals_.Area.zones, start.objx, start.objy)
+        first_zone_idx = actorlib.MapPositionToZoneID(globals_.Area.zones, start.objx, start.objy)
         if first_zone_idx == -1:
             return False
 
@@ -516,7 +516,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         for ent in globals_.Area.entrances:
             x = ent.objx
             y = ent.objy
-            zone_idx = SLib.MapPositionToZoneID(globals_.Area.zones, x, y)
+            zone_idx = actorlib.MapPositionToZoneID(globals_.Area.zones, x, y)
             if zone_idx == -1:
                 return False
 

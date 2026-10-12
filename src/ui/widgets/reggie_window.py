@@ -10,7 +10,7 @@ Qt = QtCore.Qt
 from data import globals_
 
 from data.common import archive
-import spritelib as SLib
+import actorlib
 
 from libs import lh, lib_versions, lz77
 from ui.theme.reggie_theme import GetIcon, SetColorScheme, GetAppIcon
@@ -204,7 +204,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Call toggle-button handlers to set each feature correctly upon startup
         toggle_handlers = {
             self.HandleSpritesVisibility: globals_.SpritesShown,
-            self.HandleSpriteImages: globals_.SpriteImagesShown,
+            self.HandleActorImages: globals_.ActorImagesShown,
             self.HandleEntrancesVisibility: globals_.EntrancesShown,
             self.HandleLocationsVisibility: globals_.LocationsShown,
             self.HandleCommentsVisibility: globals_.CommentsShown,
@@ -290,7 +290,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.action_list['realview'].setChecked(globals_.RealViewEnabled)
 
         self.action_list['showsprites'].setChecked(globals_.SpritesShown)
-        self.action_list['showspriteimages'].setChecked(globals_.SpriteImagesShown)
+        self.action_list['showactorimages'].setChecked(globals_.ActorImagesShown)
         self.action_list['showentrances'].setChecked(globals_.EntrancesShown)
         self.action_list['showlocations'].setChecked(globals_.LocationsShown)
         self.action_list['showcomments'].setChecked(globals_.CommentsShown)
@@ -372,7 +372,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             vmenu.addAction(self.action_list['realview'])
             vmenu.addSeparator()
             vmenu.addAction(self.action_list['showsprites'])
-            vmenu.addAction(self.action_list['showspriteimages'])
+            vmenu.addAction(self.action_list['showactorimages'])
             vmenu.addAction(self.action_list['showentrances'])
             vmenu.addAction(self.action_list['showlocations'])
             vmenu.addAction(self.action_list['showpaths'])
@@ -511,7 +511,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 'realview',
             ), (
                 'showsprites',
-                'showspriteimages',
+                'showactorimages',
                 'showentrances',
                 'showlocations',
                 'showpaths',
@@ -1535,7 +1535,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handle toggling of Real View
         """
         globals_.RealViewEnabled = checked
-        SLib.RealViewEnabled = globals_.RealViewEnabled
+        actorlib.RealViewEnabled = globals_.RealViewEnabled
 
         setSetting('RealViewEnabled', globals_.RealViewEnabled)
         self.scene.update()
@@ -1553,13 +1553,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for spr in globals_.Area.sprites:
             spr.setVisible(checked)
 
-    def HandleSpriteImages(self, checked):
+    def HandleActorImages(self, checked):
         """
         Handle toggling of sprite images
         """
-        globals_.SpriteImagesShown = checked
+        globals_.ActorImagesShown = checked
 
-        setSetting('ShowSpriteImages', globals_.SpriteImagesShown)
+        setSetting('ShowActorImages', globals_.ActorImagesShown)
 
         if globals_.Area.areanum == -1:
             return
@@ -2417,7 +2417,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             elif isinstance(hovered, ActorItem):  # Sprite
                 info = globals_.trans.string('Statusbar', 24, '[name]', hovered.name, '[xpos]', hovered.objx, '[ypos]',
                                     hovered.objy)
-            elif isinstance(hovered, SLib.AuxiliaryItem):  # Sprite (auxiliary thing) (treat it like the actual sprite)
+            elif isinstance(hovered, actorlib.AuxiliaryItem):  # Sprite (auxiliary thing) (treat it like the actual sprite)
                 info = globals_.trans.string('Statusbar', 24, '[name]', hovered.parentItem().name, '[xpos]',
                                     hovered.parentItem().objx, '[ypos]', hovered.parentItem().objy)
             elif isinstance(hovered, EntranceItem):  # Entrance

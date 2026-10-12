@@ -2,7 +2,7 @@ from typing import Any
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-import spritelib as SLib
+import actorlib
 from data import globals_
 from data.level.dirty import SetDirty
 from data.level.items.basic import LevelEditorItem
@@ -231,7 +231,7 @@ class ZoneItem(LevelEditorItem):
             self.ent_indicator_show = False
             return
 
-        initial_id = SLib.MapPositionToZoneID(globals_.Area.zones, entrance.objx, entrance.objy, get_id=True)
+        initial_id = actorlib.MapPositionToZoneID(globals_.Area.zones, entrance.objx, entrance.objy, get_id=True)
         if initial_id != self.id:
             # The initial entrance is not closest to this zone.
             self.ent_indicator_show = False
@@ -243,7 +243,7 @@ class ZoneItem(LevelEditorItem):
             if sprite.type not in {91, 454}:  # {autoscroll, ambush}
                 continue
 
-            zone_id = SLib.MapPositionToZoneID(globals_.Area.zones, sprite.objx, sprite.objy, get_id=True)
+            zone_id = actorlib.MapPositionToZoneID(globals_.Area.zones, sprite.objx, sprite.objy, get_id=True)
 
             if self.id == zone_id:
                 # The zone contains either an ambush controller or an autoscroller
@@ -300,10 +300,10 @@ class ZoneItem(LevelEditorItem):
                 painter.drawLine(lineStart, lineEnd)
 
         # Paint liquids/fog
-        if globals_.SpritesShown and globals_.SpriteImagesShown and globals_.RealViewEnabled:
+        if globals_.SpritesShown and globals_.ActorImagesShown and globals_.RealViewEnabled:
             zoneRect = self.mapRectToScene(self.DrawRect)
-            from actors import SpriteImage_BubbleGen as bubbleGenType
-            from actors import SpriteImage_LiquidOrFog as liquidOrFogType
+            from actors import ActorImage_BubbleGen as bubbleGenType
+            from actors import ActorImage_LiquidOrFog as liquidOrFogType
 
             for sprite in globals_.Area.sprites:
                 if isinstance(sprite.ImageObj, liquidOrFogType) and sprite.ImageObj.paintZone() and self.id == sprite.ImageObj.zoneId:

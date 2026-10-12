@@ -1,4 +1,4 @@
-import spritelib as SLib
+import actorlib
 from data import globals_
 from data.common import archive
 from data.level.abstract_level import AbstractLevel
@@ -30,7 +30,7 @@ class NSMBWLevel(AbstractLevel):
             new_area.load_defaults()
 
         globals_.Area = new_area
-        SLib.Area = new_area
+        actorlib.Area = new_area
 
         self.areas.append(new_area)
 
@@ -89,7 +89,7 @@ class NSMBWLevel(AbstractLevel):
 
         self.areas[areaToLoad - 1].load()
         globals_.Area = self.areas[areaToLoad - 1]
-        SLib.Area = self.areas[areaToLoad - 1]
+        actorlib.Area = self.areas[areaToLoad - 1]
 
         return True
 
@@ -145,7 +145,7 @@ class NSMBWLevel(AbstractLevel):
 
         # Set the globals properly
         globals_.Area = self.areas[number - 1]
-        SLib.Area = self.areas[number - 1]
+        actorlib.Area = self.areas[number - 1]
 
         # self.areas[number - 1] should be loaded.
         self.areas[number - 1].load()

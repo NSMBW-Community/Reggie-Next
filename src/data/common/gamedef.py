@@ -7,7 +7,7 @@ from xml.etree import ElementTree as etree
 
 from PyQt6 import QtWidgets
 
-import spritelib as SLib
+import actorlib
 import actors
 from data import globals_
 from data.common.loaders import (
@@ -25,7 +25,7 @@ from data.common.loaders import (
     ReloadTilesets,
 )
 from data.common.settings import setSetting, setting
-from data.common.sprites import LoadBasics
+from data.common.actors import LoadBasics
 from data.common.utils import get_reggiedata_folder
 from data.common.gamedef_compatibility import update_main, update_actors_module
 
@@ -524,30 +524,30 @@ def LoadGameDef(name: str | None = None):
     # Always load the actors folders so the correct sprite images can be
     # loaded when Reggie is started. This avoids loading all sprite images
     # again and also simplifies the sprite image code.
-    SLib.ActorsFolders = globals_.gamedef.recursiveFiles('actors', is_folder=True)[0]
+    actorlib.ActorsFolders = globals_.gamedef.recursiveFiles('actors', is_folder=True)[0]
 
     if globals_.Area.areanum != -1:
-        SLib.ImageCache.clear()
-        SLib.SpriteImagesLoaded.clear()
+        actorlib.ImageCache.clear()
+        actorlib.ActorImagesLoaded.clear()
         LoadBasics()
 
         spriteClasses = globals_.gamedef.getImageClasses()
 
         for s in globals_.Area.sprites:
-            if s.sprite_num in SLib.SpriteImagesLoaded:
+            if s.sprite_num in actorlib.ActorImagesLoaded:
                 continue
             if s.sprite_num not in spriteClasses:
                 continue
 
             spriteClasses[s.sprite_num].loadImages()
 
-            SLib.SpriteImagesLoaded.add(s.sprite_num)
+            actorlib.ActorImagesLoaded.add(s.sprite_num)
 
         for s in globals_.Area.sprites:
             if s.sprite_num in spriteClasses:
                 s.setImageObj(spriteClasses[s.sprite_num])
             else:
-                s.setImageObj(SLib.SpriteImage)
+                s.setImageObj(actorlib.ActorImage)
 
         # https://github.com/Zement/Reggie/blob/master/gamedef.py#L1036-L1053
         # Recalculate unknown sprite IDs based on current patch's sprite definitions
