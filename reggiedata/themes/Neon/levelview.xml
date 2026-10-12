@@ -19,14 +19,14 @@
     <color id="path_fill_s"             value="#17FF0017" />
     <color id="path_lines"              value="#3FFF5FFF" />
     <color id="smi"                     value="#FFFFFF28" />
-    <color id="spritebox_fill"          value="#0000FF0F" />
-    <color id="spritebox_fill_s"        value="#0000FF17" />
-    <color id="spritebox_lines"         value="#8F8FFFFF" />
+    <color id="actorbox_fill"          value="#0000FF0F" />
+    <color id="actorbox_fill_s"        value="#0000FF17" />
+    <color id="actorbox_lines"         value="#8F8FFFFF" />
     <color id="zone_lines"              value="#6EC0FFFF" />
     <color id="zone_text"               value="#F5F5F5"   />
     <color id="overview_entrance"       value="#FF0000"   />
     <color id="overview_location_fill"  value="#6400D70F" />
     <color id="overview_location_lines" value="#B18FFF"   />
-    <color id="overview_sprite"         value="#0000FF"   />
+    <color id="overview_actor"         value="#0000FF"   />
     <color id="overview_zone_lines"     value="#6EC0FF"   />
 </colors>

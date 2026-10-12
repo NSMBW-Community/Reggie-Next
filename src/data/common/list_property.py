@@ -3,7 +3,7 @@ from PyQt6 import QtCore
 
 class ListPropertyModel(QtCore.QAbstractListModel):
     """
-    Contains all the possible values for a list property on a sprite
+    Contains all the possible values for a list property on an actor
     """
 
     def __init__(self, entries, hideVal=False):

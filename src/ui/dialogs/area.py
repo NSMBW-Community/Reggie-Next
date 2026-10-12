@@ -27,10 +27,10 @@ class AreaOptionsDialog(QtWidgets.QDialog):
         self.tabWidget = QtWidgets.QTabWidget()
         self.tilesetsTab = TilesetsTab()
         self.settingsTab = SettingsTab()
-        self.loadedSpritesTab = LoadedSpritesTab()
+        self.loadedActorsTab = LoadedActorsTab()
         self.tabWidget.addTab(self.tilesetsTab, GetIcon('document-block'), globals_.trans.string('AreaDlg', 1))
         self.tabWidget.addTab(self.settingsTab, GetIcon('gear'), globals_.trans.string('AreaDlg', 2))
-        self.tabWidget.addTab(self.loadedSpritesTab, GetIcon('rocket-exclamation-red'), globals_.trans.string('AreaDlg', 46))
+        self.tabWidget.addTab(self.loadedActorsTab, GetIcon('rocket-exclamation-red'), globals_.trans.string('AreaDlg', 46))
 
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
 
@@ -424,9 +424,9 @@ class TilesetsTab(QtWidgets.QWidget):
             self.previews[idx].addWidget(label, row, col)
 
 
-class LoadedSpritesTab(QtWidgets.QWidget):
+class LoadedActorsTab(QtWidgets.QWidget):
     """
-    Tab widget that represents the list of loaded sprites.
+    Tab widget that represents the list of loaded actors.
     """
 
     class StaticModel(QtCore.QStringListModel):
@@ -440,9 +440,9 @@ class LoadedSpritesTab(QtWidgets.QWidget):
     def __init__(self):
         QtWidgets.QWidget.__init__(self)
 
-        spritesLayout = QtWidgets.QGridLayout()
+        actorsLayout = QtWidgets.QGridLayout()
 
-        self.customModel = QtCore.QStringListModel(self.getForceSpriteNames())
+        self.customModel = QtCore.QStringListModel(self.getForceActorNames())
 
         self.customList = QtWidgets.QListView()
         self.customList.setModel(self.customModel)
@@ -453,25 +453,25 @@ class LoadedSpritesTab(QtWidgets.QWidget):
                 lambda *_: self.removeButton.setEnabled(bool(len(model.selectedIndexes())))
             )
 
-        self.spriteInput = QtWidgets.QLineEdit()
-        self.spriteInput.setPlaceholderText(globals_.trans.string('AreaDlg', 52))
-        self.spriteInput.textChanged.connect(self.handleInputChange)
+        self.actorInput = QtWidgets.QLineEdit()
+        self.actorInput.setPlaceholderText(globals_.trans.string('AreaDlg', 52))
+        self.actorInput.textChanged.connect(self.handleInputChange)
 
         self.addButton = QtWidgets.QPushButton(globals_.trans.string('AreaDlg', 47))
-        self.addButton.clicked.connect(self.handleAddSprite)
+        self.addButton.clicked.connect(self.handleAddActor)
         self.addButton.setEnabled(False)
 
         self.removeButton = QtWidgets.QPushButton(globals_.trans.string('AreaDlg', 48))
-        self.removeButton.clicked.connect(self.handleRemoveSprite)
+        self.removeButton.clicked.connect(self.handleRemoveActor)
         self.removeButton.setEnabled(False)
 
         customLayout = QtWidgets.QGridLayout()
-        customLayout.addWidget(self.spriteInput, 0, 0)
+        customLayout.addWidget(self.actorInput, 0, 0)
         customLayout.addWidget(self.addButton, 0, 1)
         customLayout.addWidget(self.removeButton, 1, 0, 1, 2)
         customLayout.addWidget(self.customList, 2, 0, 1, 2)
 
-        self.autoModel = LoadedSpritesTab.StaticModel(self.getDefaultSpriteNames())
+        self.autoModel = LoadedActorsTab.StaticModel(self.getDefaultActorNames())
 
         autoList = QtWidgets.QListView()
         autoList.setModel(self.autoModel)
@@ -480,90 +480,90 @@ class LoadedSpritesTab(QtWidgets.QWidget):
         # Dark mode readability fixes
         autoList.setStyleSheet("color: #7f7f7f;")
 
-        spritesLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('AreaDlg', 49)), 0, 0)
-        spritesLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('AreaDlg', 50)), 0, 1)
-        spritesLayout.addWidget(autoList, 1, 0)
-        spritesLayout.addLayout(customLayout, 1, 1)
+        actorsLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('AreaDlg', 49)), 0, 0)
+        actorsLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('AreaDlg', 50)), 0, 1)
+        actorsLayout.addWidget(autoList, 1, 0)
+        actorsLayout.addLayout(customLayout, 1, 1)
 
         explanation = QtWidgets.QLabel(globals_.trans.string('AreaDlg', 51))
         explanation.setWordWrap(True)
 
         layout = QtWidgets.QVBoxLayout()
         layout.addWidget(explanation)
-        layout.addLayout(spritesLayout)
+        layout.addLayout(actorsLayout)
         self.setLayout(layout)
 
-    def getDefaultSpriteNames(self):
+    def getDefaultActorNames(self):
         """
-        Returns a list of strings with the names of all sprites in the current
+        Returns a list of strings with the names of all actors in the current
         area.
         """
         if globals_.Area.areanum == -1:
             return []
 
-        usedIDs = set(sprite.sprite_num for sprite in globals_.Area.sprites)
+        usedIDs = set(actor.actor_num for actor in globals_.Area.actors)
 
-        return self.stringifySprites(sorted(usedIDs))
+        return self.stringifyActors(sorted(usedIDs))
 
-    def getForceSpriteNames(self):
+    def getForceActorNames(self):
         """
-        Returns a list of strings with the names of all sprites that are forced
+        Returns a list of strings with the names of all actors that are forced
         to load in the current area.
         """
         if globals_.Area.areanum == -1:
             return []
 
-        return self.stringifySprites(sorted(globals_.Area.force_loaded_sprites))
+        return self.stringifyActors(sorted(globals_.Area.force_loaded_actors))
 
-    def stringifySprites(self, spriteIDs):
+    def stringifyActors(self, actorIDs):
         """
-        Turns a list of sprite ids into a list of strings representing the
-        sprites.
+        Turns a list of actors ids into a list of strings representing the
+        actors.
 
         The precise format of this string is relied on by the code that reads
         and saves the entered values in reggie.py. This code is pretty hacky,
         but at least it works.
         """
-        sprites = []
-        for x in spriteIDs:
-            if 0 <= x < globals_.NumSprites:
-                name = globals_.Sprites[x].name
+        actors = []
+        for x in actorIDs:
+            if 0 <= x < globals_.NumActors:
+                name = globals_.Actors[x].name
             else:
                 name = globals_.trans.string('AreaDlg', 53)
 
-            sprites.append("[%d] %s" % (x, name))
+            actors.append("[%d] %s" % (x, name))
 
-        return sprites
+        return actors
 
-    def handleAddSprite(self, _):
+    def handleAddActor(self, _):
         """
-        Add a sprite to the list of sprites whose resources are forced to load.
+        Add a actor to the list of actors whose resources are forced to load.
         """
-        text = self.spriteInput.text()
+        text = self.actorInput.text()
 
         try:
-            spriteID = int(text) & 0xFFFF  # Restrict value to unsigned short
+            actorID = int(text) & 0xFFFF  # Restrict value to unsigned short
         except ValueError:
             return
 
-        # Add a row to the end that represents the entered sprite.
+        # Add a row to the end that represents the entered actor.
         if not self.customModel.insertRow(self.customModel.rowCount()):
             return
 
         index = self.customModel.index(self.customModel.rowCount() - 1, 0)
 
-        if 0 <= spriteID < globals_.NumSprites:
-            name = globals_.Sprites[spriteID].name
+        if 0 <= actorID < globals_.NumActors:
+            name = globals_.Actors[actorID].name
         else:
             name = globals_.trans.string('AreaDlg', 53)
-        self.customModel.setData(index, "[%d] %s" % (spriteID, name))
+        self.customModel.setData(index, "[%d] %s" % (actorID, name))
 
-        # Clear the input so the user can enter a new sprite number
-        self.spriteInput.clear()
+        # Clear the input so the user can enter a new actor number
+        self.actorInput.clear()
 
-    def handleRemoveSprite(self, _):
+    def handleRemoveActor(self, _):
         """
-        Remove the currently selected sprite.
+        Remove the currently selected actor.
         """
         currIdx = self.customList.currentIndex()
         self.customModel.removeRow(currIdx.row())

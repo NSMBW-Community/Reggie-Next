@@ -7,7 +7,7 @@ from data.level.items.entrance import EntranceItem
 from data.level.items.location import LocationItem
 from data.level.items.object import ObjectItem
 from data.level.items.path import PathItem
-from data.level.items.sprite import SpriteItem
+from data.level.items.actor import ActorItem
 from data.common.reggie_clip import ReggieClip
 from ui.graphics.grid import draw_foreground_grid
 
@@ -87,12 +87,12 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 self.dragstartx = clickedx
                 self.dragstarty = clickedy
 
-            elif globals_.CurrentPaintType == 4 and globals_.CurrentSprite >= 0 and globals_.SpritesShown:
-                # paint a sprite
+            elif globals_.CurrentPaintType == 4 and globals_.CurrentActor >= 0 and globals_.ActorsShown:
+                # paint an actor
                 clickedx = int((clicked.x() - 12) / 12) * 8
                 clickedy = int((clicked.y() - 12) / 12) * 8
 
-                spr = SpriteItem.CreateSprite(clickedx, clickedy, globals_.CurrentSprite)
+                spr = ActorItem.CreateActor(clickedx, clickedy, globals_.CurrentActor)
                 if spr is not None:
                     spr.UpdateDynamicSizing()
 
@@ -327,7 +327,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         if not self.dragstamp:
             # possibly a small optimization
             type_obj = ObjectItem
-            type_spr = SpriteItem
+            type_spr = ActorItem
             type_ent = EntranceItem
             type_loc = LocationItem
             type_path = PathItem
@@ -396,7 +396,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         globals_.mainWindow.level_overview.update()
 
                 elif isinstance(obj, type_spr):
-                    # move the created sprite
+                    # move the created actor
                     clickedx = int((pos.x() - 12) / 1.5)
                     clickedy = int((pos.y() - 12) / 1.5)
 
@@ -427,7 +427,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
             # possibly a small optimization
             type_obj = ObjectItem
-            type_spr = SpriteItem
+            type_spr = ActorItem
 
             # iterate through the objects if there's more than one
             if isinstance(self.currentobj, list) or isinstance(self.currentobj, tuple):
@@ -455,7 +455,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         obj.UpdateRects()
 
                 elif isinstance(obj, type_spr):
-                    # move the created sprite
+                    # move the created actor
 
                     newx = int(obj.dragstartx + changexspr)
                     newy = int(obj.dragstarty + changeyspr)
