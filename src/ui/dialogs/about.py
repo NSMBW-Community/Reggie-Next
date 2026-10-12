@@ -58,9 +58,10 @@ class AboutDialog(QtWidgets.QDialog):
         about_label.setWordWrap(True)
 
         # README.md viewer
-        readme_view = QtWidgets.QPlainTextEdit()
-        readme_view.setPlainText(readme)
+        readme_view = QtWidgets.QTextBrowser()
+        readme_view.setMarkdown(readme)
         readme_view.setReadOnly(True)
+        readme_view.setOpenExternalLinks(True)
 
         changelog_button = QtWidgets.QPushButton(globals_.trans.string('AboutDlg', 5))
         changelog_button.pressed.connect(lambda: ChangelogDialog().exec())

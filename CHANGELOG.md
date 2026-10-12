@@ -63,6 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Several dialogs with tabs now display icons alongside the tab name.
 - The Area Import dialog can now change the source level without needing to be re-opened.
 - ID Types in the Current Sprites tab are now sorted numerically rather than alphabetically.
+- The README view in the About dialog now uses markdown formatting.
 
 ### Removed
 
