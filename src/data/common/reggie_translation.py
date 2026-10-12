@@ -51,6 +51,8 @@ class ReggieTranslation:
                 2: '[i]Reggie! Next Level Editor[/i] is an open-source project, started by Treeki in 2010 and forked by RoadrunnerWMC in 2013, that aims to bring you the fun of designing original New Super Mario Bros. Wii[tm]-compatible levels.[br]',
                 3: 'Interested? Join the [a href="[link]"]Horizon Discord server[/a] to get in touch with the current developer(s).[br]',
                 4: 'File "README.md" not found!\\nPlease go to https://github.com/NSMBW-Community/Reggie-Next to find it.',
+                5: 'View Changelog',
+                6: 'Close'
             },
             'AreaCombobox': {
                 0: 'Area [num]',
@@ -212,6 +214,10 @@ class ReggieTranslation:
                 2: 'This folder doesn\'t have all of the files from the extracted New Super Mario Bros. Wii Stage folder.',
                 3: 'This folder doesn\'t seem to have the required files. In order to use the [game] game patch, you need the Stage folder, including the Texture folder and the level files contained within it.',
                 4: 'Choose the Texture folder from [game]',
+            },
+            'ChangelogDlg': {
+                0: 'Changelog Viewer',
+                1: 'File "CHANGELOG.md" not found!\\nPlease go to https://github.com/NSMBW-Community/Reggie-Next to find it.',
             },
             'Comments': {
                 0: '[x], [y]: [text]',

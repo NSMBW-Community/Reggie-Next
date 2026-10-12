@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Swap Objects
   - Switch Sprite IDs
 - Added a preview for selected tilesets in the Area Options dialog.
+- Added a viewer for this changelog, accessible through the About dialog.
 
 ### Changed
 
@@ -140,7 +141,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Added support for loading Stage and Texture folders in Game Patches separately. First it checks if <Stage>/Texture is a folder, and if not, it lets the user select the Tilesets folder manually.
+- Added support for loading Stage and Texture folders in Game Patches separately. First it checks if `<Stage>`/Texture is a folder, and if not, it lets the user select the Tilesets folder manually.
 - Added an option to visualize Camera Bounds for Zones.
 - Implemented saving levels as .arc.LZ files.
 

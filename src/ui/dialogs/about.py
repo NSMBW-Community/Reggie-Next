@@ -4,7 +4,7 @@ from PyQt6 import QtGui, QtWidgets
 
 from data import globals_
 from data.common.utils import get_reggiedata_folder, get_root_path
-from ui.theme.reggie_theme import GetAppIcon
+from ui.dialogs.changelog import ChangelogDialog
 
 
 class AboutDialog(QtWidgets.QDialog):
@@ -62,15 +62,22 @@ class AboutDialog(QtWidgets.QDialog):
         readme_view.setPlainText(readme)
         readme_view.setReadOnly(True)
 
-        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok)
-        button_box.accepted.connect(self.accept)
+        changelog_button = QtWidgets.QPushButton(globals_.trans.string('AboutDlg', 5))
+        changelog_button.pressed.connect(lambda: ChangelogDialog().exec())
 
-        # Main layout
-        L = QtWidgets.QGridLayout()
-        L.addWidget(logo_label, 0, 0, 2, 1)
-        L.addWidget(about_label, 0, 1)
-        L.addWidget(readme_view, 1, 1)
-        L.addWidget(button_box, 2, 0, 1, 2)
-        L.setRowStretch(1, 1)
-        L.setColumnStretch(1, 1)
-        self.setLayout(L)
+        close_button = QtWidgets.QPushButton(globals_.trans.string('AboutDlg', 6))
+
+        button_box = QtWidgets.QDialogButtonBox()
+        button_box.addButton(changelog_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
+        button_box.addButton(close_button, QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
+
+        main_layout = QtWidgets.QGridLayout()
+        main_layout.addWidget(logo_label, 0, 0, 2, 1)
+        main_layout.addWidget(about_label, 0, 1)
+        main_layout.addWidget(readme_view, 1, 1)
+        main_layout.addWidget(button_box, 2, 0, 1, 2)
+        main_layout.setRowStretch(1, 1)
+        main_layout.setColumnStretch(1, 1)
+        self.setLayout(main_layout)
