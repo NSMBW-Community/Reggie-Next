@@ -983,7 +983,7 @@ class ReggieTranslation:
                 0: 'Switch Actor IDs',
                 1: 'From Actor:',
                 2: 'To Actor:',
-                3: 'Swap',
+                3: 'Switch',
                 4: 'Close',
             },
             'Themes': {

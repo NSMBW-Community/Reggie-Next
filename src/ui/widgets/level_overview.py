@@ -100,7 +100,7 @@ class LevelOverviewWidget(QtWidgets.QWidget):
 
         b = self.sprite_brush
 
-        for sprite in globals_.Area.sprites:
+        for sprite in globals_.Area.actors:
             painter.fillRect(sprite.LevelRect, b)
 
         b = self.entrance_brush
@@ -158,7 +158,7 @@ class LevelOverviewWidget(QtWidgets.QWidget):
             for obj in layer:
                 rect |= obj.LevelRect
 
-        for sprite in globals_.Area.sprites:
+        for sprite in globals_.Area.actors:
             rect |= sprite.LevelRect
 
         for ent in globals_.Area.entrances:

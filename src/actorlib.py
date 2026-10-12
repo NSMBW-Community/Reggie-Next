@@ -38,7 +38,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from data.common.utils import get_reggiedata_folder
 from data.level.area import Area as AreaType
 from data.level.items.location import LocationItem
-from data.level.items.sprite import ActorItem
+from data.level.items.actor import ActorItem
 from data.level.items.zone import ZoneItem
 from data.tileset.tile.tileset_tile import TilesetTile
 

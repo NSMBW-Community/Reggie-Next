@@ -501,7 +501,7 @@ class LoadedSpritesTab(QtWidgets.QWidget):
         if globals_.Area.areanum == -1:
             return []
 
-        usedIDs = set(sprite.sprite_num for sprite in globals_.Area.sprites)
+        usedIDs = set(sprite.sprite_num for sprite in globals_.Area.actors)
 
         return self.stringifySprites(sorted(usedIDs))
 
@@ -513,7 +513,7 @@ class LoadedSpritesTab(QtWidgets.QWidget):
         if globals_.Area.areanum == -1:
             return []
 
-        return self.stringifySprites(sorted(globals_.Area.force_loaded_sprites))
+        return self.stringifySprites(sorted(globals_.Area.force_loaded_actors))
 
     def stringifySprites(self, spriteIDs):
         """
@@ -526,8 +526,8 @@ class LoadedSpritesTab(QtWidgets.QWidget):
         """
         sprites = []
         for x in spriteIDs:
-            if 0 <= x < globals_.NumSprites:
-                name = globals_.Sprites[x].name
+            if 0 <= x < globals_.NumActors:
+                name = globals_.Actors[x].name
             else:
                 name = globals_.trans.string('AreaDlg', 53)
 
@@ -552,8 +552,8 @@ class LoadedSpritesTab(QtWidgets.QWidget):
 
         index = self.customModel.index(self.customModel.rowCount() - 1, 0)
 
-        if 0 <= spriteID < globals_.NumSprites:
-            name = globals_.Sprites[spriteID].name
+        if 0 <= spriteID < globals_.NumActors:
+            name = globals_.Actors[spriteID].name
         else:
             name = globals_.trans.string('AreaDlg', 53)
         self.customModel.setData(index, "[%d] %s" % (spriteID, name))

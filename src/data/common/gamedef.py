@@ -17,7 +17,7 @@ from data.common.loaders import (
     LoadEntranceNames,
     LoadMusicInfo,
     LoadObjDescriptions,
-    LoadSpriteCategories,
+    LoadActorCategories,
     LoadActorData,
     LoadTilesetInfo,
     LoadTilesetNames,
@@ -46,7 +46,7 @@ class GameDefinitionFile:
 
 class ReggieGameDefinition:
     """
-    A class that defines a NSMBW hack: songs, tilesets, sprites, etc.
+    A class that defines a NSMBW hack: songs, tilesets, actors, etc.
     """
 
     def __init__(self, name: str | None = None):
@@ -88,7 +88,7 @@ class ReggieGameDefinition:
             'entrancetypes': gdf(os.path.join(reggiedata_folder, 'entrancetypes.txt'), False),
             'levelnames': gdf(os.path.join(reggiedata_folder, 'levelnames.xml'), False),
             'music': gdf(os.path.join(reggiedata_folder, 'music.txt'), False),
-            'spritecategories': gdf(os.path.join(reggiedata_folder, 'spritecategories.xml'), False),
+            'actorcategories': gdf(os.path.join(reggiedata_folder, 'actorcategories.xml'), False),
             'actordata': gdf(os.path.join(reggiedata_folder, 'actordata.xml'), False),
             'tilesetinfo': gdf(os.path.join(reggiedata_folder, 'tilesetinfo.xml'), False),
             'tilesets': gdf(os.path.join(reggiedata_folder, 'tilesets.xml'), False),
@@ -491,23 +491,23 @@ def LoadGameDef(name: str | None = None):
             return False
 
     LoadActorData()
-    LoadSpriteCategories(True)
+    LoadActorCategories(True)
 
-    # Reload all of the spritedata ID types in the area
+    # Reload all of the actordata ID types in the area
     # Fixes bugs related to these being outdated when switching game patches
     if globals_.Area.areanum != -1:
         globals_.Area.InitialiseIdTypes()
 
     if globals_.mainWindow is not None:
-        globals_.mainWindow.palette_dock.sprite_tab.view_picker.clear()
+        globals_.mainWindow.palette_dock.actor_tab.view_picker.clear()
 
-        for cat in globals_.SpriteCategories:
-            globals_.mainWindow.palette_dock.sprite_tab.view_picker.addItem(cat.name)
+        for cat in globals_.ActorCategories:
+            globals_.mainWindow.palette_dock.actor_tab.view_picker.addItem(cat.name)
 
-        globals_.mainWindow.palette_dock.sprite_tab.sprite_picker.LoadItems()  # Reloads the sprite picker list items
-        globals_.mainWindow.palette_dock.sprite_tab.view_picker.setCurrentIndex(0)  # Sets the sprite picker to category 0 (enemies)
-        globals_.mainWindow.spriteDataEditor.setSprite(globals_.mainWindow.spriteDataEditor.spritetype,
-                                                True)  # Reloads the sprite data editor fields
+        globals_.mainWindow.palette_dock.actor_tab.actor_picker.LoadItems()  # Reloads the actor picker list items
+        globals_.mainWindow.palette_dock.actor_tab.view_picker.setCurrentIndex(0)  # Sets the actor picker to category 0 (enemies)
+        globals_.mainWindow.actorDataEditor.setActor(globals_.mainWindow.actorDataEditor.actortype,
+                                                True)  # Reloads the actor data editor fields
 
     LoadBgANames(True)
     LoadBgBNames(True)
@@ -521,9 +521,9 @@ def LoadGameDef(name: str | None = None):
     LoadTilesetNames(True)
     LoadTilesetInfo(True)
 
-    # Always load the actors folders so the correct sprite images can be
-    # loaded when Reggie is started. This avoids loading all sprite images
-    # again and also simplifies the sprite image code.
+    # Always load the actors folders so the correct actor images can be
+    # loaded when Reggie is started. This avoids loading all actor images
+    # again and also simplifies the actor image code.
     actorlib.ActorsFolders = globals_.gamedef.recursiveFiles('actors', is_folder=True)[0]
 
     if globals_.Area.areanum != -1:
@@ -531,49 +531,49 @@ def LoadGameDef(name: str | None = None):
         actorlib.ActorImagesLoaded.clear()
         LoadBasics()
 
-        spriteClasses = globals_.gamedef.getImageClasses()
+        actorClasses = globals_.gamedef.getImageClasses()
 
-        for s in globals_.Area.sprites:
-            if s.sprite_num in actorlib.ActorImagesLoaded:
+        for actor in globals_.Area.actors:
+            if actor.sprite_num in actorlib.ActorImagesLoaded:
                 continue
-            if s.sprite_num not in spriteClasses:
+            if actor.sprite_num not in actorClasses:
                 continue
 
-            spriteClasses[s.sprite_num].loadImages()
+            actorClasses[actor.sprite_num].loadImages()
 
-            actorlib.ActorImagesLoaded.add(s.sprite_num)
+            actorlib.ActorImagesLoaded.add(actor.sprite_num)
 
-        for s in globals_.Area.sprites:
-            if s.sprite_num in spriteClasses:
-                s.setImageObj(spriteClasses[s.sprite_num])
+        for actor in globals_.Area.actors:
+            if actor.sprite_num in actorClasses:
+                actor.setImageObj(actorClasses[actor.sprite_num])
             else:
-                s.setImageObj(actorlib.ActorImage)
+                actor.setImageObj(actorlib.ActorImage)
 
         # https://github.com/Zement/Reggie/blob/master/gamedef.py#L1036-L1053
-        # Recalculate unknown sprite IDs based on current patch's sprite definitions
-        unknown_sprite_ids = set()
-        for sprite in globals_.Area.sprites:
-            if sprite.sprite_num >= globals_.NumSprites or globals_.Sprites[sprite.sprite_num] is None:
-                unknown_sprite_ids.add(sprite.sprite_num)
+        # Recalculate unknown actor IDs based on current patch's actor definitions
+        unknown_actor_ids = set()
+        for actor in globals_.Area.actors:
+            if actor.sprite_num >= globals_.NumActors or globals_.Actors[actor.sprite_num] is None:
+                unknown_actor_ids.add(actor.sprite_num)
 
-        # Update the Area's unknown_sprite_ids
-        globals_.Area.unknown_sprite_ids = unknown_sprite_ids
+        # Update the Area's unknown_actor_ids
+        globals_.Area.unknown_actor_ids = unknown_actor_ids
 
-        # Check for unknown sprite IDs and show warning message
-        if unknown_sprite_ids and globals_.ShowUnknownSpriteWarning:
-            sprite_ids = sorted(unknown_sprite_ids)
+        # Check for unknown actor IDs and show warning message
+        if unknown_actor_ids and globals_.ShowUnknownActorWarning:
+            actor_ids = sorted(unknown_actor_ids)
 
             title = globals_.trans.string('Err_UnknownActor', 0)
-            if len(sprite_ids) == 1:
-                msg = globals_.trans.string('Err_UnknownActor', 1, '[id]', str(sprite_ids[0]))
+            if len(actor_ids) == 1:
+                msg = globals_.trans.string('Err_UnknownActor', 1, '[id]', str(actor_ids[0]))
             else:
-                msg = globals_.trans.string('Err_UnknownActor', 2, '[ids]', ', '.join(map(str, sprite_ids)))
+                msg = globals_.trans.string('Err_UnknownActor', 2, '[ids]', ', '.join(map(str, actor_ids)))
             QtWidgets.QMessageBox.warning(None, title, msg)
 
-    # Reload the sprite-picker text
+    # Reload the actor-picker text
     if globals_.Area.areanum != -1:
-        for spr in globals_.Area.sprites:
-            spr.UpdateListItem()
+        for actor in globals_.Area.actors:
+            actor.UpdateListItem()
 
     LoadEntranceNames(True)
 

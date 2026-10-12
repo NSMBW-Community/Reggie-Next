@@ -12,11 +12,13 @@ def update_main(path: str):
     # This really only works if the patch creator doesn't use
     # their own filenames, but it's probably fine...
     fix_strings = [
-        ('name="spritedata"',  'name="actordata"'),
-        ('path="spritedata.xml"', 'path="actordata.xml"'),
-        ('name="sprites"',  'name="actors"'),
-        ('path="sprites.py"', 'path="actors.py"'),
-        ('path="sprites"',  'path="actors"'),
+        ('name="spritedata"',           'name="actordata"'),
+        ('path="spritedata.xml"',       'path="actordata.xml"'),
+        ('name="sprites"',              'name="actors"'),
+        ('path="sprites.py"',           'path="actors.py"'),
+        ('path="sprites"',              'path="actors"'),
+        ('name="spritecategories"',     'name="actorcategories"'),
+        ('path="spritecategories.xml"', 'path="actorcategories.xml"'),
     ]
 
     # Check for a sprites folder and rename it
@@ -115,7 +117,6 @@ def update_actordata(path: str):
     spritedata_path = os.path.join(os.path.dirname(path), 'spritedata.xml')
     if os.path.isfile(spritedata_path):
         shutil.copy2(spritedata_path, path)
-        print(path)
         os.remove(spritedata_path)
 
     with open(path, 'r', encoding='utf-8') as f:
@@ -133,6 +134,26 @@ def update_actordata(path: str):
 
     for old, new in fix_strings:
         data = data.replace(old, new)
+
+    with open(path, 'w', encoding='utf-8') as file_out:
+        file_out.write(data)
+
+
+def update_actorcategories(path: str):
+    """
+    Updates actorcategories.xml
+    """
+    # Move the actor categories
+    spritecat_path = os.path.join(os.path.dirname(path), 'spritecategories.xml')
+    if os.path.isfile(spritecat_path):
+        shutil.copy2(spritecat_path, path)
+        os.remove(spritecat_path)
+
+    with open(path, 'r', encoding='utf-8') as f:
+        data = f.read()
+
+    # Only need to fix one attribute in this file
+    data = data.replace('sprite=', 'actor=')
 
     with open(path, 'w', encoding='utf-8') as file_out:
         file_out.write(data)

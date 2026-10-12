@@ -7,7 +7,7 @@ from data.level.items.entrance import EntranceItem
 from data.level.items.location import LocationItem
 from data.level.items.object import ObjectItem
 from data.level.items.path import PathItem
-from data.level.items.sprite import ActorItem
+from data.level.items.actor import ActorItem
 from data.common.reggie_clip import ReggieClip
 from ui.graphics.grid import draw_foreground_grid
 
@@ -87,12 +87,12 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 self.dragstartx = clickedx
                 self.dragstarty = clickedy
 
-            elif globals_.CurrentPaintType == 4 and globals_.CurrentSprite >= 0 and globals_.SpritesShown:
+            elif globals_.CurrentPaintType == 4 and globals_.CurrentActor >= 0 and globals_.ActorsShown:
                 # paint a sprite
                 clickedx = int((clicked.x() - 12) / 12) * 8
                 clickedy = int((clicked.y() - 12) / 12) * 8
 
-                spr = ActorItem.CreateSprite(clickedx, clickedy, globals_.CurrentSprite)
+                spr = ActorItem.CreateSprite(clickedx, clickedy, globals_.CurrentActor)
                 if spr is not None:
                     spr.UpdateDynamicSizing()
 

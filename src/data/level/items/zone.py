@@ -239,7 +239,7 @@ class ZoneItem(LevelEditorItem):
 
         # Only show the indicator when this zone does not contain an autoscroller
         # or ambush controller.
-        for sprite in globals_.Area.sprites:
+        for sprite in globals_.Area.actors:
             if sprite.type not in {91, 454}:  # {autoscroll, ambush}
                 continue
 
@@ -300,12 +300,12 @@ class ZoneItem(LevelEditorItem):
                 painter.drawLine(lineStart, lineEnd)
 
         # Paint liquids/fog
-        if globals_.SpritesShown and globals_.ActorImagesShown and globals_.RealViewEnabled:
+        if globals_.ActorsShown and globals_.ActorImagesShown and globals_.RealViewEnabled:
             zoneRect = self.mapRectToScene(self.DrawRect)
             from actors import ActorImage_BubbleGen as bubbleGenType
             from actors import ActorImage_LiquidOrFog as liquidOrFogType
 
-            for sprite in globals_.Area.sprites:
+            for sprite in globals_.Area.actors:
                 if isinstance(sprite.ImageObj, liquidOrFogType) and sprite.ImageObj.paintZone() and self.id == sprite.ImageObj.zoneId:
                     sprite.ImageObj.realViewZone(painter, zoneRect)
                 if isinstance(sprite.ImageObj, bubbleGenType) and hasattr(sprite, 'zoneID') and self.id == sprite.zoneID:
@@ -464,7 +464,7 @@ class ZoneItem(LevelEditorItem):
 
             globals_.mainWindow.level_overview.update()
 
-            for spr in globals_.Area.sprites:
+            for spr in globals_.Area.actors:
                 spr.ImageObj.positionChanged()
 
             SetDirty()

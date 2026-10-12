@@ -7,7 +7,7 @@ from data import globals_
 from data.level.dirty import SetDirty
 import actorlib
 from data.level.items.entrance import EntranceItem
-from data.level.items.sprite import ActorItem
+from data.level.items.actor import ActorItem
 from data.level.items.zone import ZoneItem
 from ui.theme.reggie_theme import GetIcon
 
@@ -261,7 +261,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         problems = [121] # Collision Switcher
 
         crash_sprites = []
-        for sprite in globals_.Area.sprites:
+        for sprite in globals_.Area.actors:
             if sprite.sprite_num in problems:
                 crash_sprites.append(sprite)
 
@@ -285,7 +285,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         problem = False
 
         sprite: ActorItem
-        for sprite in globals_.Area.sprites:
+        for sprite in globals_.Area.actors:
             # Snake Block, end-of-path behavior is above 3
             if sprite.sprite_num == 166 and ((sprite.spritedata[2] & 0xF0) >> 4) > 3:
                 problem = True
@@ -336,7 +336,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         # Check for sprites which depend on others' resources
         new = list(check_list)
         for item in check_list:
-            for sprite in globals_.Area.sprites:
+            for sprite in globals_.Area.actors:
                 if sprite.sprite_num in item:
                     try:
                         new.remove(item)
@@ -352,7 +352,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         elif problem:
             add_sprites = []
-            for sprite in globals_.Area.sprites:
+            for sprite in globals_.Area.actors:
                 if sprite.sprite_num == 166 and (sprite.spritedata[2] & 0xF0) >> 4 > 3:
                     sprite.spritedata = sprite.spritedata[0:2] + ' ' + sprite.spritedata[3:]
 
@@ -400,7 +400,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         """
         max_sprite_num = 1000
 
-        problem = len(globals_.Area.sprites) > max_sprite_num
+        problem = len(globals_.Area.actors) > max_sprite_num
 
         if mode == 'c':
             return problem
@@ -410,12 +410,12 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         if globals_.mainWindow is not None:
             sprite: ActorItem
-            for sprite in globals_.Area.sprites[max_sprite_num:]:
+            for sprite in globals_.Area.actors[max_sprite_num:]:
                 sprite.delete()
                 sprite.setSelected(False)
                 globals_.mainWindow.scene.removeItem(sprite)
 
-            globals_.Area.sprites = globals_.Area.sprites[:max_sprite_num]
+            globals_.Area.actors = globals_.Area.actors[:max_sprite_num]
             globals_.mainWindow.scene.update()
             globals_.mainWindow.level_overview.update()
 

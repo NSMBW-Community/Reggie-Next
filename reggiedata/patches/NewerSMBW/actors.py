@@ -1,5 +1,5 @@
 # Newer Super Mario Bros. Wii
-# Custom Reggie! Next sprites.py Module
+# Custom Reggie! Next actors.py Module
 # By Kamek64, MalStar1000, RoadrunnerWMC
 
 

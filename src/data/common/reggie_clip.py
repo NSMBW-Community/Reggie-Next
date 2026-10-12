@@ -7,7 +7,7 @@ from data.level.items.entrance import EntranceItem
 from data.level.items.location import LocationItem
 from data.level.items.object import ObjectItem
 from data.level.items.path import PathItem
-from data.level.items.sprite import ActorItem
+from data.level.items.actor import ActorItem
 from data.level.items.comment import CommentItem
 from data.level.path import Path
 
@@ -265,8 +265,8 @@ class ReggieClip:
 
         clip = reggie_clip[11:-2].split('|')
 
-        globals_.mainWindow.palette_dock.sprite_tab.sprite_list.prepareBatchAdd()
-        globals_.mainWindow.palette_dock.sprite_tab.sprite_order_list.prepareBatchAdd()
+        globals_.mainWindow.palette_dock.actor_tab.actor_list.prepareBatchAdd()
+        globals_.mainWindow.palette_dock.actor_tab.actor_order_list.prepareBatchAdd()
 
         for item in clip:
             try:
@@ -440,7 +440,7 @@ class ReggieClip:
                 # an int() probably failed somewhere
                 pass
 
-        globals_.mainWindow.palette_dock.sprite_tab.sprite_list.endBatchAdd()
-        globals_.mainWindow.palette_dock.sprite_tab.sprite_order_list.endBatchAdd()
+        globals_.mainWindow.palette_dock.actor_tab.actor_list.endBatchAdd()
+        globals_.mainWindow.palette_dock.actor_tab.actor_order_list.endBatchAdd()
 
         return layers, sprites, entrances, locations, paths, path_nodes, comments

@@ -238,11 +238,11 @@ class LocationItem(LevelEditorItem):
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
         # Paint liquids/fog
-        if globals_.SpritesShown and globals_.ActorImagesShown and globals_.RealViewEnabled:
+        if globals_.ActorsShown and globals_.ActorImagesShown and globals_.RealViewEnabled:
             location_rect = self.sceneTransform().mapRect(self.DrawRect)
             from actors import ActorImage_LiquidOrFog as liquidOrFogType
 
-            for sprite in globals_.Area.sprites:
+            for sprite in globals_.Area.actors:
                 if isinstance(sprite.ImageObj, liquidOrFogType) and self.id == sprite.ImageObj.locId:
                     sprite.ImageObj.realViewLocation(painter, location_rect)
 
@@ -328,7 +328,7 @@ class LocationItem(LevelEditorItem):
 
                 # This code causes an error or something.
                 # if RealViewEnabled:
-                #     for sprite in globals_.Area.sprites:
+                #     for sprite in globals_.Area.actors:
                 #         if self.id in sprite.ImageObj.locationIDs and sprite.ImageObj.updateSceneAfterLocationMoved:
                 #             self.scene().update()
 
