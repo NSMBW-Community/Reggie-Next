@@ -202,11 +202,11 @@ class AppearanceTab(PreferenceTabWidget):
         globals_.GridType = types[grid_type]
 
         # Sprite [38] at (11, 4)
-        sprite = SpriteItem.CreateSprite(11 * 16, 4 * 16, 38, data=bytes(8), add_to_scene=False)
+        sprite = SpriteItem.CreateSprite(11 * 16, 4 * 16, 38, data=bytes(10), add_to_scene=False)
         scene.addItem(sprite)
 
-        # Sprite [53] at (1, 6)
-        sprite = SpriteItem.CreateSprite(1 * 16, 6 * 16, 53, data=bytes(8), add_to_scene=False)
+        # Actor [53] at (1, 6)
+        sprite = SpriteItem.CreateSprite(1 * 16, 6 * 16, 53, data=bytes(10), add_to_scene=False)
         scene.addItem(sprite)
 
         # Entrance [0] at (13, 8)
@@ -308,7 +308,7 @@ class AppearanceTab(PreferenceTabWidget):
         if globals_.mainWindow is not None:
             # Update window title
             globals_.mainWindow.UpdateTitle()
-    
+
             # Toggle hover events for scene items
             for item in globals_.mainWindow.scene.items():
                 if not isinstance(item, ZoneItem):

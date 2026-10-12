@@ -174,7 +174,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         self.setLayout(mainLayout)
 
         self.spritetype = -1
-        self.data = bytes(8)
+        self.data = bytes(10)
         self.fields = []
 
         self.notes = None
@@ -583,7 +583,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         # data[6] is the sprite's zone ID. Modifying it is unnecessary since Reggie sets it automatically,
         # and overwrites whatever you change it to. If anything, it seems to just confuse everybody who
         # sees it, so we're just going to hide the value from the user
-        self.raweditor.setText(f'{data[0]:02x}{data[1]:02x} {data[2]:02x}{data[3]:02x} {data[4]:02x}{data[5]:02x} {0x00:02x}{data[7]:02x}')
+        self.raweditor.setText(f'{data[0]:02x}{data[1]:02x} {data[2]:02x}{data[3]:02x} {data[4]:02x}{data[5]:02x} {0x00:02x}{data[7]:02x} {data[8]:02x}{data[9]:02x}')
 
         self.raweditor.setStyleSheet('')
 
@@ -694,7 +694,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         # data[6] is the sprite's zone ID. Modifying it is unnecessary since Reggie sets it automatically,
         # and overwrites whatever you change it to. If anything, it seems to just confuse everybody who
         # sees it, so we're just going to hide the value from the user
-        self.raweditor.setText(f'{data[0]:02x}{data[1]:02x} {data[2]:02x}{data[3]:02x} {data[4]:02x}{data[5]:02x} {0x00:02x}{data[7]:02x}')
+        self.raweditor.setText(f'{data[0]:02x}{data[1]:02x} {data[2]:02x}{data[3]:02x} {data[4]:02x}{data[5]:02x} {0x00:02x}{data[7]:02x} {data[8]:02x}{data[9]:02x}')
         self.raweditor.setStyleSheet('')
 
         self.UpdateData(data, exclude_update_field=field, do_update=False, was_automatic=False)
@@ -703,9 +703,9 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         """
         Handles the reset data button being clicked
         """
-        self.UpdateData(bytes(8), was_automatic=False)
+        self.UpdateData(bytes(10), was_automatic=False)
 
-        self.raweditor.setText("0000 0000 0000 0000")
+        self.raweditor.setText("0000 0000 0000 0000 0000")
         self.raweditor.setStyleSheet('')
 
     def UpdateData(self, new_data, exclude_update_field = None, do_update = True, was_automatic = True):
@@ -749,7 +749,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         valid = False
         data = b""
 
-        if len(raw) == 16:
+        if len(raw) == 20:
             try:
                 data = bytes.fromhex(text)
                 valid = True
@@ -773,7 +773,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
             x_ = mw.selObj.objx + 16 if mw.selObj.objx is not None else 16
             y_ = mw.selObj.objy if mw.selObj.objy is not None else 0
-            SpriteItem.CreateSprite(x_, y_, id_, data=bytes(8))
+            SpriteItem.CreateSprite(x_, y_, id_, data=bytes(10))
 
             # remove this dependency, because it is now fulfilled.
             # get row of button

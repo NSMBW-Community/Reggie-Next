@@ -71,7 +71,7 @@ class ReggieClip:
         # Sprites
         for spr in sprites:
             data = spr.spritedata
-            output.append(f'1:{spr.sprite_num}:{spr.objx}:{spr.objy}:{data[0]}:{data[1]}:{data[2]}:{data[3]}:{data[4]}:{data[5]}:{data[7]}')
+            output.append(f'1:{spr.sprite_num}:{spr.objx}:{spr.objy}:{data[0]}:{data[1]}:{data[2]}:{data[3]}:{data[4]}:{data[5]}:{data[7]}:{data[8]}:{data[9]}')
 
         # Entrances
         for item in entrances:
@@ -308,13 +308,13 @@ class ReggieClip:
 
                 # Sprite
                 elif split[0] == '1':
-                    if len(split) != 11:
+                    if len(split) != 13:
                         continue
 
                     objx = int(split[2])
                     objy = int(split[3])
                     type = int(split[1])
-                    data = bytes(map(int, [split[4], split[5], split[6], split[7], split[8], split[9], '0', split[10]]))
+                    data = bytes(map(int, [split[4], split[5], split[6], split[7], split[8], split[9], '0', split[10], split[11], split[12]]))
 
                     newitem = SpriteItem.CreateSprite(objx, objy, type, data, add_to_scene)
                     sprites.append(newitem)

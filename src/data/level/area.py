@@ -353,7 +353,7 @@ class Area:
         loaded for calculating the sprites that are forced to load.
         """
         spritedata = self.blocks[7]
-        sprstruct = struct.Struct('>HHH8sxx')
+        sprstruct = struct.Struct('>HHH10s')
         sprites = []
         unknown_sprite_ids = None
 
@@ -715,7 +715,7 @@ class Area:
         Saves the sprites back to block 8
         """
         offset = 0
-        sprstruct = struct.Struct('>HHH6sBcxx')
+        sprstruct = struct.Struct('>HHH6sBc2s')
         buffer = bytearray((len(self.sprites) * 16) + 4)
         f_int = int
         for sprite in self.sprites:
@@ -729,7 +729,7 @@ class Area:
 
             try:
                 sprstruct.pack_into(buffer, offset, f_int(sprite.sprite_num) % 0xFFFF, f_int(sprite.objx), f_int(sprite.objy),
-                                    sprite.spritedata[:6], sprite.zoneID, bytes([sprite.spritedata[7]]))
+                                    sprite.spritedata[:6], sprite.zoneID, bytes([sprite.spritedata[7]]), sprite.spritedata[8:])
             except:
                 # Hopefully this will solve the mysterious bug, and will
                 # soon no longer be necessary.

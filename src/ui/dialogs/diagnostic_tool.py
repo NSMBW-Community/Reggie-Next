@@ -390,7 +390,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
             if globals_.mainWindow is not None:
                 for id_, x, y in add_sprites:
-                    SpriteItem.CreateSprite(x, y, id_, bytes(8))
+                    SpriteItem.CreateSprite(x, y, id_, bytes(10))
 
                 globals_.mainWindow.scene.update()
 
