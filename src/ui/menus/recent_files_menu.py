@@ -1,16 +1,19 @@
-from PyQt6 import QtWidgets, QtGui
 import os
+from collections.abc import Callable
+
+from PyQt6 import QtGui, QtWidgets
 
 from data import globals_
-from ui.theme.reggie_theme import GetIcon, clipStr
-from data.common.settings import setting, setSetting
+from data.common.settings import setSetting, setting
 from data.level.dirty import CheckDirty
+from ui.theme.reggie_theme import GetIcon, clipStr
+
 
 class RecentFilesMenu(QtWidgets.QMenu):
     """
     A menu which displays recently opened files
     """
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Creates and initializes the menu
         """
@@ -37,13 +40,13 @@ class RecentFilesMenu(QtWidgets.QMenu):
 
         self.update_action_list()
 
-    def write_settings(self):
+    def write_settings(self) -> None:
         """
         Writes file_list back to the settings
         """
         setSetting('RecentFiles', str('|'.join(self.file_list)))
 
-    def update_action_list(self):
+    def update_action_list(self) -> None:
         """
         Updates the actions visible in the menu
         """
@@ -58,9 +61,8 @@ class RecentFilesMenu(QtWidgets.QMenu):
                 filename = short + '...'
 
             act = QtGui.QAction(ico, filename, self)
-            if globals_.UseRecentFileKeys:
-                if i <= 9:
-                    act.setShortcut(QtGui.QKeySequence(f'Ctrl+Alt+{i}'))
+            if globals_.UseRecentFileKeys and i <= 9:
+                act.setShortcut(QtGui.QKeySequence(f'Ctrl+Alt+{i}'))
             act.setToolTip(str(self.file_list[i]))
 
             handler = self.handle_open_recent_(i)
@@ -68,7 +70,7 @@ class RecentFilesMenu(QtWidgets.QMenu):
 
             self.addAction(act)
 
-    def add_to_list(self, path):
+    def add_to_list(self, path: str | None) -> None:
         """
         Adds an entry to the list
         """
@@ -88,7 +90,7 @@ class RecentFilesMenu(QtWidgets.QMenu):
         self.write_settings()
         self.update_action_list()
 
-    def remove_from_list(self, index):
+    def remove_from_list(self, index: int) -> None:
         """
         Removes an entry from the list
         """
@@ -96,7 +98,7 @@ class RecentFilesMenu(QtWidgets.QMenu):
         self.write_settings()
         self.update_action_list()
 
-    def clear_all(self):
+    def clear_all(self) -> None:
         """
         Clears all recent files from the list and the registry
         """
@@ -104,10 +106,10 @@ class RecentFilesMenu(QtWidgets.QMenu):
         self.write_settings()
         self.update_action_list()
 
-    def handle_open_recent_(self, i):
+    def handle_open_recent_(self, i: int) -> Callable[[QtGui.QAction], None]:
         return (lambda e: self.handle_open_recent(i))
 
-    def handle_open_recent(self, number):
+    def handle_open_recent(self, number: int) -> None:
         """
         Open a recently opened level picked from the main menu
         """

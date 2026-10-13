@@ -1,12 +1,11 @@
-from PyQt6 import QtWidgets, QtCore, QtGui
-
-from ui.theme.reggie_theme import GetIcon
-from data.common.settings import setting
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data import globals_
-
+from data.common.gamedef import LoadGameDef, ReggieGameDefinition, getAvailableGameDefs
+from data.common.settings import setting
+from ui.theme.reggie_theme import GetIcon
 from ui.widgets.game_def_viewer import GameDefViewer
-from data.common.gamedef import getAvailableGameDefs, LoadGameDef, ReggieGameDefinition
+
 
 class GameDefMenu(QtWidgets.QMenu):
     """
@@ -15,14 +14,14 @@ class GameDefMenu(QtWidgets.QMenu):
     game_changed = QtCore.pyqtSignal()
     update_flag = False
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Creates and initializes the menu
         """
         QtWidgets.QMenu.__init__(self)
         self.createActions()
 
-    def createActions(self):
+    def createActions(self) -> None:
         """
         Creates all the actions for the menu
         """
@@ -69,7 +68,7 @@ class GameDefMenu(QtWidgets.QMenu):
 
         self.addAction(act)
 
-    def handleGameDefClicked(self, checked):
+    def handleGameDefClicked(self, checked: bool) -> None:
         """
         Handles the user clicking a gamedef
         """
@@ -90,27 +89,24 @@ class GameDefMenu(QtWidgets.QMenu):
         real_gamedef = setting('LastGameDef')
         success = LoadGameDef(real_gamedef)
         if not success:
-            raise Exception("Restoring the previous game def (%r) failed after failing to load new game def (%r)" % (real_gamedef, name))
+            raise ValueError(f"Restoring the previous game def ({real_gamedef!r}) failed after failing to load new game def ({name!r})")
 
         self.update_flag = True
         for act in self.actGroup.actions():
             act.setChecked(act.data() == real_gamedef)
         self.update_flag = False
 
-    def handleReloadClicked(self):
+    def handleReloadClicked(self) -> None:
         """
         Handles the user clicking the Reload button
         """
         self.clear()
         self.createActions()
 
-    def mouseReleaseEvent(self, a0):
+    def mouseReleaseEvent(self, a0: QtGui.QMouseEvent) -> None:
         """
         Handles mouse press events
         """
-        if a0 is None:
-            return
-
         action = self.actionAt(a0.pos())
 
         # If this is the Reload button, don't close the menu when clicked
