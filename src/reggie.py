@@ -87,8 +87,8 @@ import spritelib as SLib
 from data.common.sprites import LoadBasics
 
 from ui.theme.reggie_theme import SetAppStyle, LoadNumberFont, SetColorScheme, GetAppIcon
-from data.common.loaders import LoadToolbarActionsLists, LoadTheme, LoadDefaultKeybinds, module_path
-from data.common.utils import SetGamePaths, get_reggiedata_folder, get_root_path
+from data.common.loaders import LoadToolbarActionsLists, LoadTheme, LoadDefaultKeybinds
+from data.common.utils import SetGamePaths, get_root_path
 from data.common.validators import FilesAreMissing, areValidGamePaths
 
 from data.common.settings import setting, setSetting
@@ -173,7 +173,7 @@ def main():
     globals_.app = QtWidgets.QApplication(sys.argv)
 
     # Go to the script path
-    path = module_path()
+    path = get_root_path()
     if path is not None:
         os.chdir(path)
 
