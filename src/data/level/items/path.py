@@ -1,11 +1,15 @@
+from typing import TYPE_CHECKING
+
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data import globals_
-from data.level.abstract_path import AbstractPath
 from data.level.dirty import SetDirty
 from data.level.items.basic import InstanceDefinition, LevelEditorItem
 from ui.theme.reggie_theme import setOverrideCursor
 from ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
+
+if TYPE_CHECKING:
+    from data.level.path import Path
 
 
 class InstanceDefinition_PathItem(InstanceDefinition):
@@ -19,7 +23,7 @@ class InstanceDefinition_PathItem(InstanceDefinition):
     )
 
     @staticmethod
-    def itemList() -> list[AbstractPath]:
+    def itemList() -> list["Path"]:
         # TODO figure out a way to import data.level.path without circular imports
         return globals_.Area.paths
 
@@ -35,7 +39,7 @@ class PathItem(LevelEditorItem):
     BoundingRect = QtCore.QRectF(0, 0, 24, 24)
     RoundedRect = QtCore.QRectF(1, 1, 22, 22)
 
-    def __init__(self, objx: int, objy: int, path_id: int, node_id: int, parent: AbstractPath) -> None:
+    def __init__(self, objx: int, objy: int, path_id: int, node_id: int, parent: "Path") -> None:
         """
         Creates a path node with specific data
         """
@@ -86,7 +90,7 @@ class PathItem(LevelEditorItem):
         if oldx == x and oldy == y or globals_.mainWindow is None:
             return
 
-        self.path.node_moved(self)
+        self.path.node_moved()
         self.UpdateListItem()
         if self == globals_.mainWindow.selObj:
             SetDirty()

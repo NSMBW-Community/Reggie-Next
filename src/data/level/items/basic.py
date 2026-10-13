@@ -6,7 +6,6 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data import globals_
 from data.common.utils import clamp
-from data.level.abstract_path import AbstractPath
 from data.level.dirty import SetDirty
 from data.level.items.abstract_object import AbstractObjectItem
 from data.level.items.path_editor_line import PathEditorLineItem
@@ -115,7 +114,8 @@ class InstanceDefinition:
         Returns a matching instance of this thing in the level
         """
         for item in self.itemList():
-            if isinstance(item, AbstractPath):
+            if hasattr(item, "_nodes") and hasattr(item, "_loops"):
+                # Probably the only way to properly check if the item is a path without an instance check and resulting circular imports
                 # Path does not have objx/y, but the nodes do
                 for node in item._nodes:
                     if self.matches(node):

@@ -1,7 +1,11 @@
+from typing import TYPE_CHECKING
+
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data import globals_
-from data.level.abstract_path import AbstractPath
+
+if TYPE_CHECKING:
+    from data.level.path import Path
 
 
 class PathEditorLineItem(QtWidgets.QGraphicsPathItem):
@@ -10,7 +14,7 @@ class PathEditorLineItem(QtWidgets.QGraphicsPathItem):
     same path.
     """
 
-    def __init__(self, path: AbstractPath) -> None:
+    def __init__(self, path: "Path") -> None:
         """
         Creates a path line that belongs to a given path.
         """

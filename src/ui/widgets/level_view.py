@@ -417,7 +417,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         obj.setPos(int(clickedx * 1.5), int(clickedy * 1.5))
 
                         if isinstance(obj, type_path):
-                            obj.path.node_moved(obj)
+                            obj.path.node_moved()
 
                         obj.UpdateListItem()
                         globals_.mainWindow.level_overview.update()

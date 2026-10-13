@@ -1,3 +1,5 @@
+from collections.abc import Iterable
+
 from ui.actions.undo.undo_action import UndoAction
 
 
@@ -6,7 +8,7 @@ class SimultaneousUndoAction(UndoAction):
     An undo action that consists of multiple undo actions at once
     """
 
-    def __init__(self, children: list[UndoAction]) -> None:
+    def __init__(self, children: Iterable[UndoAction]) -> None:
         """
         Initializes the undo action
         """

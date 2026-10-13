@@ -1,5 +1,10 @@
+from typing import TYPE_CHECKING
+
 from data import globals_
 from ui.actions.undo.undo_action import UndoAction
+
+if TYPE_CHECKING:
+    from data.level.items.basic import LevelEditorItem
 
 
 class MoveItemUndoAction(UndoAction):
@@ -7,10 +12,11 @@ class MoveItemUndoAction(UndoAction):
     An UndoAction for movement of a single level item that is not an object
     """
 
-    def __init__(self, target, origX: int, origY: int, finalX: int, finalY: int) -> None: # target should be LevelEditorItem
+    def __init__(self, target: 'LevelEditorItem', origX: int, origY: int, finalX: int, finalY: int) -> None:
         """
         Initializes the undo action
         """
+        print(type(target))
         defType = target.instanceDef
         self.origDef = defType(target)
         self.finalDef = defType(target)
@@ -40,7 +46,7 @@ class MoveItemUndoAction(UndoAction):
             print('Redo Move Item: Cannot find item instance! ' + str(self.origDef))
 
     @staticmethod
-    def changeObjectPos(obj, newX: int, newY: int) -> None: # obj should be LevelEditorItem
+    def changeObjectPos(obj: 'LevelEditorItem', newX: int, newY: int) -> None:
         """
         Changes the position of an object
         """

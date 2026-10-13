@@ -1,13 +1,12 @@
 from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
-from data.level.abstract_path import AbstractPath
 from data.level.items.path import PathItem
 from data.level.items.path_editor_line import PathEditorLineItem
 from ui.widgets.level_scene import LevelScene
 
 
-class Path(AbstractPath):
+class Path:
     """
     Class that manages a path and the line that connects the nodes.
     """
@@ -22,7 +21,11 @@ class Path(AbstractPath):
             self.delay = delay
 
     def __init__(self, path_id: int, scene: LevelScene, loops: bool = False) -> None:
-        super().__init__(path_id, scene, loops)
+        self._id = path_id
+        self._scene = scene
+        self._loops = loops
+        self._nodes: list[PathItem] = []
+        self._node_data: list[Path.NodeData] = []
         self._line_item = PathEditorLineItem(self)
         self._has_line = False
 
@@ -108,7 +111,24 @@ class Path(AbstractPath):
     def get_loops(self) -> bool:
         return self._loops
 
+    def get_index(self, node: PathItem) -> int:
+        return self._nodes.index(node)
+
+    def get_node_data(self, index: int) -> tuple[int, int, float, float, float]:
+        """
+        Returns a tuple containing the data required for the binary representation
+        of the node at the specified index: x, y, speed, accel, delay.
+        """
+        node = self._nodes[index]
+        data = self._node_data[index]
+
+        return node.objx, node.objy, data.speed, data.accel, data.delay
+
     def get_points(self) -> list[QtCore.QPointF]:
+        """
+        Returns a list of the positions of the nodes of this path. If this path
+        loops, the first node's position is also the last position in the list.
+        """
         points = []
 
         for node in self._nodes:
@@ -170,6 +190,10 @@ class Path(AbstractPath):
         return node
 
     def remove_node(self, index: int) -> bool:
+        """
+        Removes the node at a given index. Returns whether the path is empty after
+        this node has been removed.
+        """
         node = self._nodes[index]
         if globals_.mainWindow is None:
             return False
@@ -226,10 +250,19 @@ class Path(AbstractPath):
         self._node_data[new_id] = node_data
 
         # Update all the nodes that moved, and the line item
-        for new_id, node in enumerate(self._nodes):
-            node.update_id(new_id)
+        for index, path_node in enumerate(self._nodes):
+            path_node.update_id(index)
 
         self._line_item.update_path()
 
-    def node_moved(self, node) -> None:
+    def node_moved(self) -> None:
+        """
+        Called when a path node is moved.
+        """
         self._line_item.update_path()
+
+    def __len__(self) -> int:
+        """
+        Returns the number of nodes.
+        """
+        return len(self._nodes)
