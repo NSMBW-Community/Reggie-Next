@@ -2007,37 +2007,3 @@ def LoadTranslation() -> None:
         name = None
 
     globals_.trans = ReggieTranslation(name)
-
-
-def module_path() -> str | None:
-    """
-    This will get us the program's directory, even if we are frozen using
-    PyInstaller.
-    """
-    if hasattr(sys, 'frozen') and hasattr(sys, '_MEIPASS'):  # PyInstaller
-        if sys.platform == 'darwin':  # macOS
-            # sys.executable is /x/y/z/reggie.app/Contents/MacOS/reggie
-            # We need to return /x/y/z/reggie.app/Contents/Resources/
-
-            macos = os.path.dirname(sys.executable)
-            if os.path.basename(macos) != 'MacOS':
-                return None
-
-            return os.path.join(os.path.dirname(macos), 'Resources')
-
-        else:  # Windows, Linux
-            return os.path.dirname(sys.executable)
-
-    try:
-        # If someone ever adds another folder somewhere named "common" with a "loader" module
-        # inside as well, this might break and I will come for them
-        #   - B1, 2026-09-28
-        loaders_module = next(filter(lambda k: k.endswith('common.loaders'), sys.modules.keys()))
-        if __name__ == loaders_module:
-            main_path = get_main_path()
-            if main_path is not None:
-                return os.path.dirname(os.path.abspath(main_path))
-    except StopIteration:
-        print('[Warning] Could not determine the module path')
-
-    return None

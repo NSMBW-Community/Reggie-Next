@@ -109,6 +109,18 @@ def get_root_path() -> Path:
     """
     Returns the path to the root folder
     """
+    if getattr(sys, 'frozen', False):
+        if sys.platform == 'darwin':  # macOS
+            # sys.executable is /x/y/z/reggie.app/Contents/MacOS/reggie
+            # We need to return /x/y/z/reggie.app/Contents/Resources/
+            macos = Path(os.path.dirname(sys.executable)).parent.absolute()
+            if os.path.basename(macos) != 'MacOS':
+                return None
+
+            return os.path.join(os.path.dirname(macos), 'Resources')
+        else:  # Windows, Linux
+            return Path(sys.executable).parent.absolute()
+
     return Path(get_main_path()).parent.parent.absolute()
 
 def get_reggiedata_folder() -> str:
