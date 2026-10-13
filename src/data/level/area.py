@@ -1,24 +1,27 @@
 import struct
+from typing import TYPE_CHECKING
 
 from PyQt6 import QtWidgets
 
 import actorlib
 from data import globals_
+from data.actor.actorfield.actor_field import ActorField
+from data.actor.actorfield.list import ListActorField
+from data.actor.actorfield.value import ValueActorField
 from data.common.loaders import CreateTilesets, LoadTileset
-from data.level.abstract_path import AbstractPath
+from data.level.items.actor import ActorItem
 from data.level.items.comment import CommentItem
 from data.level.items.entrance import EntranceItem
 from data.level.items.location import LocationItem
 from data.level.items.object import ObjectItem
-from data.level.items.actor import ActorItem
 from data.level.items.zone import ZoneItem
 from data.level.metadata import Metadata
-from data.actor.actorfield.list import ListActorField
-from data.actor.actorfield.actor_field import ActorField
-from data.actor.actorfield.value import ValueActorField
 from ui.widgets.actoreditor.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
+
+if TYPE_CHECKING:
+    from data.level.path import Path
 
 
 class Area:
@@ -66,7 +69,7 @@ class Area:
         self.zones: list[ZoneItem] = []
         self.locations: list[LocationItem] = []
         self.camprofiles: list[bytes] = []
-        self.paths: list[AbstractPath] = []
+        self.paths: list[Path] = []
         self.comments: list[CommentItem] = []
         self.layers: list[list[ObjectItem]] = [[], [], []]
         self.loaded_actors: set[int] = set()
@@ -700,7 +703,7 @@ class Area:
         self.blocks[12] = bytes(buffer[:offset])
         self.blocks[13] = bytes(nodebuffer)
 
-    def WritePathNodes(self, buffer: bytearray, offset: int, path: AbstractPath) -> None:
+    def WritePathNodes(self, buffer: bytearray, offset: int, path: "Path") -> None:
         """
         Writes the path node data to the block 14 bytearray
         """
