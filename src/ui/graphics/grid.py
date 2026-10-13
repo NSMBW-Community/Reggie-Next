@@ -1,7 +1,9 @@
 from PyQt6 import QtCore, QtGui
+
 from data import globals_
 
-def draw_foreground_grid(painter: QtGui.QPainter | None, rect: QtCore.QRectF, ignore_zoom: bool):
+
+def draw_foreground_grid(painter: QtGui.QPainter | None, rect: QtCore.QRectF, ignore_zoom: bool) -> None:
     """
     Draw the foreground grid. This is separate so both
     the LevelScene and LevelView can access it.
@@ -111,6 +113,9 @@ def draw_foreground_grid(painter: QtGui.QPainter | None, rect: QtCore.QRectF, ig
         # Adjust the rectangle to align with the grid, so we don't have to
         # paint pixmaps on non-integer coordinates
         x, y, _, _ = rect.getRect()
+        if x is None or y is None:
+            return
+
         mod = board.width()
         rect.adjust(-(x % mod), -(y % mod), 0, 0)
 

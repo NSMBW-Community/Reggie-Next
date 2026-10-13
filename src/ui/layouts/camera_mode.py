@@ -12,7 +12,7 @@ class CameraModeZoomSettingsLayout(QtWidgets.QFormLayout):
     edited = QtCore.pyqtSignal()
     updating = False
 
-    def __init__(self, showCamMode5: bool):
+    def __init__(self, showCamMode5: bool) -> None:
         super().__init__()
         self.updating = True
 
@@ -58,7 +58,7 @@ class CameraModeZoomSettingsLayout(QtWidgets.QFormLayout):
 
         self.updating = False
 
-    def changeCamModeList(self):
+    def changeCamModeList(self) -> None:
         """
         Handles changing the available Screen Heights items
         """
@@ -117,7 +117,7 @@ class CameraModeZoomSettingsLayout(QtWidgets.QFormLayout):
         self.screenSizes.setCurrentIndex(0)
         self.zoomMode = mode
 
-    def setValues(self, camMode, camZoom):
+    def setValues(self, camMode: int, camZoom: int) -> None:
         self.updating = True
         camMode = clamp(camMode, 0, 7)
 
@@ -131,7 +131,7 @@ class CameraModeZoomSettingsLayout(QtWidgets.QFormLayout):
         self.screenSizes.setCurrentIndex(camZoom)
         self.updating = False
 
-    def handleModeChanged(self):
+    def handleModeChanged(self) -> None:
         """
         Handles the camera mode being changed
         """
@@ -140,7 +140,7 @@ class CameraModeZoomSettingsLayout(QtWidgets.QFormLayout):
         self.changeCamModeList()
         self.edited.emit()
 
-    def handleScreenSizesChanged(self):
+    def handleScreenSizesChanged(self) -> None:
         """
         Handles the screen size being changed
         """

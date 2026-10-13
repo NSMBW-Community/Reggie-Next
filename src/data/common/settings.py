@@ -1,11 +1,9 @@
-from typing import Any
-
 from PyQt6 import QtCore, QtGui
 
 from data import globals_
 
 
-def setting(name: str, default: Any | None = None) -> Any | None:
+def setting[T](name: str, default: T | None = None) -> T | None:
     """
     Thin wrapper around QSettings, fixes the type=bool bug
     """
@@ -21,7 +19,7 @@ def setting(name: str, default: Any | None = None) -> Any | None:
     return globals_.settings.value(name, default, types[type_])
 
 
-def setSetting(name: str, value: Any) -> None:
+def setSetting[T](name: str, value: object) -> None:
     """
     Thin wrapper around QSettings
     """

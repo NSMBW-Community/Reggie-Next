@@ -13,31 +13,31 @@ class ReggieTheme:
     Class that represents a Reggie theme
     """
 
-    def __init__(self, folder=None):
+    def __init__(self, folder: str | None = None) -> None:
         """
         Initializes the theme
         """
         self.initAsClassic()
         if folder and folder != "Classic": self.initFromFolder(folder)
 
-    def initAsClassic(self):
+    def initAsClassic(self) -> None:
         """
         Initializes the theme as the hardcoded Classic theme
         """
-        self.fileName = 'Classic'
-        self.styleSheet = ''
-        self.formatver = 1.0
-        self.version = 1.0
-        self.themeName = globals_.trans.string('Themes', 0)
-        self.creator = globals_.trans.string('Themes', 1)
-        self.description = globals_.trans.string('Themes', 2)
-        self.icon_cache = {}
-        self.style = None
-        self.forceUiColor = False
-        self.forceStyleSheet = False
+        self.fileName: str = 'Classic'
+        self.styleSheet: str = ''
+        self.formatver: float = 1.0
+        self.version: float = 1.0
+        self.themeName: str | None = globals_.trans.string('Themes', 0)
+        self.creator: str | None = globals_.trans.string('Themes', 1)
+        self.description: str | None = globals_.trans.string('Themes', 2)
+        self.icon_cache: dict[str, QtGui.QIcon] = {}
+        self.style: str | None = None
+        self.forceUiColor: bool = False
+        self.forceStyleSheet: bool = False
 
         # Add the colors                                                       # Descriptions:
-        self.colors = {
+        self.colors: dict[str, QtGui.QColor] = {
             'bg': QtGui.QColor(119, 136, 153),  # Main scene background fill
             'comment_fill': QtGui.QColor(220, 212, 135, 120),  # Unselected comment fill
             'comment_fill_s': QtGui.QColor(254, 240, 240, 240),  # Selected comment fill
@@ -84,7 +84,7 @@ class ReggieTheme:
             'zone_text': QtGui.QColor(44, 64, 84),  # Zone text
         }
 
-    def initFromFolder(self, folder):
+    def initFromFolder(self, folder: str) -> None:
         """
         Initializes the theme from the folder
         """
@@ -146,7 +146,7 @@ class ReggieTheme:
                     ico = QtGui.QIcon(pix)
                     cache[iconName] = ico
 
-    def parseMainXMLHead(self, root):
+    def parseMainXMLHead(self, root: ElementTree.Element) -> bool:
         """
         Parses the main attributes of main.xml
         """
@@ -188,7 +188,7 @@ class ReggieTheme:
 
         return True
 
-    def loadColorsXML(self, file):
+    def loadColorsXML(self, file: str) -> None:
         """
         Loads a colors.xml file
         """
@@ -199,7 +199,7 @@ class ReggieTheme:
 
         root = tree.getroot()
         if root.tag.lower() != 'colors':
-            return False
+            return
 
         colorDict = {}
         for colorNode in root:
@@ -245,7 +245,7 @@ class ReggieTheme:
         # Merge dictionaries
         self.colors.update(colorDict)
 
-    def loadStyleSheet(self, file):
+    def loadStyleSheet(self, file: str) -> None:
         """
         Loads a style.qss file
         """
@@ -254,7 +254,7 @@ class ReggieTheme:
 
         self.styleSheet = style
 
-    def color(self, name):
+    def color(self, name: str) -> QtGui.QColor | None:
         """
         Returns a color
         """
@@ -263,7 +263,7 @@ class ReggieTheme:
         except KeyError:
             return None
 
-    def GetIcon(self, name):
+    def GetIcon(self, name: str) -> QtGui.QIcon:
         """
         Returns an icon
         """
@@ -276,7 +276,7 @@ class ReggieTheme:
         return cache[name]
 
 
-def SetAppStyle(styleKey=''):
+def SetAppStyle(styleKey: str = '') -> None:
     """
     Set the application window color
     """
@@ -289,7 +289,7 @@ def SetAppStyle(styleKey=''):
 
     # Change the style
     if not styleKey:
-        styleKey = setting('uiStyle', "Fusion")
+        styleKey = str(setting('uiStyle', "Fusion"))
     style = QtWidgets.QStyleFactory.create(styleKey)
     globals_.app.setStyle(style)
 
@@ -316,7 +316,7 @@ def SetAppStyle(styleKey=''):
         globals_.app.setStyleSheet("""QMenu::item:disabled{color: #646464;}""")
 
 
-def SetColorScheme():
+def SetColorScheme() -> None:
     """
     Sets the application color scheme
     """
@@ -331,7 +331,7 @@ def SetColorScheme():
             style_hint.setColorScheme(QtCore.Qt.ColorScheme.Light)
 
 
-def GetIcon(name: str):
+def GetIcon(name: str) -> QtGui.QIcon:
     """
     Helper function to grab a specific icon
     """
@@ -345,19 +345,19 @@ def GetAppIcon() -> QtGui.QIcon:
     return QtGui.QIcon(os.path.join(get_reggiedata_folder(), 'icon.png'))
 
 
-def createHorzLine():
+def createHorzLine() -> QtWidgets.QFrame:
     f = QtWidgets.QFrame()
     f.setFrameStyle(QtWidgets.QFrame.Shape.HLine | QtWidgets.QFrame.Shadow.Sunken)
     return f
 
 
-def createVertLine():
+def createVertLine() -> QtWidgets.QFrame:
     f = QtWidgets.QFrame()
     f.setFrameStyle(QtWidgets.QFrame.Shape.VLine | QtWidgets.QFrame.Shadow.Sunken)
     return f
 
 
-def LoadNumberFont():
+def LoadNumberFont() -> None:
     """
     Creates a valid font we can use to display the item numbers
     """
@@ -375,7 +375,7 @@ def LoadNumberFont():
         globals_.NumberFont = QtGui.QFont('Sans', 8)
 
 
-def clipStr(text: str, idealWidth: int, font=None):
+def clipStr(text: str, idealWidth: int, font: QtGui.QFont | None = None) -> str | None:
     """
     Returns a shortened string, or None if it need not be shortened
     """
@@ -393,7 +393,7 @@ def clipStr(text: str, idealWidth: int, font=None):
     return text
 
 
-def setOverrideCursor(cursor: QtGui.QCursor | QtCore.Qt.CursorShape | None):
+def setOverrideCursor(cursor: QtGui.QCursor | QtCore.Qt.CursorShape | None) -> None:
     """
     Safely override/restore the application cursor.
     Pass cursor as None to restore the previous cursor
