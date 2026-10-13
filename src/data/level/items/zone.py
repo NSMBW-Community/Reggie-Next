@@ -224,7 +224,7 @@ class ZoneItem(LevelEditorItem):
 
         # Only show the indicator when this zone contains the initial entrance.
         for entrance in globals_.Area.entrances:
-            if entrance.entid == globals_.Area.startEntrance:
+            if entrance.entid == globals_.Area.start_entrance:
                 break
         else:
             # The initial entrance does not exist.
