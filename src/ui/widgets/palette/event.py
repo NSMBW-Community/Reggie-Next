@@ -52,14 +52,14 @@ class EventTab(QtWidgets.QWidget):
         self.note_editor.setText(noteText)
 
         selIdx = self.event_tree_items.index(item)
-        isOn = (globals_.Area.defEvents & 1 << selIdx) == 1 << selIdx
+        isOn = (globals_.Area.default_events & 1 << selIdx) == 1 << selIdx
         if item.checkState(0) == Qt.CheckState.Checked and not isOn:
             # Turn a bit on
-            globals_.Area.defEvents |= 1 << selIdx
+            globals_.Area.default_events |= 1 << selIdx
             SetDirty()
         elif item.checkState(0) == Qt.CheckState.Unchecked and isOn:
             # Turn a bit off (mask out 1 bit)
-            globals_.Area.defEvents &= ~(1 << selIdx)
+            globals_.Area.default_events &= ~(1 << selIdx)
             SetDirty()
 
     def edit_event_note(self):
@@ -92,7 +92,7 @@ class EventTab(QtWidgets.QWidget):
         """
         Configures the Events tab from the data in globals_.Area.defEvents
         """
-        defEvents = globals_.Area.defEvents
+        default_events = globals_.Area.default_events
         checked = Qt.CheckState.Checked
         unchecked = Qt.CheckState.Unchecked
 
@@ -109,7 +109,7 @@ class EventTab(QtWidgets.QWidget):
                 idx += 8 + str_len
 
         for i, item in enumerate(self.event_tree_items):
-            item.setCheckState(0, checked if (defEvents & (1 << i)) != 0 else unchecked)
+            item.setCheckState(0, checked if (default_events & (1 << i)) != 0 else unchecked)
             item.setText(1, eventTexts.get(i, ""))
             item.setSelected(False)
 

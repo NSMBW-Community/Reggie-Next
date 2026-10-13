@@ -456,7 +456,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         start: EntranceItem | None = None
         for ent in globals_.Area.entrances:
-            if ent.entid == globals_.Area.startEntrance:
+            if ent.entid == globals_.Area.start_entrance:
                 start = ent
             else:
                 problem = False
@@ -467,7 +467,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             return problem
         elif problem and globals_.mainWindow is not None:
             # TODO: Maybe place it 6 blocks right, 3 blocks up from Zone 1's bottom-left corner?
-            EntranceItem.CreateEntrance(1024, 512, globals_.Area.startEntrance)
+            EntranceItem.CreateEntrance(1024, 512, globals_.Area.start_entrance)
 
     def check_entrance_near_edge(self, mode: str) -> bool | None:
         """
@@ -483,7 +483,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         start: EntranceItem | None = None
         ent: EntranceItem
         for ent in globals_.Area.entrances:
-            if ent.entid == globals_.Area.startEntrance:
+            if ent.entid == globals_.Area.start_entrance:
                 start = ent
 
         if start is None:

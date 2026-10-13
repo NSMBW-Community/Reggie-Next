@@ -1908,7 +1908,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             sprite.ImageObj.positionChanged()
 
         # Scroll to the initial entrance
-        startEntID = globals_.Area.startEntrance
+        startEntID = globals_.Area.start_entrance
         startEnt = None
         for ent in globals_.Area.entrances:
             if ent.entid == startEntID:
@@ -2329,49 +2329,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         SetDirty()
 
-        # Sprites
-        # Extracting the sprite id from the sprite name is hacky, but it works.
-        globals_.Area.loaded_sprites = set(int(desc.split(']')[0][1:]) for desc in dlg.loadedSpritesTab.autoModel.stringList())
-        globals_.Area.force_loaded_sprites = set(int(desc.split(']')[0][1:]) for desc in dlg.loadedSpritesTab.customModel.stringList())
-
-        # Settings
-        globals_.Area.timeLimit = dlg.settingsTab.timer.value() - 200
-        globals_.Area.startEntrance = dlg.settingsTab.entrance.value()
-        globals_.Area.toadHouseType = dlg.settingsTab.toadHouseType.currentIndex()
-        globals_.Area.wrapFlag = dlg.settingsTab.wrap.isChecked()
-        globals_.Area.creditsFlag = dlg.settingsTab.credits.isChecked()
-        globals_.Area.faceLeftFlag = dlg.settingsTab.faceLeft.isChecked()
-        globals_.Area.unkFlag1 = dlg.settingsTab.unk1.isChecked()
-        globals_.Area.unkFlag2 = dlg.settingsTab.unk2.isChecked()
-        globals_.Area.unkVal1 = dlg.settingsTab.unk3.value()
-        globals_.Area.unkVal2 = dlg.settingsTab.unk4.value()
-
-        # Tilesets
-        tilesetNum = 0
-        for idx, fname in enumerate(dlg.tilesetsTab.values()):
-
-            if fname in ('', None):
-                fname = ''
-            elif fname.startswith(globals_.trans.string('AreaDlg', 16)):
-                fname = fname[len(globals_.trans.string('AreaDlg', 17, '[name]', '')):]
-
-            globals_.Area.tilesets[idx] = fname
-
-            if fname != '':
-                tilesetNum += 1
-                LoadTileset(idx, fname)
-            else:
-                UnloadTileset(idx)
-
-        self.palette_dock.object_tab.reset(False, False)
-
-        for layer in globals_.Area.layers:
-            for obj in layer:
-                obj.updateObjCache()
-
-        self.action_list['swapobjectstypes'].setEnabled(tilesetNum != 0)
-        self.action_list['swapobjectstilesets'].setEnabled(tilesetNum != 0)
-
+        dlg.save()
         self.scene.update()
 
     def HandleZones(self):

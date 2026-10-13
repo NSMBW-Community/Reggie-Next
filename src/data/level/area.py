@@ -48,18 +48,18 @@ class Area:
         self.blocks[3] = bytes(8)
         self.blocks[7] = b'\xff\xff\xff\xff'
 
-        self.defEvents: int = 0
-        self.timeLimit: int = 300
-        self.creditsFlag: bool = False
-        self.startEntrance: int = 0
-        self.faceLeftFlag: bool = False
-        self.toadHouseType: int = 0
-        self.wrapFlag: bool = False
-        self.unkFlag1: bool = False
-        self.unkFlag2: bool = False
+        self.default_events: int = 0
+        self.time_limit: int = 300
+        self.credits_flag: bool = False
+        self.start_entrance: int = 0
+        self.face_left_flag: bool = False
+        self.toad_house_type: int = 0
+        self.screen_wrap_flag: bool = False
+        self.unused_flag_1: bool = False
+        self.unused_flag_2: bool = False
 
-        self.unkVal1: int = 0
-        self.unkVal2: int = 0
+        self.unused_val_1: int = 0
+        self.unused_val_2: int = 0
 
         self.entrances: list[EntranceItem] = []
         self.sprites: list[SpriteItem] = []
@@ -123,12 +123,12 @@ class Area:
         del self.layers
         del self.Metadata
         del self.tilesets
-        del self.wrapFlag
-        del self.unkFlag1
-        del self.unkFlag2
-        del self.defEvents
-        del self.unkVal1
-        del self.unkVal2
+        del self.screen_wrap_flag
+        del self.unused_flag_1
+        del self.unused_flag_2
+        del self.default_events
+        del self.unused_val_1
+        del self.unused_val_2
         del self.entrances
         del self.sprites
         del self.bgA
@@ -320,12 +320,12 @@ class Area:
         Loads block 2, the general options
         """
         data = struct.unpack('>IIHh?BxxB?Bx', self.blocks[1])
-        defEventsA, defEventsB, wrapByte, self.timeLimit, self.creditsFlag, unkVal, self.startEntrance, self.faceLeftFlag, self.toadHouseType = data
+        default_events_1, default_events_2, wrap_byte, self.time_limit, self.credits_flag, unused, self.start_entrance, self.face_left_flag, self.toad_house_type = data
 
-        self.wrapFlag = bool(wrapByte & 1)
-        self.unkFlag1 = bool(wrapByte >> 3)
-        self.unkFlag2 = unkVal == 100
-        self.defEvents = defEventsA | defEventsB << 32
+        self.screen_wrap_flag = bool(wrap_byte & 1)
+        self.unused_flag_1 = bool(wrap_byte >> 3)
+        self.unused_flag_2 = unused == 100
+        self.default_events = default_events_1 | default_events_2 << 32
 
         """
         Loads block 4, the unknown maybe-more-general-options block
@@ -333,7 +333,7 @@ class Area:
         optdata2 = self.blocks[3]
         optdata2struct = struct.Struct('>xxHHxx')
         data = optdata2struct.unpack(optdata2)
-        self.unkVal1, self.unkVal2 = data
+        self.unused_val_1, self.unused_val_2 = data
 
     def LoadEntrances(self) -> None:
         """
@@ -608,20 +608,20 @@ class Area:
         """
         Saves block 2, the general options
         """
-        wrapByte = 1 if self.wrapFlag else 0
-        if self.unkFlag1: wrapByte |= 8
-        unkVal = 100 if self.unkFlag2 else 0
+        wrap_byte = 1 if self.screen_wrap_flag else 0
+        if self.unused_flag_1: wrap_byte |= 8
+        unused = 100 if self.unused_flag_2 else 0
 
         self.blocks[1] = struct.pack('>IIHh?BBBB?Bx',
-            self.defEvents & 0xFFFFFFFF, self.defEvents >> 32, wrapByte,
-            self.timeLimit, self.creditsFlag, unkVal, unkVal, unkVal,
-            self.startEntrance, self.faceLeftFlag, self.toadHouseType
+            self.default_events & 0xFFFFFFFF, self.default_events >> 32, wrap_byte,
+            self.time_limit, self.credits_flag, unused, unused, unused,
+            self.start_entrance, self.face_left_flag, self.toad_house_type
         )
 
         """
         Saves block 4, the unknown maybe-more-general-options block
         """
-        self.blocks[3] = struct.pack('>xxHHxx', self.unkVal1, self.unkVal2)
+        self.blocks[3] = struct.pack('>xxHHxx', self.unused_val_1, self.unused_val_2)
 
     def SaveLayer(self, idx: int) -> bytes | None:
         """
