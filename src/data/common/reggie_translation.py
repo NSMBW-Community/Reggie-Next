@@ -117,6 +117,9 @@ class ReggieTranslation:
                 51: 'On the left is a list of sprites already present in the level (their resources will be loaded by default). On the right, you can add more sprites you\'d like to load the resources for.',
                 52: 'Type a Sprite ID...',
                 53: 'UNKNOWN',
+                54: 'Resources loaded by Sprite [num]:',
+                55: '[i]No resources found.[/i]',
+                56: '[i]Select any sprite to view the resources it loads.[/i]'
             },
             'AreaImportDlg': {
                 0: 'Import Area from Level',

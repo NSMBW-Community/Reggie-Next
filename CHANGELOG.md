@@ -27,6 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Switch Sprite IDs
 - Added a preview for selected tilesets in the Area Options dialog.
 - Added a viewer for this changelog, accessible through the About dialog.
+- Added support for editing the two padding bytes present in all sprites.
+- Added a viewer for resource lists in the Area Options' Loaded Sprites tab.
 
 ### Changed
 
