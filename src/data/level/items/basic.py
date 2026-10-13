@@ -19,7 +19,7 @@ class InstanceDefinition:
     """
     fieldNames = []
 
-    def __init__(self, other: 'InstanceDefinition | None' = None) -> None:
+    def __init__(self, other: 'LevelEditorItem | None' = None) -> None:
         """
         Initializes it
         """
@@ -33,7 +33,7 @@ class InstanceDefinition:
             self.clear()
 
     @staticmethod
-    def itemList() -> list['InstanceDefinition']:
+    def itemList() -> list['LevelEditorItem']:
         """
         Returns a list of all instances of this item currently in the level
         """
@@ -54,7 +54,7 @@ class InstanceDefinition:
         for field in self.fields:
             field = None
 
-    def setFrom(self, other: 'InstanceDefinition') -> None:
+    def setFrom(self, other: 'LevelEditorItem') -> None:
         """
         Sets data and position from an item
         """
@@ -62,20 +62,20 @@ class InstanceDefinition:
         self.objy = other.objy
         self.setDataFrom(other)
 
-    def setDataFrom(self, other: 'InstanceDefinition') -> None:
+    def setDataFrom(self, other: 'LevelEditorItem') -> None:
         """
         Sets data from an item
         """
         for field in self.fields:
             field[1] = getattr(other, field[0])
 
-    def matches(self, other: 'InstanceDefinition') -> bool:
+    def matches(self, other: 'LevelEditorItem') -> bool:
         """
         Returns True if this instance definition matches the specified item
         """
         return self.objx == other.objx and self.objy == other.objy and self.matchesData(other)
 
-    def matchesData(self, other: 'InstanceDefinition') -> bool:
+    def matchesData(self, other: 'LevelEditorItem') -> bool:
         """
         Returns True if this instance definition's data matches the specified item's data
         """
@@ -109,7 +109,7 @@ class InstanceDefinition:
         # This will need to be implemented separately in each subclass
         return LevelEditorItem()
 
-    def findInstance(self) -> 'InstanceDefinition | None':
+    def findInstance(self) -> 'LevelEditorItem | None':
         """
         Returns a matching instance of this thing in the level
         """
