@@ -1,23 +1,22 @@
-from PyQt6 import QtCore, QtWidgets, QtGui
-import collections
-import os
 import typing
+
+from PyQt6 import QtWidgets
 
 from data import globals_
 from ui.theme.reggie_theme import GetIcon
-
-from ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
-from ui.widgets.preferences.general_tab import GeneralTab
-from ui.widgets.preferences.toolbar_tab import ToolbarTab
 from ui.widgets.preferences.appearance_tab import AppearanceTab
+from ui.widgets.preferences.general_tab import GeneralTab
 from ui.widgets.preferences.keybind_tab import KeybindTab
+from ui.widgets.preferences.toolbar_tab import ToolbarTab
+from ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
+
 
 class PreferencesDialog(QtWidgets.QDialog):
     """
     Dialog which lets you customize Reggie
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Creates and initializes the dialog
         """
@@ -53,14 +52,14 @@ class PreferencesDialog(QtWidgets.QDialog):
         # Set the initial info text
         self.tab_changed()
 
-    def tab_changed(self):
+    def tab_changed(self) -> None:
         """
         Handles the current tab being changed
         """
         tab = typing.cast(PreferenceTabWidget, self.tab_widget.currentWidget())
         self.info_label.setText(tab.info)
 
-    def save_preferences(self):
+    def save_preferences(self) -> None:
         """
         Saves the preference settings
         """

@@ -3,12 +3,13 @@ from PyQt6 import QtWidgets
 from data import globals_
 from ui.theme.reggie_theme import GetIcon
 
+
 class ObjectTilesetSwapDialog(QtWidgets.QDialog):
     """
     Dialog to swap all objects of one tileset to another
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Creates and initializes the dialog
         """

@@ -1,15 +1,18 @@
+from xml.etree.ElementTree import Element
+
 from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
 from data.common.loaders import LoadLevelNames
 from ui.theme.reggie_theme import GetIcon
 
+
 class ChooseLevelNameDialog(QtWidgets.QDialog):
     """
     Dialog which lets you choose a level from a list
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Creates and initializes the dialog
         """
@@ -51,7 +54,7 @@ class ChooseLevelNameDialog(QtWidgets.QDialog):
         self.setMinimumWidth(320)
         self.setMinimumHeight(384)
 
-    def parse_category(self, items: tuple[str, ...]):
+    def parse_category(self, items: tuple[str, ...]) -> tuple[QtWidgets.QTreeWidgetItem]:
         """
         Parses an XML category
         """
@@ -76,7 +79,7 @@ class ChooseLevelNameDialog(QtWidgets.QDialog):
 
         return tuple(nodes)
 
-    def handle_item_change(self, current, previous):
+    def handle_item_change(self, current: QtWidgets.QTreeWidgetItem, _previous: QtWidgets.QTreeWidgetItem) -> None:
         """
         Catch the selected level and enable/disable OK button as needed
         """
@@ -88,7 +91,7 @@ class ChooseLevelNameDialog(QtWidgets.QDialog):
         if ok_button is not None:
             ok_button.setEnabled(self.current_level is not None)
 
-    def handle_item_activated(self, item, column):
+    def handle_item_activated(self, item: QtWidgets.QTreeWidgetItem, column: int) -> None:
         """
         Handle a double-click on a level
         """

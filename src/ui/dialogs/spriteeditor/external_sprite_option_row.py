@@ -35,7 +35,7 @@ class ExternalSpriteOptionRow(QtWidgets.QWidget):
 
             self.gridLayout.addWidget(more, 0, len(primary) + 1, 1, 1)
 
-    def handleButtonClick(self, e):
+    def handleButtonClick(self, _e:  QtWidgets.QAbstractButton | None) -> None:
         """
         Handles button click
         """

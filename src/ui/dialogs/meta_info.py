@@ -1,14 +1,15 @@
-from PyQt6 import QtWidgets, QtCore
+from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
 from data.level.dirty import SetDirty
 from ui.theme.reggie_theme import GetIcon, createHorzLine
 
+
 class ChangePasswordDialog(QtWidgets.QDialog):
     """
     Dialog to set a password for the meta-info
     """
-    def __init__(self):
+    def __init__(self) -> None:
         QtWidgets.QDialog.__init__(self)
         self.setWindowTitle(globals_.trans.string('InfoDlg', 9))
         self.setWindowIcon(GetIcon('lock'))
@@ -50,7 +51,7 @@ class ChangePasswordDialog(QtWidgets.QDialog):
         main_layout.addWidget(button_box)
         self.setLayout(main_layout)
 
-    def check_password_match(self):
+    def check_password_match(self) -> None:
         """
         Enables the OK button if the password matches
         """
@@ -62,7 +63,7 @@ class MetaInfoDialog(QtWidgets.QDialog):
     Dialog to set level metadata
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Creates and initializes the dialog
         """
@@ -165,7 +166,7 @@ class MetaInfoDialog(QtWidgets.QDialog):
 
         self.update_password('')
 
-    def update_password(self, text):
+    def update_password(self, text: str) -> None:
         password = globals_.Area.Metadata.strData('Password')
         if password is None:
             password = ''
@@ -183,7 +184,7 @@ class MetaInfoDialog(QtWidgets.QDialog):
             self.website_field.setReadOnly(True)
             self.edit_password_button.setDisabled(True)
 
-    def change_password(self):
+    def change_password(self) -> None:
         """
         Allows the changing of a given password
         """

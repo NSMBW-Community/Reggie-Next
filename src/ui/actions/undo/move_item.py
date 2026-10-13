@@ -7,7 +7,7 @@ class MoveItemUndoAction(UndoAction):
     An UndoAction for movement of a single level item that is not an object
     """
 
-    def __init__(self, target, origX, origY, finalX, finalY):
+    def __init__(self, target, origX: int, origY: int, finalX: int, finalY: int) -> None: # target should be LevelEditorItem
         """
         Initializes the undo action
         """
@@ -19,7 +19,7 @@ class MoveItemUndoAction(UndoAction):
         self.finalDef.objx = finalX
         self.finalDef.objy = finalY
 
-    def undo(self):
+    def undo(self) -> None:
         """
         Sets the target object's position to the original position
         """
@@ -29,7 +29,7 @@ class MoveItemUndoAction(UndoAction):
         else:
             print('Undo Move Item: Cannot find item instance! ' + str(self.finalDef))
 
-    def redo(self):
+    def redo(self) -> None:
         """
         Sets the target object's position to the final position
         """
@@ -40,7 +40,7 @@ class MoveItemUndoAction(UndoAction):
             print('Redo Move Item: Cannot find item instance! ' + str(self.origDef))
 
     @staticmethod
-    def changeObjectPos(obj, newX, newY):
+    def changeObjectPos(obj, newX: int, newY: int) -> None: # obj should be LevelEditorItem
         """
         Changes the position of an object
         """
@@ -83,13 +83,13 @@ class MoveItemUndoAction(UndoAction):
         if main_window is not None:
             main_window.level_overview.update()
 
-    def isExtentionOf(self, other):
+    def isExtentionOf(self, other: 'MoveItemUndoAction') -> bool:
         """
         Returns True if this MoveItemUndoAction extends another
         """
         return hasattr(other, 'origDef') and self.origDef.defMatchesData(other.origDef)
 
-    def extend(self, other):
+    def extend(self, other: 'MoveItemUndoAction') -> None:
         """
         Extends this MoveItemUndoAction with the data from an extention of it.
         isExtentionOf must have returned True first!
@@ -97,7 +97,7 @@ class MoveItemUndoAction(UndoAction):
         self.finalDef.objx = other.finalDef.objx
         self.finalDef.objy = other.finalDef.objy
 
-    def isNull(self):
+    def isNull(self) -> bool:
         """
         Returns True if this action is effectively a no-op
         """

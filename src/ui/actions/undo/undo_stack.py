@@ -1,4 +1,5 @@
 from data import globals_
+from ui.actions.undo.undo_action import UndoAction
 
 
 class UndoStack:
@@ -6,11 +7,11 @@ class UndoStack:
     A stack you can push UndoActions on, and stuff.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.pastActions = []
         self.futureActions = []
 
-    def addAction(self, act):
+    def addAction(self, act: UndoAction) -> None:
         """
         Adds an action to the stack
         """
@@ -19,7 +20,7 @@ class UndoStack:
 
         self.enableOrDisableMenuItems()
 
-    def addOrExtendAction(self, act):
+    def addOrExtendAction(self, act: UndoAction) -> None:
         """
         Adds an action to the stack, or extends the current one if applicable
         """
@@ -29,7 +30,7 @@ class UndoStack:
         else:
             self.addAction(act)
 
-    def undo(self):
+    def undo(self) -> None:
         """
         Undoes the last action
         """
@@ -47,7 +48,7 @@ class UndoStack:
 
         self.enableOrDisableMenuItems()
 
-    def redo(self):
+    def redo(self) -> None:
         """
         Redoes the last undone action
         """
@@ -63,7 +64,7 @@ class UndoStack:
 
         self.enableOrDisableMenuItems()
 
-    def enableOrDisableMenuItems(self):
+    def enableOrDisableMenuItems(self) -> None:
         """
         Enables or disables the menu items of mainWindow
         """

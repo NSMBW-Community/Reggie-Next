@@ -1,17 +1,19 @@
-from PyQt6 import QtWidgets
-from data.common import archive
-from libs import lh, lz77
 import os
 
+from PyQt6 import QtWidgets
+
 from data import globals_
+from data.common import archive
+from libs import lh, lz77
 from ui.theme.reggie_theme import GetIcon
+
 
 class AreaImportDialog(QtWidgets.QDialog):
     """
     Dialog which lets you choose an area to import
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Creates and initializes the dialog
         """
@@ -51,7 +53,7 @@ class AreaImportDialog(QtWidgets.QDialog):
         main_layout.addWidget(button_box)
         self.setLayout(main_layout)
 
-    def load_source_level(self):
+    def load_source_level(self) -> int:
         """
         Loads the source level and returns the number of areas.
         """
@@ -96,12 +98,11 @@ class AreaImportDialog(QtWidgets.QDialog):
                 fname = item[item.rfind('/') + 1:]
                 if fname.startswith('course'):
                     max_area = int(fname[6])
-                    if max_area > area_count:
-                        area_count = max_area
+                    area_count = max(area_count, max_area)
 
         return area_count
 
-    def level_selected(self):
+    def level_selected(self) -> None:
         """
         Handles updating everything when a level is selected
         """

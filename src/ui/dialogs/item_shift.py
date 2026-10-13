@@ -3,12 +3,13 @@ from PyQt6 import QtWidgets
 from data import globals_
 from ui.theme.reggie_theme import GetIcon
 
+
 class ItemShiftDialog(QtWidgets.QDialog):
     """
     Dialog to shift selected items by a certain number of units
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Creates and initializes the dialog
         """

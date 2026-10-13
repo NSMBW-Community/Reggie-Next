@@ -3,12 +3,13 @@ from PyQt6 import QtWidgets
 from data import globals_
 from ui.theme.reggie_theme import GetIcon
 
+
 class AreaDeleteDialog(QtWidgets.QDialog):
     """
     Dialog prompting you to delete the current area
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Creates and initializes the dialog
         """

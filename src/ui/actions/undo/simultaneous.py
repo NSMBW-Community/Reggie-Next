@@ -6,27 +6,27 @@ class SimultaneousUndoAction(UndoAction):
     An undo action that consists of multiple undo actions at once
     """
 
-    def __init__(self, children):
+    def __init__(self, children: list[UndoAction]) -> None:
         """
         Initializes the undo action
         """
         self.children = set(children)
 
-    def undo(self):
+    def undo(self) -> None:
         """
         Calls undo() on all children
         """
         for c in self.children:
             c.undo()
 
-    def redo(self):
+    def redo(self) -> None:
         """
         Calls redo() on all children
         """
         for c in self.children:
             c.redo()
 
-    def isExtentionOf(self, other):
+    def isExtentionOf(self, other: 'SimultaneousUndoAction') -> bool:
         """
         Returns True if this SinultaneousUndoAction and another one have equivalent children
         """
@@ -44,7 +44,7 @@ class SimultaneousUndoAction(UndoAction):
                 return False
         return True
 
-    def extend(self, other):
+    def extend(self, other: 'SimultaneousUndoAction'):
         """
         Extend this SimultaneousUndoAction with the data from an extention of it.
         isExtentionOf must have returned True first!
@@ -58,7 +58,7 @@ class SimultaneousUndoAction(UndoAction):
                     searchOther.remove(searchOtherObj)
                     break  # only breaks out of inner loop
 
-    def isNull(self):
+    def isNull(self) -> bool:
         """
         Returns True if this action is effectively a no-op
         """

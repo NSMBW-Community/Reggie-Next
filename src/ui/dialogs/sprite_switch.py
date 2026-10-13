@@ -5,6 +5,7 @@ import spritelib as SLib
 from data.level.dirty import SetDirty
 from ui.theme.reggie_theme import GetIcon
 
+
 # TODO:
 # - Batch feature
 # - Import file for quick batch swapping
@@ -14,7 +15,7 @@ class SpriteSwitchDialog(QtWidgets.QDialog):
     Dialog to switch the types of selected sprites
     """
 
-    def __init__(self, selected):
+    def __init__(self, selected: int) -> None:
         """
         Creates and initializes the dialog
         """
@@ -49,7 +50,7 @@ class SpriteSwitchDialog(QtWidgets.QDialog):
         main_layout.addWidget(self.button_box)
         self.setLayout(main_layout)
 
-    def button_clicked(self, button):
+    def button_clicked(self, button: QtWidgets.QAbstractButton) -> None:
         """
         Handles one of the buttons being pressed and calls the correct handler
         """

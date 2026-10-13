@@ -5,12 +5,13 @@ from PyQt6 import QtWidgets
 from data import globals_
 from data.common.utils import get_root_path
 
+
 class ChangelogDialog(QtWidgets.QDialog):
     """
     Displays the CHANGELOG file
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Creates and initializes the dialog
         """

@@ -1,16 +1,17 @@
-from PyQt6 import QtWidgets, QtCore
+from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
+from ui.layouts.camera_mode import CameraModeZoomSettingsLayout
 from ui.theme.reggie_theme import GetIcon, createHorzLine
 from ui.widgets.generic.custom_sortable_list_item import CustomSortableListWidgetItem
-from ui.layouts.camera_mode import CameraModeZoomSettingsLayout
+
 
 class CameraProfilesDialog(QtWidgets.QDialog):
     """
     Dialog for editing camera profiles
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Creates and initialises the dialog
         """
@@ -79,7 +80,7 @@ class CameraProfilesDialog(QtWidgets.QDialog):
         if self.list.count() != 0:
             self.list.setCurrentRow(0)
 
-    def handle_add(self):
+    def handle_add(self) -> None:
         """
         Handles adding a profile
         """
@@ -95,13 +96,13 @@ class CameraProfilesDialog(QtWidgets.QDialog):
         self.update_item_title(item)
         self.list.addItem(item)
 
-    def handle_remove(self):
+    def handle_remove(self) -> None:
         """
         Handles removing a profile
         """
         self.list.takeItem(self.list.currentRow())
 
-    def handle_selection_changed(self):
+    def handle_selection_changed(self) -> None:
         """
         Handles updating the profile fields
         """
@@ -117,7 +118,7 @@ class CameraProfilesDialog(QtWidgets.QDialog):
             self.event_id.setValue(values[0])
             self.camera_settings.setValues(values[1], values[2])
 
-    def handle_event_id_changed(self, event_id):
+    def handle_event_id_changed(self, event_id: int) -> None:
         """
         Handles the Triggering Event ID being changed
         """
@@ -130,7 +131,7 @@ class CameraProfilesDialog(QtWidgets.QDialog):
             selItem.sort_key = event_id
         self.update_item_title(selItem)
 
-    def handle_camera_settings_changed(self):
+    def handle_camera_settings_changed(self) -> None:
         """
         Handles updating the camera settings
         """
@@ -140,7 +141,7 @@ class CameraProfilesDialog(QtWidgets.QDialog):
         values[2] = self.camera_settings.screenSizes.currentIndex()
         selItem.setData(QtCore.Qt.ItemDataRole.UserRole, values)
 
-    def update_item_title(self, item):
+    def update_item_title(self, item: QtWidgets.QListWidgetItem) -> None:
         """
         Updates the profile name in the list
         """
