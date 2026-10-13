@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added a preview for selected tilesets in the Area Options dialog.
 - Added a viewer for this changelog, accessible through the About dialog.
 - Added support for editing the two padding bytes present in all actors.
+- Added a viewer for resource lists in the Area Options' Loaded Actors tab.
 
 ### Changed
 

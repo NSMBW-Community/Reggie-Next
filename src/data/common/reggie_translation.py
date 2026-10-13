@@ -208,7 +208,7 @@ class ReggieTranslation:
                 43: '[b]Useless Option 3:[/b] This serves no purpose in-game.',
                 44: 'Useless Option 4',
                 45: '[b]Useless Option 4:[/b] This serves no purpose in-game.',
-                46: 'Loaded Actor',
+                46: 'Loaded Actors',
                 47: 'Add Actor',
                 48: 'Remove Selected Actor',
                 49: 'Present in this area:',
@@ -216,6 +216,9 @@ class ReggieTranslation:
                 51: 'On the left is a list of actors already present in the area (their resources will be loaded by default). On the right, you can add more actors you\'d like to load the resources for.',
                 52: 'Type an Actor ID...',
                 53: 'UNKNOWN',
+                54: 'Resources loaded by Actor [num]:',
+                55: '[i]No resources found.[/i]',
+                56: '[i]Select any actor to view the resources it loads.[/i]'
             },
             'AreaImportDlg': {
                 0: 'Import Area from Level',

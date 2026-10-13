@@ -16,7 +16,7 @@ class MoveItemUndoAction(UndoAction):
         """
         Initializes the undo action
         """
-        print(type(target))
+        #print(type(target))
         defType = target.instanceDef
         self.origDef = defType(target)
         self.finalDef = defType(target)
