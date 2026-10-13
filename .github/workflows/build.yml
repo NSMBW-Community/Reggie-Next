@@ -1,0 +1,65 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+
+    strategy:
+      matrix:
+        include:
+          - build-name: 'Windows'
+            python-version: "3.12"
+            platform: windows-latest
+            arch: 'x64'
+          - build-name: 'macOS'
+            python-version: "3.12"
+            platform: macos-latest
+            arch: 'x64'
+          - build-name: 'Ubuntu'
+            python-version: "3.12"
+            platform: ubuntu-latest
+            arch: 'x64'
+
+    name: ${{ matrix.build-name }}
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v6
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: ${{ matrix.python-version }}
+        architecture: ${{ matrix.arch }}
+    - name: Install dependencies
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install wheel
+        python -m pip install PyQt6 nsmblib PyInstaller
+    - name: Build
+      shell: bash
+      run: python -OO build_reggie.py
+    - name: Tar (macOS/Linux)
+      if: ${{ runner.os == 'macOS' || runner.os == 'Linux' }}
+      run: |
+        cd distrib
+        tar -czvf ../build-${{ matrix.platform }}.tar.gz ./*
+        cd ..
+    - name: Upload artifacts (Windows)
+      if: ${{ runner.os == 'Windows' }}
+      uses: actions/upload-artifact@v6
+      with:
+        name: build-${{ matrix.platform }}-${{ matrix.arch }}-${{ matrix.python-version }}
+        path: distrib/*
+    - name: Upload artifacts (macOS/Linux)
+      if: ${{ runner.os == 'macOS' || runner.os == 'Linux' }}
+      uses: actions/upload-artifact@v6
+      with:
+        name: build-${{ matrix.platform }}-${{ matrix.arch }}
+        path: build-${{ matrix.platform }}.tar.gz
