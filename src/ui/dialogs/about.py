@@ -12,7 +12,7 @@ class AboutDialog(QtWidgets.QDialog):
     Displays the README and some other info
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Creates and initializes the dialog
         """

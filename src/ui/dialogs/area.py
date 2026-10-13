@@ -1,14 +1,16 @@
-from PyQt6 import QtCore, QtWidgets, QtGui
 import os
+from collections.abc import Callable
+from typing import cast
+
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data import globals_
-from data.tileset.tileset_category import TilesetCategory, TilesetFileEntry
-from ui.theme.reggie_theme import GetIcon
-
 from data.common import archive
-from libs import lh, lz77
 from data.common.loaders import LoadTexture_NSMBW
 from data.tileset.tile.tileset_tile import TilesetTile
+from data.tileset.tileset_category import TilesetCategory, TilesetFileEntry
+from libs import lh, lz77
+from ui.theme.reggie_theme import GetIcon
 
 
 class AreaOptionsDialog(QtWidgets.QDialog):
@@ -16,7 +18,7 @@ class AreaOptionsDialog(QtWidgets.QDialog):
     Dialog which lets you choose among various area options from tabs
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Creates and initializes the tab dialog
         """
@@ -52,7 +54,7 @@ class SettingsTab(QtWidgets.QWidget):
     Widget that represents the area's settings
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         QtWidgets.QWidget.__init__(self)
 
         self.timer = QtWidgets.QSpinBox()
@@ -122,10 +124,10 @@ class TilesetsTab(QtWidgets.QWidget):
     The widget that represents the Tileset picker
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         QtWidgets.QWidget.__init__(self)
         self.setMinimumWidth(384)
-        self.preview_tiles = [None] * 0x200 * 4
+        self.preview_tiles: list[TilesetTile | None] = cast(list[TilesetTile | None], [None] * 0x200 * 4)
 
         # Set up each tileset
         self.widgets = []
@@ -136,10 +138,10 @@ class TilesetsTab(QtWidgets.QWidget):
         self.noneItems = []
 
         for slot in range(4):
-            def treeSel(slot):
+            def treeSel(slot: int) -> Callable[[], None]:
                 return lambda: self.handleTreeSel(slot)
 
-            def textEdit(slot):
+            def textEdit(slot: int) -> Callable[[], None]:
                 return lambda: self.handleTextEdit(slot)
 
             # Create the main widget
@@ -248,7 +250,7 @@ class TilesetsTab(QtWidgets.QWidget):
 
         return tuple(nodes)
 
-    def handleTreeSel(self, slot):
+    def handleTreeSel(self, slot: int) -> None:
         """
         Handles changes to the selections in all tree widgets
         """
@@ -262,7 +264,7 @@ class TilesetsTab(QtWidgets.QWidget):
         self.lineEdits[slot].setText(value)
         self.set_preview(slot, value)
 
-    def handleTextEdit(self, slot):
+    def handleTextEdit(self, slot: int) -> None:
         """
         Handles changes made to the line-edit widgets
         """
@@ -290,7 +292,7 @@ class TilesetsTab(QtWidgets.QWidget):
                 parent.setExpanded(True)
                 parent = parent.parent()
 
-    def values(self):
+    def values(self) -> tuple[int, ...]:
         """
         Returns all 4 tileset choices
         """
@@ -299,31 +301,31 @@ class TilesetsTab(QtWidgets.QWidget):
             result.append(str(self.lineEdits[i].text()))
         return tuple(result)
 
-    def get_preview(self, idx: int, name: str):
+    def get_preview(self, idx: int, name: str) -> bool:
         tileset_paths = reversed(globals_.gamedef.GetTexturePaths())
-    
+
         found = False
         compressed = False
         arcname = ''
         for path in tileset_paths:
             if path is None:
                 break
-    
+
             arcname = os.path.join(path, name + ".arc.LH")
-    
+
             # Prioritise .arc.LH over regular .arc, just like Newer does.
             if os.path.isfile(arcname):
                 compressed = True
                 found = True
                 break
-    
+
             # Now check for LZ compression
             arcname = os.path.join(path, name + ".arc.LZ")
             if os.path.isfile(arcname):
                 compressed = True
                 found = True
                 break
-    
+
             # Strip away the suffix (check for no compression)
             arcname = os.path.splitext(arcname)[0]
             if os.path.isfile(arcname):
@@ -333,11 +335,11 @@ class TilesetsTab(QtWidgets.QWidget):
 
         if not found:
             return False
-    
+
         # Get the data
         with open(arcname, 'rb') as fileobj:
             arcdata = fileobj.read()
-    
+
         if compressed:
             if (arcdata[0] & 0xF0) == 0x40:  # If LH-compressed
                 try:
@@ -349,9 +351,9 @@ class TilesetsTab(QtWidgets.QWidget):
                     arcdata = lz77.UncompressLZ77(arcdata)
                 except IndexError:
                     return False
-    
+
         arc = archive.U8.load(arcdata)
-    
+
         def exists(fn: str) -> bool:
             nonlocal arc
             try:
@@ -359,13 +361,13 @@ class TilesetsTab(QtWidgets.QWidget):
             except (IndexError, KeyError):
                 return False
             return True
-    
+
         # Decompress the texture
         if not exists(f'BG_tex/{name}_tex.bin.LZ'):
             return False
 
         comptiledata = arc[f'BG_tex/{name}_tex.bin.LZ']
-    
+
         # Load in the textures
         data = lz77.UncompressLZ77(comptiledata)
         if not isinstance(data, bytes):
@@ -388,7 +390,7 @@ class TilesetsTab(QtWidgets.QWidget):
 
         return True
 
-    def set_preview(self, idx: int, name: str):
+    def set_preview(self, idx: int, name: str) -> None:
         if not globals_.ShowTilesetPreview:
             return
 
@@ -418,7 +420,9 @@ class TilesetsTab(QtWidgets.QWidget):
 
             label = QtWidgets.QLabel()
             if name != '' and loaded:
-                label.setPixmap(self.preview_tiles[i].main)
+                preview_tile = self.preview_tiles[i]
+                if preview_tile is not None:
+                    label.setPixmap(preview_tile.main)
             else:
                 label.setPixmap(dummy_pixmap)
             self.previews[idx].addWidget(label, row, col)
@@ -434,10 +438,10 @@ class LoadedActorsTab(QtWidgets.QWidget):
         Unselectable, uneditable string list model
         """
 
-        def flags(self, index):
+        def flags(self, index: int) -> QtCore.Qt.ItemFlag:
             return QtCore.Qt.ItemFlag.ItemNeverHasChildren
 
-    def __init__(self):
+    def __init__(self) -> None:
         QtWidgets.QWidget.__init__(self)
 
         actorsLayout = QtWidgets.QGridLayout()
@@ -493,19 +497,19 @@ class LoadedActorsTab(QtWidgets.QWidget):
         layout.addLayout(actorsLayout)
         self.setLayout(layout)
 
-    def getDefaultActorNames(self):
+    def getDefaultActorNames(self) -> set:
         """
         Returns a list of strings with the names of all actors in the current
         area.
         """
         if globals_.Area.areanum == -1:
-            return []
+            return set()
 
-        usedIDs = set(actor.actor_num for actor in globals_.Area.actors)
+        usedIDs = {actor.actor_num for actor in globals_.Area.actors}
 
-        return self.stringifyActors(sorted(usedIDs))
+        return set(self.stringifyActors(sorted(usedIDs)))
 
-    def getForceActorNames(self):
+    def getForceActorNames(self) -> list[str]:
         """
         Returns a list of strings with the names of all actors that are forced
         to load in the current area.
@@ -515,7 +519,7 @@ class LoadedActorsTab(QtWidgets.QWidget):
 
         return self.stringifyActors(sorted(globals_.Area.force_loaded_actors))
 
-    def stringifyActors(self, actorIDs):
+    def stringifyActors(self, actorIDs: list[int]) -> list[str]:
         """
         Turns a list of actors ids into a list of strings representing the
         actors.
@@ -531,11 +535,11 @@ class LoadedActorsTab(QtWidgets.QWidget):
             else:
                 name = globals_.trans.string('AreaDlg', 53)
 
-            actors.append("[%d] %s" % (x, name))
+            actors.append(f"[{x}] {name}")
 
         return actors
 
-    def handleAddActor(self, _):
+    def handleAddActor(self, _: QtWidgets.QAbstractButton) -> None:
         """
         Add a actor to the list of actors whose resources are forced to load.
         """
@@ -556,19 +560,19 @@ class LoadedActorsTab(QtWidgets.QWidget):
             name = globals_.Actors[actorID].name
         else:
             name = globals_.trans.string('AreaDlg', 53)
-        self.customModel.setData(index, "[%d] %s" % (actorID, name))
+        self.customModel.setData(index, f"[{actorID}] {name}")
 
         # Clear the input so the user can enter a new actor number
         self.actorInput.clear()
 
-    def handleRemoveActor(self, _):
+    def handleRemoveActor(self, _: QtWidgets.QAbstractButton) -> None:
         """
         Remove the currently selected actor.
         """
         currIdx = self.customList.currentIndex()
         self.customModel.removeRow(currIdx.row())
 
-    def handleInputChange(self, newText):
+    def handleInputChange(self, newText: str) -> None:
         """
         Enable "add" button when the text is changed to something not empty.
         """

@@ -1,17 +1,15 @@
-import os
-
-from PyQt6 import QtWidgets, QtGui
+from PyQt6 import QtWidgets
 
 from data import globals_
-from data.common.utils import get_reggiedata_folder
 from ui.theme.reggie_theme import GetAppIcon
+
 
 class AutoSaveDialog(QtWidgets.QDialog):
     """
     Dialog specifying that auto-save data exists
     """
 
-    def __init__(self, filename):
+    def __init__(self, filename: str) -> None:
         """
         Creates and initializes the dialog
         """

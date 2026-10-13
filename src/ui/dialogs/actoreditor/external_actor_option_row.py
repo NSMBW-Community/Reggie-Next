@@ -2,7 +2,7 @@ from PyQt6 import QtWidgets
 
 
 class ExternalActorOptionRow(QtWidgets.QWidget):
-    def __init__(self, button, primary, secondary):
+    def __init__(self, button: QtWidgets.QAbstractButton, primary: list[str | None], secondary: list[str]) -> None:
         QtWidgets.QWidget.__init__(self)
 
         self.gridLayout = QtWidgets.QGridLayout()
@@ -35,7 +35,7 @@ class ExternalActorOptionRow(QtWidgets.QWidget):
 
             self.gridLayout.addWidget(more, 0, len(primary) + 1, 1, 1)
 
-    def handleButtonClick(self, e):
+    def handleButtonClick(self, _e:  QtWidgets.QAbstractButton | None) -> None:
         """
         Handles button click
         """

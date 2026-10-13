@@ -1,9 +1,10 @@
 from PyQt6 import QtWidgets
 
-from data import globals_
 import actorlib
+from data import globals_
 from data.level.dirty import SetDirty
 from ui.theme.reggie_theme import GetIcon
+
 
 # TODO:
 # - Batch feature
@@ -14,7 +15,7 @@ class ActorSwitchDialog(QtWidgets.QDialog):
     Dialog to switch the IDs of selected actors
     """
 
-    def __init__(self, selected):
+    def __init__(self, selected: int) -> None:
         """
         Creates and initializes the dialog
         """
@@ -49,7 +50,7 @@ class ActorSwitchDialog(QtWidgets.QDialog):
         main_layout.addWidget(self.button_box)
         self.setLayout(main_layout)
 
-    def button_clicked(self, button):
+    def button_clicked(self, button: QtWidgets.QAbstractButton) -> None:
         """
         Handles one of the buttons being pressed and calls the correct handler
         """
@@ -60,7 +61,7 @@ class ActorSwitchDialog(QtWidgets.QDialog):
         else:
             self.reject()
 
-    def switch_actor_ids(self):
+    def switch_actor_ids(self) -> None:
         """
         Updates the actors' IDs
         """

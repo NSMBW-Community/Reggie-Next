@@ -1,4 +1,5 @@
 import os
+from typing import Literal
 from xml.etree import ElementTree
 
 from PyQt6 import QtCore, QtWidgets
@@ -8,13 +9,15 @@ from ui.dialogs.actoreditor.external_actor_option_row import (
     ExternalActorOptionRow,
 )
 
+ExternalActorType = Literal['actors', 'models', 'sfx', 'gfx']
+
 
 class ExternalActorOptionDialog(QtWidgets.QDialog):
     """
     Dialog for the external actor option.
     """
 
-    def __init__(self, type, current):
+    def __init__(self, type: ExternalActorType, current: int) -> None:
         """
         Initialise the dialog
         """
@@ -25,7 +28,7 @@ class ExternalActorOptionDialog(QtWidgets.QDialog):
         self.type = type
 
         # Set appropriate window title
-        types = ['actors', 'models', 'sfx', 'gfx']
+        types: list[ExternalActorType] = ['actors', 'models', 'sfx', 'gfx']
         for idx, extType in enumerate(types):
             if extType == self.type:
                 self.setWindowTitle(globals_.trans.string('ExternalOptionDlg', idx))
@@ -99,7 +102,7 @@ class ExternalActorOptionDialog(QtWidgets.QDialog):
         #        except:
         #            pass
 
-    def loadItemsFromXML(self):
+    def loadItemsFromXML(self) -> tuple[dict[int, dict[str, str]], tuple[list[str | None], list[str]]]:
         """
         Returns the items from the correct XML
         """
@@ -109,9 +112,9 @@ class ExternalActorOptionDialog(QtWidgets.QDialog):
             raise FileNotFoundError # file does not exist
 
         # parse the xml
-        options = {}
-        primary = []
-        secondary = []
+        options: dict[int, dict[str, str]] = {}
+        primary: list[str | None] = []
+        secondary: list[str] = []
 
         tree = ElementTree.parse(filename)
         root = tree.getroot()
@@ -126,7 +129,7 @@ class ExternalActorOptionDialog(QtWidgets.QDialog):
                 continue
 
             # read properties and put it in this dict
-            properties = {}
+            properties: dict[str, str] = {}
             for prop in option:
                 if prop.tag.lower() != 'property':
                     continue
@@ -147,15 +150,14 @@ class ExternalActorOptionDialog(QtWidgets.QDialog):
 
         return (options, (primary, secondary))
 
-    def fillWidgetFromItems(self, options, order):
+    def fillWidgetFromItems(self, options: dict[int, dict[str, str]], order: tuple[list[str | None], list[str]]) -> None:
         """
         Adds items to the layout
         """
         # list of widgets sorted by value
         self.entries = []
 
-        for option in options:
-            items = options[option]
+        for option, items in options.items():
             subwidgets = ([], [])
 
             for prop in order[0]:
@@ -173,7 +175,7 @@ class ExternalActorOptionDialog(QtWidgets.QDialog):
 
             self.entries.append(subwidgets)
 
-    def setCurrentValue(self, value):
+    def setCurrentValue(self, value: int) -> None:
         """
         Sets the current value to 'value'
         """
@@ -181,13 +183,13 @@ class ExternalActorOptionDialog(QtWidgets.QDialog):
         if button is not None:
             button.setChecked(True)
 
-    def getValue(self):
+    def getValue(self) -> int:
         """
         Gets the current value
         """
         return self.buttongroup.checkedId()
 
-    def search(self, text):
+    def search(self, text: str) -> None:
         """
         Only show the elements fulfilling the search for text
         """
@@ -212,7 +214,7 @@ class ExternalActorOptionDialog(QtWidgets.QDialog):
 
         self.updateVisibleRows(matching)
 
-    def updateVisibleRows(self, new):
+    def updateVisibleRows(self, new: list[int]) -> None:
         """
         Makes sure we only show the correct rows
         """
@@ -236,7 +238,7 @@ class ExternalActorOptionDialog(QtWidgets.QDialog):
 
         self.visibleEntries = new
 
-    def clearLayout(self, layout):
+    def clearLayout(self, layout: QtWidgets.QLayout) -> None:
         """
         Removes all rows of the layout
         """

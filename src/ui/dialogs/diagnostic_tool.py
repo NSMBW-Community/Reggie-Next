@@ -1,17 +1,18 @@
-from PyQt6 import QtWidgets, QtGui
+from collections.abc import Callable
 from enum import IntEnum
 from typing import cast
 
-from data import globals_
+from PyQt6 import QtGui, QtWidgets
 
-from data.level.dirty import SetDirty
 import actorlib
-from data.level.items.entrance import EntranceItem
+from data import globals_
+from data.level.dirty import SetDirty
 from data.level.items.actor import ActorItem
+from data.level.items.entrance import EntranceItem
 from data.level.items.zone import ZoneItem
 from ui.theme.reggie_theme import GetIcon
-
 from ui.widgets.diag_list_widget_item import DiagnosticListWidgetItem
+
 
 class DiagnosticToolDialog(QtWidgets.QDialog):
     """
@@ -25,7 +26,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         WARNING = 1
         CRITICAL = 2
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Creates and initializes the dialog
         """
@@ -34,7 +35,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         self.setWindowIcon(GetIcon('wrench-screwdriver'))
 
         # check_functions: (icon, description, function, is_critical)
-        self.check_functions = (
+        self.check_functions: tuple[tuple[str, str | None, Callable[[str], bool | None], bool], ...] = (
             ('block',   globals_.trans.string('Diag', 2),  self.check_invalid_obj,        True),
             ('rocket',   globals_.trans.string('Diag', 3),  self.check_crash_actor,       False),
             ('rocket',   globals_.trans.string('Diag', 4),  self.check_actor_param,       True),
@@ -55,7 +56,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         error_box = QtWidgets.QGroupBox(globals_.trans.string('Diag', 17))
         self.error_layout = QtWidgets.QVBoxLayout()
-        result, numErrors = self.populate_list()
+        result, _numErrors = self.populate_list()
         error_box.setLayout(self.error_layout)
 
         self.update_header(result)
@@ -72,7 +73,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         self.main_layout.addWidget(self.button_box)
         self.setLayout(self.main_layout)
 
-    def update_header(self, result: Result, not_first_run=False):
+    def update_header(self, result: Result, not_first_run: bool = False) -> None:
         """
         Creates/updates the header
         """
@@ -176,7 +177,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         return self.Result.NO_ERROR, len(self.error_list)
 
-    def fix_selected(self):
+    def fix_selected(self) -> None:
         """
         Fixes the selected items
         """
@@ -226,16 +227,14 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
 
     # Check functions begin here
-    def check_invalid_obj(self, mode):
+    def check_invalid_obj(self, mode: str) -> bool | None:
         """
         Checks for any objects which cannot be found in the tilesets
         """
         deletions = []
         for layer in globals_.Area.layers:
             for obj in layer:
-                if globals_.ObjectDefinitions[obj.tileset] is None:
-                    deletions.append(obj)
-                elif globals_.ObjectDefinitions[obj.tileset][obj.object_num] is None:
+                if globals_.ObjectDefinitions[obj.tileset] is None or globals_.ObjectDefinitions[obj.tileset][obj.object_num] is None:
                     deletions.append(obj)
 
         has_problem = bool(deletions)
@@ -243,7 +242,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             return has_problem
 
         if not has_problem:
-            return
+            return False
 
         if globals_.mainWindow is not None:
             for obj in deletions:
@@ -253,7 +252,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
             globals_.mainWindow.level_overview.update()
 
-    def check_crash_actor(self, mode):
+    def check_crash_actor(self, mode: str) -> bool | None:
         """
         Checks if there are any actors which are known to crash or cause problems often
         """
@@ -277,7 +276,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                     globals_.mainWindow.level_overview.update()
 
     # TODO: Split 'missing resource' checks into their own function (153 needs it too)
-    def check_actor_param(self, mode):
+    def check_actor_param(self, mode: str) -> bool | None:
         """
         Checks for actor settings which are known to cause major glitches and crashes
         """
@@ -296,9 +295,8 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                 problem = True
 
             # Chest, check if we need a Toad
-            if actor.actor_num == 203 and actor.actordata[4] & 0xF == 1:
-                if [454, 432] not in check_list:
-                    check_list.append([454, 432])
+            if actor.actor_num == 203 and actor.actordata[4] & 0xF == 1 and [454, 432] not in check_list:
+                check_list.append([454, 432])
 
             # Cheep Cheep Formation, shape is 'Filled Arrow'
             # TODO: Investigate, this doesn't crash the game?
@@ -359,9 +357,8 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                 if actor.actor_num == 171 and actor.actordata[4] & 0xF != 1:
                     actor.actordata = actor.actordata[0:4] + chr(1) + actor.actordata[5:]
 
-                if actor.actor_num == 203 and actor.actordata[4] & 0xF == 1:
-                    if [454, 432] in check_list:
-                        add_actors.append((454, actor.objx - 128, actor.objy - 128))
+                if actor.actor_num == 203 and actor.actordata[4] & 0xF == 1 and [454, 432] in check_list:
+                    add_actors.append((454, actor.objx - 128, actor.objy - 128))
 
                 if actor.actor_num == 247 and actor.actordata[5] & 0xF == 1:
                     actor.actordata = actor.actordata[0:5] + chr(0) + actor.actordata[6:]
@@ -394,7 +391,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
                 globals_.mainWindow.scene.update()
 
-    def check_actor_max(self, mode):
+    def check_actor_max(self, mode: str) -> bool | None:
         """
         Determines if the number of actors in the current area is > 1000
         """
@@ -419,7 +416,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             globals_.mainWindow.scene.update()
             globals_.mainWindow.level_overview.update()
 
-    def check_duplicate_entrance(self, mode):
+    def check_duplicate_entrance(self, mode: str) -> bool | None:
         """
         Checks for entrances with duplicate IDs
         """
@@ -446,7 +443,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         return False
 
-    def check_start_entrance(self, mode):
+    def check_start_entrance(self, mode: str) -> bool | None:
         """
         Determines if there is a start entrance or not
         """
@@ -455,7 +452,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             return False
 
         start: EntranceItem | None = None
-        end: EntranceItem
         for ent in globals_.Area.entrances:
             if ent.entid == globals_.Area.startEntrance:
                 start = ent
@@ -466,12 +462,11 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         if mode == 'c':
             return problem
-        elif problem:
-            if globals_.mainWindow is not None:
-                # TODO: Maybe place it 6 blocks right, 3 blocks up from Zone 1's bottom-left corner?
-                EntranceItem.CreateEntrance(1024, 512, globals_.Area.startEntrance)
+        elif problem and globals_.mainWindow is not None:
+            # TODO: Maybe place it 6 blocks right, 3 blocks up from Zone 1's bottom-left corner?
+            EntranceItem.CreateEntrance(1024, 512, globals_.Area.startEntrance)
 
-    def check_entrance_near_edge(self, mode):
+    def check_entrance_near_edge(self, mode: str) -> bool | None:
         """
         Checks if the start entrance is too close to the left zone edge
         """
@@ -504,7 +499,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         elif problem:
             start.setPos((first_zone.objx + offset) * 1.5, start.objy * 1.5)
 
-    def check_entrance_out_zone(self, mode):
+    def check_entrance_out_zone(self, mode: str) -> bool | None:
         """
         Checks if any entrances are not inside of a zone
         """
@@ -522,13 +517,12 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
             zone: ZoneItem = globals_.Area.zones[zone_idx]
 
-            if x < zone.objx:
-                problem = True
-            elif x > zone.objx + zone.width:
-                problem = True
-            elif y < zone.objy - 64:
-                problem = True
-            elif y > zone.objy + zone.height + 192:
+            if (
+                x < zone.objx
+                or x > zone.objx + zone.width
+                or y < zone.objy - 64
+                or y > zone.objy + zone.height + 192
+            ):
                 problem = True
             else:
                 problem = False
@@ -560,7 +554,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         return False
 
-    def check_zone_max(self, mode):
+    def check_zone_max(self, mode: str) -> bool | None:
         """
         Checks if there are too many zones in this area
         """
@@ -576,7 +570,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                 globals_.mainWindow.scene.update()
                 globals_.mainWindow.level_overview.update()
 
-    def check_no_zone_exist(self, mode):
+    def check_no_zone_exist(self, mode: str) -> bool | None:
         """
         Checks if there are no zones in this area
         """
@@ -590,7 +584,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         # Make a default zone
         ZoneItem.CreateZone(16, 16)
 
-    def check_zone_proximity(self, mode):
+    def check_zone_proximity(self, mode: str) -> bool | None:
         """
         Checks for any zones which are too close together or are overlapping
         """
@@ -670,7 +664,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         return False
 
-    def check_zone_on_area_edge(self, mode):
+    def check_zone_on_area_edge(self, mode: str) -> bool | None:
         """
         Checks for any zones which are too close to the area edges, and moves them
         """
@@ -699,7 +693,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         return False
 
     # TODO: What is this??? Needs more research
-    def check_no_bias(self, mode):
+    def check_no_bias(self, mode: str) -> bool | None:
         """
         Checks for any zones which do not have bias enabled
         """
@@ -730,7 +724,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         return False
 
     # TODO: Fix this? Also make it actually useful
-    def check_zone_max_size(self, mode):
+    def check_zone_max_size(self, mode: str) -> bool | None:
         """
         Checks for any zones which may be too large
         """

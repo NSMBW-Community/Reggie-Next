@@ -1,18 +1,20 @@
-from PyQt6 import QtWidgets, QtGui
 import os
+
+from PyQt6 import QtGui, QtWidgets
 
 from data import globals_
 from data.common.utils import clamp, get_reggiedata_folder
+from data.level.items.zone import ZoneItem
 from ui.theme.reggie_theme import GetIcon
-
 from ui.widgets.generic.hex_spin_box import HexSpinBox
+
 
 class BackgroundDialog(QtWidgets.QDialog):
     """
     Dialog which lets you modify backgrounds
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Creates and initializes the tab dialog
         """
@@ -41,7 +43,7 @@ class BackgroundDialog(QtWidgets.QDialog):
         self.setLayout(mainLayout)
 
 class BackgroundTab(QtWidgets.QWidget):
-    def __init__(self, z):
+    def __init__(self, z: ZoneItem) -> None:
         QtWidgets.QWidget.__init__(self)
 
         self.createSettings(z)
@@ -56,7 +58,7 @@ class BackgroundTab(QtWidgets.QWidget):
 
         self.updatePreviews()
 
-    def createSettings(self, z):
+    def createSettings(self, z: ZoneItem) -> None:
         """
         Creates the BG Settings for BGA and BGB
         """
@@ -92,7 +94,7 @@ class BackgroundTab(QtWidgets.QWidget):
             for i, (fileRaw, bgName) in enumerate(bgNames[slotID]):
                 bfile = int(fileRaw, 16)
                 for name in self.nameBoxes[-1]:
-                    name.addItem(globals_.trans.string('BGDlg', 17, '[name]', bgName, '[hex]', '%04X' % bfile), bfile)
+                    name.addItem(globals_.trans.string('BGDlg', 17, '[name]', bgName, '[hex]', f'{bfile:04X}'), bfile)
 
             # Find the correct one to select
             for nameBox, value in zip(self.nameBoxes[-1], bgIDs[slotID]):
@@ -171,7 +173,7 @@ class BackgroundTab(QtWidgets.QWidget):
 
             targetBox.setLayout(mainLayout)
 
-    def createPreviews(self, z):
+    def createPreviews(self, _z: ZoneItem) -> None:
         self.bgAPreview = QtWidgets.QGroupBox(globals_.trans.string('BGDlg', 16)) # Preview
         self.bgBPreview = QtWidgets.QGroupBox(globals_.trans.string('BGDlg', 16)) # Preview
 
@@ -205,7 +207,7 @@ class BackgroundTab(QtWidgets.QWidget):
 
         self.bgBPreview.setLayout(mainLayout)
 
-    def handleHexBox(self):
+    def handleHexBox(self) -> None:
         """
         Handles any hex box changing
         """
@@ -229,7 +231,7 @@ class BackgroundTab(QtWidgets.QWidget):
 
         self.updatePreviews()
 
-    def handleNameBox(self):
+    def handleNameBox(self) -> None:
         """
         Handles any name box changing
         """
@@ -246,7 +248,7 @@ class BackgroundTab(QtWidgets.QWidget):
 
         self.updatePreviews()
 
-    def updatePreviews(self):
+    def updatePreviews(self) -> None:
         """
         Updates all 6 preview labels
         """
@@ -256,7 +258,7 @@ class BackgroundTab(QtWidgets.QWidget):
 
         for slotID, alignBox in enumerate((self.alignA, self.alignB)):
             for boxNum in range(3):
-                val = '%04X' % self.hexBoxes[slotID][boxNum].value()
+                val = f'{self.hexBoxes[slotID][boxNum].value():04X}'
 
                 filename = globals_.gamedef.bgFile(val + '.png', 'ab'[slotID])
                 if not os.path.isfile(filename):
@@ -286,7 +288,7 @@ class BackgroundTab(QtWidgets.QWidget):
                 alignNotes[slotID].setText('')
 
 
-def calculateBgAlignmentMode(idA, idB, idC):
+def calculateBgAlignmentMode(idA: int, idB: int, idC: int) -> int:
     """
     Calculates alignment modes using the exact same logic as NSMBW
     """

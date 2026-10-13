@@ -3,12 +3,13 @@ from PyQt6 import QtWidgets
 from data import globals_
 from ui.theme.reggie_theme import GetIcon
 
+
 class ScreenshotDialog(QtWidgets.QDialog):
     """
     Dialog to take screenshots
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Creates and initializes the dialog
         """

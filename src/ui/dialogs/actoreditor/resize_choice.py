@@ -1,8 +1,9 @@
 from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
-from data.level.items.basic import InstanceDefinition
+from data.actor.actorfield.actor_field import ActorField
 from data.level.items.actor import ActorItem
+from data.level.items.basic import InstanceDefinition
 from ui.theme.reggie_theme import GetIcon
 
 
@@ -10,7 +11,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
     """
     Dialog for the resize option.
     """
-    def __init__(self, actor_id):
+    def __init__(self, actor_id: int) -> None:
         """
         Initialise the dialog
         """
@@ -124,16 +125,16 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
             # Just in case we can't find it for whatever reason
             self.radio1.setChecked(True)
 
-            for type, actor_id in self.present:
-                if actor_id.actor_num != globals_.SpecialEventActorID:
+            for type, actor_item in self.present:
+                if actor_item.actor_num != globals_.SpecialEventActorID:
                     continue
 
-                type = actor_id.actordata[5] & 0xF
+                type = actor_item.actordata[5] & 0xF
                 if type == 5:
                     self.radio3.setChecked(True)
                     self.glbScaleWidget.setEnabled(True)
                 elif type == 6:
-                    if (actor_id.actordata[5] >> 4) != 0:
+                    if (actor_item.actordata[5] >> 4) != 0:
                         self.radio2.setChecked(True)
                     else:
                         self.radio1.setChecked(True)
@@ -173,7 +174,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
 
         self.setLayout(mainLayout)
 
-    def getNyb5And7Availability(self):
+    def getNyb5And7Availability(self) -> dict[int, list[ActorField]]:
         """
         Gets whether nybbles 5 or 7 (or both/none) are occupied by actordata or not
         """
@@ -209,13 +210,13 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
 
         return found
 
-    def checkSpecialEvent(self):
+    def checkSpecialEvent(self) -> list[tuple[int, ActorItem]]:
         """
         Find Special Event and then check if it has resize set.
         Returns a list of (slot, actor) pairs, where slot = 2 means it is a global
         resize.
         """
-        slots = []
+        slots: list[tuple[int, ActorItem]] = []
         for actor in globals_.Area.actors:
             if actor.actor_num != globals_.SpecialEventActorID:
                 continue
@@ -231,21 +232,21 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
 
         return slots
 
-    def handleResizer(self):
+    def handleResizer(self) -> None:
         """
         Either places a new special event or changes the old one.
         """
         if not self.present:
             self.createResizer()
         else:
-            for type, actor in self.present:
+            for _type, actor in self.present:
                 if actor.actor_num == globals_.SpecialEventActorID:
                     self.editResizer(actor)
                     break
 
         return self.accept()
 
-    def editResizer(self, actor):
+    def editResizer(self, actor: ActorItem) -> None:
         """
         Updates the existing Special Event
         """
@@ -259,7 +260,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
 
         actor.actordata = bytes(data)
 
-    def createResizer(self):
+    def createResizer(self) -> None:
         """
         Places a Special Event and sets the settings so the correct slot.
         """
@@ -287,7 +288,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         if ActorItem.CreateActor(x, y, special_event_id, data) is not None:
             mainWindow.scene.update()
 
-    def getGlobalScale(self):
+    def getGlobalScale(self) -> int | None:
         """
         Get the scale for the Global Resizer
         """
@@ -301,13 +302,13 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
             else:
                 return 0
 
-    def sliderMoved(self):
+    def sliderMoved(self) -> None:
         """
         Handle the slider being moved
         """
         self.sliderVal.setText('x' + str(self.scaleLevels[self.slider.value()]))
 
-    def toggleGlbResizerScale(self, button):
+    def toggleGlbResizerScale(self, button: QtWidgets.QAbstractButton) -> None:
         """
         Toggles the global resizer scale
         """

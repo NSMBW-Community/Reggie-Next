@@ -1,15 +1,16 @@
-from PyQt6 import QtWidgets, QtCore
+from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
 from data.level.dirty import SetDirty
 from ui.theme.reggie_theme import GetIcon, createVertLine
+
 
 class ObjectTypeSwapDialog(QtWidgets.QDialog):
     """
     Dialog to swap individual objects
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Creates and initializes the dialog
         """
@@ -67,7 +68,7 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         main_layout.addWidget(self.button_box)
         self.setLayout(main_layout)
 
-    def button_clicked(self, button):
+    def button_clicked(self, button: QtWidgets.QAbstractButton) -> None:
         """
         Handles one of the buttons being pressed and calls the correct handler
         """
@@ -78,7 +79,7 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         else:
             self.reject()
 
-    def swap_tiles(self):
+    def swap_tiles(self) -> None:
         """
         Swaps the tile objects
         """
@@ -101,7 +102,7 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
                     nsmbobj.SetType(from_tileset, from_type)
                     SetDirty()
 
-    def get_tileset_object_count(self, index):
+    def get_tileset_object_count(self, index: int) -> int:
         """
         Returns the number of objects in a tileset
         """
@@ -110,7 +111,7 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
 
         return len(globals_.mainWindow.palette_dock.object_tab.object_picker.models[index].ritems) - 1
 
-    def set_object_counts(self):
+    def set_object_counts(self) -> None:
         """
         Sets upper limits for the object spinboxes
         """

@@ -1,19 +1,20 @@
-from PyQt6 import QtWidgets, QtCore
 from typing import cast
 
-from data import globals_
-from ui.theme.reggie_theme import GetIcon
-from data.level.items.zone import ZoneItem
+from PyQt6 import QtCore, QtWidgets
 
+from data import globals_
 from data.common.utils import clamp
+from data.level.items.zone import ZoneItem
 from ui.layouts.camera_mode import CameraModeZoomSettingsLayout
+from ui.theme.reggie_theme import GetIcon
+
 
 class ZonesDialog(QtWidgets.QDialog):
     """
     Dialog which lets you modify zones
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Creates and initializes the tab dialog
         """
@@ -55,7 +56,7 @@ class ZonesDialog(QtWidgets.QDialog):
         mainLayout.addWidget(buttonBox)
         self.setLayout(mainLayout)
 
-    def handleNewZone(self):
+    def handleNewZone(self) -> None:
         """
         Handles creating a new zone
         """
@@ -80,7 +81,7 @@ class ZonesDialog(QtWidgets.QDialog):
         self.tabWidget.setCurrentIndex(tabCount - 1)
         self.updateCopyDelete()
 
-    def handleCopyZone(self):
+    def handleCopyZone(self) -> None:
         """
         Handles copying the current zone data to a new one
         """
@@ -107,7 +108,7 @@ class ZonesDialog(QtWidgets.QDialog):
         self.tabWidget.setCurrentIndex(tabCount - 1)
         self.updateCopyDelete()
 
-    def handleDeleteZone(self):
+    def handleDeleteZone(self) -> None:
         """
         Handles deleting the current zone
         """
@@ -120,7 +121,7 @@ class ZonesDialog(QtWidgets.QDialog):
         self.zoneTabs.pop(index)
         self.updateCopyDelete()
 
-    def updateCopyDelete(self):
+    def updateCopyDelete(self) -> None:
         """
         Toggles the Copy and Delete buttons
         """
@@ -133,7 +134,7 @@ class ZoneTab(QtWidgets.QWidget):
     Represents an individial zone
     """
 
-    def __init__(self, zone: ZoneItem):
+    def __init__(self, zone: ZoneItem) -> None:
         QtWidgets.QWidget.__init__(self)
 
         self.zoneObj = zone
@@ -161,7 +162,7 @@ class ZoneTab(QtWidgets.QWidget):
         mainLayout.addLayout(rightLayout)
         self.setLayout(mainLayout)
 
-    def createDimensions(self, zone: ZoneItem):
+    def createDimensions(self, zone: ZoneItem) -> None:
         """
         Creates the "Dimensions" section of the tab
         """
@@ -239,7 +240,7 @@ class ZoneTab(QtWidgets.QWidget):
 
         self.dimensions.setLayout(verticalLayout)
 
-    def handleSnapGrid8(self):
+    def handleSnapGrid8(self) -> None:
         """
         Snaps the current zone to an 8x8 grid
         """
@@ -287,7 +288,7 @@ class ZoneTab(QtWidgets.QWidget):
         self.zWidth.setValue(right)
         self.zHeight.setValue(bottom)
 
-    def handleSnapGrid16(self):
+    def handleSnapGrid16(self) -> None:
         """
         Snaps the current zone to a 16x16 grid
         """
@@ -333,7 +334,7 @@ class ZoneTab(QtWidgets.QWidget):
         self.zWidth.setValue(right)
         self.zHeight.setValue(bottom)
 
-    def createRendering(self, zone: ZoneItem):
+    def createRendering(self, zone: ZoneItem) -> None:
         """
         Creates the "Rendering" section of the tab
         """
@@ -371,8 +372,8 @@ class ZoneTab(QtWidgets.QWidget):
 
         self.vis = zone.visibility
 
-        self.spotlight.setChecked(self.vis & 0x10)
-        self.fullDark.setChecked(self.vis & 0x20)
+        self.spotlight.setChecked(bool(self.vis & 0x10))
+        self.fullDark.setChecked(bool(self.vis & 0x20))
 
         self.handleVisibilityList()
         self.spotlight.clicked.connect(self.handleVisibilityList)
@@ -392,7 +393,7 @@ class ZoneTab(QtWidgets.QWidget):
         innerLyt.addWidget(self.visibility)
         self.rendering.setLayout(innerLyt)
 
-    def createCamera(self, zone: ZoneItem):
+    def createCamera(self, zone: ZoneItem) -> None:
         """
         Creates the "Camera" section of the tab
         """
@@ -435,7 +436,7 @@ class ZoneTab(QtWidgets.QWidget):
 
         self.camera.setLayout(camLyt)
 
-    def handleVisibilityList(self):
+    def handleVisibilityList(self) -> None:
         """
         Handles changing the visibility type list
         """
@@ -463,14 +464,14 @@ class ZoneTab(QtWidgets.QWidget):
             choice = min(self.vis & 0xF, len(addList) - 1)
             self.visibility.setCurrentIndex(choice)
 
-    def handleMPZoomAdjust(self):
+    def handleMPZoomAdjust(self) -> None:
         """
         Handles toggling the multiplayer zoom adjust
         """
         self.mpZoomAdjust.setEnabled(self.restrictY.isChecked())
         self.mpZoomAdjust.setValue(0)
 
-    def createBounds(self, zone: ZoneItem):
+    def createBounds(self, zone: ZoneItem) -> None:
         """
         Creates the "Bounds" section of the tab
         """
@@ -527,7 +528,7 @@ class ZoneTab(QtWidgets.QWidget):
 
         self.bounds.setLayout(LD)
 
-    def createAudio(self, zone: ZoneItem):
+    def createAudio(self, zone: ZoneItem) -> None:
         """
         Creates the "Audio" section of the tab
         """
@@ -562,7 +563,7 @@ class ZoneTab(QtWidgets.QWidget):
 
         self.bossFlag = QtWidgets.QCheckBox()
         self.bossFlag.setToolTip(globals_.trans.string('ZonesDlg', 59))
-        self.bossFlag.setChecked(zone.sfxmod % 16)
+        self.bossFlag.setChecked(bool(zone.sfxmod % 16))
 
         audioLyt = QtWidgets.QFormLayout()
         audioLyt.addRow(globals_.trans.string('ZonesDlg', 53), self.musicList)
@@ -572,7 +573,7 @@ class ZoneTab(QtWidgets.QWidget):
 
         self.audio.setLayout(audioLyt)
 
-    def handleMusicListSelect(self):
+    def handleMusicListSelect(self) -> None:
         """
         Handles the user selecting an entry from the music list
         """
@@ -586,7 +587,7 @@ class ZoneTab(QtWidgets.QWidget):
         self.musicID.setValue(id)
         self.autoEditMusic = False
 
-    def handleMusicIDChange(self):
+    def handleMusicIDChange(self) -> None:
         """
         Handles the user selecting a custom music ID
         """
@@ -606,7 +607,7 @@ class ZoneTab(QtWidgets.QWidget):
 
         self.autoEditMusic = False
 
-    def handlePresetSelected(self, info=None):
+    def handlePresetSelected(self, _i: int | None = None) -> None:
         """
         Handles a zone size preset being selected
         """
@@ -628,7 +629,7 @@ class ZoneTab(QtWidgets.QWidget):
         if self.presetChooser.itemText(0) == globals_.trans.string('ZonesDlg', 60):
             self.presetChooser.removeItem(0)
 
-    def handlePresetChanged(self, info=None):
+    def handlePresetChanged(self, _i: int | None = None) -> None:
         """
         Handles the zone height or width boxes being changed
         """
@@ -659,7 +660,7 @@ class ZoneTab(QtWidgets.QWidget):
         self.presetChooser.setCurrentIndex(idx)
         self.autoChangeSize = False
 
-    def copyZoneData(self, z, currID):
+    def copyZoneData(self, z: ZoneItem, currID: int) -> None:
         """
         Copies data from one zone into another
         """

@@ -43,7 +43,7 @@ class ActorItem(LevelEditorItem):
     BoundingRect = QtCore.QRectF(0, 0, 24, 24)
     SelectionRect = QtCore.QRectF(0, 0, 23, 23)
 
-    def __init__(self, actor_num: int, x: float, y: float, data: bytes) -> None:
+    def __init__(self, actor_num: int, x: float, y: float, data: bytes | bytearray) -> None:
         """
         Creates a actor with specific data
         """
@@ -87,7 +87,7 @@ class ActorItem(LevelEditorItem):
         globals_.DirtyOverride -= 1
 
     @staticmethod
-    def CreateActor(x: float, y: float, id_: int | None = None, data: bytes | None = None, add_to_scene: bool = True) -> 'ActorItem':
+    def CreateActor(x: float, y: float, id_: int | None = None, data: bytes | bytearray | None = None, add_to_scene: bool = True) -> 'ActorItem':
         """
         Creates and returns a new actor and makes sure it's added to the right
         lists if 'add_to_scene' is set.
