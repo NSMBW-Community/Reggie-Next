@@ -3,7 +3,7 @@ from data import globals_
 from data.common import archive
 from data.level.abstract_level import AbstractLevel
 from data.level.area import Area
-
+from data.level.metadata import Metadata
 
 class NSMBWLevel(AbstractLevel):
     """
@@ -23,6 +23,7 @@ class NSMBWLevel(AbstractLevel):
         """
         # Create area objects
         self.areas = []
+        self.metadata = Metadata()
 
         new_area = Area(1)
 
@@ -48,11 +49,22 @@ class NSMBWLevel(AbstractLevel):
         # Sort the area data
         areaData = [[None, None, None, None], [None, None, None, None], [None, None, None, None], [None, None, None, None]]
         for name, val in arc.files:
-            if val is None: continue
+            if val is None:
+                continue
+
             name = name.replace('\\', '/').split('/')[-1]
 
-            if not name.startswith('course'): continue
-            if not name.endswith('.bin'): continue
+            # Course metadata
+            if name == 'metadata.json':
+                self.metadata.load(val)
+                continue
+
+            if not name.startswith('course'):
+                continue
+
+            if not name.endswith('.bin'):
+                continue
+
             if '_bgdatL' in name:
                 # It's a layer file
                 if len(name) != 19: continue
@@ -120,6 +132,10 @@ class NSMBWLevel(AbstractLevel):
 
             if L2 is not None:
                 newArchive['course/course%d_bgdatL2.bin' % area.areanum] = L2
+
+            meta = self.metadata.save()
+            if meta is not None:
+                newArchive['course/metadata.json'] = meta
 
         # return the U8 archive data
         return newArchive._dump()

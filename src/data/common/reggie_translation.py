@@ -447,7 +447,7 @@ class ReggieTranslation:
                 11: 'Verify Password:',
                 12: 'Level Information',
                 13: 'Password may be composed of any ASCII character,[br]and up to 64 characters long.[br]',
-                14: 'Sorry![br][br]You can only view or edit Level Information in Area 1.',
+                14: None,  # REMOVED: 'Sorry![br][br]You can only view or edit Level Information in Area 1.'
                 15: '(unknown version)',
             },
             'LocationDataEditor': {

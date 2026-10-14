@@ -741,20 +741,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Records the Level Meta Information
         """
-        if globals_.Area.areanum == 1:
-            dlg = MetaInfoDialog()
-            if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
-                globals_.Area.Metadata.setStrData('Creator', f'Reggie! Next {globals_.ReggieVersionShort}')
-                globals_.Area.Metadata.setStrData('Title', dlg.name_field.text())
-                globals_.Area.Metadata.setStrData('Author', dlg.author_field.text())
-                globals_.Area.Metadata.setStrData('Group', dlg.group_field.text())
-                globals_.Area.Metadata.setStrData('Website', dlg.website_field.text())
+        dlg = MetaInfoDialog()
+        if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+            metadata = cast(NSMBWLevel, globals_.Level).metadata
+            metadata.set_meta_string('creator', f'Reggie! Next {globals_.ReggieVersionShort}')
+            metadata.set_meta_string('title', dlg.name_field.text())
+            metadata.set_meta_string('author', dlg.author_field.text())
+            metadata.set_meta_string('group', dlg.group_field.text())
+            metadata.set_meta_string('website', dlg.website_field.text())
 
-                SetDirty()
-        else:
-            dlg = QtWidgets.QMessageBox()
-            dlg.setText(globals_.trans.string('InfoDlg', 14))
-            dlg.exec()
+            SetDirty()
 
     def HelpBox(self):
         """

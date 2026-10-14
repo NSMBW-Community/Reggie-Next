@@ -12,6 +12,7 @@ from data.level.items.location import LocationItem
 from data.level.items.object import ObjectItem
 from data.level.items.sprite import SpriteItem
 from data.level.items.zone import ZoneItem
+from data.level.legacy_metadata import LegacyMetadata
 from data.level.metadata import Metadata
 from data.sprite.spritefield.list import ListSpriteField
 from data.sprite.spritefield.sprite_field import SpriteField
@@ -287,10 +288,10 @@ class Area:
 
     def LoadReggieInfo(self, data: bytes | None) -> None:
         if not data:
-            self.Metadata = Metadata()
+            self.Metadata = LegacyMetadata()
             return
 
-        self.Metadata = Metadata(data)
+        self.Metadata = LegacyMetadata(data)
 
     def LoadBlocks(self, course: bytes) -> None:
         """

@@ -1,7 +1,9 @@
 from PyQt6 import QtCore, QtWidgets
+from typing import cast
 
 from data import globals_
 from data.level.dirty import SetDirty
+from data.level.nsmbw_level import NSMBWLevel
 from ui.theme.reggie_theme import GetIcon, createHorzLine
 
 
@@ -71,12 +73,13 @@ class MetaInfoDialog(QtWidgets.QDialog):
         self.setWindowTitle(globals_.trans.string('InfoDlg', 0))
         self.setWindowIcon(GetIcon('information-frame'))
 
-        title = globals_.Area.Metadata.strData('Title')
-        author = globals_.Area.Metadata.strData('Author')
-        group = globals_.Area.Metadata.strData('Group')
-        website = globals_.Area.Metadata.strData('Website')
-        creator = globals_.Area.Metadata.strData('Creator')
-        password = globals_.Area.Metadata.strData('Password')
+        metadata = cast(NSMBWLevel, globals_.Level).metadata
+        title = metadata.get_meta_string('title')
+        author = metadata.get_meta_string('author')
+        group = metadata.get_meta_string('group')
+        website = metadata.get_meta_string('website')
+        creator = metadata.get_meta_string('creator')
+        password = metadata.get_meta_string('password')
 
         # Set defaults
         if title is None:
@@ -167,7 +170,7 @@ class MetaInfoDialog(QtWidgets.QDialog):
         self.update_password('')
 
     def update_password(self, text: str) -> None:
-        password = globals_.Area.Metadata.strData('Password')
+        password = cast(NSMBWLevel, globals_.Level).metadata.get_meta_string('password')
         if password is None:
             password = ''
 
@@ -197,7 +200,7 @@ class MetaInfoDialog(QtWidgets.QDialog):
                 self.password_label.setVisible(True)
 
             password = str(dlg.verify_pass.text())
-            globals_.Area.Metadata.setStrData('Password', password)
+            cast(NSMBWLevel, globals_.Level).metadata.set_meta_string('password', password)
             self.password_field.setText(password)
             SetDirty()
 
