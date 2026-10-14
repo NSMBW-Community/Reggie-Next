@@ -15,7 +15,7 @@ from data.level.items.entrance import EntranceItem
 from data.level.items.location import LocationItem
 from data.level.items.object import ObjectItem
 from data.level.items.zone import ZoneItem
-from data.level.metadata import Metadata
+from data.level.legacy_metadata import LegacyMetadata
 from ui.widgets.actoreditor.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
@@ -287,10 +287,10 @@ class Area:
 
     def LoadReggieInfo(self, data: bytes | None) -> None:
         if not data:
-            self.Metadata = Metadata()
+            self.Metadata = LegacyMetadata()
             return
 
-        self.Metadata = Metadata(data)
+        self.Metadata = LegacyMetadata(data)
 
     def LoadBlocks(self, course: bytes) -> None:
         """
