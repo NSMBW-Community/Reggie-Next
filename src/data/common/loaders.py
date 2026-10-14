@@ -694,7 +694,7 @@ def LoadMusicInfo(reload_: bool = False) -> None:
             songid, name = line_items
             songs[songid] = name
 
-    globals_.MusicInfo = sorted(songs.items(), key=lambda kv: int(kv[0]))
+    globals_.MusicInfo = songs.items()
 
 
 def LoadMenuActions(mw) -> None:

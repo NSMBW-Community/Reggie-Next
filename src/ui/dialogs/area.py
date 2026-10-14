@@ -1,6 +1,7 @@
 from PyQt6 import QtWidgets
 
 from data import globals_
+from data.level.dirty import SetDirty
 from ui.theme.reggie_theme import GetIcon
 
 from ui.widgets.area.tilesets import TilesetsTab
@@ -46,6 +47,7 @@ class AreaOptionsDialog(QtWidgets.QDialog):
         """
         Saves everything back to the area
         """
+        SetDirty()
         self.tilesets_tab.save()
         self.settings_tab.save()
         self.loaded_actors_tab.save()

@@ -2327,8 +2327,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
 
-        SetDirty()
-
         dlg.save()
         self.scene.update()
 
@@ -2343,72 +2341,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.level_overview.update()
             return
 
-        SetDirty()
-
-        # resync the zones
-        items = self.scene.items()
-        func_ii = isinstance
-        type_zone = ZoneItem
-
-        for item in items:
-            if func_ii(item, type_zone):
-                self.scene.removeItem(item)
-
-        globals_.Area.zones = []
-
-        for i, tab in enumerate(dlg.zoneTabs):
-            z = tab.zoneObj
-            z.id = i
-            z.UpdateTitle()
-            globals_.Area.zones.append(z)
-            self.scene.addItem(z)
-
-            z.objx = clamp(16, 24560, tab.zPosX.value())
-            z.objy = clamp(16, 12272, tab.zPosY.value())
-            z.width = min(24560 - z.objx, tab.zWidth.value())
-            z.height = min(12272 - z.objy, tab.zHeight.value())
-
-            z.prepareGeometryChange()
-            z.UpdateRects()
-            z.setPos(z.objx * 1.5, z.objy * 1.5)
-
-            z.modeldark = tab.theme.currentIndex()
-            z.terraindark = tab.terrainLight.currentIndex()
-            z.cammode = tab.camModeZoom.modeButtonGroup.checkedId()
-            z.camzoom = tab.camModeZoom.screenSizes.currentIndex()
-            z.camtrack = tab.direction.currentIndex()
-
-            if tab.restrictY.isChecked():
-                z.mpcamzoomadjust = tab.mpZoomAdjust.value()
-            else:
-                z.mpcamzoomadjust = 15
-
-            z.visibility = 0
-
-            if tab.spotlight.isChecked():
-                z.visibility |= 1 << 4
-            if tab.fullDark.isChecked():
-                z.visibility |= 1 << 5
-
-            z.visibility |= tab.visibility.currentIndex()
-
-            z.yupperbound = tab.boundUp.value()
-            z.ylowerbound = tab.boundDown.value()
-            z.yupperbound2 = tab.lakituBoundUp.value()
-            z.ylowerbound2 = tab.lakituBoundDown.value()
-            z.yupperbound3 = tab.mpBoundUp.value()
-            z.ylowerbound3 = tab.mpBoundDown.value()
-
-            z.music = tab.musicID.value()
-            z.sfxmod = tab.modulation.currentIndex() << 4
-            if tab.bossFlag.isChecked():
-                z.sfxmod |= 1
-
-        for spr in globals_.Area.sprites:
-            spr.ImageObj.positionChanged()
-
-        self.action_list['backgrounds'].setEnabled(len(globals_.Area.zones) > 0)
-        self.level_overview.update()
+        dlg.save()
 
     def HandleBG(self):
         """
@@ -2542,11 +2475,4 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
 
-        cam_profiles = []
-        for row in range(dlg.list.count()):
-            item = dlg.list.item(row)
-            if item is not None:
-                cam_profiles.append(item.data(QtCore.Qt.ItemDataRole.UserRole))
-
-        globals_.Area.camprofiles = cam_profiles
-        SetDirty()
+        dlg.save()

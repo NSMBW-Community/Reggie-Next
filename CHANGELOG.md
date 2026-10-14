@@ -66,6 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The Area Import dialog can now change the source level without needing to be re-opened.
 - ID Types in the Current Sprites tab are now sorted numerically rather than alphabetically.
 - The README view in the About dialog now uses markdown formatting.
+- The music list now uses the track order in music.txt instead of sorting by numerical ID.
 
 ### Removed
 
@@ -88,6 +89,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed location-based liquids rendering incorrectly if their crest texture is outside of the zone.
 - Fixed some sprite images leaving artifacts when rotated.
 - Fixed the autosave message not applying the color scheme set in the preferences.
+- The music list can no longer add tracks with IDs > 255.
 
 ## [4.10.0] - 2026-07-25
 
