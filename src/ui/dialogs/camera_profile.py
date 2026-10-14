@@ -1,7 +1,8 @@
 from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
-from ui.layouts.camera_mode import CameraModeZoomSettingsLayout
+from data.level.dirty import SetDirty
+from ui.layouts.camera_settings import CameraSettingsLayout
 from ui.theme.reggie_theme import GetIcon, createHorzLine
 from ui.widgets.generic.custom_sortable_list_item import CustomSortableListWidgetItem
 
@@ -41,8 +42,8 @@ class CameraProfilesDialog(QtWidgets.QDialog):
         self.event_id.setToolTip(globals_.trans.string('CamProfsDlg', 6))
         self.event_id.valueChanged.connect(self.handle_event_id_changed)
 
-        self.camera_settings = CameraModeZoomSettingsLayout(False)
-        self.camera_settings.setValues(0, 0)
+        self.camera_settings = CameraSettingsLayout(False)
+        self.camera_settings.set_values(0, 0)
         self.camera_settings.edited.connect(self.handle_camera_settings_changed)
 
         profile_layout = QtWidgets.QFormLayout()
@@ -80,6 +81,19 @@ class CameraProfilesDialog(QtWidgets.QDialog):
         if self.list.count() != 0:
             self.list.setCurrentRow(0)
 
+    def save(self) -> None:
+        """
+        Saves the Camera Profiles
+        """
+        cam_profiles = []
+        for row in range(self.list.count()):
+            item = self.list.item(row)
+            if item is not None:
+                cam_profiles.append(item.data(QtCore.Qt.ItemDataRole.UserRole))
+
+        globals_.Area.camprofiles = cam_profiles
+        SetDirty()
+
     def handle_add(self) -> None:
         """
         Handles adding a profile
@@ -116,7 +130,7 @@ class CameraProfilesDialog(QtWidgets.QDialog):
             values = selItem.data(QtCore.Qt.ItemDataRole.UserRole)
 
             self.event_id.setValue(values[0])
-            self.camera_settings.setValues(values[1], values[2])
+            self.camera_settings.set_values(values[1], values[2])
 
     def handle_event_id_changed(self, event_id: int) -> None:
         """
@@ -137,8 +151,8 @@ class CameraProfilesDialog(QtWidgets.QDialog):
         """
         selItem = self.list.selectedItems()[0]
         values = selItem.data(QtCore.Qt.ItemDataRole.UserRole)
-        values[1] = self.camera_settings.modeButtonGroup.checkedId()
-        values[2] = self.camera_settings.screenSizes.currentIndex()
+        values[1] = self.camera_settings.mode_button_group.checkedId()
+        values[2] = self.camera_settings.screen_sizes.currentIndex()
         selItem.setData(QtCore.Qt.ItemDataRole.UserRole, values)
 
     def update_item_title(self, item: QtWidgets.QListWidgetItem) -> None:
