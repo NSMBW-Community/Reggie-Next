@@ -25,7 +25,7 @@ from data.common.loaders import (
     ReloadTilesets,
 )
 from data.common.settings import setSetting, setting
-from data.common.actors import LoadBasics
+from data.common.actor_images import LoadBasics
 from data.common.utils import get_reggiedata_folder
 from data.common.gamedef_compatibility import update_main, update_actors_module
 

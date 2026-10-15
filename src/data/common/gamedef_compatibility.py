@@ -77,11 +77,11 @@ def update_actors_module(path: str):
         new_data = re.sub(pattern, replace, new_data)
 
     # Fix old sprites_common imports
-    new_data = new_data.replace("import sprites_common", "import data.common.actors")
+    new_data = new_data.replace("import sprites_common", "import data.common.actor_images")
 
     # These two happen if a patch was updated during the refactoring/renaming phases
-    new_data = new_data.replace("import src.data.common.sprites", "import data.common.actors")
-    new_data = new_data.replace("import data.common.sprites", "import data.common.actors")
+    new_data = new_data.replace("import src.data.common.sprites", "import data.common.actor_images")
+    new_data = new_data.replace("import data.common.sprites", "import data.common.actor_images")
 
     # Fix (very rarely used) references to the actor ID
     new_data = new_data.replace("parent.type", "parent.actor_num")

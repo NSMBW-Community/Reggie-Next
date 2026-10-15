@@ -5,7 +5,7 @@
 
 from PyQt6 import QtCore, QtGui
 
-import data.common.actors as common
+import data.common.actor_images as common
 import actorlib
 from data import globals_
 

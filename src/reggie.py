@@ -84,7 +84,7 @@ Qt = QtCore.Qt
 from data import globals_
 
 import actorlib
-from data.common.actors import LoadBasics
+from data.common.actor_images import LoadBasics
 
 from ui.theme.reggie_theme import SetAppStyle, LoadNumberFont, SetColorScheme, GetAppIcon
 from data.common.loaders import LoadToolbarActionsLists, LoadTheme, LoadDefaultKeybinds
