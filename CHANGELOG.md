@@ -64,7 +64,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reimplemented the classic icon set from the original Reggie versions.
 - Several dialogs with tabs now display icons alongside the tab name.
 - The Area Import dialog can now change the source level without needing to be re-opened.
-- ID Types in the Current Actors tab are now sorted numerically rather than alphabetically.
 - The README view in the About dialog now uses markdown formatting.
 - Sprites are now renamed to Actors across the entire codebase and in the editor.
 - The music list now uses the track order in music.txt instead of sorting by numerical ID.
@@ -80,7 +79,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Fixed icons not loading for custom themes.
-- Fixed some small issues with the sprite resizing functionality.
+- Fixed some small issues with the actor resizing functionality.
 - Fixed inaccuracies with some of NewerSMBW's level names.
 - Fixed the comment icon being smaller than intended.
 - Fixed an issue where the middle mouse button would resize objects / locations.
@@ -88,7 +87,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The entrance editor now reloads when changing game patches to accomodate for NewerSMBW-specific features.
 - Fixed some small issues regarding creating new Areas without properly saving the level.
 - Fixed location-based liquids rendering incorrectly if their crest texture is outside of the zone.
-- Fixed some sprite images leaving artifacts when rotated.
+- ID Types in the Current Actors tab are now sorted numerically rather than alphabetically.
+- Fixed some actor images leaving artifacts when rotated.
 - Fixed the autosave message not applying the color scheme set in the preferences.
 - The music list can no longer add tracks with IDs > 255.
 
