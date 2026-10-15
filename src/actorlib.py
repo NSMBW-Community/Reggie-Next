@@ -37,8 +37,8 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data.common.utils import get_reggiedata_folder
 from data.level.area import Area as AreaType
-from data.level.items.location import LocationItem
 from data.level.items.actor import ActorItem
+from data.level.items.location import LocationItem
 from data.level.items.zone import ZoneItem
 from data.tileset.tile.tileset_tile import TilesetTile
 
@@ -514,7 +514,7 @@ class AuxiliaryTrackObject(AuxiliaryActorItem):
         self.width = width
         self.height = height
 
-    def paint(self, painter: QtGui.QPainter, option: QtWidgets.QStyleOptionGraphicsItem, widget: QtWidgets.QWidget | None = None) -> None:
+    def paint(self, painter: QtGui.QPainter, option: QtWidgets.QStyleOptionGraphicsItem | None, widget: QtWidgets.QWidget | None = None) -> None:
         if option is not None:
             painter.setClipRect(option.exposedRect)
             painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
@@ -568,7 +568,7 @@ class AuxiliaryCircleOutline(AuxiliaryActorItem):
         self.setPos(xval, yval)
         self.width = width
 
-    def paint(self, painter: QtGui.QPainter, option: QtWidgets.QStyleOptionGraphicsItem, widget: QtWidgets.QWidget | None = None) -> None:
+    def paint(self, painter: QtGui.QPainter, option: QtWidgets.QStyleOptionGraphicsItem | None, widget: QtWidgets.QWidget | None = None) -> None:
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
         if OutlinePen is not None:
             painter.setPen(OutlinePen)
@@ -597,7 +597,7 @@ class AuxiliaryRotationAreaOutline(AuxiliaryActorItem):
         self.startAngle = startAngle * 16
         self.spanAngle = spanAngle * 16
 
-    def paint(self, painter: QtGui.QPainter, option: QtWidgets.QStyleOptionGraphicsItem, widget: QtWidgets.QWidget | None = None) -> None:
+    def paint(self, painter: QtGui.QPainter, option: QtWidgets.QStyleOptionGraphicsItem | None, widget: QtWidgets.QWidget | None = None) -> None:
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
         if OutlinePen is not None:
             painter.setPen(OutlinePen)
@@ -629,7 +629,7 @@ class AuxiliaryRectOutline(AuxiliaryActorItem):
         else:
             self.color = QtGui.QColor(color)
 
-    def paint(self, painter: QtGui.QPainter, option: QtWidgets.QStyleOptionGraphicsItem, widget: QtWidgets.QWidget | None = None) -> None:
+    def paint(self, painter: QtGui.QPainter, option: QtWidgets.QStyleOptionGraphicsItem | None, widget: QtWidgets.QWidget | None = None) -> None:
         if option is not None:
             painter.setClipRect(option.exposedRect)
             painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
@@ -927,7 +927,7 @@ class AuxiliaryLocationItem(AuxiliaryItem):
         """
         self.setPos(0, 0)
 
-    def paint(self, painter: QtGui.QPainter, option: QtWidgets.QStyleOptionGraphicsItem, widget: QtWidgets.QWidget | None = None) -> None:
+    def paint(self, painter: QtGui.QPainter, option: QtWidgets.QStyleOptionGraphicsItem | None, widget: QtWidgets.QWidget | None = None) -> None:
         """
         Paints the image, tiled to fill the bounding rect of the location it
         belongs to.
