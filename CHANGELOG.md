@@ -11,14 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added the ability to reload the patch list.
 - Added a dedicated layer selector to actors which support being on different layers.
-- Added several new definitions for how a actordata value can be manipulated.
+- Added several new definitions for how an actordata value can be manipulated.
 - Added support for importing areas from LZ-compressed levels.
 - The toolbar can now be toggled through a dedicated option in the "View" menu.
 - Added the ability to set custom keybinds.
 - Added an option to toggle the visibility of entrances.
 - Added an auto-diagnostic tool that regularly checks the current level for issues.
 - Added an exit indicator for forward-linking pipes.
-- Added a actor order list to help with issues caused by an incorrect level-internal actor order.
+- Added an actor order list to help with issues caused by an incorrect level-internal actor order.
 - Added an option to forcefully ignore Windows' app scaling setting.
 - Added support for copy/pasting Comments.
 - The following actions can now be pinned to the toolbar:

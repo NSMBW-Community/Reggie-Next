@@ -906,7 +906,7 @@ class Area:
 
     def RemoveActor(self, actor: ActorItem) -> None:
         """
-        This properly removes a actor from the area.
+        This properly removes an actor from the area.
         """
         # Remove the actor from the actors list
         self.actors.remove(actor)

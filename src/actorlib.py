@@ -316,7 +316,7 @@ class ActorImage_Static(ActorImage):
 
 class ActorImage_StaticMultiple(ActorImage_Static):
     """
-    A class that acts like a ActorImage_Static but lets you change
+    A class that acts like an ActorImage_Static but lets you change
     the image with the dataChanged() function
     """
 

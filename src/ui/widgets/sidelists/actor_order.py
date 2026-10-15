@@ -85,7 +85,7 @@ class ActorOrderList(QtWidgets.QWidget):
 
     def addActor(self, actor):
         """
-        Adds a actor to the table
+        Adds an actor to the table
         """
         # add a new row
         row = self.table.rowCount()
@@ -111,7 +111,7 @@ class ActorOrderList(QtWidgets.QWidget):
 
     def takeActor(self, actor):
         """
-        Removes a actor from the table
+        Removes an actor from the table
         """
         row = self.getRowFor(actor)
         if row < 0:
@@ -121,7 +121,7 @@ class ActorOrderList(QtWidgets.QWidget):
 
     def moveActor(self, action: int):
         """
-        Moves a actor up/down in the list
+        Moves an actor up/down in the list
         """
         items = self.table.selectedItems()
         if not items:

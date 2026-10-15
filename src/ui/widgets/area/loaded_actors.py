@@ -126,7 +126,7 @@ class LoadedActorsTab(QtWidgets.QWidget):
 
     def add_actor(self, _: QtWidgets.QAbstractButton) -> None:
         """
-        Add a actor to the list of actors whose resources are forced to load.
+        Add an actor to the list of actors whose resources are forced to load.
         """
         text = self.actor_input.text()
 

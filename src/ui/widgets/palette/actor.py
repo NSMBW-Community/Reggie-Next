@@ -197,7 +197,7 @@ class ActorTab(QtWidgets.QTabWidget):
 
     def add_actor(self, actor):
         """
-        Helper to add a actor to the lists
+        Helper to add an actor to the lists
         """
         self.actor_list.addActor(actor)
         self.actor_order_list.addActor(actor)

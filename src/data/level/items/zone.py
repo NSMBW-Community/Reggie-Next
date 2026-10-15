@@ -284,7 +284,7 @@ class ZoneItem(LevelEditorItem):
         # Paint an indicator line to show the leftmost edge of where entrances
         # can be safely placed.
         if globals_.DrawEntIndicators:
-            # This function could be called only when a actor or entrance is
+            # This function could be called only when an actor or entrance is
             # moved or created. If this starts giving trouble, do that.
             self.updateEntranceIndicator()
 

@@ -45,7 +45,7 @@ class ActorItem(LevelEditorItem):
 
     def __init__(self, actor_num: int, x: float, y: float, data: bytes | bytearray) -> None:
         """
-        Creates a actor with specific data
+        Creates an actor with specific data
         """
         LevelEditorItem.__init__(self)
         self.setZValue(26000)
@@ -308,7 +308,7 @@ class ActorItem(LevelEditorItem):
 
             # SelectionRect: Used to determine the size of the
             # "this actor is selected" translucent white box that
-            # appears when a actor with an image is selected.
+            # appears when an actor with an image is selected.
             self.SelectionRect = QtCore.QRectF(
                 0.5, 0.5,
                 imgRect.width() - 1,

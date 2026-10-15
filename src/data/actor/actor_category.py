@@ -2,7 +2,7 @@ from PyQt6 import QtWidgets
 
 
 class ActorSubCategory:
-    """Object representation of a actor subcategory."""
+    """Object representation of an actor subcategory."""
 
     def __init__(self, name: str | None, actor_ids: list[int]) -> None:
         self.name = name

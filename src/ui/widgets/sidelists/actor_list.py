@@ -194,7 +194,7 @@ class ActorList(QtWidgets.QWidget):
 
     def addActor(self, actor):
         """
-        Adds a actor to the table
+        Adds an actor to the table
         """
         if not self.is_batch_add:
             # temporarily disable sorting so our new row
@@ -279,7 +279,7 @@ class ActorList(QtWidgets.QWidget):
 
     def takeActor(self, actor):
         """
-        Removes a actor from the table
+        Removes an actor from the table
         """
         row = self.getRowFor(actor)
 
