@@ -1343,7 +1343,6 @@ class ActorImage_BuzzyBeetle(actorlib.ActorImage_StaticMultiple):  # 24
         actorlib.loadIfNotInImageCache('BuzzyBeetleShellU', 'buzzy_beetle_shell_u.png')
 
     def dataChanged(self):
-
         orient = self.parent.actordata[5] & 15
         if orient == 1:
             self.image = ImageCache['BuzzyBeetleU']
@@ -1370,7 +1369,6 @@ class ActorImage_Spiny(actorlib.ActorImage_StaticMultiple):  # 25
         actorlib.loadIfNotInImageCache('SpinyBall', 'spiny_ball.png')
 
     def dataChanged(self):
-
         orient = self.parent.actordata[5] & 15
         if orient == 1:
             self.image = ImageCache['SpinyBall']
@@ -1681,9 +1679,6 @@ class ActorImage_UnusedSeesaw(actorlib.ActorImage):  # 49
 
 
 class ActorImage_FallingPlatform(ActorImage_WoodenPlatform):  # 50
-    def __init__(self, parent):
-        super().__init__(parent, 1.5)
-
     def dataChanged(self):
         # get width
         raw_width = self.parent.actordata[5] & 0xF
@@ -2221,7 +2216,6 @@ class ActorImage_GroundPiranha(actorlib.ActorImage_StaticMultiple):  # 73
         actorlib.loadIfNotInImageCache('GroundPiranhaU', 'ground_piranha_ceiling.png')
 
     def dataChanged(self):
-
         upsideDown = self.parent.actordata[5] & 1
         if not upsideDown:
             self.yOffset = 14 / 1.5
@@ -2244,7 +2238,6 @@ class ActorImage_BigGroundPiranha(actorlib.ActorImage_StaticMultiple):  # 74
         actorlib.loadIfNotInImageCache('BigGroundPiranhaU', 'big_ground_piranha_ceiling.png')
 
     def dataChanged(self):
-
         upsideDown = self.parent.actordata[5] & 1
         if not upsideDown:
             self.yOffset = -46 / 1.5
@@ -2267,7 +2260,6 @@ class ActorImage_GroundFiretrap(actorlib.ActorImage_StaticMultiple):  # 75
         actorlib.loadIfNotInImageCache('GroundFiretrapU', 'ground_firetrap_ceiling.png')
 
     def dataChanged(self):
-
         upsideDown = self.parent.actordata[5] & 1
         if not upsideDown:
             self.yOffset = -13 / 1.5
@@ -2290,7 +2282,6 @@ class ActorImage_BigGroundFiretrap(actorlib.ActorImage_StaticMultiple):  # 76
         actorlib.loadIfNotInImageCache('BigGroundFiretrapU', 'big_ground_firetrap_ceiling.png')
 
     def dataChanged(self):
-
         upsideDown = self.parent.actordata[5] & 1
         if not upsideDown:
             self.yOffset = -100 / 1.5
@@ -2331,7 +2322,6 @@ class ActorImage_CloudTrampoline(actorlib.ActorImage_StaticMultiple):  # 78
         actorlib.loadIfNotInImageCache('CloudTrSmall', 'cloud_trampoline_small.png')
 
     def dataChanged(self):
-
         size = (self.parent.actordata[4] >> 4) & 1
         if size == 0:
             self.image = ImageCache['CloudTrSmall']
@@ -2533,9 +2523,6 @@ class ActorImage_GiantSpikeBall(actorlib.ActorImage_Static):  # 98
 
 
 class ActorImage_PipeEnemyGenerator(actorlib.ActorImage):  # 99
-    def __init__(self, parent):
-        super().__init__(parent, 1.5)
-
     def dataChanged(self):
         self.actorbox.size = (16, 16)
         direction = (self.parent.actordata[5] & 0xF) & 3
@@ -3043,7 +3030,6 @@ class ActorImage_CoinCheep(actorlib.ActorImage):  # 116
         ImageCache['CheepYellow'] = actorlib.GetPixmap('cheep_yellow.png')
 
     def dataChanged(self):
-
         waitFlag = self.parent.actordata[5] & 1
         if waitFlag:
             self.actorbox.shown = False
@@ -3094,7 +3080,6 @@ class ActorImage_PulseFlameCannon(actorlib.ActorImage_StaticMultiple):  # 117
             onImage.transformed(transform270).mirrored(True, False))
 
     def dataChanged(self):
-
         direction = self.parent.actordata[5] & 15
         if direction > 3:
             direction = 0
@@ -3275,7 +3260,6 @@ class ActorImage_FenceKoopaVert(actorlib.ActorImage_StaticMultiple):  # 126
         actorlib.loadIfNotInImageCache('FenceKoopaVR', 'fencekoopa_vert_red.png')
 
     def dataChanged(self):
-
         color = self.parent.actordata[5] & 1
         if color == 1:
             self.image = ImageCache['FenceKoopaVR']
@@ -3845,7 +3829,6 @@ class ActorImage_BigBrick(actorlib.ActorImage_StaticMultiple):  # 157
             ImageCache[f'BigBrick{power}'] = new
 
     def dataChanged(self):
-
         power = self.parent.actordata[5] & 0xF
         self.image = ImageCache[f'BigBrick{power}']
         super().dataChanged()
@@ -3861,7 +3844,6 @@ class ActorImage_FireSnake(actorlib.ActorImage_StaticMultiple):  # 158
         actorlib.loadIfNotInImageCache('FireSnake', 'fire_snake_1.png')
 
     def dataChanged(self):
-
         move = self.parent.actordata[5] & 15
         if move == 1:
             del self.size
@@ -3905,7 +3887,6 @@ class ActorImage_PipeBubbles(actorlib.ActorImage_StaticMultiple):  # 161
         ImageCache['PipeBubblesL'] = QtGui.QPixmap.fromImage(image.transformed(transform270))
 
     def dataChanged(self):
-
         direction = self.parent.actordata[5] & 15
         if direction == 0 or direction > 3:
             self.dimensions = (0, -52, 32, 53)
@@ -4041,7 +4022,6 @@ class ActorImage_OneWayGate(actorlib.ActorImage_StaticMultiple):  # 174
                 ImageCache[f'1WayGate{flip}{direction}'] = dest
 
     def dataChanged(self):
-
         flag = (self.parent.actordata[5] >> 4) & 1
         direction = self.parent.actordata[5] & 3
         self.image = ImageCache[f'1WayGate{flag}{direction}']
@@ -4553,7 +4533,6 @@ class ActorImage_Clam(actorlib.ActorImage_StaticMultiple):  # 197
         ImageCache['Clam2Coin'] = newPix
 
     def dataChanged(self):
-
         holds = self.parent.actordata[5] & 0xF
         switchdir = self.parent.actordata[4] & 0xF
 
@@ -4624,7 +4603,6 @@ class ActorImage_Icicle(actorlib.ActorImage_StaticMultiple):  # 201
         actorlib.loadIfNotInImageCache('IcicleLargeS', 'icicle_large_static.png')
 
     def dataChanged(self):
-
         size = self.parent.actordata[5] & 1
         if size == 0:
             self.image = ImageCache['IcicleSmallS']
@@ -4912,7 +4890,6 @@ class ActorImage_JumboRay(actorlib.ActorImage_StaticMultiple):  # 224
         ImageCache['JumboRayR'] = QtGui.QPixmap.fromImage(Ray.mirrored(True, False))
 
     def dataChanged(self):
-
         flyleft = self.parent.actordata[4] & 15
         if flyleft:
             self.xOffset = 0
@@ -5044,7 +5021,6 @@ class ActorImage_ExtendShroom(actorlib.ActorImage):  # 228
         ImageCache['ExtendShroomStem'] = actorlib.GetPixmap('extend_shroom_stem.png')
 
     def dataChanged(self):
-
         props = self.parent.actordata[5]
         size = self.parent.actordata[4] & 1
         self.start = (props & 0x10) >> 4
@@ -5658,7 +5634,6 @@ class ActorImage_LavaGeyser(actorlib.ActorImage_StaticMultiple):  # 268
             ImageCache[f'LavaGeyser{i}'] = QtGui.QPixmap.fromImage(lavaGeyser)
 
     def dataChanged(self):
-
         height = self.parent.actordata[4] >> 4
         startsOn = self.parent.actordata[5] & 1
 
@@ -5811,7 +5786,6 @@ class ActorImage_GiantIceBlock(actorlib.ActorImage_StaticMultiple):  # 280
         ImageCache['BigIceBlockSpikeBall'] = actorlib.GetPixmap('big_ice_block_spikeball.png')
 
     def dataChanged(self):
-
         item = self.parent.actordata[5] & 3
         if item > 2:
             item = 0
@@ -5848,7 +5822,6 @@ class ActorImage_RiseFallWater(ActorImage_LiquidOrFog):  # 285
         ImageCache['LiquidWaterRiseCrest'] = actorlib.GetPixmap('liquid_water_rise_crest.png')
 
     def dataChanged(self):
-
         self.risingHeight = ((self.parent.actordata[5] >> 4) & 0xF)* 2 + 2 # distance
         self.depth = (self.parent.actordata[5] & 0xF) * 2 + 2
 
@@ -6013,7 +5986,6 @@ class ActorImage_Box(actorlib.ActorImage_StaticMultiple):  # 289
                     ImageCache[f'Box{style}{size}{itemName}'] = newPix
 
     def dataChanged(self):
-
         style = self.parent.actordata[4] & 1
         size = (self.parent.actordata[5] >> 4) & 3
         item = self.parent.actordata[5] & 0xF
@@ -6070,7 +6042,6 @@ class ActorImage_HeavyParabeetle(actorlib.ActorImage_StaticMultiple):  # 292
         ImageCache['HeavyParabeetleAtYou'] = actorlib.GetPixmap('heavy_parabeetle_atyou.png')
 
     def dataChanged(self):
-
         direction = self.parent.actordata[5] & 0xf
         self.yOffset = -85 / 1.5
 
@@ -6147,7 +6118,6 @@ class ActorImage_MegaBuzzy(actorlib.ActorImage_StaticMultiple):  # 296
         actorlib.loadIfNotInImageCache('MegaBuzzyF', 'megabuzzy_front.png')
 
     def dataChanged(self):
-
         direction = self.parent.actordata[5] & 3
         if direction == 0 or direction > 2:
             self.image = ImageCache['MegaBuzzyR']
@@ -6359,7 +6329,6 @@ class ActorImage_RotCannon(actorlib.ActorImage_StaticMultiple):  # 300
         actorlib.loadIfNotInImageCache('RotCannonU', 'rot_cannon_u.png')
 
     def dataChanged(self):
-
         upsideDown = (self.parent.actordata[5] >> 4) & 1
         if not upsideDown:
             self.image = ImageCache['RotCannon']
@@ -6378,7 +6347,6 @@ class ActorImage_RotCannonPipe(actorlib.ActorImage_StaticMultiple):  # 301
         actorlib.loadIfNotInImageCache('RotCannonPipeU', 'rot_cannon_pipe_u.png')
 
     def dataChanged(self):
-
         upsideDown = (self.parent.actordata[5] >> 4) & 1
         if not upsideDown:
             self.image = ImageCache['RotCannonPipe']
@@ -6397,7 +6365,6 @@ class ActorImage_MontyMole(actorlib.ActorImage_StaticMultiple):  # 303
         actorlib.loadIfNotInImageCache('MoleCave', 'monty_mole_hole.png')
 
     def dataChanged(self):
-
         notInCave = self.parent.actordata[5] & 1
         if not notInCave:  # wow, that looks weird
             self.image = ImageCache['MoleCave']
@@ -6424,7 +6391,6 @@ class ActorImage_RotFlameCannon(actorlib.ActorImage_StaticMultiple):  # 304
             ImageCache[f'RotFlameCannonFlipped{i}'] = mirroredImg
 
     def dataChanged(self):
-
         orientation = self.parent.actordata[5] >> 4
         length = self.parent.actordata[5] & 15
         orientation = '' if orientation == 0 else 'Flipped'
@@ -6470,7 +6436,6 @@ class ActorImage_RotSpotlight(actorlib.ActorImage_StaticMultiple):  # 306
             ImageCache[f'RotSpotlight{i}'] = actorlib.GetPixmap(f'rotational_spotlight_{i}.png')
 
     def dataChanged(self):
-
         angle = self.parent.actordata[3] & 15
         self.image = ImageCache[f'RotSpotlight{angle}']
 
@@ -6577,7 +6542,6 @@ class ActorImage_BubbleGen(actorlib.ActorImage):  # 314
             scene.update()
 
     def realViewZone(self, painter, zoneRect):
-
         # Constants (change these if you want)
         bubbleFrequency = .01
         bubbleEccentricityX = 16
@@ -6977,7 +6941,6 @@ class ActorImage_RopeLadder(actorlib.ActorImage_StaticMultiple):  # 330
         ImageCache['RopeLadder2'] = actorlib.GetPixmap('ropeladder_2.png')
 
     def dataChanged(self):
-
         size = self.parent.actordata[5]
         if size > 2:
             size = 0
@@ -7279,7 +7242,6 @@ class ActorImage_Muncher(actorlib.ActorImage_StaticMultiple):  # 342
         actorlib.loadIfNotInImageCache('MuncherF', 'muncher_frozen.png')
 
     def dataChanged(self):
-
         frozen = self.parent.actordata[5] & 1
         if frozen == 1:
             self.image = ImageCache['MuncherF']
@@ -7473,7 +7435,6 @@ class ActorImage_Fruit(actorlib.ActorImage_StaticMultiple):  # 357
         actorlib.loadIfNotInImageCache('FruitCookie', 'fruit_cookie.png')
 
     def dataChanged(self):
-
         style = self.parent.actordata[5] & 1
         if style == 0:
             self.image = ImageCache['Fruit']
@@ -7640,7 +7601,6 @@ class ActorImage_CubeKinokoRot(actorlib.ActorImage_StaticMultiple):  # 366
         actorlib.loadIfNotInImageCache('CubeKinokoR', 'cube_kinoko_r.png')
 
     def dataChanged(self):
-
         style = self.parent.actordata[4] & 1
         if style == 0:
             self.image = ImageCache['CubeKinokoR']
@@ -7721,7 +7681,6 @@ class ActorImage_SlidingPenguin(actorlib.ActorImage_StaticMultiple):  # 369
         ImageCache['PenguinR'] = QtGui.QPixmap.fromImage(penguin.mirrored(True, False))
 
     def dataChanged(self):
-
         direction = self.parent.actordata[5] & 1
         if direction == 0:
             self.image = ImageCache['PenguinL']
@@ -7964,7 +7923,6 @@ class ActorImage_IceBlock(actorlib.ActorImage_StaticMultiple):  # 385
                 ImageCache[f'IceBlock{i}{j}'] = actorlib.GetPixmap(f'iceblock{i}{j}.png')
 
     def dataChanged(self):
-
         size = self.parent.actordata[5]
         height = (size & 0x30) >> 4
         width = size & 3
@@ -8004,7 +7962,6 @@ class ActorImage_Bush(actorlib.ActorImage_StaticMultiple):  # 387
                 ImageCache[f'Bush{typenum}{sizenum}'] = actorlib.GetPixmap(f'bush_{typestr}_{sizestr}.png')
 
     def dataChanged(self):
-
         props = self.parent.actordata[5]
         style = (props >> 4) & 1
         size = props & 3
@@ -8545,7 +8502,6 @@ class ActorImage_PalmTree(actorlib.ActorImage_StaticMultiple):  # 424
             ImageCache[f'PalmTree{i}'] = actorlib.GetPixmap(f'palmtree_{i}.png')
 
     def dataChanged(self):
-
         size = self.parent.actordata[5] & 7
         self.image = ImageCache[f'PalmTree{size}']
         self.yOffset = 16 - (self.image.height() / 1.5)
@@ -8670,7 +8626,6 @@ class ActorImage_WarpCannon(actorlib.ActorImage_StaticMultiple):  # 434
         ImageCache['Warp2'] = actorlib.GetPixmap('warp_w8.png')
 
     def dataChanged(self):
-
         dest = self.parent.actordata[5] & 3
         if dest == 3:
             dest = 0
@@ -9349,7 +9304,6 @@ class ActorImage_IceFloe(actorlib.ActorImage_StaticMultiple):  # 475
             ImageCache[f'IceFloe{size}'] = QtGui.QPixmap.fromImage(image)
 
     def dataChanged(self):
-
         size = self.parent.actordata[5] & 15
 
         if size > 12:

@@ -397,7 +397,6 @@ class ActorImage_NewerGoomba(actorlib.ActorImage_StaticMultiple):  # 20
             ImageCache[f'Goomba{i + 1}'] = actorlib.GetPixmap(f'goomba_{i + 1}.png')
 
     def dataChanged(self):
-
         color = (self.parent.actordata[2] & 0xF) % 9
 
         if color == 0:
@@ -466,7 +465,6 @@ class ActorImage_NewerBuzzyBeetle(actorlib.ActorImage_StaticMultiple):  # 24
                 ImageCache[f'BuzzyBeetle{colour}ShellU'] = actorlib.GetPixmap(f'buzzy_beetle_{colour}_shell_u.png')
 
     def dataChanged(self):
-
         orient = self.parent.actordata[5] & 15
         colour = self.parent.actordata[2] & 15
         if colour > 7:
@@ -758,7 +756,6 @@ class ActorImage_NewerParaKoopa(actorlib.ActorImage_StaticMultiple):  # 58
 
     @staticmethod
     def loadImages():
-
         if 'ParaKoopaG' not in ImageCache:
             ImageCache['ParaKoopaG'] = actorlib.GetPixmap('parakoopa_green.png')
             ImageCache['ParaKoopaR'] = actorlib.GetPixmap('parakoopa_red.png')
@@ -1207,7 +1204,6 @@ class ActorImage_BigPumpkin(actorlib.ActorImage_StaticMultiple):  # 157
             ImageCache[f'BigPumpkin{power}'] = new
 
     def dataChanged(self):
-
         power = self.parent.actordata[5] & 0xF
         self.image = ImageCache[f'BigPumpkin{power}']
         super().dataChanged()
@@ -1410,7 +1406,6 @@ class ActorImage_NewerGiantGoomba(actorlib.ActorImage_StaticMultiple):  # 198
             ImageCache[f'GiantGoomba{i + 1}'] = actorlib.GetPixmap(f'giant_goomba_{i + 1}.png')
 
     def dataChanged(self):
-
         colour = (self.parent.actordata[2] & 0xF) % 7
 
         if colour == 0:
@@ -1873,7 +1868,6 @@ class ActorImage_NewerMegaBuzzy(actorlib.ActorImage_StaticMultiple):  # 296
             ImageCache[f'MegaBuzzy{style}F'] = actorlib.GetPixmap(f'megabuzzy_{style}_front.png')
 
     def dataChanged(self):
-
         direction = self.parent.actordata[5] & 3
         style = (self.parent.actordata[2] & 0xF) % 10
         dir = ("R", "L", "F", "R")[direction]
@@ -2207,7 +2201,6 @@ class ActorImage_NewerFruit(actorlib.ActorImage_StaticMultiple):  # 357
         actorlib.loadIfNotInImageCache('FruitCherry', 'fruit_cherry.png')
 
     def dataChanged(self):
-
         style = self.parent.actordata[5] & 1
         if style == 0:
             self.image = ImageCache['Fruit']
