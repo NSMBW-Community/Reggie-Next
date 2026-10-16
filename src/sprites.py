@@ -7664,14 +7664,14 @@ class SpriteImage_FlashRaft(SLib.SpriteImage_StaticMultiple):  # 368
 
         self.dimensions = (-5 / 1.5, 0, 322 / 1.5, 36)
 
-        flashRaftAuxImage = SLib.AuxiliaryImage(parent, 344, 87)
-        flashRaftAuxImage.image = ImageCache['FlashlightRaft']
-        flashRaftAuxImage.setPos(-11, -28)
-        self.aux.append(flashRaftAuxImage)
         flashRaftLampAuxImage = SLib.AuxiliaryImage(parent, 132, 120)
         flashRaftLampAuxImage.image = ImageCache['FlashlightLamp']
         flashRaftLampAuxImage.setPos(-33, -120)
         self.aux.append(flashRaftLampAuxImage)
+        flashRaftAuxImage = SLib.AuxiliaryImage(parent, 344, 87)
+        flashRaftAuxImage.image = ImageCache['FlashlightRaft']
+        flashRaftAuxImage.setPos(-11, -28)
+        self.aux.append(flashRaftAuxImage)
 
         pathNodeAuxRect = SLib.AuxiliaryRectOutline(parent, 24, 24, 144, 30)
         pathNodeAuxRect.setIsBehindSprite(False)
