@@ -37,7 +37,7 @@ class ListPropertyDecoder(PropertyDecoder[ListActorField]):
         self.layout.addWidget(label, self.row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
 
         if self.field.idtype is not None:
-            next_free_button = QtWidgets.QPushButton(globals_.trans.string('ActorDataEditor', 29))
+            next_free_button = QtWidgets.QPushButton(globals_.trans.string('CourseActorDataEditor', 29))
             next_free_button.clicked.connect(self.handle_next_free)
 
             self.layout.addWidget(self.widget, self.row, 1)

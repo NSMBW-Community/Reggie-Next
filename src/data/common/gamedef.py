@@ -563,11 +563,11 @@ def LoadGameDef(name: str | None = None):
         if unknown_actor_ids and globals_.ShowUnknownActorWarning:
             actor_ids = sorted(unknown_actor_ids)
 
-            title = globals_.trans.string('Err_UnknownActor', 0)
+            title = globals_.trans.string('Err_UnknownCourseActor', 0)
             if len(actor_ids) == 1:
-                msg = globals_.trans.string('Err_UnknownActor', 1, '[id]', str(actor_ids[0]))
+                msg = globals_.trans.string('Err_UnknownCourseActor', 1, '[id]', str(actor_ids[0]))
             else:
-                msg = globals_.trans.string('Err_UnknownActor', 2, '[ids]', ', '.join(map(str, actor_ids)))
+                msg = globals_.trans.string('Err_UnknownCourseActor', 2, '[ids]', ', '.join(map(str, actor_ids)))
             QtWidgets.QMessageBox.warning(None, title, msg)
 
     # Reload the actor-picker text

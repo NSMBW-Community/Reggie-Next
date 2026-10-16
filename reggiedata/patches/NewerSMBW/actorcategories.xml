@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <views>
-    <view name="NewerSMBW Actors">
+    <view name="NewerSMBW Course Actors">
         <category name="SpriteTex Compatible">
             <attach actor="20-21"/> <!-- Goombas -->
             <attach actor="24"/> <!-- Buzzy Beetle -->

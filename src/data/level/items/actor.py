@@ -66,7 +66,7 @@ class ActorItem(LevelEditorItem):
         if 0 <= actor_num < globals_.NumActors:
             self.name = globals_.Actors[actor_num].name
         else:
-            self.name = globals_.trans.string('Actors', 24)
+            self.name = globals_.trans.string('CourseActors', 24)
 
         self.InitializeActor()
 
@@ -181,9 +181,9 @@ class ActorItem(LevelEditorItem):
         if 0 <= actor_num < globals_.NumActors:
             self.name = globals_.Actors[actor_num].name
         else:
-            self.name = globals_.trans.string('Actors', 24) # 'UNKNOWN'
+            self.name = globals_.trans.string('CourseActors', 24) # 'UNKNOWN'
 
-        self.setToolTip(globals_.trans.string('Actors', 0, '[type]', actor_num, '[name]', self.name))
+        self.setToolTip(globals_.trans.string('CourseActors', 0, '[type]', actor_num, '[name]', self.name))
         self.actor_num = actor_num
 
         self.InitializeActor()
@@ -205,7 +205,7 @@ class ActorItem(LevelEditorItem):
             return
 
         self.name = globals_.Actors[actor_num].name
-        self.setToolTip(globals_.trans.string('Actors', 0, '[type]', self.actor_num, '[name]', self.name))
+        self.setToolTip(globals_.trans.string('CourseActors', 0, '[type]', self.actor_num, '[name]', self.name))
 
         imgs = globals_.gamedef.getImageClasses()
         if actor_num in imgs:

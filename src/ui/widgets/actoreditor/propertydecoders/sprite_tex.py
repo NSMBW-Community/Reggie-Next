@@ -92,7 +92,7 @@ class SpriteTexPropertyDecoder(PropertyDecoder[SpriteTexActorField]):
                 self.comboBox.setCurrentIndex(i)
                 break
         else:
-            self.comboBox.setPlaceholderText(globals_.trans.string('ActorDataEditor', 35, '[id]', str(value)))
+            self.comboBox.setPlaceholderText(globals_.trans.string('CourseActorDataEditor', 35, '[id]', str(value)))
             self.comboBox.setCurrentIndex(-1)
 
     def HandleValueChanged(self, value):

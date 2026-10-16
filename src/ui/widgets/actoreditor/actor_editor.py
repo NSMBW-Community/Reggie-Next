@@ -47,7 +47,7 @@ class ActorEditorWidget(AbstractActorEditorWidget):
         # create the raw editor
         font = QtGui.QFont()
         font.setPointSize(8)
-        self.editbox = QtWidgets.QLabel(globals_.trans.string('ActorDataEditor', 3))
+        self.editbox = QtWidgets.QLabel(globals_.trans.string('CourseActorDataEditor', 3))
         self.editbox.setFont(font)
         edit = QtWidgets.QLineEdit()
         edit.textEdited.connect(self.HandleRawDataEdited)
@@ -57,7 +57,7 @@ class ActorEditorWidget(AbstractActorEditorWidget):
         edit.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.Fixed))
         self.raweditor = edit
 
-        self.resetButton = QtWidgets.QPushButton(globals_.trans.string('ActorDataEditor', 17))
+        self.resetButton = QtWidgets.QPushButton(globals_.trans.string('CourseActorDataEditor', 17))
         self.resetButton.clicked.connect(self.HandleResetData)
 
         editboxlayout = QtWidgets.QHBoxLayout()
@@ -71,28 +71,28 @@ class ActorEditorWidget(AbstractActorEditorWidget):
 
         self.noteButton = QtWidgets.QToolButton()
         self.noteButton.setIcon(GetIcon('sticky-note-text'))
-        self.noteButton.setText(globals_.trans.string('ActorDataEditor', 4))
+        self.noteButton.setText(globals_.trans.string('CourseActorDataEditor', 4))
         self.noteButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.noteButton.setAutoRaise(True)
         self.noteButton.clicked.connect(self.ShowNoteTooltip)
 
         self.depButton = QtWidgets.QToolButton()
         self.depButton.setIcon(GetIcon('node-select-child'))
-        self.depButton.setText(globals_.trans.string('ActorDataEditor', 4))
+        self.depButton.setText(globals_.trans.string('CourseActorDataEditor', 4))
         self.depButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.depButton.setAutoRaise(True)
         self.depButton.clicked.connect(self.ShowDependencies)
 
         self.relatedObjFilesButton = QtWidgets.QToolButton()
         self.relatedObjFilesButton.setIcon(GetIcon('documents-stack'))
-        self.relatedObjFilesButton.setText(globals_.trans.string('ActorDataEditor', 7))
+        self.relatedObjFilesButton.setText(globals_.trans.string('CourseActorDataEditor', 7))
         self.relatedObjFilesButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.relatedObjFilesButton.setAutoRaise(True)
         self.relatedObjFilesButton.clicked.connect(self.ShowRelatedObjFilesTooltip)
 
         self.advNoteButton = QtWidgets.QToolButton()
         self.advNoteButton.setIcon(GetIcon('sticky-note-text-advanced'))
-        self.advNoteButton.setText(globals_.trans.string('ActorDataEditor', 10))
+        self.advNoteButton.setText(globals_.trans.string('CourseActorDataEditor', 10))
         self.advNoteButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.advNoteButton.setAutoRaise(True)
         self.advNoteButton.clicked.connect(self.ShowAdvancedNoteTooltip)
@@ -101,7 +101,7 @@ class ActorEditorWidget(AbstractActorEditorWidget):
 
         self.yoshiInfo = QtWidgets.QToolButton()
         self.yoshiInfo.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
-        self.yoshiInfo.setText(globals_.trans.string('ActorDataEditor', 12))
+        self.yoshiInfo.setText(globals_.trans.string('CourseActorDataEditor', 12))
         self.yoshiInfo.setAutoRaise(True)
         self.yoshiInfo.clicked.connect(self.ShowYoshiTooltip)
 
@@ -110,7 +110,7 @@ class ActorEditorWidget(AbstractActorEditorWidget):
 
         self.sizeButton = QtWidgets.QToolButton()
         self.sizeButton.setIcon(GetIcon('arrow-out'))
-        self.sizeButton.setText(globals_.trans.string('ActorDataEditor', 27))
+        self.sizeButton.setText(globals_.trans.string('CourseActorDataEditor', 27))
         self.sizeButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.sizeButton.setAutoRaise(True)
         self.sizeButton.clicked.connect(self.HandleSizeButtonClicked)
@@ -135,9 +135,9 @@ class ActorEditorWidget(AbstractActorEditorWidget):
         self.msg_layout = QtWidgets.QVBoxLayout()
 
         self.com_main.setReadOnly(True)
-        self.com_more.setText(globals_.trans.string('ActorDataEditor', 13))
+        self.com_more.setText(globals_.trans.string('CourseActorDataEditor', 13))
         self.com_more.clicked.connect(self.ShowMoreComments)
-        self.com_dep.setText(globals_.trans.string('ActorDataEditor', 18))
+        self.com_dep.setText(globals_.trans.string('CourseActorDataEditor', 18))
         self.com_dep.clicked.connect(self.DependencyToggle)
         self.com_dep.setVisible(False)
         self.com_extra.setReadOnly(True)
@@ -244,7 +244,7 @@ class ActorEditorWidget(AbstractActorEditorWidget):
         self.com_box.setVisible(False)
 
         if actor is None:
-            self.actorLabel.setText(globals_.trans.string('ActorDataEditor', 5, '[id]', type_))
+            self.actorLabel.setText(globals_.trans.string('CourseActorDataEditor', 5, '[id]', type_))
             self.noteButton.setVisible(False)
             self.yoshiInfo.setVisible(False)
             self.advNoteButton.setVisible(False)
@@ -253,7 +253,7 @@ class ActorEditorWidget(AbstractActorEditorWidget):
 
             return
 
-        self.actorLabel.setText(globals_.trans.string('ActorDataEditor', 6, '[id]', type_, '[name]', actor.name))
+        self.actorLabel.setText(globals_.trans.string('CourseActorDataEditor', 6, '[id]', type_, '[name]', actor.name))
 
         self.noteButton.setVisible(actor.notes is not None)
         if actor.notes is not None:
@@ -302,8 +302,8 @@ class ActorEditorWidget(AbstractActorEditorWidget):
         # if there are missing things
         # Required
         for missing_actor in missing[0]:
-            name = globals_.trans.string('ActorDataEditor', 20, '[id]', missing_actor)
-            action = globals_.trans.string('ActorDataEditor', 26)
+            name = globals_.trans.string('CourseActorDataEditor', 20, '[id]', missing_actor)
+            action = globals_.trans.string('CourseActorDataEditor', 26)
             addButton = QtWidgets.QPushButton(action)
 
             message = self.addMessage(name, level = 0, close = action)
@@ -319,8 +319,8 @@ class ActorEditorWidget(AbstractActorEditorWidget):
 
         # Suggested
         for missing_actor in missing[1]:
-            name = globals_.trans.string('ActorDataEditor', 21, '[id]', missing_actor)
-            action = globals_.trans.string('ActorDataEditor', 26)
+            name = globals_.trans.string('CourseActorDataEditor', 21, '[id]', missing_actor)
+            action = globals_.trans.string('CourseActorDataEditor', 26)
 
             addButton = QtWidgets.QPushButton(action)
             addButton.clicked.connect(self.HandleActorPlaced(missing_actor, addButton))
@@ -331,8 +331,8 @@ class ActorEditorWidget(AbstractActorEditorWidget):
 
         # Resource
         for missing_actor in missing[2]:
-            name = globals_.trans.string('ActorDataEditor', 30, '[id]', missing_actor)
-            action = globals_.trans.string('ActorDataEditor', 31)
+            name = globals_.trans.string('CourseActorDataEditor', 30, '[id]', missing_actor)
+            action = globals_.trans.string('CourseActorDataEditor', 31)
             addButton = QtWidgets.QPushButton(action)
 
             message = self.addMessage(name, level = 3, close = action)
@@ -348,8 +348,8 @@ class ActorEditorWidget(AbstractActorEditorWidget):
 
         # Suggested Resource
         for missing_actor in missing[3]:
-            name = globals_.trans.string('ActorDataEditor', 30, '[id]', missing_actor)
-            action = globals_.trans.string('ActorDataEditor', 31)
+            name = globals_.trans.string('CourseActorDataEditor', 30, '[id]', missing_actor)
+            action = globals_.trans.string('CourseActorDataEditor', 31)
 
             addButton = QtWidgets.QPushButton(action)
             addButton.clicked.connect(self.HandleAppendToLoadList(missing_actor, addButton))
@@ -441,13 +441,13 @@ class ActorEditorWidget(AbstractActorEditorWidget):
             if hasattr(actor, 'layer_title'):
                 title = actor.layer_title
             else:
-                title = globals_.trans.string('ActorDataEditor', 32)
+                title = globals_.trans.string('CourseActorDataEditor', 32)
 
             if hasattr(actor, 'layer_comment'):
                 comment = actor.layer_comment
             else:
-                comment = globals_.trans.string('ActorDataEditor', 33)
-            strList = globals_.trans.stringList('ActorDataEditor', 34)
+                comment = globals_.trans.string('CourseActorDataEditor', 33)
+            strList = globals_.trans.stringList('CourseActorDataEditor', 34)
             if strList is None:
                 return
             itemList = [(0, strList[0]), (1, strList[1]), (2, strList[2])]
@@ -649,12 +649,12 @@ class ActorEditorWidget(AbstractActorEditorWidget):
 
         if self.com_extra.isVisible():
             self.com_extra.setVisible(False)
-            self.com_more.setText(globals_.trans.string('ActorDataEditor', 13))
+            self.com_more.setText(globals_.trans.string('CourseActorDataEditor', 13))
             self.com_main.setVisible(True)
 
         else:
             self.com_extra.setVisible(True)
-            self.com_more.setText(globals_.trans.string('ActorDataEditor', 14))
+            self.com_more.setText(globals_.trans.string('CourseActorDataEditor', 14))
             self.com_main.setVisible(False)
 
     def ShowDependencies(self):
@@ -665,7 +665,7 @@ class ActorEditorWidget(AbstractActorEditorWidget):
         self.com_main.setVisible(True)
         self.com_extra.setVisible(False)
         self.com_deplist_w.setVisible(False)
-        self.com_dep.setText(globals_.trans.string('ActorDataEditor', 18))
+        self.com_dep.setText(globals_.trans.string('CourseActorDataEditor', 18))
         self.com_dep.setVisible(self.com_deplist.count() > 0)
         self.com_box.setVisible(True)
 
@@ -674,12 +674,12 @@ class ActorEditorWidget(AbstractActorEditorWidget):
         The button was clicked
         """
         if not self.com_main.isVisible():
-            self.com_dep.setText(globals_.trans.string('ActorDataEditor', 18))
+            self.com_dep.setText(globals_.trans.string('CourseActorDataEditor', 18))
             self.com_main.setVisible(True)
             self.com_deplist_w.setVisible(False)
 
         else:
-            self.com_dep.setText(globals_.trans.string('ActorDataEditor', 19))
+            self.com_dep.setText(globals_.trans.string('CourseActorDataEditor', 19))
             self.com_main.setVisible(False)
             self.com_deplist_w.setVisible(True)
 

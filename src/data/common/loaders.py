@@ -404,20 +404,20 @@ def LoadActorData() -> None:
             attribs = actor.keys()
 
             if 'notes' in attribs:
-                notes = globals_.trans.string('ActorDataEditor', 2, '[notes]', actor.get('notes'))
+                notes = globals_.trans.string('CourseActorDataEditor', 2, '[notes]', actor.get('notes'))
 
             if 'advancednotes' in attribs:
-                advNotes = globals_.trans.string('ActorDataEditor', 11, '[notes]', actor.get('advancednotes'))
+                advNotes = globals_.trans.string('CourseActorDataEditor', 11, '[notes]', actor.get('advancednotes'))
 
             if 'files' in attribs:
                 actor_files = actor.get('files')
                 if actor_files is None:
                     continue
-                relatedObjFiles = globals_.trans.string('ActorDataEditor', 8, '[list]',
+                relatedObjFiles = globals_.trans.string('CourseActorDataEditor', 8, '[list]',
                                                 actor_files.replace(';', '<br>* '))
 
             if 'yoshinotes' in attribs:
-                yoshiNotes = globals_.trans.string('ActorDataEditor', 9, '[notes]',
+                yoshiNotes = globals_.trans.string('CourseActorDataEditor', 9, '[notes]',
                                                 actor.get('yoshinotes'))
 
             noyoshi = actor.get('noyoshi', 'False') == "True"
@@ -449,10 +449,10 @@ def LoadActorData() -> None:
 
     # Warn the user if errors occurred
     if errors:
-        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_BrokenActorData', 0),
-                                      globals_.trans.string('Err_BrokenActorData', 1, '[actors]', ', '.join(errors)),
+        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_BrokenCourseActorData', 0),
+                                      globals_.trans.string('Err_BrokenCourseActorData', 1, '[actors]', ', '.join(errors)),
                                       QtWidgets.QMessageBox.StandardButton.Ok)
-        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_BrokenActorData', 2), repr(errortext))
+        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_BrokenCourseActorData', 2), repr(errortext))
 
 
 def ReloadActorData():
@@ -488,7 +488,7 @@ def LoadActorCategories(reload_: bool = False) -> None:
 
     globals_.ActorCategories = []
     # Add a Search category
-    globals_.ActorCategories.append(ActorCategory(globals_.trans.string('Actors', 19), [ActorSubCategory(globals_.trans.string('Actors', 16), list(range(globals_.NumActors)))], []))
+    globals_.ActorCategories.append(ActorCategory(globals_.trans.string('CourseActors', 19), [ActorSubCategory(globals_.trans.string('CourseActors', 16), list(range(globals_.NumActors)))], []))
     globals_.ActorCategories[0].sub_categories[0].actor_ids.append(9999)  # 'no results' special case
     for path in paths:
         if path is None:

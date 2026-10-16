@@ -18,7 +18,7 @@ class ActorOrderList(QtWidgets.QWidget):
 
         self.is_batch_add = False
 
-        headers = [globals_.trans.string('Actors', 21), globals_.trans.string('Actors', 22)]
+        headers = [globals_.trans.string('CourseActors', 21), globals_.trans.string('CourseActors', 22)]
 
         self.table = ActorTableWidget(0, len(headers))
         self.table.setHorizontalHeaderLabels(headers)
@@ -43,8 +43,8 @@ class ActorOrderList(QtWidgets.QWidget):
         self.table.itemDoubleClicked.connect(ActorItem.moveToActor)
         self.table.itemEntered.connect(self.toolTip)
 
-        self.move_up_btn = QtWidgets.QPushButton(globals_.trans.string('Actors', 25))
-        self.move_down_btn = QtWidgets.QPushButton(globals_.trans.string('Actors', 26))
+        self.move_up_btn = QtWidgets.QPushButton(globals_.trans.string('CourseActors', 25))
+        self.move_down_btn = QtWidgets.QPushButton(globals_.trans.string('CourseActors', 26))
 
         self.move_up_btn.clicked.connect(lambda: self.moveActor(0))
         self.move_down_btn.clicked.connect(lambda: self.moveActor(1))

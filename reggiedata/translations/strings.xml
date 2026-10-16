@@ -19,104 +19,6 @@
         <string id="5">View Changelog</string>
         <string id="6">Close</string>
     </section>
-    <section id="ActorDataEditor">
-        <string id="0">Modify Selected Actor Properties</string>
-        <string id="1">[b][name][/b]: [note]</string>
-        <string id="2">[b]Actor Notes:[/b] [notes]</string>
-        <string id="3">Modify Raw Data:</string>
-        <string id="4">Notes</string>
-        <string id="5">[b]Unidentified/Unknown Actor ([id])[/b]</string>
-        <string id="6">[b]Actor [id]:[br][name][/b]</string>
-        <string id="7">Object Files</string>
-        <string id="8">[b]This actor loads:[/b][br]* [list]</string>
-        <string id="9">[b]Yoshi Notes:[/b] [notes]</string>
-        <string id="10">Advanced Notes</string>
-        <string id="11">[b]Advanced Notes:[/b] [notes]</string>
-        <string id="12">Notes</string>
-        <string id="13">Read more...</string>
-        <string id="14">Read less...</string>
-        <string id="15">This actor works properly with Yoshi.</string>
-        <string id="16" />
-        <string id="17">Reset all settings</string>
-        <string id="18">Check dependent actors</string>
-        <string id="19">Check dependency notes</string>
-        <string id="20">Actor [id]: required in area</string>
-        <string id="21">Actor [id]: suggested in area</string>
-        <string id="22">Actor [id]: required in zone</string>
-        <string id="23">Actor [id]: suggested in zone</string>
-        <string id="24" />
-        <string id="25">This actor has the following dependencies:</string>
-        <string id="26">Add Actor</string>
-        <string id="27">Resize</string>
-        <string id="28">NO TITLE GIVEN!</string>
-        <string id="29">Next Free</string>
-        <string id="30">Actor [id]: required resource</string>
-        <string id="31">Add to Loaded Actors</string>
-        <string id="32">Layer</string>
-        <string id="33">[b]Layer[/b]: This determines what layer the actor will be active on. In almost all cases, you'll want to use Layer 1.</string>
-        <stringlist id="34">
-            <entry>Layer 1</entry>
-            <entry>Layer 2</entry>
-            <entry>Layer 0</entry>
-        </stringlist>
-        <string id="35">[id]: Undefined Entry</string>
-    </section>
-    <section id="Actors">
-        <string id="0">[b]Actor [type]:[/b][br][name]</string>
-        <string id="1" />
-        <string id="2" />
-        <string id="3" />
-        <string id="4" />
-        <string id="5" />
-        <string id="6" />
-        <string id="7" />
-        <string id="8" />
-        <string id="9" />
-        <string id="10" />
-        <string id="11" />
-        <string id="12" />
-        <string id="13" />
-        <string id="14" />
-        <string id="15" />
-        <string id="16">Search Results</string>
-        <string id="17">No actors found</string>
-        <string id="18">[id]: [name]</string>
-        <string id="19">Search</string>
-        <string id="20">Filter</string>
-        <string id="21">ID</string>
-        <string id="22">Name</string>
-        <stringlist id="23">
-            <entry>Any</entry>
-            <entry>Rotation ID</entry>
-            <entry>Two Way Line ID</entry>
-            <entry>Water Ball ID</entry>
-            <entry>Mushroom ID</entry>
-            <entry>Group ID</entry>
-            <entry>Bolt ID</entry>
-            <entry>Target Event ID</entry>
-            <entry>Triggering Event ID</entry>
-            <entry>Collection ID</entry>
-            <entry>Location ID</entry>
-            <entry>Message ID</entry>
-            <entry>Path ID</entry>
-            <entry>Path Movement ID</entry>
-            <entry>Red Coin ID</entry>
-            <entry>Hill ID</entry>
-            <entry>Stretch ID</entry>
-            <entry>Ray ID</entry>
-            <entry>Coaster ID</entry>
-            <entry>Bubble Cannon ID</entry>
-            <entry>Burner ID</entry>
-            <entry>Wiggling ID</entry>
-            <entry>Panel ID</entry>
-            <entry>Colony ID</entry>
-            <entry>Entrance ID</entry>
-            <entry>Path Node ID</entry>
-        </stringlist>
-        <string id="24">UNKNOWN</string>
-        <string id="25">Move Up</string>
-        <string id="26">Move Down</string>
-    </section>
     <section id="AreaCombobox">
         <string id="0">Area [num]</string>
     </section>
@@ -172,17 +74,17 @@
         <string id="43">[b]Useless Option 3:[/b] This serves no purpose in-game.</string>
         <string id="44">Useless Option 4</string>
         <string id="45">[b]Useless Option 4:[/b] This serves no purpose in-game.</string>
-        <string id="46">Loaded Actors</string>
-        <string id="47">Add Actor</string>
-        <string id="48">Remove Selected Actor</string>
+        <string id="46">Loaded Course Actors</string>
+        <string id="47">Add Course Actor</string>
+        <string id="48">Remove Selected Course Actor</string>
         <string id="49">Present in this area:</string>
         <string id="50">Custom list:</string>
-        <string id="51">On the left is a list of actors already present in the area (their resources will be loaded by default). On the right, you can add more actors you'd like to load the resources for.</string>
-        <string id="52">Type an Actor ID...</string>
+        <string id="51">On the left is a list of course actors already present in the area (their resources will be loaded by default). On the right, you can add more course actors you'd like to load the resources for.</string>
+        <string id="52">Type a Course Actor ID...</string>
         <string id="53">UNKNOWN</string>
-        <string id="54">Resources loaded by Actor [num]:</string>
+        <string id="54">Resources loaded by Course Actor [num]:</string>
         <string id="55">[i]No resources found.[/i]</string>
-        <string id="56">[i]Select any actor to view the resources it loads.[/i]</string>
+        <string id="56">[i]Select any course actor to view the resources it loads.[/i]</string>
     </section>
     <section id="AreaImportDlg">
         <string id="0">Import Area from Level</string>
@@ -269,7 +171,7 @@
         <string id="1">Add</string>
         <string id="2">Remove</string>
         <string id="3">Modify Selected Camera Profile Properties</string>
-        <string id="4">[b]Modify Selected Camera Profile Properties:[/b][br]Camera Profiles can only be used with the "Event-Controlled" camera mode in the "Zones" dialog.[br][br]Transitions between zoom levels are instant, but can be hidden through careful use of zoom actors (206).</string>
+        <string id="4">[b]Modify Selected Camera Profile Properties:[/b][br]Camera Profiles can only be used with the "Event-Controlled" camera mode in the "Zones" dialog.[br][br]Transitions between zoom levels are instant, but can be hidden through careful use of zoom course actors (206).</string>
         <string id="5">Triggering Event ID:</string>
         <string id="6">[b]Triggering Event ID:[/b][br]Sets the event ID that will trigger the camera profile. If switching away from a different profile, the previous profile's event ID will be automatically deactivated (so the game doesn't instantly switch back to it).</string>
         <string id="7">Camera Profile on Event [id]</string>
@@ -312,6 +214,104 @@
         <string id="3">(empty)</string>
         <string id="4">...</string>
     </section>
+    <section id="CourseActorDataEditor">
+        <string id="0">Modify Selected Course Actor Properties</string>
+        <string id="1">[b][name][/b]: [note]</string>
+        <string id="2">[b]Course Actor Notes:[/b] [notes]</string>
+        <string id="3">Modify Raw Data:</string>
+        <string id="4">Notes</string>
+        <string id="5">[b]Unidentified/Unknown Course Actor ([id])[/b]</string>
+        <string id="6">[b]Course Actor [id]:[br][name][/b]</string>
+        <string id="7">Object Files</string>
+        <string id="8">[b]This course actor loads:[/b][br]* [list]</string>
+        <string id="9">[b]Yoshi Notes:[/b] [notes]</string>
+        <string id="10">Advanced Notes</string>
+        <string id="11">[b]Advanced Notes:[/b] [notes]</string>
+        <string id="12">Notes</string>
+        <string id="13">Read more...</string>
+        <string id="14">Read less...</string>
+        <string id="15">This course actor works properly with Yoshi.</string>
+        <string id="16" />
+        <string id="17">Reset all settings</string>
+        <string id="18">Check dependent course actors</string>
+        <string id="19">Check dependency notes</string>
+        <string id="20">Course actor [id]: required in area</string>
+        <string id="21">Course actor [id]: suggested in area</string>
+        <string id="22">Course actor [id]: required in zone</string>
+        <string id="23">Course actor [id]: suggested in zone</string>
+        <string id="24" />
+        <string id="25">This course actor has the following dependencies:</string>
+        <string id="26">Add Course Actor</string>
+        <string id="27">Resize</string>
+        <string id="28">NO TITLE GIVEN!</string>
+        <string id="29">Next Free</string>
+        <string id="30">Course actor [id]: required resource</string>
+        <string id="31">Add to Loaded Course Actors</string>
+        <string id="32">Layer</string>
+        <string id="33">[b]Layer[/b]: This determines what layer the course actor will be active on. In almost all cases, you'll want to use Layer 1.</string>
+        <stringlist id="34">
+            <entry>Layer 1</entry>
+            <entry>Layer 2</entry>
+            <entry>Layer 0</entry>
+        </stringlist>
+        <string id="35">[id]: Undefined Entry</string>
+    </section>
+    <section id="CourseActors">
+        <string id="0">[b]Course Actor [type]:[/b][br][name]</string>
+        <string id="1" />
+        <string id="2" />
+        <string id="3" />
+        <string id="4" />
+        <string id="5" />
+        <string id="6" />
+        <string id="7" />
+        <string id="8" />
+        <string id="9" />
+        <string id="10" />
+        <string id="11" />
+        <string id="12" />
+        <string id="13" />
+        <string id="14" />
+        <string id="15" />
+        <string id="16">Search Results</string>
+        <string id="17">No course actors found</string>
+        <string id="18">[id]: [name]</string>
+        <string id="19">Search</string>
+        <string id="20">Filter</string>
+        <string id="21">ID</string>
+        <string id="22">Name</string>
+        <stringlist id="23">
+            <entry>Any</entry>
+            <entry>Rotation ID</entry>
+            <entry>Two Way Line ID</entry>
+            <entry>Water Ball ID</entry>
+            <entry>Mushroom ID</entry>
+            <entry>Group ID</entry>
+            <entry>Bolt ID</entry>
+            <entry>Target Event ID</entry>
+            <entry>Triggering Event ID</entry>
+            <entry>Collection ID</entry>
+            <entry>Location ID</entry>
+            <entry>Message ID</entry>
+            <entry>Path ID</entry>
+            <entry>Path Movement ID</entry>
+            <entry>Red Coin ID</entry>
+            <entry>Hill ID</entry>
+            <entry>Stretch ID</entry>
+            <entry>Ray ID</entry>
+            <entry>Coaster ID</entry>
+            <entry>Bubble Cannon ID</entry>
+            <entry>Burner ID</entry>
+            <entry>Wiggling ID</entry>
+            <entry>Panel ID</entry>
+            <entry>Colony ID</entry>
+            <entry>Entrance ID</entry>
+            <entry>Path Node ID</entry>
+        </stringlist>
+        <string id="24">UNKNOWN</string>
+        <string id="25">Move Up</string>
+        <string id="26">Move Down</string>
+    </section>
     <section id="DeleteArea">
         <string id="0">Are you [b]sure[/b] you want to delete this area?[br][br]The level will automatically save afterwards - there is no way[br]you can undo the deletion or get it back afterwards!</string>
         <string id="1">Delete Area</string>
@@ -320,9 +320,9 @@
         <string id="0">Level Diagnostics Tool</string>
         <string id="1" />
         <string id="2">Some objects in the level are not found in the tileset files.</string>
-        <string id="3">There are actors in this area which are known to cause the game to crash.</string>
-        <string id="4">There are actors in this area which have settings which are known to cause the game to crash.</string>
-        <string id="5">There are too many actors in this area.</string>
+        <string id="3">There are course actors in this area which are known to cause the game to crash.</string>
+        <string id="4">There are course actors in this area which have settings which are known to cause the game to crash.</string>
+        <string id="5">There are too many course actors in this area.</string>
         <string id="6">There are entrances with duplicate IDs.</string>
         <string id="7">There is no start entrance in this area.</string>
         <string id="8">The start entrance is too close to the left edge of the zone.</string>
@@ -402,9 +402,9 @@
         <string id="6">[id]: [name] (enterable) at [x], [y]</string>
         <string id="7">(goes to world map)</string>
     </section>
-    <section id="Err_BrokenActorData">
+    <section id="Err_BrokenCourseActorData">
         <string id="0">Warning</string>
-        <string id="1">The actor data file didn't load correctly. The following actors have incorrect and/or broken data in them, and may not be editable correctly in the editor: [actors]</string>
+        <string id="1">The course actor data file didn't load correctly. The following course actors have incorrect and/or broken data in them, and may not be editable correctly in the editor: [actors]</string>
         <string id="2">Errors</string>
     </section>
     <section id="Err_CantFindLevel">
@@ -448,10 +448,10 @@
         <string id="2">Error while Reggie was trying to save the level:[br]The original file data ([orig-len] bytes) exceeded the fixed length ([pad-len] bytes).[br][br](Your work has not been saved! Increase the fixed length in the Preferences Dialog.)</string>
         <string id="3">Error while Reggie was trying to save the level:[br]An error occurred while compressing the level. Is it too big? The uncompressed size is [file-size] bytes.[br][br](Your work has not been saved! Try saving without compression or removing elements from your level.)</string>
     </section>
-    <section id="Err_UnknownActor">
+    <section id="Err_UnknownCourseActor">
         <string id="0">Warning</string>
-        <string id="1">This level contains actor ID [id], which is not defined in the current game patch. The actor will be displayed as "UNKNOWN" but can still be edited and saved.</string>
-        <string id="2">This level contains actor IDs ([ids]) which are not defined in the current game patch. These actors will be displayed as "UNKNOWN" but can still be edited and saved.</string>
+        <string id="1">This level contains a course actor ID [id], which is not defined in the current game patch. The course actor will be displayed as "UNKNOWN" but can still be edited and saved.</string>
+        <string id="2">This level contains course actor IDs ([ids]) which are not defined in the current game patch. These course actors will be displayed as "UNKNOWN" but can still be edited and saved.</string>
     </section>
     <section id="ExternalOptionDlg">
         <string id="0">Actors</string>
@@ -474,7 +474,7 @@
         <string id="10">LZ-Compressed Level Archives</string>
     </section>
     <section id="Gamedefs">
-        <string id="0">This game has custom actor images</string>
+        <string id="0">This game has custom course actor images</string>
         <string id="1" />
         <string id="2">New Game Patch</string>
         <string id="3">It appears that this is your first time using the game patch for [game]. Please select its Stage folder so custom tilesets and levels can be loaded.</string>
@@ -510,7 +510,7 @@
         <string id="11">Verify Password:</string>
         <string id="12">Level Information</string>
         <string id="13">Password may be composed of any ASCII character,[br]and up to 64 characters long.[br]</string>
-        <string id="14">Sorry![br][br]You can only view or edit Level Information in Area 1.</string>
+        <string id="14" />
         <string id="15">(unknown version)</string>
     </section>
     <section id="LocationDataEditor">
@@ -585,8 +585,8 @@
         <string id="37">Find and fix problems with the level</string>
         <string id="38">Freeze Objects</string>
         <string id="39">Make objects non-selectable</string>
-        <string id="40">Freeze Actors</string>
-        <string id="41">Make actors non-selectable</string>
+        <string id="40">Freeze Course Actors</string>
+        <string id="41">Make actors actors non-selectable</string>
         <string id="42">Freeze Entrances</string>
         <string id="43">Make entrances non-selectable</string>
         <string id="44">Freeze Locations</string>
@@ -599,10 +599,10 @@
         <string id="51">Toggle viewing of object layer 1</string>
         <string id="52">Show Layer 2</string>
         <string id="53">Toggle viewing of object layer 2</string>
-        <string id="54">Show Actors</string>
-        <string id="55">Toggle viewing of actors</string>
-        <string id="56">Show Actor Images</string>
-        <string id="57">Toggle viewing of actor images</string>
+        <string id="54">Show Course Actors</string>
+        <string id="55">Toggle viewing of course actors</string>
+        <string id="56">Show Course Actor Images</string>
+        <string id="57">Toggle viewing of course actor images</string>
         <string id="58">Show Locations</string>
         <string id="59">Toggle viewing of locations</string>
         <string id="60">Switch Grid</string>
@@ -681,8 +681,8 @@
         <string id="139">Reload the actordata file, including any changes made since the level was loaded</string>
         <string id="140">Camera Profiles...</string>
         <string id="141">Edit event-activated camera settings</string>
-        <string id="142">Switch Actor IDs...</string>
-        <string id="143">Switches all actors of one ID to another</string>
+        <string id="142">Switch Course Actor IDs...</string>
+        <string id="143">Switches all course actors of one ID to another</string>
         <string id="144">Show Entrances</string>
         <string id="145">Toggle viewing of entrances</string>
         <string id="146">Generate Strings XML</string>
@@ -718,10 +718,10 @@
         <string id="8">Entrances currently in this area:[br](Double-click one to jump to it instantly)</string>
         <string id="9">Path nodes currently in this area:[br](Double-click one to jump to it instantly)[br]To delete a path, remove all its nodes one by one.[br]To add new paths, hit the button below and right click.</string>
         <string id="10">Deselect (then right click for new path)</string>
-        <string id="11">Actors currently in this area:[br](Double-click one to jump to it instantly)</string>
+        <string id="11">Course actors currently in this area:[br](Double-click one to jump to it instantly)</string>
         <string id="12">Locations currently in this area:[br](Double-click one to jump to it instantly)</string>
         <string id="13">Objects</string>
-        <string id="14">Actors</string>
+        <string id="14">Course Actors</string>
         <string id="15">Entrances</string>
         <string id="16">Locations</string>
         <string id="17">Paths</string>
@@ -734,7 +734,7 @@
         <string id="24">Event [id]</string>
         <string id="25">Add</string>
         <string id="26">Current</string>
-        <string id="27">Available stamps:[br](Select one or more objects/actors to create one)</string>
+        <string id="27">Available stamps:[br](Select one or more objects/course actors to create one)</string>
         <string id="28">Add</string>
         <string id="29">Remove</string>
         <string id="30">Tools</string>
@@ -746,8 +746,8 @@
         <string id="36">Change Layer</string>
         <string id="37">Copy Selected to Clipboard</string>
         <string id="38">[b]Note:[/b] To switch objects on other layers to this layer, select them and then click this button while holding down the [i]Alt[/i] key.</string>
-        <string id="39">Actor Order</string>
-        <string id="40">Use this tab to modify the order of actors within the level file.[br]The actor order can sometimes change behavior between actors.</string>
+        <string id="39">Order</string>
+        <string id="40">Use this tab to modify the order of course actors within the level file.[br]The course actor order can sometimes change behavior between course actors.</string>
         <string id="41">New Stamp</string>
     </section>
     <section id="PathDataEditor">
@@ -805,7 +805,7 @@
         <string id="30">You will need to restart Reggie Next for certain changes to take effect.</string>
         <string id="31">Display lines indicating the leftmost x-position where entrances can be safely placed in zones</string>
         <string id="32" />
-        <string id="33">Reset actor data when hiding actor fields</string>
+        <string id="33">Reset course actor data when hiding course actor fields</string>
         <string id="34" />
         <string id="35">Pad level with null bytes</string>
         <string id="36">Fixed level size (bytes):</string>
@@ -818,7 +818,7 @@
         <string id="43">[b][name][/b][br]Default language for Reggie Next.</string>
         <string id="44">[b][name][/b] - Version [version][br]Translators: [translator]</string>
         <string id="45">Use Rounded Rectangles</string>
-        <string id="46">[b]Use Rounded Rectangles:[/b][br]This makes the corners of actors, entrances, path nodes, and comments appear rounded instead of sharp.</string>
+        <string id="46">[b]Use Rounded Rectangles:[/b][br]This makes the corners of course actors, entrances, path nodes, and comments appear rounded instead of sharp.</string>
         <string id="47">Dark Mode</string>
         <string id="48">[b]Dark Mode:[/b][br]This determines the overall color style Reggie uses, independent from the current theme.[br][br]Note that this may cause issues with certain themes.</string>
         <string id="49">Display full file path of opened level</string>
@@ -863,7 +863,7 @@
             <entry>Every 15 seconds</entry>
         </stringlist>
         <string id="74">[b]Error Checking Frequency:[/b][br]This determines how often the Auto-Diagnostic Tool will check for errors.</string>
-        <string id="75">Display warnings when unknown actors are present in the level</string>
+        <string id="75">Display warnings when unknown course actors are present in the level</string>
         <string id="76">Move selected level items when pressing the arrow keys</string>
         <string id="77">Reset Toolbar</string>
         <string id="78">Are you sure you want to reset the toolbar to its default configuration?[br]This cannot be undone.</string>
@@ -872,9 +872,9 @@
         <string id="81">Show tileset preview in Area Options</string>
     </section>
     <section id="ResizeChoiceDlg">
-        <string id="0">Let's resize your actor. In order to do this, choose one of the two modes, based on the below information. Note that some choices can overlap with other settings, leading to undesired effects.</string>
+        <string id="0">Let's resize your course actor. In order to do this, choose one of the two modes, based on the below information. Note that some choices can overlap with other settings, leading to undesired effects.</string>
         <string id="1" />
-        <string id="2">Please note that there already is a resizer actor that affects this actor. All changes made here will apply to the entire zone/area so be careful.</string>
+        <string id="2">Please note that there already is a resizer course actor that affects this course actor. All changes made here will apply to the entire zone/area so be careful.</string>
         <string id="3">Choose from either the Selective or Global Resizer modes:</string>
         <string id="4">Create Resizer</string>
         <string id="5">Update Resizer</string>
@@ -883,15 +883,15 @@
         <string id="8">Nybble 7</string>
         <string id="9">Global</string>
         <string id="10" />
-        <string id="11">Actor Resizer</string>
+        <string id="11">Course Actor Resizer</string>
         <string id="12">This feature is not available for the current game patch.</string>
-        <string id="13">The Selective Resizer will resize individual actors based on its Nybble 5 or 7 value, allowing control over which actors are resized,[br]as well as the scale of each actor. Choose whichever nybble is not occupied by an existing setting on this actor.</string>
-        <string id="14">The Global Resizer will change the size of [i]every[/i] actor that supports this feature.[br]</string>
+        <string id="13">The Selective Resizer will resize individual course actors based on its Nybble 5 or 7 value, allowing control over which course actors are resized,[br]as well as the scale of each course actor. Choose whichever nybble is not occupied by an existing setting on this course actor.</string>
+        <string id="14">The Global Resizer will change the size of [i]every[/i] course actor that supports this feature.[br]</string>
         <string id="15">Selective Resizer</string>
         <string id="16">Global Resizer</string>
         <string id="17">Global Resizer Scale:</string>
-        <string id="18">Warning: This actor has one or more settings that overlap Nybble [id].</string>
-        <string id="19">Warning: This actor has one or more settings that overlap both Nybbles 5 and 7.</string>
+        <string id="18">Warning: This course actor has one or more settings that overlap Nybble [id].</string>
+        <string id="19">Warning: This course actor has one or more settings that overlap both Nybbles 5 and 7.</string>
     </section>
     <section id="ScrShtDlg">
         <string id="0">Level Screenshot</string>
@@ -920,12 +920,12 @@
     </section>
     <section id="Statusbar">
         <string id="0">- 1 object selected</string>
-        <string id="1">- 1 actor selected</string>
+        <string id="1">- 1 course actor selected</string>
         <string id="2">- 1 entrance selected</string>
         <string id="3">- 1 location selected</string>
         <string id="4">- 1 path node selected</string>
         <string id="5">- [x] objects selected</string>
-        <string id="6">- [x] actors selected</string>
+        <string id="6">- [x] course actors selected</string>
         <string id="7">- [x] entrances selected</string>
         <string id="8">- [x] locations selected</string>
         <string id="9">- [x] path nodes selected</string>
@@ -933,8 +933,8 @@
         <string id="11">, </string>
         <string id="12">1 object</string>
         <string id="13">[x] objects</string>
-        <string id="14">1 actor</string>
-        <string id="15">[x] actors</string>
+        <string id="14">1 course actor</string>
+        <string id="15">[x] course actors</string>
         <string id="16">1 entrance</string>
         <string id="17">[x] entrances</string>
         <string id="18">1 location</string>
@@ -943,7 +943,7 @@
         <string id="21">[x] path nodes</string>
         <string id="22">)</string>
         <string id="23">- Object under mouse: size [width]x[height] at ([xpos], [ypos]) on layer [layer]; type [type] from tileset [tileset]</string>
-        <string id="24">- Actor under mouse: [name] at [xpos], [ypos]</string>
+        <string id="24">- Course actor under mouse: [name] at [xpos], [ypos]</string>
         <string id="25">- Entrance under mouse: [name] at [xpos], [ypos] [dest]</string>
         <string id="26">- Location under mouse: Location ID [id] at [xpos], [ypos]; width [width], height [height]</string>
         <string id="27">- Path node under mouse: Path [path], Node [node] at [xpos], [ypos]</string>
@@ -972,10 +972,10 @@
         <string id="4">Swap</string>
         <string id="5">Close</string>
     </section>
-    <section id="SwitchActorDlg">
-        <string id="0">Switch Actor IDs</string>
-        <string id="1">From Actor:</string>
-        <string id="2">To Actor:</string>
+    <section id="SwitchCourseActorDlg">
+        <string id="0">Switch Course Actor IDs</string>
+        <string id="1">From Course Actor:</string>
+        <string id="2">To Course Actor:</string>
         <string id="3">Switch</string>
         <string id="4">Close</string>
     </section>
@@ -1027,7 +1027,7 @@
         <string id="26">Layer 0 Spotlight</string>
         <string id="27">[b]Visibility - Layer 0 Spotlight:[/b][br]Sets the visibility mode to spotlight. In Spotlight mode, moving behind layer 0 objects enables a spotlight that follows Mario around.</string>
         <string id="28">Full Darkness</string>
-        <string id="29">[b]Visibility - Full Darkness:[/b][br]Sets the visibility mode to full darkness. In full dark mode, the screen is completely black and visibility is only provided by the available spotlight effect. Stars and some actors can enhance the default visibility.</string>
+        <string id="29">[b]Visibility - Full Darkness:[/b][br]Sets the visibility mode to full darkness. In full dark mode, the screen is completely black and visibility is only provided by the available spotlight effect. Stars and some course actors can enhance the default visibility.</string>
         <string id="30" />
         <string id="31" />
         <string id="32" />
@@ -1067,7 +1067,7 @@
             <entry>Darkness: Small Focus Light</entry>
             <entry>Darkness: Absolute Black</entry>
         </stringlist>
-        <string id="46">[b]Visibility:[/b][br]Large Foglight - A large, organic lightsource surrounds Mario[br]Lightbeam - Mario is able to aim a conical lightbeam through use of the Wiimote[br]Large Focus Light - A large spotlight which changes size based upon player movement[br]Small Foglight - A small, organic lightsource surrounds Mario[br]Small Focuslight - A small spotlight which changes size based on player movement[br]Absolute Black - Visibility is provided only by fireballs, stars, and certain actors</string>
+        <string id="46">[b]Visibility:[/b][br]Large Foglight - A large, organic lightsource surrounds Mario[br]Lightbeam - Mario is able to aim a conical lightbeam through use of the Wiimote[br]Large Focus Light - A large spotlight which changes size based upon player movement[br]Small Foglight - A small, organic lightsource surrounds Mario[br]Small Focuslight - A small spotlight which changes size based on player movement[br]Absolute Black - Visibility is provided only by fireballs, stars, and certain course actors</string>
         <string id="47">Bounds</string>
         <string id="48">Upper Bounds:</string>
         <string id="49">[b]Upper Bounds:[/b][br] - Positive Values: Easier to scroll upwards (110 is centered)[br] - Negative Values: Harder to scroll upwards (30 is the top edge of the screen)[br][br]Values higher than 240 can cause instant death upon screen scrolling</string>
@@ -1097,7 +1097,7 @@
             <entry>None*</entry>
         </stringlist>
         <string id="58">Boss Flag:</string>
-        <string id="59">[b]Boss Flag:[/b][br]Set for bosses to allow proper music switching by actors</string>
+        <string id="59">[b]Boss Flag:[/b][br]Set for bosses to allow proper music switching by course actors</string>
         <string id="60">(None)</string>
         <string id="61">Error</string>
         <string id="62" />

@@ -601,7 +601,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Actor Editor
         self.actorDataEditor = ActorEditorWidget()
         self.actorDataEditor.DataUpdate.connect(self.ActorDataUpdated)
-        actor_dock = self.CreateDockWidget(globals_.trans.string('ActorDataEditor', 0), 'spriteeditor', self.actorDataEditor,
+        actor_dock = self.CreateDockWidget(globals_.trans.string('CourseActorDataEditor', 0), 'spriteeditor', self.actorDataEditor,
                                             features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True)
         self.actorEditorDock = actor_dock
 
@@ -1983,11 +1983,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 actor_ids = sorted(globals_.Area.unknown_actor_ids)
 
                 if len(actor_ids) == 1:
-                    msg = globals_.trans.string('Err_UnknownActor', 1, '[id]', str(actor_ids[0]))
+                    msg = globals_.trans.string('Err_UnknownCourseActor', 1, '[id]', str(actor_ids[0]))
                 else:
-                    msg = globals_.trans.string('Err_UnknownActor', 2, '[ids]', ', '.join(map(str, actor_ids)))
+                    msg = globals_.trans.string('Err_UnknownCourseActor', 2, '[ids]', ', '.join(map(str, actor_ids)))
 
-                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_UnknownActor', 0), msg)
+                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_UnknownCourseActor', 0), msg)
 
         self.reset_area()
 

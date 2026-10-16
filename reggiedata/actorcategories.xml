@@ -553,7 +553,7 @@
             <attach actor="459"/> <!-- Crowd Clapper1 -->
             <attach actor="461"/> <!-- Crowd Clapper2 -->
         </category>
-        <category name="Unused Actors">
+        <category name="Unused Course Actors">
             <attach actor="1-9"/>
             <attach actor="49"/>
             <attach actor="55"/>
@@ -590,7 +590,7 @@
             <attach actor="167-168"/>
             <attach actor="273"/>
         </category>
-        <category name="Incomplete (Useless) Actors">
+        <category name="Incomplete (Useless) Course Actors">
             <attach actor="29"/>
             <attach actor="79"/>
             <attach actor="88-89"/>
