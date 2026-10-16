@@ -7629,14 +7629,14 @@ class ActorImage_FlashRaft(actorlib.ActorImage_StaticMultiple):  # 368
 
         self.dimensions = (-5 / 1.5, 0, 322 / 1.5, 36)
 
-        flashRaftAuxImage = actorlib.AuxiliaryImage(parent, 344, 87)
-        flashRaftAuxImage.image = ImageCache['FlashlightRaft']
-        flashRaftAuxImage.setPos(-11, -28)
-        self.aux.append(flashRaftAuxImage)
         flashRaftLampAuxImage = actorlib.AuxiliaryImage(parent, 132, 120)
         flashRaftLampAuxImage.image = ImageCache['FlashlightLamp']
         flashRaftLampAuxImage.setPos(-33, -120)
         self.aux.append(flashRaftLampAuxImage)
+        flashRaftAuxImage = actorlib.AuxiliaryImage(parent, 344, 87)
+        flashRaftAuxImage.image = ImageCache['FlashlightRaft']
+        flashRaftAuxImage.setPos(-11, -28)
+        self.aux.append(flashRaftAuxImage)
 
         pathNodeAuxRect = actorlib.AuxiliaryRectOutline(parent, 24, 24, 144, 30)
         pathNodeAuxRect.setIsBehindActor(False)
