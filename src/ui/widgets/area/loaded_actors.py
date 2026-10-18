@@ -186,14 +186,14 @@ class LoadedActorsTab(QtWidgets.QWidget):
         resources = globals_.trans.string('AreaDlg', 55) # 'No resources found.'
 
         # Get the actor ID from the name string
-        actor_id = int(selected[0].data().split(']')[0][1:])
+        sprite_id = int(selected[0].data().split(']')[0][1:])
 
-        if actor_id < globals_.NumActors:
-            actor_res = globals_.Actors[actor_id].relatedObjFiles
-            if actor_res is not None:
-                # Remove the prefix used by the Actor Editor
-                resources = actor_res.removeprefix('<b>This actor loads:</b><br>')
+        if sprite_id < globals_.NumSprites:
+            sprite_res = globals_.Sprites[sprite_id].relatedObjFiles
+            if sprite_res is not None:
+                # Remove the prefix used by the Sprite Editor
+                resources = sprite_res.removeprefix('<b>This sprite loads:</b><br>')
 
         # Update the display
-        self.res_label.setText(globals_.trans.string('AreaDlg', 54, '[num]', actor_id))
+        self.res_label.setText(globals_.trans.string('AreaDlg', 54, '[num]', sprite_id))
         self.res_list.setText(resources)

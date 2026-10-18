@@ -82,9 +82,9 @@
         <string id="51">On the left is a list of sprites already present in the level (their resources will be loaded by default). On the right, you can add more sprites you'd like to load the resources for.</string>
         <string id="52">Type a Sprite ID...</string>
         <string id="53">UNKNOWN</string>
-        <string id="54">Resources loaded by Actor [num]:</string>
+        <string id="54">Resources loaded by Sprite [num]:</string>
         <string id="55">[i]No resources found.[/i]</string>
-        <string id="56">[i]Select any actor to view the resources it loads.[/i]</string>
+        <string id="56">[i]Select any sprite to view the resources it loads.[/i]</string>
     </section>
     <section id="AreaImportDlg">
         <string id="0">Import Area from Level</string>
