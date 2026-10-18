@@ -15,6 +15,7 @@ from data.level.items.entrance import EntranceItem
 from data.level.items.location import LocationItem
 from data.level.items.object import ObjectItem
 from data.level.items.zone import ZoneItem
+from data.level.metadata import Metadata
 from data.level.legacy_metadata import LegacyMetadata
 from ui.widgets.actoreditor.propertydecoders.property_decoder import (
     PropertyDecoder,
@@ -76,7 +77,8 @@ class Area:
         self.force_loaded_actors: set[int] = set()
         self.actor_idtypes: dict[str, dict[int, int]] = {}  # {idtype: {id: number of usages of id}}
 
-        self.MetaData: Metadata | None = None
+        self.legacy_metadata: LegacyMetadata | None = None
+        self.metadata: Metadata | None = None
         self._is_loaded: bool = False
 
         if self.areanum == -1:
@@ -104,7 +106,7 @@ class Area:
         # Mark the area as loaded
         self._is_loaded = True
 
-    def set_data(self, course: bytes, L0: bytes | None, L1: bytes | None, L2: bytes | None) -> None:
+    def set_data(self, course: bytes, L0: bytes | None, L1: bytes | None, L2: bytes | None, meta: bytes | None) -> None:
         """
         Assigns the archive file data to this area.
         """
@@ -112,6 +114,7 @@ class Area:
         self.L0 = L0
         self.L1 = L1
         self.L2 = L2
+        self.meta = meta
 
     def unload(self) -> None:
         """
@@ -121,8 +124,9 @@ class Area:
 
         del self.blocks
         del self.layers
-        del self.Metadata
+        del self.legacy_metadata
         del self.tilesets
+        del self.metadata
         del self.screen_wrap_flag
         del self.unused_flag_1
         del self.unused_flag_2
@@ -153,6 +157,8 @@ class Area:
         # already initialised self.blocks)
         if self.course is not None:
             self.LoadBlocks(self.course)
+
+        self.metadata = Metadata()
 
         # Load the editor metadata
         if self.course is not None and self.block1pos[0] != 0x70:
@@ -204,13 +210,13 @@ class Area:
         self._is_loaded = True
         return True
 
-    def save(self) -> tuple[bytes | None, bytes | None, bytes | None, bytes | None]:
+    def save(self) -> tuple[bytes | None, bytes | None, bytes | None, bytes | None, bytes | None]:
         """
         Save the area back to a file
         """
         # first handle the case that the area is not loaded
         if not self._is_loaded:
-            return (self.course, self.L0, self.L1, self.L2)
+            return (self.course, self.L0, self.L1, self.L2, self.meta)
 
         # prepare this because otherwise the game refuses to load some actors
         self.SortActorsByZone()
@@ -226,7 +232,12 @@ class Area:
         self.SaveCamProfiles()  # block 12
         self.SavePaths()  # blocks 13 and 14
 
-        rdata = bytearray(self.Metadata.save())
+        # Save metadata stuff
+        if globals_.mainWindow is not None:
+            globals_.mainWindow.palette_dock.event_tab.save_event_notes()
+        self.SaveComments()
+
+        rdata = bytearray(self.legacy_metadata.save())
         if len(rdata) % 4 != 0:
             rdata += bytes(4 - (len(rdata) % 4))
 
@@ -261,7 +272,10 @@ class Area:
         self.L1 = self.SaveLayer(1)
         self.L2 = self.SaveLayer(2)
 
-        return (self.course, self.L0, self.L1, self.L2)
+        if self.metadata is not None:
+            self.meta = self.metadata.save()
+
+        return (self.course, self.L0, self.L1, self.L2, self.meta)
 
     def RemoveFromLayer(self, obj: ObjectItem) -> None:
         """
@@ -286,11 +300,15 @@ class Area:
         self.actors.sort(key = lambda s: compKey(self.zones, s))
 
     def LoadReggieInfo(self, data: bytes | None) -> None:
+        self.metadata = Metadata()
+        if self.meta is not None:
+            self.metadata.load(self.meta)
+
         if not data:
-            self.Metadata = LegacyMetadata()
+            self.legacy_metadata = LegacyMetadata()
             return
 
-        self.Metadata = LegacyMetadata(data)
+        self.legacy_metadata = LegacyMetadata(data)
 
     def LoadBlocks(self, course: bytes) -> None:
         """
@@ -548,50 +566,88 @@ class Area:
 
     def LoadComments(self) -> None:
         """
-        Loads the comments from self.Metadata
+        Loads the comments from the metadata
         """
         self.comments = []
-        data = self.Metadata.binData(f'InLevelComments_A{self.areanum}')
+        data = None
+
+        comments: list[dict] = self.metadata.get_meta_data('comments')
+        if comments is not None:
+            data = comments
+
+            # Read all of the comments
+            for com in comments:
+                pos_x = int(com['pos_x'])
+                pos_y = int(com['pos_y'])
+                text = com['text']
+
+                com = CommentItem(pos_x, pos_y, text)
+                com.listitem = QtWidgets.QListWidgetItem()
+
+                self.comments.append(com)
+                com.UpdateListItem()
+
+        # JSON comments don't exist, try the old metadata
         if data is None:
-            return
+            data = self.legacy_metadata.binData(f'InLevelComments_A{self.areanum}')
+            if data is None:
+                return
 
-        idx = 0
-        while idx < len(data):
-            xpos, ypos, tlen_maybe = struct.unpack_from(">3I", data, idx)
-            idx += 3 * 4
+            # Read binary comment data
+            idx = 0
+            while idx < len(data):
+                xpos, ypos, tlen_maybe = struct.unpack_from(">3I", data, idx)
+                idx += 3 * 4
 
-            if tlen_maybe == 0xFFFF_FFFF:
-                # Updated version - the number of code points is stored in the
-                # next int.
-                tlen, = struct.unpack_from(">I", data, idx)
-                text = data[idx + 4: idx + 4 + tlen].decode("utf-8")
-                idx += 4 + tlen
-            else:
-                # Old version provided for compatibility. Also tries to properly
-                # load non-ascii comments, but that might not work out...
-                tlen = tlen_maybe
-                try:
-                    text = data[idx: idx + tlen].decode("ascii")
-                    idx += tlen
-                except UnicodeDecodeError:
-                    # You used non-ascii characters... Try to save the comment
-                    # The xpos is probably not > 2 ** 24, so the next comment
-                    # starts with a null byte. We can use that to find the end
-                    # of our string
-                    null_idx = data.find(b"\0", idx)
-                    if null_idx == -1:
-                        # This is probably the last comment...
-                        null_idx = len(data)
+                if tlen_maybe == 0xFFFF_FFFF:
+                    # Updated version - the number of code points is stored in the
+                    # next int.
+                    tlen, = struct.unpack_from(">I", data, idx)
+                    text = data[idx + 4: idx + 4 + tlen].decode("utf-8")
+                    idx += 4 + tlen
+                else:
+                    # Old version provided for compatibility. Also tries to properly
+                    # load non-ascii comments, but that might not work out...
+                    tlen = tlen_maybe
+                    try:
+                        text = data[idx: idx + tlen].decode("ascii")
+                        idx += tlen
+                    except UnicodeDecodeError:
+                        # You used non-ascii characters... Try to save the comment
+                        # The xpos is probably not > 2 ** 24, so the next comment
+                        # starts with a null byte. We can use that to find the end
+                        # of our string
+                        null_idx = data.find(b"\0", idx)
+                        if null_idx == -1:
+                            # This is probably the last comment...
+                            null_idx = len(data)
 
-                    text = data[idx: null_idx].decode("utf-8")[:tlen]
-                    idx = null_idx
+                        text = data[idx: null_idx].decode("utf-8")[:tlen]
+                        idx = null_idx
 
-            com = CommentItem(xpos, ypos, text)
-            com.listitem = QtWidgets.QListWidgetItem()
+                com = CommentItem(xpos, ypos, text)
+                com.listitem = QtWidgets.QListWidgetItem()
 
-            self.comments.append(com)
+                self.comments.append(com)
 
-            com.UpdateListItem()
+                com.UpdateListItem()
+
+    def SaveComments(self):
+        """
+        Saves the comments data back to self.metadata
+        """
+        comments = []
+
+        # Get all of the comment data
+        for comment in globals_.Area.comments:
+            data = {}
+            data['pos_x'] = comment.objx
+            data['pos_y'] = comment.objy
+            data['text'] = comment.text
+
+            comments.append(data)
+
+        globals_.Area.metadata.set_meta_data('comments', comments)
 
     def SaveTilesetNames(self) -> None:
         """

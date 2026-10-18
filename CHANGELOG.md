@@ -67,6 +67,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The README view in the About dialog now uses markdown formatting.
 - Sprites are now renamed to Actors across the entire codebase and in the editor.
 - The music list now uses the track order in music.txt instead of sorting by numerical ID.
+- Overhauled the level metadata system to be cleaner and easier to use.
 
 ### Removed
 
@@ -91,6 +92,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed some actor images leaving artifacts when rotated.
 - Fixed the autosave message not applying the color scheme set in the preferences.
 - The music list can no longer add tracks with IDs > 255.
+- The Level Information dialog can now be opened in any area.
 
 ## [4.10.0] - 2026-07-25
 
