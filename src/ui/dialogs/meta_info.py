@@ -74,12 +74,12 @@ class MetaInfoDialog(QtWidgets.QDialog):
         self.setWindowIcon(GetIcon('information-frame'))
 
         metadata = cast(NSMBWLevel, globals_.Level).metadata
-        title = metadata.get_meta_string('title')
-        author = metadata.get_meta_string('author')
-        group = metadata.get_meta_string('group')
-        website = metadata.get_meta_string('website')
-        creator = metadata.get_meta_string('creator')
-        password = metadata.get_meta_string('password')
+        title = metadata.get_meta_data('title')
+        author = metadata.get_meta_data('author')
+        group = metadata.get_meta_data('group')
+        website = metadata.get_meta_data('website')
+        creator = metadata.get_meta_data('creator')
+        password = metadata.get_meta_data('password')
 
         # Set defaults
         if title is None:
@@ -170,7 +170,7 @@ class MetaInfoDialog(QtWidgets.QDialog):
         self.update_password('')
 
     def update_password(self, text: str) -> None:
-        password = cast(NSMBWLevel, globals_.Level).metadata.get_meta_string('password')
+        password = cast(NSMBWLevel, globals_.Level).metadata.get_meta_data('password')
         if password is None:
             password = ''
 
@@ -200,7 +200,7 @@ class MetaInfoDialog(QtWidgets.QDialog):
                 self.password_label.setVisible(True)
 
             password = str(dlg.verify_pass.text())
-            cast(NSMBWLevel, globals_.Level).metadata.set_meta_string('password', password)
+            cast(NSMBWLevel, globals_.Level).metadata.set_meta_data('password', password)
             self.password_field.setText(password)
             SetDirty()
 

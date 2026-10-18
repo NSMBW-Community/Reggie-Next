@@ -47,14 +47,14 @@ class NSMBWLevel(AbstractLevel):
             return False
 
         # Sort the area data
-        areaData = [[None, None, None, None], [None, None, None, None], [None, None, None, None], [None, None, None, None]]
+        areaData = [[None, None, None, None, None], [None, None, None, None, None], [None, None, None, None, None], [None, None, None, None, None]]
         for name, val in arc.files:
             if val is None:
                 continue
 
             name = name.replace('\\', '/').split('/')[-1]
 
-            # Course metadata
+            # Level-wide metadata
             if name == 'metadata.json':
                 self.metadata.load(val)
                 continue
@@ -62,41 +62,62 @@ class NSMBWLevel(AbstractLevel):
             if not name.startswith('course'):
                 continue
 
-            if not name.endswith('.bin'):
-                continue
+            is_bin = name.endswith('.bin')
 
-            if '_bgdatL' in name:
+            if '_bgdatL' in name and is_bin:
                 # It's a layer file
-                if len(name) != 19: continue
+                if len(name) != 19:
+                    continue
+
                 try:
                     thisArea = int(name[6])
                     laynum = int(name[14])
                 except ValueError:
                     continue
-                if not (0 < thisArea < 5): continue
+
+                if not (0 < thisArea < 5):
+                    continue
 
                 areaData[thisArea - 1][laynum + 1] = val
-            else:
-                # It's the course file
-                if len(name) != 11: continue
+            elif '_metadata' in name:
+                # It's metadata
+                if len(name) != 21:
+                    continue
+
                 try:
                     thisArea = int(name[6])
                 except ValueError:
                     continue
-                if not (0 < thisArea < 5): continue
+
+                if not (0 < thisArea < 5):
+                    continue
+
+                areaData[thisArea - 1][4] = val
+            else:
+                # It's the course file
+                if len(name) != 11:
+                    continue
+
+                try:
+                    thisArea = int(name[6])
+                except ValueError:
+                    continue
+
+                if not (0 < thisArea < 5):
+                    continue
 
                 areaData[thisArea - 1][0] = val
 
         # Create area objects
         self.areas = []
         for i, d in enumerate(areaData, 1):
-            course, L0, L1, L2 = d
+            course, L0, L1, L2, meta = d
 
             if course is None:
                 continue
 
             new_area = Area(i)
-            new_area.set_data(course, L0, L1, L2)
+            new_area.set_data(course, L0, L1, L2, meta)
             self.areas.append(new_area)
 
         self.areas[areaToLoad - 1].load()
@@ -120,33 +141,36 @@ class NSMBWLevel(AbstractLevel):
         for i, area in enumerate(self.areas):
             assert area.areanum == i + 1, (area.areanum, i + 1)
 
-            course, L0, L1, L2 = area.save()
+            course, L0, L1, L2, area_meta = area.save()
 
             # Layers 0 and 2 are optional, but the game assumes that the course
             # file and layer 1 will always exist (see dBg_c::CheckExistLayer())
-            newArchive['course/course%d.bin' % area.areanum] = course
-            newArchive['course/course%d_bgdatL1.bin' % area.areanum] = L1
+            newArchive[f'course/course{area.areanum}.bin'] = course
+            newArchive[f'course/course{area.areanum}_bgdatL1.bin'] = L1
 
             if L0 is not None:
-                newArchive['course/course%d_bgdatL0.bin' % area.areanum] = L0
+                newArchive[f'course/course{area.areanum}_bgdatL0.bin'] = L0
 
             if L2 is not None:
-                newArchive['course/course%d_bgdatL2.bin' % area.areanum] = L2
+                newArchive[f'course/course{area.areanum}_bgdatL2.bin'] = L2
 
-            meta = self.metadata.save()
-            if meta is not None:
-                newArchive['course/metadata.json'] = meta
+            if area_meta is not None:
+                newArchive[f'course/course{area.areanum}_metadata.json'] = area_meta
+
+        meta = self.metadata.save()
+        if meta is not None:
+            newArchive['course/metadata.json'] = meta
 
         # return the U8 archive data
         return newArchive._dump()
 
-    def appendArea(self, course_new, L0_new, L1_new, L2_new):
+    def appendArea(self, course_new, L0_new, L1_new, L2_new, meta_new):
         """
         Creates a new area and adds it to the current level.
         """
         # Add new area
         new_area = Area(len(self.areas) + 1)
-        new_area.set_data(course_new, L0_new, L1_new, L2_new)
+        new_area.set_data(course_new, L0_new, L1_new, L2_new, meta_new)
         self.areas.append(new_area)
 
     def changeArea(self, number):

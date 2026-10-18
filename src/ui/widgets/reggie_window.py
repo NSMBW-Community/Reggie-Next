@@ -744,11 +744,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         dlg = MetaInfoDialog()
         if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             metadata = cast(NSMBWLevel, globals_.Level).metadata
-            metadata.set_meta_string('creator', f'Reggie! Next {globals_.ReggieVersionShort}')
-            metadata.set_meta_string('title', dlg.name_field.text())
-            metadata.set_meta_string('author', dlg.author_field.text())
-            metadata.set_meta_string('group', dlg.group_field.text())
-            metadata.set_meta_string('website', dlg.website_field.text())
+            metadata.set_meta_data('creator', f'Reggie! Next {globals_.ReggieVersionShort}')
+            metadata.set_meta_data('title', dlg.name_field.text())
+            metadata.set_meta_data('author', dlg.author_field.text())
+            metadata.set_meta_data('group', dlg.group_field.text())
+            metadata.set_meta_data('website', dlg.website_field.text())
 
             SetDirty()
 
@@ -981,7 +981,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             return
 
         newID = len(globals_.Level.areas) + 1
-        globals_.Level.appendArea(None, None, None, None)
+        globals_.Level.appendArea(None, None, None, None, None)
 
         if not self.HandleSave():
             globals_.Level.deleteArea(newID)
@@ -1013,15 +1013,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
         area = dlg.area_combo.currentIndex() + 1
 
         # Get the required files
-        reqcourse = 'course%d.bin' % area
-        reqL0 = 'course%d_bgdatL0.bin' % area
-        reqL1 = 'course%d_bgdatL1.bin' % area
-        reqL2 = 'course%d_bgdatL2.bin' % area
+        reqcourse = f'course{area}.bin'
+        reqL0 = f'course{area}_bgdatL0.bin'
+        reqL1 = f'course{area}_bgdatL1.bin'
+        reqL2 = f'course{area}_bgdatL2.bin'
+        req_meta = f'course{area}_metadata.json'
 
         course = None
         L0 = None
         L1 = None
         L2 = None
+        meta = None
 
         for item, val in dlg.archive.files:
             if val is not None:
@@ -1034,9 +1036,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     L1 = val
                 elif fname == reqL2:
                     L2 = val
+                elif fname == req_meta:
+                    meta = val
 
         # Add the area to our level
-        globals_.Level.appendArea(course, L0, L1, L2)
+        globals_.Level.appendArea(course, L0, L1, L2, meta)
         new_id = globals_.Level.areas[-1].areanum
 
         if not self.HandleSave():
@@ -1686,25 +1690,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         self.view.centerOn(x, y)
         self.level_overview.update()
-
-    def SaveComments(self):
-        """
-        Saves the comments data back to self.Metadata
-        """
-        b = b""
-        for com in globals_.Area.comments:
-            text_data = com.text.encode("utf-8")
-            # A previous version of this format used the third integer to store
-            # the length (number of characters) of the comment string. This
-            # makes reading comments back very hard, as a single character can
-            # consist of multiple points.
-            # So, to indicate we're using the new version, we set a length of
-            # 2 ** 32 - 1, and we add an extra int to store the number of bytes
-            # in the utf-8 encoding of the comment text.
-            b += struct.pack(">4I", com.objx, com.objy, 0xFFFF_FFFF, len(text_data))
-            b += text_data
-
-        globals_.Area.Metadata.setBinData('InLevelComments_A%d' % globals_.Area.areanum, b)
 
     def closeEvent(self, a0):
         """

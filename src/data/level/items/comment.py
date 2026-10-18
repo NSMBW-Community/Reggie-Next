@@ -95,7 +95,7 @@ class CommentItem(LevelEditorItem):
             globals_.mainWindow.palette_dock.comment_tab.comment_list.addItem(com.listitem)
             globals_.mainWindow.scene.addItem(com)
             globals_.Area.comments.append(com)
-            globals_.mainWindow.SaveComments()
+            globals_.Area.SaveComments()
 
             com.setVisible(globals_.CommentsShown)
             com.UpdateListItem()
@@ -115,7 +115,7 @@ class CommentItem(LevelEditorItem):
         self.handlePosChange(oldx, oldy)
         self.UpdateListItem()
         if self == globals_.mainWindow.selObj:
-            globals_.mainWindow.SaveComments()
+            globals_.Area.SaveComments()
             SetDirty()
 
     def text_changed(self) -> None:
@@ -127,7 +127,7 @@ class CommentItem(LevelEditorItem):
 
         self.UpdateListItem()
         self.UpdateTooltip()
-        globals_.mainWindow.SaveComments()
+        globals_.Area.SaveComments()
         SetDirty()
 
     def mousePressEvent(self, event: QtWidgets.QGraphicsSceneMouseEvent | None) -> None:
@@ -312,7 +312,7 @@ class CommentItem(LevelEditorItem):
         if scene is not None:
             scene.update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
 
-        globals_.mainWindow.SaveComments()
+        globals_.Area.SaveComments()
         setOverrideCursor(None)
 
     def hoverMoveEvent(self, event: QtWidgets.QGraphicsSceneHoverEvent | None) -> None:

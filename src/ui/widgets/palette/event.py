@@ -69,49 +69,58 @@ class EventTab(QtWidgets.QWidget):
         new_text = self.note_editor.text()
 
         # Set the text to the event chooser
-        currentItem = self.event_tree.selectedItems()[0]
-        currentItem.setText(1, new_text)
+        current_item = self.event_tree.selectedItems()[0]
+        current_item.setText(1, new_text)
 
-        # Save all the events to the metadata
-        data = b""
-        for i in range(64):
-            event_note = str(self.event_tree_items[i].text(1))
-            if not event_note:
-                continue
-
-            encoded = event_note.encode('utf-8')
-
-            # Add the event ID, note length and note to the data.
-            data += struct.pack(">2I", i, len(encoded))
-            data += encoded
-
-        globals_.Area.Metadata.setBinData('EventNotes_A%d' % globals_.Area.areanum, data)
+        self.save_event_notes()
         SetDirty()
 
     def load_event_data(self):
         """
-        Configures the Events tab from the data in globals_.Area.defEvents
+        Configures the Events tab from the default events
         """
         default_events = globals_.Area.default_events
         checked = Qt.CheckState.Checked
         unchecked = Qt.CheckState.Unchecked
 
-        data = globals_.Area.Metadata.binData('EventNotes_A%d' % globals_.Area.areanum)
-        eventTexts = {}
+        data = None
+        event_notes = {}
+
+        data = globals_.Area.metadata.get_meta_data('event_notes')
         if data is not None:
-            # Iterate through the data
-            idx = 0
+            # The keys are strings when loaded from the JSON
+            # so we need to convert them back into ints
+            for k, v in data.items():
+                event_notes[int(k)] = v
+        else:
+            data = globals_.Area.legacy_metadata.binData('EventNotes_A%d' % globals_.Area.areanum)
+            if data is not None:
+                # Iterate through the data
+                idx = 0
 
-            while idx < len(data):
-                event_id, str_len = struct.unpack_from(">2I", data, idx)
-                eventTexts[event_id] = data[idx + 8:idx + 8 + str_len].decode('utf-8')
+                while idx < len(data):
+                    event_id, str_len = struct.unpack_from(">2I", data, idx)
+                    event_notes[event_id] = data[idx + 8:idx + 8 + str_len].decode('utf-8')
 
-                idx += 8 + str_len
+                    idx += 8 + str_len
 
         for i, item in enumerate(self.event_tree_items):
             item.setCheckState(0, checked if (default_events & (1 << i)) != 0 else unchecked)
-            item.setText(1, eventTexts.get(i, ""))
+            item.setText(1, event_notes.get(i, ""))
             item.setSelected(False)
 
         self.event_tree_items[0].setSelected(True)
-        self.note_editor.setText(eventTexts.get(0, ""))
+        self.note_editor.setText(event_notes.get(0, ""))
+
+    def save_event_notes(self) -> None:
+        """
+        Save event notes back to the metadata
+        """
+        event_notes = {}
+
+        for idx in range(64):
+            note = str(self.event_tree_items[idx].text(1))
+            if note != '':
+                event_notes[idx] = note
+
+        globals_.Area.metadata.set_meta_data('event_notes', event_notes)

@@ -412,7 +412,7 @@
         <string id="11">Verify Password:</string>
         <string id="12">Level Information</string>
         <string id="13">Password may be composed of any ASCII character,[br]and up to 64 characters long.[br]</string>
-        <string id="14">Sorry![br][br]You can only view or edit Level Information in Area 1.</string>
+        <string id="14" />
         <string id="15">(unknown version)</string>
     </section>
     <section id="LocationDataEditor">

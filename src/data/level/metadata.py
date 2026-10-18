@@ -1,4 +1,5 @@
 import json
+from typing import Any
 
 class Metadata:
     """
@@ -13,39 +14,33 @@ class Metadata:
 
     def load(self, data: bytes) -> None:
         """
-        Loads the course metadata
+        Loads the metadata
         """
         self.data = json.loads(data.decode())
 
     def save(self) -> bytes:
         """
-        Returns the course metadata as bytes
+        Returns the metadata as bytes
         """
         return json.dumps(self.data).encode()
 
-    def get_meta_string(self, key: str) -> str | None:
+    def get_meta_data(self, key: str) -> Any:
         """
-        Returns a metadata string
+        Returns a metadata value
         """
         try:
             return self.data[key]
         except KeyError:
             return None
 
-    def set_meta_string(self, key: str, val: str) -> None:
+    def set_meta_data(self, key: str, val: Any) -> None:
         """
         Sets a metadata value
         """
-        # This key differs between the original Reggie metadata and
+        # This key differs between the original level metadata and
         # the pre-JSON system, causing this data to no longer appear
         # in the metadata dialog
         if key == 'Webpage':
             key = 'website'
-        self.data[key.lower()] = val
 
-    def set_meta_strings(self, keys: list[str], vals: list[str]) -> None:
-        """
-        Sets multiple metadata strings
-        """
-        for key, val in keys, vals:
-            self.set_meta_string(key, val)
+        self.data[key.lower()] = val

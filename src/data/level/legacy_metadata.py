@@ -35,9 +35,12 @@ class LegacyMetadata:
                     'Webpage', 'Password'
                 })
 
-                # Pass these to the new metadata system
+                # Pass these to the new system
                 for k, v in info.items():
-                    cast('NSMBWLevel', globals_.Level).metadata.set_meta_string(k, v)
+                    cast('NSMBWLevel', globals_.Level).metadata.set_meta_data(k, v)
+
+                    # Keep compatibility with older Reggie Next versions
+                    self.setStrData(k, v)
             except ValueError:
                 pass
 
@@ -87,8 +90,7 @@ class LegacyMetadata:
 
                 # Check if we have level metadata, and pass it into the JSON metadata
                 if key in ['Creator', 'Title', 'Author', 'Group', 'Website', 'Password']:
-                    cast('NSMBWLevel', globals_.Level).metadata.set_meta_string(key, entryData.decode())
-                    continue
+                    cast('NSMBWLevel', globals_.Level).metadata.set_meta_data(key, entryData.decode())
 
                 # Add it to typeData
                 self.setOtherData(key, type, entryData)
