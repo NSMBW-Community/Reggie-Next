@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<views>
+    <view name="NewerSMBW Sprites">
+        <category name="SpriteTex Compatible">
+            <attach sprite="20-21"/> <!-- Goombas -->
+            <attach sprite="24"/> <!-- Buzzy Beetle -->
+            <attach sprite="25-26"/> <!-- Spiny -->
+            <attach sprite="40-45"/> <!-- Switches -->
+            <attach sprite="46"/> <!-- Podoboo -->
+            <attach sprite="47-48"/> <!-- Thwomps -->
+            <attach sprite="57-58"/> <!-- Koopas -->
+            <attach sprite="60"/> <!-- Spike Top -->
+            <attach sprite="63"/> <!-- Spike Ball -->
+            <attach sprite="78"/> <!-- Bouncy Cloud -->
+            <attach sprite="80"/> <!-- Fire Bro -->
+            <attach sprite="94"/> <!-- Boomerang Bro -->
+            <attach sprite="95"/> <!-- Hammer Bro -->
+            <attach sprite="98"/> <!-- Giant Spike Ball-->
+            <attach sprite="101"/> <!-- Bob-omb -->
+            <attach sprite="105"/> <!-- Pokey -->
+            <attach sprite="113"/> <!-- Goal Pole -->
+            <attach sprite="145"/> <!-- Floating Barrel -->
+            <attach sprite="153"/> <!-- Unused ? Switch -->
+            <attach sprite="181"/> <!-- Cheep Cheep Jump Spawner -->
+            <attach sprite="188"/> <!-- Midway Flag -->
+            <attach sprite="195"/> <!-- Huckit Crab -->
+            <attach sprite="198-199"/> <!-- Big Goombas -->
+            <attach sprite="212"/> <!-- Rolling Hill -->
+            <attach sprite="219"/> <!-- Stretching Line Block -->
+            <attach sprite="223"/> <!-- Spring Block -->
+            <attach sprite="224"/> <!-- Jumbo Ray -->
+            <attach sprite="230"/> <!-- Bramball -->
+            <attach sprite="231"/> <!-- Wiggle Mushroom -->
+            <attach sprite="269"/> <!-- Parachute Bob-omb -->
+            <attach sprite="272"/> <!-- Ice Bro -->
+            <attach sprite="286"/> <!-- Airship Gear -->
+            <attach sprite="291-292"/> <!-- Para-Beetles -->
+            <attach sprite="296"/> <!-- Giant Buzzy Beetle-->
+            <attach sprite="297"/> <!-- Spine Coaster -->
+            <attach sprite="303"/> <!-- Monty Mole-->
+            <attach sprite="308"/> <!-- Hammer Bro (Platform) -->
+            <attach sprite="311"/> <!-- Mega Icicle -->
+            <attach sprite="341"/> <!-- Koopa Shell Cave -->
+            <attach sprite="374"/> <!-- Falling Objects -->
+            <attach sprite="387"/> <!-- Bush -->
+            <attach sprite="391"/> <!-- Glow Block -->
+            <attach sprite="414"/> <!-- (Stone) Spike -->
+            <attach sprite="441"/> <!-- Mushroom Platform -->
+            <attach sprite="478-479"/> <!-- Bowser Switches -->
+        </category>
+        <category name="Enemies">
+            <attach sprite="22"/> <!-- Pumpkin Goomba -->
+            <attach sprite="167"/> <!-- Giant Shy Guy -->
+            <attach sprite="168"/> <!-- Thundercloud -->
+            <attach sprite="210"/> <!-- Angry Sun -->
+            <attach sprite="282"/> <!-- Shy Guy -->
+            <attach sprite="351"/> <!-- Mega Goomba -->
+            <attach sprite="410"/> <!-- Topman -->
+        </category>
+        <category name="Bosses">
+            <attach sprite="283"/> <!-- Fuzzy Bear -->
+            <attach sprite="322"/> <!-- Thwomp -->
+            <attach sprite="279"/> <!-- Balboa Wrench -->
+            <attach sprite="19"/> <!-- Samurshai -->
+            <attach sprite="324"/> <!-- Podouble -->
+            <attach sprite="290"/> <!-- Ramboo -->
+            <attach sprite="251"/> <!-- Giant Topman -->
+            <attach sprite="213"/> <!-- Captain Bowser -->
+        </category>
+        <category name="Platforms and Mechanics">
+            <attach sprite="12"/> <!-- Challenge Star -->
+            <attach sprite="17"/> <!-- Song Block -->
+            <attach sprite="18"/> <!-- Bone Platform -->
+            <attach sprite="49"/> <!-- Fake Star Coin -->
+            <attach sprite="152"/> <!-- Message Box -->
+            <attach sprite="169"/> <!-- Magic Platform -->
+            <attach sprite="183"/> <!-- Meteor -->
+            <attach sprite="239"/> <!-- Event Block -->
+            <attach sprite="244"/> <!-- Line God -->
+            <attach sprite="250"/> <!-- Electric Line -->
+            <attach sprite="302"/> <!-- Wrench -->
+            <attach sprite="319"/> <!-- Flip Block -->
+            <attach sprite="320"/> <!-- Chestnut -->
+            <attach sprite="350"/> <!-- Fire Laser -->
+        </category>
+        <category name="Controllers and Spawners">
+            <attach sprite="11"/> <!-- Model Loader -->
+            <attach sprite="15"/> <!-- Music House Manager -->
+            <attach sprite="79"/> <!-- Event Looper -->
+            <attach sprite="88"/> <!-- Actor Spawner -->
+            <attach sprite="89"/> <!-- Actor Multi-Spawner -->
+            <attach sprite="107"/> <!-- Message Box Manager -->
+            <attach sprite="245"/> <!-- Ending Cutscene Manager -->
+            <attach sprite="246"/> <!-- Special Event -->
+            <attach sprite="273"/> <!-- Level Exit Controller -->
+            <attach sprite="332"/> <!-- SFX/GFX Spawner -->
+            <attach sprite="468"/> <!-- Credits Manager -->
+        </category>
+        <category name="Others">
+            <attach sprite="10"/> <!-- Captain Bowser - Thrown Objects -->
+            <attach sprite="13"/> <!-- Captain Bowser - Clown Car -->
+            <attach sprite="14"/> <!-- Captain Bowser - Flame -->
+            <attach sprite="16"/> <!-- Bridge Bowser - Bomb -->
+        </category>
+    </view>
+</views>

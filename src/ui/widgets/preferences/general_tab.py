@@ -82,8 +82,8 @@ class GeneralTab(PreferenceTabWidget):
         diag_lyt.addRow(globals_.trans.string('PrefsDlg', 72), self.diag_freq)
         auto_diag_box.setLayout(diag_lyt)
 
-        # Display unknown actor warnings
-        self.show_unk_actor_msg = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 75))
+        # Display unknown sprite warnings
+        self.show_unk_sprite_msg = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 75))
 
         main_layout = QtWidgets.QFormLayout()
         main_layout.addRow(globals_.trans.string('PrefsDlg', 14), self.trans_combo)
@@ -95,7 +95,7 @@ class GeneralTab(PreferenceTabWidget):
         main_layout.addWidget(self.zone_bound_indicators)
         main_layout.addWidget(self.reset_data_hide)
         main_layout.addWidget(self.full_object_size)
-        main_layout.addWidget(self.show_unk_actor_msg)
+        main_layout.addWidget(self.show_unk_sprite_msg)
         main_layout.addWidget(auto_diag_box)
         self.setLayout(main_layout)
 
@@ -133,7 +133,7 @@ class GeneralTab(PreferenceTabWidget):
         self.padding_value.setValue(globals_.PaddingLength)
 
         self.full_object_size.setChecked(globals_.PlaceObjectsAtFullSize)
-        self.show_unk_actor_msg.setChecked(globals_.ShowUnknownActorWarning)
+        self.show_unk_sprite_msg.setChecked(globals_.ShowUnknownSpriteWarning)
 
         self.auto_diag.setChecked(globals_.AutoDiagEnabled)
         self.diag_freq.setEnabled(globals_.AutoDiagEnabled)
@@ -175,8 +175,8 @@ class GeneralTab(PreferenceTabWidget):
         globals_.AutoDiagFrequency = self.diag_freq.currentIndex()
         setSetting('AutoDiagFrequency', globals_.AutoDiagFrequency)
 
-        globals_.ShowUnknownActorWarning = self.show_unk_actor_msg.isChecked()
-        setSetting('ShowUnknownActorWarning', globals_.ShowUnknownActorWarning)
+        globals_.ShowUnknownSpriteWarning = self.show_unk_sprite_msg.isChecked()
+        setSetting('ShowUnknownSpriteWarning', globals_.ShowUnknownSpriteWarning)
 
         if globals_.mainWindow is None:
             return show_restart_warning

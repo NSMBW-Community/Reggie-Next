@@ -1,14 +1,15 @@
+from PyQt6 import QtWidgets, QtGui
 from collections.abc import Callable
 from enum import IntEnum
 from typing import cast
 
+from data import globals_
 from PyQt6 import QtGui, QtWidgets
 
-import actorlib
-from data import globals_
 from data.level.dirty import SetDirty
-from data.level.items.actor import ActorItem
+import spritelib as SLib
 from data.level.items.entrance import EntranceItem
+from data.level.items.sprite import SpriteItem
 from data.level.items.zone import ZoneItem
 from ui.theme.reggie_theme import GetIcon
 from ui.widgets.diag_list_widget_item import DiagnosticListWidgetItem
@@ -37,9 +38,9 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         # check_functions: (icon, description, function, is_critical)
         self.check_functions: tuple[tuple[str, str | None, Callable[[str], bool | None], bool], ...] = (
             ('block',   globals_.trans.string('Diag', 2),  self.check_invalid_obj,        True),
-            ('rocket',   globals_.trans.string('Diag', 3),  self.check_crash_actor,       False),
-            ('rocket',   globals_.trans.string('Diag', 4),  self.check_actor_param,       True),
-            ('rocket',   globals_.trans.string('Diag', 5),  self.check_actor_max,         False),
+            ('sprites',   globals_.trans.string('Diag', 3),  self.check_crash_sprite,     False),
+            ('sprites',   globals_.trans.string('Diag', 4),  self.check_sprite_param,     True),
+            ('sprites',   globals_.trans.string('Diag', 5),  self.check_sprite_max,       False),
             ('door', globals_.trans.string('Diag', 6),  self.check_duplicate_entrance,    True),
             ('door', globals_.trans.string('Diag', 7),  self.check_start_entrance,        True),
             ('door', globals_.trans.string('Diag', 8),  self.check_entrance_near_edge,    False),
@@ -252,90 +253,91 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
             globals_.mainWindow.level_overview.update()
 
-    def check_crash_actor(self, mode: str) -> bool | None:
+    def check_crash_sprite(self, mode):
         """
-        Checks if there are any actors which are known to crash or cause problems often
+        Checks if there are any sprites which are known to crash or cause problems often
         """
-        # TODO: Fill out this list, add support for actors that only crash in Newer
+        # TODO: Fill out this list, add support for sprites that only crash in Newer
         problems = [121] # Collision Switcher
 
-        crash_actors = []
-        for actor in globals_.Area.actors:
-            if actor.actor_num in problems:
-                crash_actors.append(actor)
+        crash_sprites = []
+        for sprite in globals_.Area.sprites:
+            if sprite.sprite_num in problems:
+                crash_sprites.append(sprite)
 
         if mode == 'c':
-            return bool(crash_actors)
+            return bool(crash_sprites)
         else:
-            actor: ActorItem
-            for actor in crash_actors:
-                actor.delete()
-                actor.setSelected(False)
+            sprite: SpriteItem
+            for sprite in crash_sprites:
+                sprite.delete()
+                sprite.setSelected(False)
                 if globals_.mainWindow is not None:
-                    globals_.mainWindow.scene.removeItem(actor)
+                    globals_.mainWindow.scene.removeItem(sprite)
                     globals_.mainWindow.level_overview.update()
 
     # TODO: Split 'missing resource' checks into their own function (153 needs it too)
-    def check_actor_param(self, mode: str) -> bool | None:
+    def check_sprite_param(self, mode):
         """
-        Checks for actor settings which are known to cause major glitches and crashes
+        Checks for sprite settings which are known to cause major glitches and crashes
         """
         check_list = []
         problem = False
 
-        actor: ActorItem
-        for actor in globals_.Area.actors:
+        sprite: SpriteItem
+        for sprite in globals_.Area.sprites:
             # Snake Block, end-of-path behavior is above 3
-            if actor.actor_num == 166 and ((actor.actordata[2] & 0xF0) >> 4) > 3:
+            if sprite.sprite_num == 166 and ((sprite.spritedata[2] & 0xF0) >> 4) > 3:
                 problem = True
 
             # Also double-check nyb10, then add it to the fixers
             # Mushroom in Bubble, spawns player
-            if actor.actor_num == 171 and actor.actordata[4] & 0xF != 1:
+            if sprite.sprite_num == 171 and sprite.spritedata[4] & 0xF != 1:
                 problem = True
 
             # Chest, check if we need a Toad
-            if actor.actor_num == 203 and actor.actordata[4] & 0xF == 1 and [454, 432] not in check_list:
-                check_list.append([454, 432])
+            if sprite.sprite_num == 203 and sprite.spritedata[4] & 0xF == 1:
+                if [454, 432] not in check_list:
+                    check_list.append([454, 432])
 
             # Cheep Cheep Formation, shape is 'Filled Arrow'
             # TODO: Investigate, this doesn't crash the game?
-            if actor.actor_num == 247 and actor.actordata[5] & 0xF == 1:
+            if sprite.sprite_num == 247 and sprite.spritedata[5] & 0xF == 1:
                 problem = True
 
             # Boo circle
-            if actor.actor_num == 323:
+            if sprite.sprite_num == 323:
                 # Expand behavior
-                if actor.actordata[4] & 0xF == 4:
+                if sprite.spritedata[4] & 0xF == 4:
                     problem = True
 
                 # Greater Radius < Lesser Radius
-                if actor.actordata[2] & 0xF < (actor.actordata[3] & 0xF0) >> 4:
+                if sprite.spritedata[2] & 0xF < (sprite.spritedata[3] & 0xF0) >> 4:
                     problem = True
 
             # Bowser Fireball Spawner, position mod 1 can sometimes freeze the game
-            if actor.actor_num == 449 and (actor.actordata[5] & 0xF0) >> 4 == 1:
+            if sprite.sprite_num == 449 and (sprite.spritedata[5] & 0xF0) >> 4 == 1:
                 problem = True
 
             # Giant Bowser Switch, has Multi-Use enabled
-            if actor.actor_num == 479 and actor.actordata[4] & 0xF != 0:
+            if sprite.sprite_num == 479 and sprite.spritedata[4] & 0xF != 0:
                 problem = True
 
             # Rubble Block
-            if actor.actor_num == 481:
+            if sprite.sprite_num == 481:
                 # Invalid size
-                if actor.actordata[5] & 0xF > 1:
+                if sprite.spritedata[5] & 0xF > 1:
                     problem = True
 
                 # Check for resource
                 if [419] not in check_list:
                     check_list.append([419])
 
-        # Check for actors which depend on others' resources
+        # Check for sprites which depend on others' resources
         new = list(check_list)
         for item in check_list:
-            for actor in globals_.Area.actors:
-                if actor.actor_num in item:
+            for sprite in globals_.Area.sprites:
+                if sprite.sprite_num in item:
                     try:
                         new.remove(item)
                     except Exception:
@@ -349,55 +351,56 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             return problem
 
         elif problem:
-            add_actors = []
-            for actor in globals_.Area.actors:
-                if actor.actor_num == 166 and (actor.actordata[2] & 0xF0) >> 4 > 3:
-                    actor.actordata = actor.actordata[0:2] + ' ' + actor.actordata[3:]
+            add_sprites = []
+            for sprite in globals_.Area.sprites:
+                if sprite.sprite_num == 166 and (sprite.spritedata[2] & 0xF0) >> 4 > 3:
+                    sprite.spritedata = sprite.spritedata[0:2] + ' ' + sprite.spritedata[3:]
 
-                if actor.actor_num == 171 and actor.actordata[4] & 0xF != 1:
-                    actor.actordata = actor.actordata[0:4] + chr(1) + actor.actordata[5:]
+                if sprite.sprite_num == 171 and sprite.spritedata[4] & 0xF != 1:
+                    sprite.spritedata = sprite.spritedata[0:4] + chr(1) + sprite.spritedata[5:]
 
-                if actor.actor_num == 203 and actor.actordata[4] & 0xF == 1 and [454, 432] in check_list:
-                    add_actors.append((454, actor.objx - 128, actor.objy - 128))
+                if sprite.sprite_num == 203 and sprite.spritedata[4] & 0xF == 1:
+                    if [454, 432] in check_list:
+                        add_sprites.append((454, sprite.objx - 128, sprite.objy - 128))
 
-                if actor.actor_num == 247 and actor.actordata[5] & 0xF == 1:
-                    actor.actordata = actor.actordata[0:5] + chr(0) + actor.actordata[6:]
+                if sprite.sprite_num == 247 and sprite.spritedata[5] & 0xF == 1:
+                    sprite.spritedata = sprite.spritedata[0:5] + chr(0) + sprite.spritedata[6:]
 
-                if actor.actor_num == 323:
-                    if actor.actordata[4] & 0xF == 4:
-                        actor.actordata = actor.actordata[0:4] + chr(1) + actor.actordata[5:]
+                if sprite.sprite_num == 323:
+                    if sprite.spritedata[4] & 0xF == 4:
+                        sprite.spritedata = sprite.spritedata[0:4] + chr(1) + sprite.spritedata[5:]
 
-                    if actor.actordata[2] & 0xF < (actor.actordata[3] & 0xF0) >> 4:
-                        actor.actordata = actor.actordata[0:2] + chr((actor.actordata[3] & 0xF0) >> 4) + actor.actordata[3:]
+                    if sprite.spritedata[2] & 0xF < (sprite.spritedata[3] & 0xF0) >> 4:
+                        sprite.spritedata = sprite.spritedata[0:2] + chr((sprite.spritedata[3] & 0xF0) >> 4) + sprite.spritedata[3:]
 
-                if actor.actor_num == 449 and (actor.actordata[5] & 0xF0) >> 4 == 1:
-                    actor.actordata = actor.actordata[0:5] + chr(0) + actor.actordata[6:]
+                if sprite.sprite_num == 449 and (sprite.spritedata[5] & 0xF0) >> 4 == 1:
+                    sprite.spritedata = sprite.spritedata[0:5] + chr(0) + sprite.spritedata[6:]
 
-                if actor.actor_num == 479 and actor.actordata[4] & 0xF == 1:
-                    if (actor.actordata[4] & 0xF0) >> 4 == 1:
-                        actor.actordata = actor.actordata[0:4] + chr(0x10) + actor.actordata[5:]
+                if sprite.sprite_num == 479 and sprite.spritedata[4] & 0xF == 1:
+                    if (sprite.spritedata[4] & 0xF0) >> 4 == 1:
+                        sprite.spritedata = sprite.spritedata[0:4] + chr(0x10) + sprite.spritedata[5:]
                     else:
-                        actor.actordata = actor.actordata[0:4] + chr(0) + actor.actordata[5:]
+                        sprite.spritedata = sprite.spritedata[0:4] + chr(0) + sprite.spritedata[5:]
 
-                if actor.actor_num == 481:
-                    if actor.actordata[5] & 0xF > 2:
-                        actor.actordata = actor.actordata[0:5] + chr(2) + actor.actordata[6:]
+                if sprite.sprite_num == 481:
+                    if sprite.spritedata[5] & 0xF > 2:
+                        sprite.spritedata = sprite.spritedata[0:5] + chr(2) + sprite.spritedata[6:]
 
-                    add_actors.append((419, actor.objx - 128, actor.objy - 128))
+                    add_sprites.append((419, sprite.objx - 128, sprite.objy - 128))
 
             if globals_.mainWindow is not None:
-                for id_, x, y in add_actors:
-                    ActorItem.CreateActor(x, y, id_, bytes(10))
+                for id_, x, y in add_sprites:
+                    SpriteItem.CreateSprite(x, y, id_, bytes(10))
 
                 globals_.mainWindow.scene.update()
 
-    def check_actor_max(self, mode: str) -> bool | None:
+    def check_sprite_max(self, mode):
         """
-        Determines if the number of actors in the current area is > 1000
+        Determines if the number of sprites in the current area is > 1000
         """
-        max_actor_num = 1000
+        max_sprite_num = 1000
 
-        problem = len(globals_.Area.actors) > max_actor_num
+        problem = len(globals_.Area.sprites) > max_sprite_num
 
         if mode == 'c':
             return problem
@@ -406,13 +409,13 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             return None
 
         if globals_.mainWindow is not None:
-            actor: ActorItem
-            for actor in globals_.Area.actors[max_actor_num:]:
-                actor.delete()
-                actor.setSelected(False)
-                globals_.mainWindow.scene.removeItem(actor)
+            sprite: SpriteItem
+            for sprite in globals_.Area.sprites[max_sprite_num:]:
+                sprite.delete()
+                sprite.setSelected(False)
+                globals_.mainWindow.scene.removeItem(sprite)
 
-            globals_.Area.actors = globals_.Area.actors[:max_actor_num]
+            globals_.Area.sprites = globals_.Area.sprites[:max_sprite_num]
             globals_.mainWindow.scene.update()
             globals_.mainWindow.level_overview.update()
 
@@ -486,7 +489,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         if start is None:
             return False
 
-        first_zone_idx = actorlib.MapPositionToZoneID(globals_.Area.zones, start.objx, start.objy)
+        first_zone_idx = SLib.MapPositionToZoneID(globals_.Area.zones, start.objx, start.objy)
         if first_zone_idx == -1:
             return False
 
@@ -511,7 +514,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         for ent in globals_.Area.entrances:
             x = ent.objx
             y = ent.objy
-            zone_idx = actorlib.MapPositionToZoneID(globals_.Area.zones, x, y)
+            zone_idx = SLib.MapPositionToZoneID(globals_.Area.zones, x, y)
             if zone_idx == -1:
                 return False
 

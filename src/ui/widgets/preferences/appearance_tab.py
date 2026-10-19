@@ -7,7 +7,7 @@ from data.level.path import Path
 from data.level.items.location import LocationItem
 from data.level.items.comment import CommentItem
 from data.level.items.entrance import EntranceItem
-from data.level.items.actor import ActorItem
+from data.level.items.sprite import SpriteItem
 from data.level.items.zone import ZoneItem
 from data.common.utils import get_reggiedata_folder
 from ui.widgets.level_view import LevelViewWidget
@@ -201,13 +201,13 @@ class AppearanceTab(PreferenceTabWidget):
         types = [None, 'grid', 'checker']
         globals_.GridType = types[grid_type]
 
-        # Actor [38] at (11, 4)
-        actor = ActorItem.CreateActor(11 * 16, 4 * 16, 38, data=bytes(10), add_to_scene=False)
-        scene.addItem(actor)
+        # Sprite [38] at (11, 4)
+        sprite = SpriteItem.CreateSprite(11 * 16, 4 * 16, 38, data=bytes(10), add_to_scene=False)
+        scene.addItem(sprite)
 
-        # Actor [53] at (1, 6)
-        actor = ActorItem.CreateActor(1 * 16, 6 * 16, 53, data=bytes(10), add_to_scene=False)
-        scene.addItem(actor)
+        # Sprite [53] at (1, 6)
+        sprite = SpriteItem.CreateSprite(1 * 16, 6 * 16, 53, data=bytes(10), add_to_scene=False)
+        scene.addItem(sprite)
 
         # Entrance [0] at (13, 8)
         ent = EntranceItem.CreateEntrance(13 * 16, 8 * 16, 0, add_to_scene=False)
@@ -308,7 +308,7 @@ class AppearanceTab(PreferenceTabWidget):
         if globals_.mainWindow is not None:
             # Update window title
             globals_.mainWindow.UpdateTitle()
-    
+
             # Toggle hover events for scene items
             for item in globals_.mainWindow.scene.items():
                 if not isinstance(item, ZoneItem):

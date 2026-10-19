@@ -10,38 +10,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added the ability to reload the patch list.
-- Added a dedicated layer selector to actors which support being on different layers.
-- Added several new definitions for how an actordata value can be manipulated.
+- Added a dedicated layer selector to sprites which support being on different layers.
+- Added several new definitions for how a spritedata value can be manipulated.
 - Added support for importing areas from LZ-compressed levels.
 - The toolbar can now be toggled through a dedicated option in the "View" menu.
 - Added the ability to set custom keybinds.
 - Added an option to toggle the visibility of entrances.
 - Added an auto-diagnostic tool that regularly checks the current level for issues.
 - Added an exit indicator for forward-linking pipes.
-- Added an actor order list to help with issues caused by an incorrect level-internal actor order.
+- Added a sprite order list to help with issues caused by an incorrect level-internal sprite order.
 - Added an option to forcefully ignore Windows' app scaling setting.
 - Added support for copy/pasting Comments.
 - The following actions can now be pinned to the toolbar:
   - Swap Objects' Tilesets
   - Swap Objects
-  - Switch Actor IDs
+  - Switch Sprite IDs
 - Added a preview for selected tilesets in the Area Options dialog.
 - Added a viewer for this changelog, accessible through the About dialog.
-- Added support for editing the two padding bytes present in all actors.
-- Added a viewer for resource lists in the Area Options' Loaded Actors tab.
+- Added support for editing the two padding bytes present in all sprites.
+- Added a viewer for resource lists in the Area Options' Loaded Sprites tab.
 
 ### Changed
 
 - The entire codebase has been improved and restructured to help with future development.
 - Bumped minimum Python version to 3.12.
 - Improved level diagnostics tool.
-- Updated actordata of actors:
+- Updated spritedata of sprites:
   - 30, 38, 53, 55, 78, 81 - 87, 92, 93, 96, 138, 139, 152, 185, 188, 191, 195, 205, 216, 226, 243, 310, 361, 362, 368, 369, 373, 399, 414, 437, 451, 459, 461, 475
-- Updated actordata for (Newer) actors:
+- Updated spritedata for (Newer) sprites:
   - 18, 63, 80, 94, 113, 272, 273, 414, 441, 446, 451
-- Added/updated image previews for actors:
+- Added/updated image previews for sprites:
   - 30, 40, 41, 42, 50, 57, 60, 62, 81-87, 105, 128, 178, 195, 202, 214, 233, 255, 256, 310, 354, 356, 425, 428, 433
-- Added/updated image previews for (Newer) actors:
+- Added/updated image previews for (Newer) sprites:
   - 40, 41, 42, 43, 45, 57, 105, 153, 433, 478, 479
 - The current zoom level is saved between sessions and used on the next startup.
 - Improved the tile collision preview.
@@ -52,20 +52,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The level padding value is now capped at 500 KB.
 - Locations can now be duplicated using Ctrl + Left Click.
 - Improved randomization of specific tilesets.
-- Actor images now become translucent if their "Spawn after Midway" setting is enabled.
-- Improved actor categories and added a category dedicated to NewerSMBW's actors.
+- Sprite images now become translucent if their "Spawn after Midway" setting is enabled.
+- Improved sprite categories and added a category dedicated to NewerSMBW's sprites.
 - Reorganised a few sections in the preferences dialog.
 - The toolbar will now update when edited in the preferences dialog, rather than requiring a restart.
 - Replaced the "Insert new path node..." setting with a button in the Path Editor to toggle the two modes.
 - When inserting nodes into an existing path, the new node will now be selected automatically.
-- Improved rendering of liquids if the actor is near the top edge or outside of a zone.
-- Actor Images that use tileset graphics now support animated tile playback.
+- Improved rendering of liquids if the sprite is near the top edge or outside of a zone.
+- Sprite Images that use tileset graphics now support animated tile playback.
 - Renamed "Swap Objects' Tilesets" dialog to "Swap Tilesets".
 - Reimplemented the classic icon set from the original Reggie versions.
 - Several dialogs with tabs now display icons alongside the tab name.
 - The Area Import dialog can now change the source level without needing to be re-opened.
+- ID Types in the Current Sprites tab are now sorted numerically rather than alphabetically.
 - The README view in the About dialog now uses markdown formatting.
-- Sprites are now renamed to Actors across the entire codebase and in the editor.
 - The music list now uses the track order in music.txt instead of sorting by numerical ID.
 - Overhauled the level metadata system to be cleaner and easier to use.
 
@@ -73,14 +73,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Removed the Cython version from the Help menu.
 - Removed unused icons.
-- Removed the "advanced" attribute from actordata.
+- Removed the "advanced" attribute from spritedata.
 - Removed useless / counterintuitive settings from the toolbar tab of the preferences dialog.
-- `actorlib.GetImg` has been removed and replaced by `actorlib.GetImage` and `actorlib.GetPixmap` used for their respective image types.
+- `spritelib.GetImg` has been removed and replaced by `spritelib.GetImage` and `spritelib.GetPixmap` used for their respective image types.
 
 ### Fixed
 
 - Fixed icons not loading for custom themes.
-- Fixed some small issues with the actor resizing functionality.
+- Fixed some small issues with the sprite resizing functionality.
 - Fixed inaccuracies with some of NewerSMBW's level names.
 - Fixed the comment icon being smaller than intended.
 - Fixed an issue where the middle mouse button would resize objects / locations.
@@ -88,8 +88,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The entrance editor now reloads when changing game patches to accomodate for NewerSMBW-specific features.
 - Fixed some small issues regarding creating new Areas without properly saving the level.
 - Fixed location-based liquids rendering incorrectly if their crest texture is outside of the zone.
-- ID Types in the Current Actors tab are now sorted numerically rather than alphabetically.
-- Fixed some actor images leaving artifacts when rotated.
+- Fixed some sprite images leaving artifacts when rotated.
 - Fixed the autosave message not applying the color scheme set in the preferences.
 - The music list can no longer add tracks with IDs > 255.
 - The Level Information dialog can now be opened in any area.

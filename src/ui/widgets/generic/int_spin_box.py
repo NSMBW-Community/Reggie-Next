@@ -129,7 +129,7 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
             if val == 0:
                 lineEdit.setText(self.textFromValue(self._start))
 
-                # Fixes a bug when reloading actordata
+                # Fixes a bug when reloading spritedata
                 if self._overrides is not None:
                     for rawVal, dispNum in self._overrides:
                         if val == rawVal:

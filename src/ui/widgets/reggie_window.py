@@ -10,7 +10,7 @@ Qt = QtCore.Qt
 from data import globals_
 
 from data.common import archive
-import actorlib
+import spritelib as SLib
 
 from libs import lh, lib_versions, lz77
 from ui.theme.reggie_theme import GetIcon, GetAppIcon
@@ -27,11 +27,11 @@ from data.level.items.location import LocationItem
 from data.level.items.object import ObjectItem
 from data.level.items.path import PathItem
 from data.level.items.path_editor_line import PathEditorLineItem
-from data.level.items.actor import ActorItem
+from data.level.items.sprite import SpriteItem
 from data.level.items.zone import ZoneItem
 from data.common.loaders import UnloadTileset, LoadTileset
 from data.level.nsmbw_level import NSMBWLevel
-from ui.widgets.actoreditor.actor_editor import ActorEditorWidget
+from ui.widgets.spriteeditor.sprite_editor import SpriteEditorWidget
 from ui.actions.undo.undo_stack import UndoStack
 
 from ui.dialogs.area import AreaOptionsDialog
@@ -45,7 +45,7 @@ from ui.dialogs.meta_info import MetaInfoDialog
 from ui.dialogs.obj_tileset_swap import ObjectTilesetSwapDialog
 from ui.dialogs.preference import PreferencesDialog
 from ui.dialogs.screenshot import ScreenshotDialog
-from ui.dialogs.actor_switch import ActorSwitchDialog
+from ui.dialogs.sprite_switch import SpriteSwitchDialog
 from ui.dialogs.zone import ZonesDialog
 
 from ui.menus.game_def_menu import GameDefMenu
@@ -198,8 +198,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Call toggle-button handlers to set each feature correctly upon startup
         toggle_handlers = {
-            self.HandleActorsVisibility: globals_.ActorsShown,
-            self.HandleActorImages: globals_.ActorImagesShown,
+            self.HandleSpritesVisibility: globals_.SpritesShown,
+            self.HandleSpriteImages: globals_.SpriteImagesShown,
             self.HandleEntrancesVisibility: globals_.EntrancesShown,
             self.HandleLocationsVisibility: globals_.LocationsShown,
             self.HandleCommentsVisibility: globals_.CommentsShown,
@@ -284,15 +284,15 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.action_list['collisions'].setChecked(globals_.CollisionsShown)
         self.action_list['realview'].setChecked(globals_.RealViewEnabled)
 
-        self.action_list['showactors'].setChecked(globals_.ActorsShown)
-        self.action_list['showactorimages'].setChecked(globals_.ActorImagesShown)
+        self.action_list['showsprites'].setChecked(globals_.SpritesShown)
+        self.action_list['showspriteimages'].setChecked(globals_.SpriteImagesShown)
         self.action_list['showentrances'].setChecked(globals_.EntrancesShown)
         self.action_list['showlocations'].setChecked(globals_.LocationsShown)
         self.action_list['showcomments'].setChecked(globals_.CommentsShown)
         self.action_list['showpaths'].setChecked(globals_.PathsShown)
 
         self.action_list['freezeobjects'].setChecked(globals_.ObjectsFrozen)
-        self.action_list['freezeactors'].setChecked(globals_.ActorsFrozen)
+        self.action_list['freezesprites'].setChecked(globals_.SpritesFrozen)
         self.action_list['freezeentrances'].setChecked(globals_.EntrancesFrozen)
         self.action_list['freezelocations'].setChecked(globals_.LocationsFrozen)
         self.action_list['freezepaths'].setChecked(globals_.PathsFrozen)
@@ -346,12 +346,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
             emenu.addAction(self.action_list['mergelocations'])
             emenu.addAction(self.action_list['swapobjectstilesets'])
             emenu.addAction(self.action_list['swapobjectstypes'])
-            emenu.addAction(self.action_list['switchactors'])
+            emenu.addAction(self.action_list['switchsprites'])
             emenu.addSeparator()
             emenu.addAction(self.action_list['diagnostic'])
             emenu.addSeparator()
             emenu.addAction(self.action_list['freezeobjects'])
-            emenu.addAction(self.action_list['freezeactors'])
+            emenu.addAction(self.action_list['freezesprites'])
             emenu.addAction(self.action_list['freezeentrances'])
             emenu.addAction(self.action_list['freezelocations'])
             emenu.addAction(self.action_list['freezepaths'])
@@ -366,8 +366,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
             vmenu.addAction(self.action_list['collisions'])
             vmenu.addAction(self.action_list['realview'])
             vmenu.addSeparator()
-            vmenu.addAction(self.action_list['showactors'])
-            vmenu.addAction(self.action_list['showactorimages'])
+            vmenu.addAction(self.action_list['showsprites'])
+            vmenu.addAction(self.action_list['showspriteimages'])
             vmenu.addAction(self.action_list['showentrances'])
             vmenu.addAction(self.action_list['showlocations'])
             vmenu.addAction(self.action_list['showpaths'])
@@ -480,10 +480,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 'mergelocations',
                 'swapobjectstilesets',
                 'swapobjectstypes',
-                'switchactors',
+                'switchsprites',
             ), (
                 'freezeobjects',
-                'freezeactors',
+                'freezesprites',
                 'freezeentrances',
                 'freezelocations',
                 'freezepaths',
@@ -505,8 +505,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 'collisions',
                 'realview',
             ), (
-                'showactors',
-                'showactorimages',
+                'showsprites',
+                'showspriteimages',
                 'showentrances',
                 'showlocations',
                 'showpaths',
@@ -598,20 +598,20 @@ class ReggieWindow(QtWidgets.QMainWindow):
         features = QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable
         allowed_areas = Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea
 
-        # Actor Editor
-        self.actorDataEditor = ActorEditorWidget()
-        self.actorDataEditor.DataUpdate.connect(self.ActorDataUpdated)
-        actor_dock = self.CreateDockWidget(globals_.trans.string('ActorDataEditor', 0), 'spriteeditor', self.actorDataEditor,
+        # Sprite Editor
+        self.spriteDataEditor = SpriteEditorWidget()
+        self.spriteDataEditor.DataUpdate.connect(self.SpriteDataUpdated)
+        sprite_dock = self.CreateDockWidget(globals_.trans.string('SpriteDataEditor', 0), 'spriteeditor', self.spriteDataEditor,
                                             features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True)
-        self.actorEditorDock = actor_dock
+        self.spriteEditorDock = sprite_dock
 
-        # Default Actor Editor
-        self.defaultDataEditor = ActorEditorWidget(True)
+        # Default Sprite Editor
+        self.defaultDataEditor = SpriteEditorWidget(True)
         self.defaultDataEditor.setVisible(False)
-        def_actor_dock = self.CreateDockWidget(globals_.trans.string('Palette', 7), 'defaultprops', self.defaultDataEditor,
+        def_sprite_dock = self.CreateDockWidget(globals_.trans.string('Palette', 7), 'defaultprops', self.defaultDataEditor,
                                                 features | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable,
                                                 Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True)
-        self.defaultPropDock = def_actor_dock
+        self.defaultPropDock = def_sprite_dock
 
         # Entrance Editor
         self.entrance_editor = EntranceEditorWidget()
@@ -946,9 +946,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     nsmbobj.SetType(from_tileset, nsmbobj.object_num)
                     SetDirty()
 
-    def SwitchActors(self):
+    def SwitchSprites(self):
         """
-        Switches actors of one ID to another
+        Switches sprites of one ID to another
         """
         initial_id = 0
 
@@ -956,16 +956,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if items:
             id_list = []
 
-            # Get all the actor IDs
+            # Get all the sprite IDs
             for item in items:
-                if isinstance(item, ActorItem):
-                    id_list.append(item.actor_num)
+                if isinstance(item, SpriteItem):
+                    id_list.append(item.sprite_num)
 
             # If we only have one unique item, pass that as an ID
             if len(set(id_list)) == 1:
                 initial_id = id_list[0]
 
-        ActorSwitchDialog(initial_id).exec()
+        SpriteSwitchDialog(initial_id).exec()
 
     def HandleAddNewArea(self):
         """
@@ -1388,43 +1388,43 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handle toggling of Real View
         """
         globals_.RealViewEnabled = checked
-        actorlib.RealViewEnabled = globals_.RealViewEnabled
+        SLib.RealViewEnabled = globals_.RealViewEnabled
 
         setSetting('RealViewEnabled', globals_.RealViewEnabled)
         self.scene.update()
 
-    def HandleActorsVisibility(self, checked):
+    def HandleSpritesVisibility(self, checked):
         """
-        Handle toggling of actor visibility
+        Handle toggling of sprite visibility
         """
-        globals_.ActorsShown = checked
-        setSetting('ShowActors', globals_.ActorsShown)
+        globals_.SpritesShown = checked
+        setSetting('ShowSprites', globals_.SpritesShown)
 
         if globals_.Area.areanum == -1:
             return
 
-        for spr in globals_.Area.actors:
+        for spr in globals_.Area.sprites:
             spr.setVisible(checked)
 
-    def HandleActorImages(self, checked):
+    def HandleSpriteImages(self, checked):
         """
-        Handle toggling of actor images
+        Handle toggling of sprite images
         """
-        globals_.ActorImagesShown = checked
+        globals_.SpriteImagesShown = checked
 
-        setSetting('ShowActorImages', globals_.ActorImagesShown)
+        setSetting('ShowSpriteImages', globals_.SpriteImagesShown)
 
         if globals_.Area.areanum == -1:
             return
 
         globals_.DirtyOverride += 1
-        for spr in globals_.Area.actors:
+        for spr in globals_.Area.sprites:
             spr.UpdateRects()
 
             if globals_.Initializing:
                 continue
 
-            # Prevents snapping the actor to the grid
+            # Prevents snapping the sprite to the grid
             spr.ChangingPos = True
 
             if checked:
@@ -1516,12 +1516,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 obj.setFlag(flag1, unfrozen)
                 obj.setFlag(flag2, unfrozen)
 
-    def HandleActorsFreeze(self, checked):
+    def HandleSpritesFreeze(self, checked):
         """
-        Handle toggling of actors being frozen
+        Handle toggling of sprites being frozen
         """
-        globals_.ActorsFrozen = checked
-        setSetting('FreezeActors', globals_.ActorsFrozen)
+        globals_.SpritesFrozen = checked
+        setSetting('FreezeSprites', globals_.SpritesFrozen)
 
         if globals_.Area.areanum == -1:
             return
@@ -1530,7 +1530,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         flag2 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable
         unfrozen = not checked
 
-        for spr in globals_.Area.actors:
+        for spr in globals_.Area.sprites:
             spr.setFlag(flag1, unfrozen)
             spr.setFlag(flag2, unfrozen)
 
@@ -1703,7 +1703,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             return
 
         # Save our state
-        self.actorEditorDock.setVisible(False)
+        self.spriteEditorDock.setVisible(False)
         self.entrance_editor_dock.setVisible(False)
         self.path_editor_dock.setVisible(False)
         self.location_editor_dock.setVisible(False)
@@ -1829,8 +1829,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Clear out all level-thing lists
         for item_list in (
-            self.palette_dock.actor_tab.actor_list,
-            self.palette_dock.actor_tab.actor_order_list,
+            self.palette_dock.sprite_tab.sprite_list,
+            self.palette_dock.sprite_tab.sprite_order_list,
             self.palette_dock.entrance_tab.entrance_list,
             self.palette_dock.location_tab.location_list,
             self.palette_dock.path_tab.path_list,
@@ -1849,7 +1849,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.Layer2Shown = True
 
         # Also enable things that use 'True' by default
-        globals_.ActorsShown = True
+        globals_.SpritesShown = True
         globals_.LocationsShown = True
         globals_.EntrancesShown = True
         globals_.PathsShown = True
@@ -1884,9 +1884,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
             for obj in layer:
                 obj.updateObjCache()
 
-        for actor in globals_.Area.actors:
-            actor.UpdateDynamicSizing()
-            actor.ImageObj.positionChanged()
+        for sprite in globals_.Area.sprites:
+            sprite.UpdateDynamicSizing()
+            sprite.ImageObj.positionChanged()
 
         # Scroll to the initial entrance
         startEntID = globals_.Area.start_entrance
@@ -1904,7 +1904,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.action_list['showlay0'].setChecked(True)
         self.action_list['showlay1'].setChecked(True)
         self.action_list['showlay2'].setChecked(True)
-        self.action_list['showactors'].setChecked(True)
+        self.action_list['showsprites'].setChecked(True)
         self.action_list['showentrances'].setChecked(True)
         self.action_list['showlocations'].setChecked(True)
         self.action_list['showpaths'].setChecked(True)
@@ -1962,17 +1962,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
             raise Exception
 
         # https://github.com/Zement/Reggie/blob/master/reggie.py#L3630-L3637
-        # Check for unknown actor IDs and show warning message
-        if globals_.ShowUnknownActorWarning:
-            if hasattr(globals_.Area, 'unknown_actor_ids') and globals_.Area.unknown_actor_ids is not None:
-                actor_ids = sorted(globals_.Area.unknown_actor_ids)
+        # Check for unknown sprite IDs and show warning message
+        if globals_.ShowUnknownSpriteWarning:
+            if hasattr(globals_.Area, 'unknown_sprite_ids') and globals_.Area.unknown_sprite_ids is not None:
+                sprite_ids = sorted(globals_.Area.unknown_sprite_ids)
 
-                if len(actor_ids) == 1:
-                    msg = globals_.trans.string('Err_UnknownActor', 1, '[id]', str(actor_ids[0]))
+                if len(sprite_ids) == 1:
+                    msg = globals_.trans.string('Err_UnknownSprite', 1, '[id]', str(sprite_ids[0]))
                 else:
-                    msg = globals_.trans.string('Err_UnknownActor', 2, '[ids]', ', '.join(map(str, actor_ids)))
+                    msg = globals_.trans.string('Err_UnknownSprite', 2, '[ids]', ', '.join(map(str, sprite_ids)))
 
-                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_UnknownActor', 0), msg)
+                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_UnknownSprite', 0), msg)
 
         self.reset_area()
 
@@ -2011,7 +2011,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             return
 
         # do this to avoid flicker
-        showActorPanel = False
+        showSpritePanel = False
         showEntrancePanel = False
         showLocationPanel = False
         showPathPanel = False
@@ -2029,7 +2029,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # possibly a small optimization
         func_ii = isinstance
         type_obj = ObjectItem
-        type_act = ActorItem
+        type_spr = SpriteItem
         type_ent = EntranceItem
         type_loc = LocationItem
         type_path = PathItem
@@ -2055,8 +2055,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.selObj = item
             if func_ii(item, type_obj):
                 allowStamp = True
-            elif func_ii(item, type_act):
-                showActorPanel = True
+            elif func_ii(item, type_spr):
+                showSpritePanel = True
                 updateModeInfo = True
                 allowStamp = True
             elif func_ii(item, type_ent):
@@ -2095,7 +2095,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             updateModeInfo = True
 
             for item in selitems:
-                if not func_ii(item, (type_obj, type_act)):
+                if not func_ii(item, (type_obj, type_spr)):
                     allowStamp = False
 
             # more than one item
@@ -2114,7 +2114,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         path = 0
         com = 0
         for item in selitems:
-            if func_ii(item, type_act): spr += 1
+            if func_ii(item, type_spr): spr += 1
             if func_ii(item, type_ent): ent += 1
             if func_ii(item, type_obj): obj += 1
             if func_ii(item, type_loc): loc += 1
@@ -2132,7 +2132,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 if obj:
                     text = globals_.trans.string('Statusbar', 0)  # 1 object selected
                 elif spr:
-                    text = globals_.trans.string('Statusbar', 1)  # 1 actor selected
+                    text = globals_.trans.string('Statusbar', 1)  # 1 sprite selected
                 elif ent:
                     text = globals_.trans.string('Statusbar', 2)  # 1 entrance selected
                 elif loc:
@@ -2145,7 +2145,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 if not any((spr, ent, loc, path, com)):
                     text = globals_.trans.string('Statusbar', 5, '[x]', obj)  # x objects selected
                 elif not any((obj, ent, loc, path, com)):
-                    text = globals_.trans.string('Statusbar', 6, '[x]', spr)  # x actors selected
+                    text = globals_.trans.string('Statusbar', 6, '[x]', spr)  # x sprites selected
                 elif not any((obj, spr, loc, path, com)):
                     text = globals_.trans.string('Statusbar', 7, '[x]', ent)  # x entrances selected
                 elif not any((obj, spr, ent, path, com)):
@@ -2184,7 +2184,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 thing.dragoffsetx = (((thing.objx // 16) * 16) - thing.objx) * 1.5
                 thing.dragoffsety = (((thing.objy // 16) * 16) - thing.objy) * 1.5
 
-        self.actorEditorDock.setVisible(showActorPanel)
+        self.spriteEditorDock.setVisible(showSpritePanel)
         self.entrance_editor_dock.setVisible(showEntrancePanel)
         self.location_editor_dock.setVisible(showLocationPanel)
         self.path_editor_dock.setVisible(showPathPanel)
@@ -2196,19 +2196,19 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.UpdateModeInfo()
             globals_.DirtyOverride -= 1
 
-    def ActorDataUpdated(self, data):
+    def SpriteDataUpdated(self, data):
         """
-        Handle the current actor's data being updated
+        Handle the current sprite's data being updated
         """
-        if self.actorEditorDock.isVisible():
+        if self.spriteEditorDock.isVisible():
             obj = self.selObj
-            if isinstance(obj, ActorItem):
-                obj.actordata = data
+            if isinstance(obj, SpriteItem):
+                obj.spritedata = data
                 obj.UpdateListItem()
                 SetDirty()
 
                 obj.UpdateDynamicSizing()
-                self.palette_dock.actor_tab.actor_list.updateActor(obj)
+                self.palette_dock.sprite_tab.sprite_list.updateSprite(obj)
 
     def UpdateModeInfo(self):
         """
@@ -2216,9 +2216,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         self.UpdateFlag = True
 
-        if isinstance(self.selObj, ActorItem) and self.actorEditorDock.isVisible():
+        if isinstance(self.selObj, SpriteItem) and self.spriteEditorDock.isVisible():
             obj = self.selObj
-            self.actorDataEditor.setActor(obj.actor_num, initial_data=obj.actordata)
+            self.spriteDataEditor.setSprite(obj.sprite_num, initial_data=obj.spritedata)
         elif isinstance(self.selObj, EntranceItem) and self.entrance_editor_dock.isVisible():
             self.entrance_editor.set_entrance(self.selObj)
         elif isinstance(self.selObj, PathItem) and self.path_editor_dock.isVisible():
@@ -2248,10 +2248,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 info = globals_.trans.string('Statusbar', 23, '[width]', hovered.width, '[height]', hovered.height, '[xpos]',
                                     hovered.objx, '[ypos]', hovered.objy, '[layer]', hovered.layer, '[type]',
                                     hovered.object_num, '[tileset]', hovered.tileset + 1)
-            elif isinstance(hovered, ActorItem):  # Actor
+            elif isinstance(hovered, SpriteItem):  # Sprite
                 info = globals_.trans.string('Statusbar', 24, '[name]', hovered.name, '[xpos]', hovered.objx, '[ypos]',
                                     hovered.objy)
-            elif isinstance(hovered, actorlib.AuxiliaryItem):  # Actor (auxiliary thing) (treat it like the actual actor)
+            elif isinstance(hovered, SLib.AuxiliaryItem):  # Sprite (auxiliary thing) (treat it like the actual sprite)
                 info = globals_.trans.string('Statusbar', 24, '[name]', hovered.parentItem().name, '[xpos]',
                                     hovered.parentItem().objx, '[ypos]', hovered.parentItem().objy)
             elif isinstance(hovered, EntranceItem):  # Entrance

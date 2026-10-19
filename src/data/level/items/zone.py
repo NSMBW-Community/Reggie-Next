@@ -2,7 +2,7 @@ from typing import Any
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-import actorlib
+import spritelib as SLib
 from data import globals_
 from data.level.dirty import SetDirty
 from data.level.items.basic import LevelEditorItem
@@ -231,7 +231,7 @@ class ZoneItem(LevelEditorItem):
             self.ent_indicator_show = False
             return
 
-        initial_id = actorlib.MapPositionToZoneID(globals_.Area.zones, entrance.objx, entrance.objy, get_id=True)
+        initial_id = SLib.MapPositionToZoneID(globals_.Area.zones, entrance.objx, entrance.objy, get_id=True)
         if initial_id != self.id:
             # The initial entrance is not closest to this zone.
             self.ent_indicator_show = False
@@ -239,11 +239,11 @@ class ZoneItem(LevelEditorItem):
 
         # Only show the indicator when this zone does not contain an autoscroller
         # or ambush controller.
-        for actor in globals_.Area.actors:
-            if actor.type not in {91, 454}:  # {autoscroll, ambush}
+        for sprite in globals_.Area.sprites:
+            if sprite.type not in {91, 454}:  # {autoscroll, ambush}
                 continue
 
-            zone_id = actorlib.MapPositionToZoneID(globals_.Area.zones, actor.objx, actor.objy, get_id=True)
+            zone_id = SLib.MapPositionToZoneID(globals_.Area.zones, sprite.objx, sprite.objy, get_id=True)
 
             if self.id == zone_id:
                 # The zone contains either an ambush controller or an autoscroller
@@ -284,7 +284,7 @@ class ZoneItem(LevelEditorItem):
         # Paint an indicator line to show the leftmost edge of where entrances
         # can be safely placed.
         if globals_.DrawEntIndicators:
-            # This function could be called only when an actor or entrance is
+            # This function could be called only when a sprite or entrance is
             # moved or created. If this starts giving trouble, do that.
             self.updateEntranceIndicator()
 
@@ -300,17 +300,17 @@ class ZoneItem(LevelEditorItem):
                 painter.drawLine(lineStart, lineEnd)
 
         # Paint liquids/fog
-        if globals_.ActorsShown and globals_.ActorImagesShown and globals_.RealViewEnabled:
+        if globals_.SpritesShown and globals_.SpriteImagesShown and globals_.RealViewEnabled:
             zoneRect = self.mapRectToScene(self.DrawRect)
-            from actors import ActorImage_BubbleGen as bubbleGenType
-            from actors import ActorImage_LiquidOrFog as liquidOrFogType
+            from sprites import SpriteImage_BubbleGen as bubbleGenType
+            from sprites import SpriteImage_LiquidOrFog as liquidOrFogType
 
-            for actor in globals_.Area.actors:
-                if isinstance(actor.ImageObj, liquidOrFogType) and actor.ImageObj.paintZone() and self.id == actor.ImageObj.zoneId:
-                    actor.ImageObj.realViewZone(painter, zoneRect)
-                if isinstance(actor.ImageObj, bubbleGenType) and hasattr(actor, 'zoneID') and self.id == actor.zoneID:
-                    actor.ImageObj.realViewZone(painter, zoneRect)
-        else: # Fixes issues with the liquid/fog only disappearing where actors updated the scene
+            for sprite in globals_.Area.sprites:
+                if isinstance(sprite.ImageObj, liquidOrFogType) and sprite.ImageObj.paintZone() and self.id == sprite.ImageObj.zoneId:
+                    sprite.ImageObj.realViewZone(painter, zoneRect)
+                if isinstance(sprite.ImageObj, bubbleGenType) and hasattr(sprite, 'zoneID') and self.id == sprite.zoneID:
+                    sprite.ImageObj.realViewZone(painter, zoneRect)
+        else: # Fixes issues with the liquid/fog only disappearing where sprites updated the scene
             self.update(self.DrawRect)
 
         # Now paint the borders
@@ -464,7 +464,7 @@ class ZoneItem(LevelEditorItem):
 
             globals_.mainWindow.level_overview.update()
 
-            for spr in globals_.Area.actors:
+            for spr in globals_.Area.sprites:
                 spr.ImageObj.positionChanged()
 
             SetDirty()

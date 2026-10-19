@@ -63,21 +63,21 @@ Developers:
  * AerialX - CheerIOS, Riivolution
  * megazig - Code, Optimization, Data, RE
  * Omega - int(), Python, Testing
- * Pop006 - Actor Images (NSMBW)
- * Tobias - Actor Data (NSMBW), Event Example Stage
+ * Pop006 - Sprite Images (NSMBW)
+ * Tobias - Sprite Data (NSMBW), Event Example Stage
  * AboodXD - Programmer, Optimization
- * Grop - Programmer, Actor Data (NSMBW)
- * RoadrunnerWMC - Reggie! Next Developer: Programmer, UI, Data, Actor Images (NSMBW), Other
- * JasonP27 - ReggieMod Developer, Programmer, UI, Actor Images (NSMBW)
- * Kinnay (Kamek64) - Reggie! Newer Sprites Developer, Programmer, Actor Images
- * ZementBlock - Actor Data (NSMBW)
- * MalStar1000 - Actor Images, Other
- * joietyfull64 - Actor Data (NSMBW)
+ * Grop - Programmer, Sprite Data (NSMBW)
+ * RoadrunnerWMC - Reggie! Next Developer: Programmer, UI, Data, Sprite Images (NSMBW), Other
+ * JasonP27 - ReggieMod Developer, Programmer, UI, Sprite Images (NSMBW)
+ * Kinnay (Kamek64) - Reggie! Newer Sprites Developer, Programmer, Sprite Images
+ * ZementBlock - Sprite Data (NSMBW)
+ * MalStar1000 - Sprite Images, Other
+ * joietyfull64 - Sprite Data (NSMBW)
  * MidiGuyDP - (Old) Background Images & Names (NewerSMBW)
- * SnakeBlock - Actor Data (NSMBW)
- * Danster64 - Actor Data, Actor Images, Windows Builds
- * MandyIGuess - Programmer, UI, Actor Data, Actor Images, Background Names, Data, RE, Other QoL improvements
- * B1 Gaming - Actor Data, Actor Images, Data / Docs, Other QoL improvements
+ * SnakeBlock - Sprite Data (NSMBW)
+ * Danster64 - Sprite Data, Sprite Images, Windows Builds
+ * MandyIGuess - Programmer, UI, Sprite Data, Sprite Images, Background Names, Data, RE, Other QoL improvements
+ * B1 Gaming - Sprite Data, Sprite Images, Data / Docs, Other QoL improvements
 
 Other Testers and Contributors:
  * BulletBillTime, Dirbaio, EdgarAllen, FirePhoenix, GrandMasterJimmy, Mooseknuckle2000, MotherBrainsBrain, RainbowIE, Skawo, Sonicandtails, Tanks, Vibestar, angelsl, ant888, gamesquest1, iZackefx

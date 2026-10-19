@@ -16,7 +16,6 @@ class MoveItemUndoAction(UndoAction):
         """
         Initializes the undo action
         """
-        #print(type(target))
         defType = target.instanceDef
         self.origDef = defType(target)
         self.finalDef = defType(target)
@@ -50,14 +49,14 @@ class MoveItemUndoAction(UndoAction):
         """
         Changes the position of an object
         """
-        from data.level.items.actor import ActorItem
         from data.level.items.object import ObjectItem
         from data.level.items.path import PathItem
+        from data.level.items.sprite import SpriteItem
 
         main_window = globals_.mainWindow
 
-        if isinstance(obj, ActorItem):
-            # Actors are weird so they handle this themselves
+        if isinstance(obj, SpriteItem):
+            # Sprites are weird so they handle this themselves
             obj.setNewObjPos(newX, newY)
 
         elif isinstance(obj, ObjectItem):

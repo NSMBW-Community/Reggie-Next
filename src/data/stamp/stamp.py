@@ -25,11 +25,11 @@ class Stamp:
 
         minX, minY, maxX, maxY = 24576, 12288, 0, 0
 
-        layers, actors, _, _, _, _, _ = ReggieClip.decode_reggie_clip(self.ReggieClip, False)
+        layers, sprites, _, _, _, _, _ = ReggieClip.decode_reggie_clip(self.ReggieClip, False)
 
-        # Go through the actors and find the maxs and mins
-        for actor in actors:
-            br = actor.getFullRect()
+        # Go through the sprites and find the maxs and mins
+        for spr in sprites:
+            br = spr.getFullRect()
 
             x1 = br.topLeft().x()
             y1 = br.topLeft().y()
@@ -61,9 +61,9 @@ class Stamp:
         drawOffsetY = offsetY - minY
 
         # Go through the things again and shift them by the offset amount
-        for actor in actors:
-            actor.objx -= offsetX / 1.5
-            actor.objy -= offsetY / 1.5
+        for spr in sprites:
+            spr.objx -= offsetX / 1.5
+            spr.objy -= offsetY / 1.5
         for layer in layers:
             for obj in layer:
                 obj.objx -= offsetX // 24
@@ -111,20 +111,20 @@ class Stamp:
                     desty += 24
                 painter.restore()
 
-        # Paint all actors
-        for actor in actors:
-            offx = ((actor.objx + actor.ImageObj.xOffset) * 1.5) + drawOffsetX
-            offy = ((actor.objy + actor.ImageObj.yOffset) * 1.5) + drawOffsetY
+        # Paint all sprites
+        for spr in sprites:
+            offx = ((spr.objx + spr.ImageObj.xOffset) * 1.5) + drawOffsetX
+            offy = ((spr.objy + spr.ImageObj.yOffset) * 1.5) + drawOffsetY
 
             painter.save()
             painter.translate(offx, offy)
 
-            actor.paint(painter, None, None, True)
+            spr.paint(painter, None, None, True)
 
             painter.restore()
 
             # Paint any auxiliary things
-            for aux in actor.ImageObj.aux:
+            for aux in spr.ImageObj.aux:
                 painter.save()
                 painter.translate(
                     offx + aux.x(),
