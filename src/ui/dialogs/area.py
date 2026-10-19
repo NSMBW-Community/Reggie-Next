@@ -6,7 +6,7 @@ from ui.theme.reggie_theme import GetIcon
 
 from ui.widgets.area.tilesets import TilesetsTab
 from ui.widgets.area.settings import SettingsTab
-from ui.widgets.area.loaded_actors import LoadedActorsTab
+from ui.widgets.area.loaded_sprites import LoadedSpritesTab
 
 class AreaOptionsDialog(QtWidgets.QDialog):
     """
@@ -23,12 +23,12 @@ class AreaOptionsDialog(QtWidgets.QDialog):
 
         self.tilesets_tab = TilesetsTab()
         self.settings_tab = SettingsTab()
-        self.loaded_actors_tab = LoadedActorsTab()
+        self.loaded_sprites_tab = LoadedSpritesTab()
 
         self.tab_widget = QtWidgets.QTabWidget()
         self.tab_widget.addTab(self.tilesets_tab, GetIcon('document-block'), globals_.trans.string('AreaDlg', 1))
         self.tab_widget.addTab(self.settings_tab, GetIcon('gear'), globals_.trans.string('AreaDlg', 2))
-        self.tab_widget.addTab(self.loaded_actors_tab, GetIcon('rocket-exclamation-red'), globals_.trans.string('AreaDlg', 46))
+        self.tab_widget.addTab(self.loaded_sprites_tab, GetIcon('rocket-exclamation-red'), globals_.trans.string('AreaDlg', 46))
 
         button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
         button_box.accepted.connect(self.accept)
@@ -47,7 +47,7 @@ class AreaOptionsDialog(QtWidgets.QDialog):
         """
         Saves everything back to the area
         """
-        SetDirty()
         self.tilesets_tab.save()
         self.settings_tab.save()
-        self.loaded_actors_tab.save()
+        self.loaded_sprites_tab.save()
+        SetDirty()
