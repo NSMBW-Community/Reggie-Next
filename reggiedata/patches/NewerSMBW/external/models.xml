@@ -1,6 +1,6 @@
 <!--
-    All NSMBW models for sprite 11 Custom Model Loader. This list needs to be updated, but at least it's not in the
-    spritedata xml anymore.
+    All NSMBW models for actor 11 Custom Model Loader. This list needs to be updated, but at least it's not in the
+    actordata xml anymore.
     Properties:
     - Model             Description of the model
     - From Level        Used in which level

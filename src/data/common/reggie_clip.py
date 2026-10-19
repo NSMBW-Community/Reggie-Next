@@ -7,7 +7,7 @@ from data.level.items.entrance import EntranceItem
 from data.level.items.location import LocationItem
 from data.level.items.object import ObjectItem
 from data.level.items.path import PathItem
-from data.level.items.sprite import SpriteItem
+from data.level.items.actor import ActorItem
 from data.level.items.comment import CommentItem
 from data.level.path import Path
 
@@ -26,7 +26,7 @@ class ReggieClip:
             return ''
 
         objects = []
-        sprites = []
+        actors = []
         entrances = []
         locations = []
         path_nodes = []
@@ -35,8 +35,8 @@ class ReggieClip:
         for obj in items:
             if isinstance(obj, ObjectItem):
                 objects.append(obj)
-            elif isinstance(obj, SpriteItem):
-                sprites.append(obj)
+            elif isinstance(obj, ActorItem):
+                actors.append(obj)
             elif isinstance(obj, EntranceItem):
                 entrances.append(obj)
             elif isinstance(obj, LocationItem):
@@ -46,12 +46,12 @@ class ReggieClip:
             elif isinstance(obj, CommentItem):
                 comments.append(obj)
 
-        return ReggieClip.encode_reggie_clip(objects, sprites, entrances, locations, path_nodes, comments)
+        return ReggieClip.encode_reggie_clip(objects, actors, entrances, locations, path_nodes, comments)
 
     @staticmethod
     def encode_reggie_clip(
         objects: list[ObjectItem],
-        sprites: list[SpriteItem],
+        actors: list[ActorItem],
         entrances: list[EntranceItem],
         locations: list[LocationItem],
         path_nodes: list[PathItem],
@@ -146,13 +146,13 @@ class ReggieClip:
 
         globals_.OverrideSnapping = True
 
-        layers, sprites, entrances, locations, paths, path_nodes, comments = ReggieClip.decode_reggie_clip(reggie_clip)
+        layers, actors, entrances, locations, paths, path_nodes, comments = ReggieClip.decode_reggie_clip(reggie_clip)
 
         # Find the bounding box of all created objects
         bounding = QtCore.QRectF()
 
-        for spr in sprites:
-            bounding |= spr.LevelRect
+        for actor in actors:
+            bounding |= actor.LevelRect
 
         for layer in layers:
             for obj in layer:
@@ -196,7 +196,7 @@ class ReggieClip:
             ypixeloffset = yoffset * 16
 
         # Center and select everything
-        for item in sprites:
+        for item in actors:
             item.setNewObjPos(item.objx + xpixeloffset, item.objy + ypixeloffset)
             item.UpdateRects()
             item.setSelected(select)
@@ -232,8 +232,8 @@ class ReggieClip:
         globals_.mainWindow.SelectionUpdateFlag = False
         globals_.mainWindow.ChangeSelectionHandler()
 
-        # Combine the sprites and layers
-        added.extend(sprites)
+        # Combine the actors and layers
+        added.extend(actors)
         added.extend(entrances)
         added.extend(locations)
         added.extend(paths)
@@ -245,12 +245,12 @@ class ReggieClip:
         return added
 
     @staticmethod
-    def decode_reggie_clip(reggie_clip: str, add_to_scene: bool = True) -> tuple[tuple[list[ObjectItem], list[ObjectItem], list[ObjectItem]], list[SpriteItem], list[EntranceItem], list[LocationItem], list[Path], list[PathItem], list[CommentItem]]:
+    def decode_reggie_clip(reggie_clip: str, add_to_scene: bool = True) -> tuple[tuple[list[ObjectItem], list[ObjectItem], list[ObjectItem]], list[ActorItem], list[EntranceItem], list[LocationItem], list[Path], list[PathItem], list[CommentItem]]:
         """
         Decode the objects from a ReggieClip
         """
         layers = ([], [], [])
-        sprites = []
+        actors = []
         entrances = []
         locations = []
         paths = []
@@ -258,15 +258,15 @@ class ReggieClip:
         comments = []
 
         if globals_.mainWindow is None:
-            return layers, sprites, entrances, locations, paths, path_nodes, comments
+            return layers, actors, entrances, locations, paths, path_nodes, comments
 
         if not (reggie_clip.startswith('ReggieClip|') and reggie_clip.endswith('|%')):
-            return layers, sprites, entrances, locations, paths, path_nodes, comments
+            return layers, actors, entrances, locations, paths, path_nodes, comments
 
         clip = reggie_clip[11:-2].split('|')
 
-        globals_.mainWindow.palette_dock.sprite_tab.sprite_list.prepareBatchAdd()
-        globals_.mainWindow.palette_dock.sprite_tab.sprite_order_list.prepareBatchAdd()
+        globals_.mainWindow.palette_dock.actor_tab.actor_list.prepareBatchAdd()
+        globals_.mainWindow.palette_dock.actor_tab.actor_order_list.prepareBatchAdd()
 
         for item in clip:
             try:
@@ -306,7 +306,7 @@ class ReggieClip:
                     newitem = ObjectItem.CreateObject(tileset, type, layer, objx, objy, width, height, add_to_scene)
                     layers[layer].append(newitem)
 
-                # Sprite
+                # Actor
                 elif split[0] == '1':
                     if len(split) != 13:
                         continue
@@ -316,8 +316,8 @@ class ReggieClip:
                     type = int(split[1])
                     data = bytes(map(int, [split[4], split[5], split[6], split[7], split[8], split[9], '0', split[10], split[11], split[12]]))
 
-                    newitem = SpriteItem.CreateSprite(objx, objy, type, data, add_to_scene)
-                    sprites.append(newitem)
+                    newitem = ActorItem.CreateActor(objx, objy, type, data, add_to_scene)
+                    actors.append(newitem)
 
                 # Entrance
                 elif split[0] == '2':
@@ -440,7 +440,7 @@ class ReggieClip:
                 # an int() probably failed somewhere
                 pass
 
-        globals_.mainWindow.palette_dock.sprite_tab.sprite_list.endBatchAdd()
-        globals_.mainWindow.palette_dock.sprite_tab.sprite_order_list.endBatchAdd()
+        globals_.mainWindow.palette_dock.actor_tab.actor_list.endBatchAdd()
+        globals_.mainWindow.palette_dock.actor_tab.actor_order_list.endBatchAdd()
 
-        return layers, sprites, entrances, locations, paths, path_nodes, comments
+        return layers, actors, entrances, locations, paths, path_nodes, comments

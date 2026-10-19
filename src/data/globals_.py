@@ -10,8 +10,8 @@ from data.common.reggie_translation import ReggieTranslation
 from data.common.toolbar_action import ToolbarAction
 from data.level.abstract_level import AbstractLevel
 from data.level.area import Area as AreaType
-from data.level.sprite_definition import SpriteDefinition
-from data.sprite.sprite_category import SpriteCategory
+from data.level.actor_definition import ActorDefinition
+from data.actor.actor_category import ActorCategory
 from data.tileset.object.object_def import ObjectDef
 from data.tileset.tile.rand_tile_selection import RandTileSelection
 from data.tileset.tile.tileset_tile import TilesetTile
@@ -70,7 +70,7 @@ CommentsShown: bool = True
 CurrentLayer: int = 1
 CurrentObject: int = -1
 CurrentPaintType: int = 0
-CurrentSprite: int = -1
+CurrentActor: int = -1
 DrawEntIndicators: bool = False
 EntrancesFrozen: bool = False
 EntrancesShown: bool = True
@@ -87,9 +87,9 @@ PathsFrozen: bool = False
 PathsShown: bool = True
 PlaceObjectsAtFullSize: bool = True
 RealViewEnabled: bool = False
-SpriteImagesShown: bool = True
-SpritesFrozen: bool = False
-SpritesShown: bool = True
+ActorImagesShown: bool = True
+ActorsFrozen: bool = False
+ActorsShown: bool = True
 TilesetsAnimating: bool = False
 UseRoundedRectangles: bool = True
 
@@ -126,16 +126,16 @@ TilesetFilesLoaded: list[str | None] = [None for _ in range(4)]  # should always
 TilesetInfo: dict[str, dict[int, RandTileSelection]] = {}
 TilesetNames: list[TilesetCategory] = [TilesetCategory() for _ in range(4)]  # should always have exactly 4 entries
 
-# Sprites
-NumSprites: int = 0
+# Actors
+NumActors: int = 0
 ResetDataWhenHiding: bool = False
-ShowUnknownSpriteWarning: bool = True
-SpriteCategories: list[SpriteCategory] = []
-Sprites: list[SpriteDefinition] = []
+ShowUnknownActorWarning: bool = True
+ActorCategories: list[ActorCategory] = []
+Actors: list[ActorDefinition] = []
 
 # Game patch config settings
 DispConnectedPipeDir: bool = False
-SpecialEventSpriteID: int = 0
+SpecialEventActorID: int = 0
 AllowSizeHacks: bool = False
 
 app: QtWidgets.QApplication | None = None

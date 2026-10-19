@@ -1,3 +1,4 @@
+0B02=Broken (Doesn't appear in-game)
 0C03=Volcano Smoke
 1003=Sunset Beach
 3DC2=Toad House Lobby (Blue)

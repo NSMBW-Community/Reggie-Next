@@ -7,7 +7,7 @@ from xml.etree import ElementTree
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-import spritelib as SLib
+import actorlib
 from data import globals_
 from data.common import archive
 from data.common.keybind import Keybind
@@ -17,8 +17,8 @@ from data.common.settings import delSetting, setSetting, setting
 from data.common.toolbar_action import ToolbarAction
 from data.common.utils import get_main_path, get_reggiedata_folder
 from data.level.items.location import LocationItem
-from data.level.sprite_definition import SpriteDefinition
-from data.sprite.sprite_category import SpriteCategory, SpriteSubCategory
+from data.level.actor_definition import ActorDefinition
+from data.actor.actor_category import ActorCategory, ActorSubCategory
 from data.tileset.object.object_def import ObjectDef
 from data.tileset.object.renderers import IncrementTilesetFrame
 from data.tileset.tile.rand_tile_selection import RandTileSelection
@@ -30,6 +30,8 @@ from ui.dialogs.about import AboutDialog
 from ui.dialogs.diagnostic_tool import DiagnosticToolDialog
 from ui.dialogs.object_swap import ObjectTypeSwapDialog
 from ui.theme.reggie_theme import GetAppIcon, GetIcon, ReggieTheme
+
+from data.common.gamedef_compatibility import update_actordata, update_actorcategories
 
 
 def getResourcePaths(res_name: str) -> list[str]:
@@ -335,164 +337,169 @@ def LoadConfig() -> None:
                 if opt == 'DispConnectPipeDir':
                     globals_.DispConnectedPipeDir = value.strip().lower() == 'true'
                 elif opt == 'SpecialEventID':
-                    globals_.SpecialEventSpriteID = int(value)
+                    globals_.SpecialEventActorID = int(value)
                 elif opt == 'AllowSizeHacks':
                     globals_.AllowSizeHacks = value.strip().lower() == 'true'
 
 
-def LoadSpriteData() -> None:
+def LoadActorData() -> None:
     """
-    Ensures that the sprite data info is loaded
+    Ensures that the actor data info is loaded
     """
     errors = []
     errortext = []
-    sprite_ids = [-1]
+    actor_ids = [-1]
 
     # Convert the iterable to list, because we need to iterate over it twice
-    paths = list(getResourcePaths('spritedata'))
+    paths = list(getResourcePaths('actordata'))
 
     for path in paths:
+        # Check if anything should be fixed
+        update_actordata(path)
+
         if path is None:
             continue
 
-        # Add XML sprite data, if there is any
+        # Add XML actor data, if there is any
         if not isinstance(path, str):
             path = path.path
 
         tree = ElementTree.parse(path)
 
-        for sprite in tree.iter("sprite"):
-            id_text = sprite.get("id")
+        for actor in tree.iter("actor"):
+            id_text = actor.get("id")
 
             if id_text is None:
                 continue
 
             id_ = int(id_text)
-            sprite_ids.append(id_)
+            actor_ids.append(id_)
 
-    globals_.NumSprites = max(sprite_ids) + 1
-    globals_.Sprites = [SpriteDefinition()] * globals_.NumSprites
+    globals_.NumActors = max(actor_ids) + 1
+    globals_.Actors = [ActorDefinition()] * globals_.NumActors
 
     for sdpath in paths:
 
-        # Add XML sprite data, if there is any
+        # Add XML actor data, if there is any
         if sdpath in (None, ''):
             continue
 
         path = sdpath if isinstance(sdpath, str) else sdpath.path
         tree = ElementTree.parse(path)
 
-        for sprite in tree.iter("sprite"):
-            id_from_sprite = sprite.get("id")
+        for actor in tree.iter("actor"):
+            id_from_actor = actor.get("id")
 
-            if id_from_sprite is None:
+            if id_from_actor is None:
                 continue
 
-            spriteid = int(id_from_sprite)
+            actor_id = int(id_from_actor)
 
-            spritename = sprite.get("name")
+            actor_name = actor.get("name")
             notes = None
             advNotes = None
             relatedObjFiles = None
             yoshiNotes = None
 
-            attribs = sprite.keys()
+            attribs = actor.keys()
 
             if 'notes' in attribs:
-                notes = globals_.trans.string('SpriteDataEditor', 2, '[notes]', sprite.get('notes'))
+                notes = globals_.trans.string('ActorDataEditor', 2, '[notes]', actor.get('notes'))
 
             if 'advancednotes' in attribs:
-                advNotes = globals_.trans.string('SpriteDataEditor', 11, '[notes]', sprite.get('advancednotes'))
+                advNotes = globals_.trans.string('ActorDataEditor', 11, '[notes]', actor.get('advancednotes'))
 
             if 'files' in attribs:
-                sprite_files = sprite.get('files')
-                if sprite_files is None:
+                actor_files = actor.get('files')
+                if actor_files is None:
                     continue
-                relatedObjFiles = globals_.trans.string('SpriteDataEditor', 8, '[list]',
-                                                sprite_files.replace(';', '<br>* '))
+                relatedObjFiles = globals_.trans.string('ActorDataEditor', 8, '[list]',
+                                                actor_files.replace(';', '<br>* '))
 
             if 'yoshinotes' in attribs:
-                yoshiNotes = globals_.trans.string('SpriteDataEditor', 9, '[notes]',
-                                                sprite.get('yoshinotes'))
+                yoshiNotes = globals_.trans.string('ActorDataEditor', 9, '[notes]',
+                                                actor.get('yoshinotes'))
 
-            noyoshi = sprite.get('noyoshi', 'False') == "True"
-            asm = sprite.get('asmhacks', 'False') == "True"
-            size = sprite.get('sizehacks', 'False') == "True"
-            noLayer = sprite.get('nolayer', 'False') == "True"
+            noyoshi = actor.get('noyoshi', 'False') == "True"
+            asm = actor.get('asmhacks', 'False') == "True"
+            size = actor.get('sizehacks', 'False') == "True"
+            noLayer = actor.get('nolayer', 'False') == "True"
 
-            sdef = SpriteDefinition()
-            sdef.id = spriteid
-            sdef.name = spritename
-            sdef.notes = notes
-            sdef.advNotes = advNotes
-            sdef.relatedObjFiles = relatedObjFiles
-            sdef.yoshiNotes = yoshiNotes
-            sdef.noyoshi = noyoshi
-            sdef.asm = asm
-            sdef.size = size
-            sdef.noLayer = noLayer
-            sdef.dependencies = []
-            sdef.dependencynotes = None
+            actor_def = ActorDefinition()
+            actor_def.id = actor_id
+            actor_def.name = actor_name
+            actor_def.notes = notes
+            actor_def.advNotes = advNotes
+            actor_def.relatedObjFiles = relatedObjFiles
+            actor_def.yoshiNotes = yoshiNotes
+            actor_def.noyoshi = noyoshi
+            actor_def.asm = asm
+            actor_def.size = size
+            actor_def.noLayer = noLayer
+            actor_def.dependencies = []
+            actor_def.dependencynotes = None
 
             try:
-                sdef.loadFrom(sprite)
+                actor_def.loadFrom(actor)
             except ValueError as e:
-                errors.append(str(spriteid))
+                errors.append(str(actor_id))
                 errortext.append(str(e))
 
-            globals_.Sprites[spriteid] = sdef
+            globals_.Actors[actor_id] = actor_def
 
     # Warn the user if errors occurred
     if errors:
-        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_BrokenSpriteData', 0),
-                                      globals_.trans.string('Err_BrokenSpriteData', 1, '[sprites]', ', '.join(errors)),
+        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_BrokenActorData', 0),
+                                      globals_.trans.string('Err_BrokenActorData', 1, '[actors]', ', '.join(errors)),
                                       QtWidgets.QMessageBox.StandardButton.Ok)
-        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_BrokenSpriteData', 2), repr(errortext))
+        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_BrokenActorData', 2), repr(errortext))
 
 
-def ReloadSpritedata():
+def ReloadActorData():
     """
-    Reload the entire spritedata
+    Reload the entire actordata
     """
     if globals_.mainWindow is None:
         return
 
-    LoadSpriteData()
+    LoadActorData()
 
-    # Reload spritedata editor
-    cur_sel_sprite = globals_.mainWindow.spriteDataEditor.spritetype
-    globals_.mainWindow.spriteDataEditor.setSprite(cur_sel_sprite, True)
+    # Reload actordata editor
+    cur_sel_actor = globals_.mainWindow.actorDataEditor.actortype
+    globals_.mainWindow.actorDataEditor.setActor(cur_sel_actor, True)
 
     # Update list
-    globals_.mainWindow.palette_dock.sprite_tab.sprite_picker.UpdateSpriteNames()
+    globals_.mainWindow.palette_dock.actor_tab.actor_picker.UpdateActorNames()
 
     # Redo the search if a search was made
-    search = globals_.mainWindow.palette_dock.sprite_tab.search_box.text()
+    search = globals_.mainWindow.palette_dock.actor_tab.search_box.text()
     if search != "":
-        globals_.mainWindow.palette_dock.sprite_tab.sprite_picker.SetSearchString(search)
+        globals_.mainWindow.palette_dock.actor_tab.actor_picker.SetSearchString(search)
 
 
-def LoadSpriteCategories(reload_: bool = False) -> None:
+def LoadActorCategories(reload_: bool = False) -> None:
     """
-    Ensures that the sprite category info is loaded
+    Ensures that the actor category info is loaded
     """
-    if not globals_.SpriteCategories and not reload_:
+    if not globals_.ActorCategories and not reload_:
         return
 
-    paths = getResourcePaths('spritecategories')
+    paths = getResourcePaths('actorcategories')
 
-    globals_.SpriteCategories = []
+    globals_.ActorCategories = []
     # Add a Search category
-    globals_.SpriteCategories.append(SpriteCategory(globals_.trans.string('Sprites', 19), [SpriteSubCategory(globals_.trans.string('Sprites', 16), list(range(globals_.NumSprites)))], []))
-    globals_.SpriteCategories[0].sub_categories[0].sprite_ids.append(9999)  # 'no results' special case
+    globals_.ActorCategories.append(ActorCategory(globals_.trans.string('Actors', 19), [ActorSubCategory(globals_.trans.string('Actors', 16), list(range(globals_.NumActors)))], []))
+    globals_.ActorCategories[0].sub_categories[0].actor_ids.append(9999)  # 'no results' special case
     for path in paths:
         if path is None:
             continue
 
+        update_actorcategories(path)
+
         tree = ElementTree.parse(path)
         root = tree.getroot()
 
-        CurrentView: list[SpriteSubCategory] | None = None
+        CurrentView: list[ActorSubCategory] | None = None
         for view in root:
             if view.tag.lower() != 'view':
                 continue
@@ -501,10 +508,10 @@ def LoadSpriteCategories(reload_: bool = False) -> None:
 
             # See if it's in there already
             CurrentView = []
-            for potentialview in globals_.SpriteCategories:
+            for potentialview in globals_.ActorCategories:
                 if potentialview.name == viewname:
                     CurrentView = potentialview.sub_categories
-            if CurrentView == []: globals_.SpriteCategories.append(SpriteCategory(viewname, CurrentView, []))
+            if CurrentView == []: globals_.ActorCategories.append(ActorCategory(viewname, CurrentView, []))
 
             CurrentCategory = None
             for category in view:
@@ -516,19 +523,19 @@ def LoadSpriteCategories(reload_: bool = False) -> None:
                 # See if it's in there already
                 CurrentCategory = []
                 for potentialcat in CurrentView:
-                    if potentialcat.name == catname: CurrentCategory = potentialcat.sprite_ids
-                if CurrentCategory == []: CurrentView.append(SpriteSubCategory(catname, CurrentCategory))
+                    if potentialcat.name == catname: CurrentCategory = potentialcat.actor_ids
+                if CurrentCategory == []: CurrentView.append(ActorSubCategory(catname, CurrentCategory))
 
                 for attach in category:
                     if attach.tag.lower() != 'attach':
                         continue
 
-                    sprite = attach.attrib['sprite']
-                    if '-' not in sprite:
-                        if int(sprite) not in CurrentCategory:
-                            CurrentCategory.append(int(sprite))
+                    actor = attach.attrib['actor']
+                    if '-' not in actor:
+                        if int(actor) not in CurrentCategory:
+                            CurrentCategory.append(int(actor))
                     else:
-                        x = sprite.split('-')
+                        x = actor.split('-')
                         for i in range(int(x[0]), int(x[1]) + 1):
                             if i not in CurrentCategory:
                                 CurrentCategory.append(i)
@@ -800,8 +807,8 @@ def LoadMenuActions(mw) -> None:
             globals_.trans.stringOneLine('MenuItems', 107), GetKeybind('swapobjectstypes')
         ),
         MenuAction(
-            'switchsprites', mw.SwitchSprites, GetIcon('arrow-curve'), globals_.trans.stringOneLine('MenuItems', 142),
-            globals_.trans.stringOneLine('MenuItems', 143), GetKeybind('switchsprites')
+            'switchactors', mw.SwitchActors, GetIcon('arrow-curve'), globals_.trans.stringOneLine('MenuItems', 142),
+            globals_.trans.stringOneLine('MenuItems', 143), GetKeybind('switchactors')
         ),
         MenuAction(
             'diagnostic', lambda: DiagnosticToolDialog().exec(), GetIcon('wrench-screwdriver'), globals_.trans.stringOneLine('MenuItems', 36),
@@ -812,8 +819,8 @@ def LoadMenuActions(mw) -> None:
             globals_.trans.stringOneLine('MenuItems', 39), GetKeybind('freezeobjects'), True
         ),
         MenuAction(
-            'freezesprites', mw.HandleSpritesFreeze, GetIcon('rocket-freeze'), globals_.trans.stringOneLine('MenuItems', 40),
-            globals_.trans.stringOneLine('MenuItems', 41), GetKeybind('freezesprites'), True
+            'freezeactors', mw.HandleActorsFreeze, GetIcon('rocket-freeze'), globals_.trans.stringOneLine('MenuItems', 40),
+            globals_.trans.stringOneLine('MenuItems', 41), GetKeybind('freezeactors'), True
         ),
         MenuAction(
             'freezeentrances', mw.HandleEntrancesFreeze, GetIcon('door-freeze'), globals_.trans.stringOneLine('MenuItems', 42),
@@ -856,12 +863,12 @@ def LoadMenuActions(mw) -> None:
             globals_.trans.stringOneLine('MenuItems', 119), GetKeybind('realview'), True
         ),
         MenuAction(
-            'showsprites', mw.HandleSpritesVisibility, GetIcon('rocket'), globals_.trans.stringOneLine('MenuItems', 54),
-            globals_.trans.stringOneLine('MenuItems', 55), GetKeybind('showsprites'), True
+            'showactors', mw.HandleActorsVisibility, GetIcon('rocket'), globals_.trans.stringOneLine('MenuItems', 54),
+            globals_.trans.stringOneLine('MenuItems', 55), GetKeybind('showactors'), True
         ),
         MenuAction(
-            'showspriteimages', mw.HandleSpriteImages, GetIcon('rocket-image'), globals_.trans.stringOneLine('MenuItems', 56),
-            globals_.trans.stringOneLine('MenuItems', 57), GetKeybind('showspriteimages'), True
+            'showactorimages', mw.HandleActorImages, GetIcon('rocket-image'), globals_.trans.stringOneLine('MenuItems', 56),
+            globals_.trans.stringOneLine('MenuItems', 57), GetKeybind('showactorimages'), True
         ),
         MenuAction(
             'showentrances', mw.HandleEntrancesVisibility, GetIcon('door'), globals_.trans.stringOneLine('MenuItems', 144),
@@ -936,7 +943,7 @@ def LoadMenuActions(mw) -> None:
             globals_.trans.stringOneLine('MenuItems', 85), GetKeybind('reloadgfx')
         ),
         MenuAction(
-            'reloaddata', ReloadSpritedata, GetIcon('arrow-circle-double-135-rocket'), globals_.trans.stringOneLine('MenuItems', 138),
+            'reloaddata', ReloadActorData, GetIcon('arrow-circle-double-135-rocket'), globals_.trans.stringOneLine('MenuItems', 138),
             globals_.trans.stringOneLine('MenuItems', 139), GetKeybind('reloaddata')
         ),
         MenuAction(
@@ -991,10 +998,10 @@ def LoadToolbarActionsLists() -> None:
         ToolbarAction('mergelocations', globals_.trans.string('MenuItems', 34), False),
         ToolbarAction('swapobjectstilesets', globals_.trans.string('MenuItems', 104), False),
         ToolbarAction('swapobjectstypes', globals_.trans.string('MenuItems', 106), False),
-        ToolbarAction('switchsprites', globals_.trans.string('MenuItems', 142), False),
+        ToolbarAction('switchactors', globals_.trans.string('MenuItems', 142), False),
         ToolbarAction('diagnostic', globals_.trans.string('MenuItems', 36), False),
         ToolbarAction('freezeobjects', globals_.trans.string('MenuItems', 38), False),
-        ToolbarAction('freezesprites', globals_.trans.string('MenuItems', 40), False),
+        ToolbarAction('freezeactors', globals_.trans.string('MenuItems', 40), False),
         ToolbarAction('freezeentrances', globals_.trans.string('MenuItems', 42), False),
         ToolbarAction('freezelocations', globals_.trans.string('MenuItems', 44), False),
         ToolbarAction('freezepaths', globals_.trans.string('MenuItems', 46), False),
@@ -1006,8 +1013,8 @@ def LoadToolbarActionsLists() -> None:
         ToolbarAction('tileanim', globals_.trans.string('MenuItems', 108), False),
         ToolbarAction('collisions', globals_.trans.string('MenuItems', 110), False),
         ToolbarAction('realview', globals_.trans.string('MenuItems', 118), False),
-        ToolbarAction('showsprites', globals_.trans.string('MenuItems', 54), True),
-        ToolbarAction('showspriteimages', globals_.trans.string('MenuItems', 56), False),
+        ToolbarAction('showactors', globals_.trans.string('MenuItems', 54), True),
+        ToolbarAction('showactorimages', globals_.trans.string('MenuItems', 56), False),
         ToolbarAction('showentrances', globals_.trans.string('MenuItems', 144), False),
         ToolbarAction('showlocations', globals_.trans.string('MenuItems', 58), True),
         ToolbarAction('showpaths', globals_.trans.string('MenuItems', 130), True),
@@ -1155,7 +1162,7 @@ def LoadDefaultKeybinds() -> None:
             "Ctrl+Shift+Y",
         ),
         Keybind(
-            "switchsprites",
+            "switchactors",
             globals_.trans.string("MenuItems", 142),
             None,
         ),
@@ -1170,7 +1177,7 @@ def LoadDefaultKeybinds() -> None:
             "Ctrl+Shift+1",
         ),
         Keybind(
-            "freezesprites",
+            "freezeactors",
             globals_.trans.string("MenuItems", 40),
             "Ctrl+Shift+2",
         ),
@@ -1202,8 +1209,8 @@ def LoadDefaultKeybinds() -> None:
         Keybind("tileanim", globals_.trans.string("MenuItems", 108), "Ctrl+7"),
         Keybind("collisions", globals_.trans.string("MenuItems", 110), "Ctrl+8"),
         Keybind("realview", globals_.trans.string("MenuItems", 118), "Ctrl+9"),
-        Keybind("showsprites", globals_.trans.string("MenuItems", 54), "Ctrl+4"),
-        Keybind("showspriteimages", globals_.trans.string("MenuItems", 56), "Ctrl+6"),
+        Keybind("showactors", globals_.trans.string("MenuItems", 54), "Ctrl+4"),
+        Keybind("showactorimages", globals_.trans.string("MenuItems", 56), "Ctrl+6"),
         Keybind("showentrances", globals_.trans.string("MenuItems", 144), None),
         Keybind("showlocations", globals_.trans.string("MenuItems", 58), "Ctrl+5"),
         Keybind("showcomments", globals_.trans.string("MenuItems", 116), None),
@@ -1311,7 +1318,7 @@ def CreateTilesets() -> None:
     globals_.TilesetAnimTimer.timeout.connect(IncrementTilesetFrame)
     globals_.TilesetAnimTimer.start(90)
     globals_.ObjectDefinitions = [None] * 4
-    SLib.Tiles = globals_.Tiles
+    actorlib.Tiles = globals_.Tiles
 
 
 def LoadTileset(idx: int, name: str, reload_: bool = False) -> None:
@@ -1548,8 +1555,8 @@ def LoadTileset(idx: int, name: str, reload_: bool = False) -> None:
     # Keep track of this filepath
     globals_.TilesetFilesLoaded[idx] = arcname
 
-    # Add Tiles to spritelib
-    SLib.Tiles = globals_.Tiles
+    # Add Tiles to actorlib
+    actorlib.Tiles = globals_.Tiles
 
     return
 
