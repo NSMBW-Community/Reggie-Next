@@ -7,8 +7,8 @@ from xml.etree import ElementTree as etree
 
 from PyQt6 import QtWidgets
 
-import actorlib
-import actors
+import spritelib as SLib
+import sprites
 from data import globals_
 from data.common.loaders import (
     LoadBgANames,
@@ -17,17 +17,16 @@ from data.common.loaders import (
     LoadEntranceNames,
     LoadMusicInfo,
     LoadObjDescriptions,
-    LoadActorCategories,
-    LoadActorData,
+    LoadSpriteCategories,
+    LoadSpriteData,
     LoadTilesetInfo,
     LoadTilesetNames,
     LoadZoneThemes,
     ReloadTilesets,
 )
 from data.common.settings import setSetting, setting
-from data.common.actor_images import LoadBasics
+from data.common.sprites import LoadBasics
 from data.common.utils import get_reggiedata_folder
-from data.common.gamedef_compatibility import update_main, update_actors_module
 
 
 # Gamedef File - has 2 values: name (str) and patch (bool)
@@ -46,7 +45,7 @@ class GameDefinitionFile:
 
 class ReggieGameDefinition:
     """
-    A class that defines a NSMBW hack: songs, tilesets, actors, etc.
+    A class that defines a NSMBW hack: songs, tilesets, sprites, etc.
     """
 
     def __init__(self, name: str | None = None):
@@ -78,7 +77,7 @@ class ReggieGameDefinition:
         self.description = globals_.trans.string('Gamedefs', 14)  # 'A new Mario adventure!<br>' and the date
         self.version = '2'
 
-        self.actors = actors
+        self.sprites = sprites
 
         reggiedata_folder = get_reggiedata_folder()
         self.files = {
@@ -88,8 +87,8 @@ class ReggieGameDefinition:
             'entrancetypes': gdf(os.path.join(reggiedata_folder, 'entrancetypes.txt'), False),
             'levelnames': gdf(os.path.join(reggiedata_folder, 'levelnames.xml'), False),
             'music': gdf(os.path.join(reggiedata_folder, 'music.txt'), False),
-            'actorcategories': gdf(os.path.join(reggiedata_folder, 'actorcategories.xml'), False),
-            'actordata': gdf(os.path.join(reggiedata_folder, 'actordata.xml'), False),
+            'spritecategories': gdf(os.path.join(reggiedata_folder, 'spritecategories.xml'), False),
+            'spritedata': gdf(os.path.join(reggiedata_folder, 'spritedata.xml'), False),
             'tilesetinfo': gdf(os.path.join(reggiedata_folder, 'tilesetinfo.xml'), False),
             'tilesets': gdf(os.path.join(reggiedata_folder, 'tilesets.xml'), False),
             'ts1_descriptions': gdf(os.path.join(reggiedata_folder, 'ts1_descriptions.txt'), False),
@@ -98,7 +97,7 @@ class ReggieGameDefinition:
         self.folders = {
             'bga': gdf(None, False),
             'bgb': gdf(None, False),
-            'actors': gdf(None, False),
+            'sprites': gdf(None, False),
             'external': gdf(None, False),
         }
 
@@ -114,7 +113,6 @@ class ReggieGameDefinition:
         # Parse the file (errors are handled by __init__())
         path = os.path.join(get_reggiedata_folder(), "patches", name, "main.xml")
         try:
-            update_main(path)
             tree = etree.parse(path)
         except FileNotFoundError:
             return False
@@ -184,24 +182,25 @@ class ReggieGameDefinition:
         # Get rid of the XML stuff
         del tree, root
 
-        # Load actors.py if provided
-        if 'actors' in self.files:
-            update_actors_module(self.files['actors'].path)
+        # Load sprites.py if provided
+        if 'sprites' in self.files:
+            # Fix any potential incompatibilities
+            update_sprites_module(self.files['sprites'].path)
 
-            with open(self.files['actors'].path, 'r', encoding='utf-8') as f:
+            with open(self.files['sprites'].path, 'r', encoding='utf-8') as f:
                 filedata = f.read()
 
             # https://stackoverflow.com/a/53080237 with modifications
             if self.name is None:
                 return
 
-            spec = importlib.util.spec_from_loader(self.name + "->actors", loader=None)
+            spec = importlib.util.spec_from_loader(self.name + "->sprites", loader=None)
             if spec is not None:
                 new_module = importlib.util.module_from_spec(spec)
 
                 exec(filedata, new_module.__dict__)
                 sys.modules[new_module.__name__] = new_module
-                self.actors = new_module
+                self.sprites = new_module
 
     def bgFile(self, name: str, layer: str):
         """
@@ -412,15 +411,15 @@ class ReggieGameDefinition:
         Gets all image classes
         """
         if not self.custom:
-            return self.actors.ImageClasses
+            return self.sprites.ImageClasses
 
         if self.base is not None:
             images = dict(self.base.getImageClasses())
         else:
             images = {}
 
-        if hasattr(self.actors, 'ImageClasses'):
-            images.update(self.actors.ImageClasses)
+        if hasattr(self.sprites, 'ImageClasses'):
+            images.update(self.sprites.ImageClasses)
         return images
 
 
@@ -490,24 +489,24 @@ def LoadGameDef(name: str | None = None):
             # switching process.
             return False
 
-    LoadActorData()
-    LoadActorCategories(True)
+    LoadSpriteData()
+    LoadSpriteCategories(True)
 
-    # Reload all of the actordata ID types in the area
+    # Reload all of the spritedata ID types in the area
     # Fixes bugs related to these being outdated when switching game patches
     if globals_.Area.areanum != -1:
         globals_.Area.InitialiseIdTypes()
 
     if globals_.mainWindow is not None:
-        globals_.mainWindow.palette_dock.actor_tab.view_picker.clear()
+        globals_.mainWindow.palette_dock.sprite_tab.view_picker.clear()
 
-        for cat in globals_.ActorCategories:
-            globals_.mainWindow.palette_dock.actor_tab.view_picker.addItem(cat.name)
+        for cat in globals_.SpriteCategories:
+            globals_.mainWindow.palette_dock.sprite_tab.view_picker.addItem(cat.name)
 
-        globals_.mainWindow.palette_dock.actor_tab.actor_picker.LoadItems()  # Reloads the actor picker list items
-        globals_.mainWindow.palette_dock.actor_tab.view_picker.setCurrentIndex(0)  # Sets the actor picker to category 0 (enemies)
-        globals_.mainWindow.actorDataEditor.setActor(globals_.mainWindow.actorDataEditor.actortype,
-                                                True)  # Reloads the actor data editor fields
+        globals_.mainWindow.palette_dock.sprite_tab.sprite_picker.LoadItems()  # Reloads the sprite picker list items
+        globals_.mainWindow.palette_dock.sprite_tab.view_picker.setCurrentIndex(0)  # Sets the sprite picker to category 0 (enemies)
+        globals_.mainWindow.spriteDataEditor.setSprite(globals_.mainWindow.spriteDataEditor.spritetype,
+                                                True)  # Reloads the sprite data editor fields
 
     LoadBgANames(True)
     LoadBgBNames(True)
@@ -521,59 +520,59 @@ def LoadGameDef(name: str | None = None):
     LoadTilesetNames(True)
     LoadTilesetInfo(True)
 
-    # Always load the actors folders so the correct actor images can be
-    # loaded when Reggie is started. This avoids loading all actor images
-    # again and also simplifies the actor image code.
-    actorlib.ActorsFolders = globals_.gamedef.recursiveFiles('actors', is_folder=True)[0]
+    # Always load the sprites folders so the correct sprite images can be
+    # loaded when Reggie is started. This avoids loading all sprite images
+    # again and also simplifies the sprite image code.
+    SLib.SpritesFolders = globals_.gamedef.recursiveFiles('sprites', is_folder=True)[0]
 
     if globals_.Area.areanum != -1:
-        actorlib.ImageCache.clear()
-        actorlib.ActorImagesLoaded.clear()
+        SLib.ImageCache.clear()
+        SLib.SpriteImagesLoaded.clear()
         LoadBasics()
 
-        actorClasses = globals_.gamedef.getImageClasses()
+        spriteClasses = globals_.gamedef.getImageClasses()
 
-        for actor in globals_.Area.actors:
-            if actor.actor_num in actorlib.ActorImagesLoaded:
+        for s in globals_.Area.sprites:
+            if s.sprite_num in SLib.SpriteImagesLoaded:
                 continue
-            if actor.actor_num not in actorClasses:
+            if s.sprite_num not in spriteClasses:
                 continue
 
-            actorClasses[actor.actor_num].loadImages()
+            spriteClasses[s.sprite_num].loadImages()
 
-            actorlib.ActorImagesLoaded.add(actor.actor_num)
+            SLib.SpriteImagesLoaded.add(s.sprite_num)
 
-        for actor in globals_.Area.actors:
-            if actor.actor_num in actorClasses:
-                actor.setImageObj(actorClasses[actor.actor_num])
+        for s in globals_.Area.sprites:
+            if s.sprite_num in spriteClasses:
+                s.setImageObj(spriteClasses[s.sprite_num])
             else:
-                actor.setImageObj(actorlib.ActorImage)
+                s.setImageObj(SLib.SpriteImage)
 
         # https://github.com/Zement/Reggie/blob/master/gamedef.py#L1036-L1053
-        # Recalculate unknown actor IDs based on current patch's actor definitions
-        unknown_actor_ids = set()
-        for actor in globals_.Area.actors:
-            if actor.actor_num >= globals_.NumActors or globals_.Actors[actor.actor_num] is None:
-                unknown_actor_ids.add(actor.actor_num)
+        # Recalculate unknown sprite IDs based on current patch's sprite definitions
+        unknown_sprite_ids = set()
+        for sprite in globals_.Area.sprites:
+            if sprite.sprite_num >= globals_.NumSprites or globals_.Sprites[sprite.sprite_num] is None:
+                unknown_sprite_ids.add(sprite.sprite_num)
 
-        # Update the Area's unknown_actor_ids
-        globals_.Area.unknown_actor_ids = unknown_actor_ids
+        # Update the Area's unknown_sprite_ids
+        globals_.Area.unknown_sprite_ids = unknown_sprite_ids
 
-        # Check for unknown actor IDs and show warning message
-        if unknown_actor_ids and globals_.ShowUnknownActorWarning:
-            actor_ids = sorted(unknown_actor_ids)
+        # Check for unknown sprite IDs and show warning message
+        if unknown_sprite_ids and globals_.ShowUnknownSpriteWarning:
+            sprite_ids = sorted(unknown_sprite_ids)
 
-            title = globals_.trans.string('Err_UnknownActor', 0)
-            if len(actor_ids) == 1:
-                msg = globals_.trans.string('Err_UnknownActor', 1, '[id]', str(actor_ids[0]))
+            title = globals_.trans.string('Err_UnknownSprite', 0)
+            if len(sprite_ids) == 1:
+                msg = globals_.trans.string('Err_UnknownSprite', 1, '[id]', str(sprite_ids[0]))
             else:
-                msg = globals_.trans.string('Err_UnknownActor', 2, '[ids]', ', '.join(map(str, actor_ids)))
+                msg = globals_.trans.string('Err_UnknownSprite', 2, '[ids]', ', '.join(map(str, sprite_ids)))
             QtWidgets.QMessageBox.warning(None, title, msg)
 
-    # Reload the actor-picker text
+    # Reload the sprite-picker text
     if globals_.Area.areanum != -1:
-        for actor in globals_.Area.actors:
-            actor.UpdateListItem()
+        for spr in globals_.Area.sprites:
+            spr.UpdateListItem()
 
     LoadEntranceNames(True)
 
@@ -606,3 +605,50 @@ def FindGameDef(name: str, skip: str | None = None):
 
         def_.__init2__()
         return def_
+
+
+def update_sprites_module(filename: str):
+    """
+    Fixes compatibility issues with sprites.py modules made for older versions of Reggie Next
+    """
+    with open(filename, "r", encoding="utf-8") as f:
+        orig_data = f.read()
+
+    # Fix the import
+    new_data = orig_data.replace("PyQt5", "PyQt6")
+
+    # Common PyQt5 -> 6 changes that need to be fixed
+    pyqt_strings = [
+        ("QPainter.Antialiasing",   "QPainter.RenderHint.Antialiasing"),
+        ("Qt.SmoothTransformation", "Qt.TransformationMode.SmoothTransformation"),
+        ("Qt.IgnoreAspectRatio",    "Qt.AspectRatioMode.IgnoreAspectRatio"),
+        ("QPoint(",                 "QPointF("),
+        ("Qt.transparent",          "Qt.GlobalColor.transparent"),
+        ("Qt.Align",                "Qt.AlignmentFlag.Align")
+    ]
+
+    for old, new in pyqt_strings:
+        new_data = new_data.replace(old, new)
+
+    # Regex fixes
+    regex_strings = [
+        # Fix BlockContents accesses
+        (r"\['BlockContents'\]\[(\d+)\]", r"['BlockContents\1']"),
+        (r"\['BlockContents'\]\[(.*?)\]", r"[f'BlockContents{\1}']"),
+        # Update GetImg() calls to the proper function
+        (r"SLib\.GetImg\((\w?[\"']?[\w{}%\.]+[\"']?(?: ?% ?(?:(?:\([\w, +-\.()]+\))|(?:[\w +\-\.()]+)))?)(?:, ?False)?\)", r"SLib.GetPixmap(\1)"),
+        (r"SLib\.GetImg\((\w?[\"']?[\w{}%\.]+[\"']?(?: ?% ?(?:(?:\([\w, +-\.()]+\))|(?:[\w +\-\.()]+)))?)(?:, ?True)\)", r"SLib.GetImage(\1)")
+    ]
+
+    for pattern, replace in regex_strings:
+        new_data = re.sub(pattern, replace, new_data)
+
+    # Fix old sprites_common imports
+    new_data = new_data.replace("import sprites_common", "import data.common.sprites")
+
+    # Fix (very rarely used) references to the sprite ID
+    new_data = new_data.replace("parent.type", "parent.sprite_num")
+
+    # All done, save the file
+    with open(filename, 'w') as file_out:
+        file_out.write(new_data)

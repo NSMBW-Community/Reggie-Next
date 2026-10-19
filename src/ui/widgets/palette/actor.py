@@ -8,7 +8,7 @@ from data.common.loaders import LoadActorCategories
 from data.level.dirty import SetDirty
 
 from ui.widgets.sidelists.actor_picker import ActorPickerWidget
-from ui.widgets.sidelists.actor_list import ActorList
+from ui.widgets.sidelists.sprite_list import ActorList
 from ui.widgets.sidelists.actor_order import ActorOrderList
 
 from data.level.items.actor import ActorItem

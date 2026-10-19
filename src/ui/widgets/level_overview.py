@@ -20,7 +20,7 @@ class LevelOverviewWidget(QtWidgets.QWidget):
         self.obj_brush = QtGui.QBrush(globals_.theme.color('overview_object'))
         self.view_brush = QtGui.QBrush(globals_.theme.color('overview_zone_fill'))
         self.view = QtCore.QRectF()
-        self.actor_brush = QtGui.QBrush(globals_.theme.color('overview_actor'))
+        self.sprite_brush = QtGui.QBrush(globals_.theme.color('overview_sprite'))
         self.entrance_brush = QtGui.QBrush(globals_.theme.color('overview_entrance'))
         self.location_brush = QtGui.QBrush(globals_.theme.color('overview_location_fill'))
         self.path_brush = QtGui.QBrush(globals_.theme.color('overview_path'))
@@ -98,10 +98,10 @@ class LevelOverviewWidget(QtWidgets.QWidget):
             for obj in layer:
                 painter.fillRect(obj.LevelRect, b)
 
-        b = self.actor_brush
+        b = self.sprite_brush
 
-        for actor in globals_.Area.actors:
-            painter.fillRect(actor.LevelRect, b)
+        for sprite in globals_.Area.sprites:
+            painter.fillRect(sprite.LevelRect, b)
 
         b = self.entrance_brush
 
@@ -158,8 +158,8 @@ class LevelOverviewWidget(QtWidgets.QWidget):
             for obj in layer:
                 rect |= obj.LevelRect
 
-        for actor in globals_.Area.actors:
-            rect |= actor.LevelRect
+        for sprite in globals_.Area.sprites:
+            rect |= sprite.LevelRect
 
         for ent in globals_.Area.entrances:
             rect |= ent.LevelRect

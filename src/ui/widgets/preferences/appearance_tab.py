@@ -7,7 +7,7 @@ from data.level.path import Path
 from data.level.items.location import LocationItem
 from data.level.items.comment import CommentItem
 from data.level.items.entrance import EntranceItem
-from data.level.items.actor import ActorItem
+from data.level.items.sprite import SpriteItem
 from data.level.items.zone import ZoneItem
 from data.common.utils import get_reggiedata_folder
 from ui.widgets.level_view import LevelViewWidget

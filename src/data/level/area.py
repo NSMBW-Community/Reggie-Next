@@ -3,16 +3,14 @@ from typing import TYPE_CHECKING
 
 from PyQt6 import QtWidgets
 
-import actorlib
+import spritelib as SLib
 from data import globals_
-from data.actor.actorfield.actor_field import ActorField
-from data.actor.actorfield.list import ListActorField
-from data.actor.actorfield.value import ValueActorField
 from data.common.loaders import CreateTilesets, LoadTileset
 from data.level.items.comment import CommentItem
 from data.level.items.entrance import EntranceItem
 from data.level.items.location import LocationItem
 from data.level.items.object import ObjectItem
+from data.level.items.sprite import SpriteItem
 from data.level.items.zone import ZoneItem
 from data.level.metadata import Metadata
 from data.level.legacy_metadata import LegacyMetadata
@@ -66,7 +64,7 @@ class Area:
         self.unused_val_2: int = 0
 
         self.entrances: list[EntranceItem] = []
-        self.actors: list[ActorItem] = []
+        self.sprites: list[SpriteItem] = []
         self.bgA: list[int] = []
         self.bounding: list[list[int]] = []
         self.bgB: list[int] = []
@@ -76,9 +74,9 @@ class Area:
         self.paths: list[Path] = []
         self.comments: list[CommentItem] = []
         self.layers: list[list[ObjectItem]] = [[], [], []]
-        self.loaded_actors: set[int] = set()
-        self.force_loaded_actors: set[int] = set()
-        self.actor_idtypes: dict[str, dict[int, int]] = {}  # {idtype: {id: number of usages of id}}
+        self.loaded_sprites: set[int] = set()
+        self.force_loaded_sprites: set[int] = set()
+        self.sprite_idtypes: dict[str, dict[int, int]] = {}  # {idtype: {id: number of usages of id}}
 
         self.legacy_metadata: LegacyMetadata | None = None
         self.metadata: Metadata | None = None
@@ -137,7 +135,7 @@ class Area:
         del self.unused_val_1
         del self.unused_val_2
         del self.entrances
-        del self.actors
+        del self.sprites
         del self.bgA
         del self.bgB
         del self.zones
@@ -145,7 +143,7 @@ class Area:
         del self.camprofiles
         del self.paths
         del self.comments
-        del self.actor_idtypes
+        del self.sprite_idtypes
 
         self._is_loaded = False
 
@@ -177,7 +175,7 @@ class Area:
         self.LoadTilesetNames()  # block 1
         self.LoadOptions()  # block 2
         self.LoadEntrances()  # block 7
-        self.LoadLoadedActors()  # block 9
+        self.LoadLoadedSprites()  # block 9
         self.LoadZones()  # block 10 (also blocks 3, 5, and 6)
         self.LoadLocations()  # block 11
         self.LoadCamProfiles()  # block 12
@@ -206,7 +204,7 @@ class Area:
         if self.L2 is not None:
             self.LoadLayer(2, self.L2)
 
-        self.LoadActors()  # block 8
+        self.LoadSprites()  # block 8
 
         self.InitialiseIdTypes()
 
@@ -221,15 +219,15 @@ class Area:
         if not self._is_loaded:
             return (self.course, self.L0, self.L1, self.L2, self.meta)
 
-        # prepare this because otherwise the game refuses to load some actors
-        self.SortActorsByZone()
+        # prepare this because otherwise the game refuses to load some sprites
+        self.SortSpritesByZone()
 
         # save each block first
         self.SaveTilesetNames()  # block 1
         self.SaveOptions()  # block 2
         self.SaveEntrances()  # block 7
-        self.SaveActors()  # block 8
-        self.SaveLoadedActors()  # block 9
+        self.SaveSprites()  # block 8
+        self.SaveLoadedSprites()  # block 9
         self.SaveZones()  # block 10 (and 3, 5 and 6)
         self.SaveLocations()  # block 11
         self.SaveCamProfiles()  # block 12
@@ -291,16 +289,16 @@ class Area:
         for upd in layer[idx:]:
             upd.setZValue(upd.zValue() - 1)
 
-    def SortActorsByZone(self) -> None:
+    def SortSpritesByZone(self) -> None:
         """
-        Sorts the actor list by zone ID so it will work in-game
+        Sorts the sprite list by zone ID so it will work in-game
         """
-        def compKey(zonelist: list[ZoneItem], actor: ActorItem) -> int:
-            id_ = actorlib.MapPositionToZoneID(zonelist, actor.objx, actor.objy)
-            actor.zoneID = zonelist[id_].id if id_ != -1 else -1
+        def compKey(zonelist: list[ZoneItem], sprite: SpriteItem) -> int:
+            id_ = SLib.MapPositionToZoneID(zonelist, sprite.objx, sprite.objy)
+            sprite.zoneID = zonelist[id_].id if id_ != -1 else -1
             return id_
 
-        self.actors.sort(key = lambda s: compKey(self.zones, s))
+        self.sprites.sort(key = lambda s: compKey(self.zones, s))
 
     def LoadReggieInfo(self, data: bytes | None) -> None:
         self.metadata = Metadata()
@@ -370,11 +368,11 @@ class Area:
 
         self.entrances = entrances
 
-    def LoadActors(self) -> None:
+    def LoadSprites(self) -> None:
         """
-        Loads block 8, the actors. This needs to be called after
-        'LoadLoadedActors', because this relies on the loaded actor ids being
-        loaded for calculating the actors that are forced to load.
+        Loads block 8, the sprites. This needs to be called after
+        'LoadLoadedSprites', because this relies on the loaded sprite ids being
+        loaded for calculating the sprites that are forced to load.
         """
         spritedata = self.blocks[7]
         sprstruct = struct.Struct('>HHH10s')
@@ -382,40 +380,40 @@ class Area:
         unknown_sprite_ids = None
 
         unpack = sprstruct.unpack_from
-        append = actors.append
-        obj = ActorItem
+        append = sprites.append
+        obj = SpriteItem
 
         # Ignore the last 4 bytes because they are always 0xFFFFFFFF
-        for offset in range(0, len(actordata) - 4, 16):
-            data = unpack(actordata, offset)
+        for offset in range(0, len(spritedata) - 4, 16):
+            data = unpack(spritedata, offset)
             append(obj(*data))
             type_, _x, _y, _sd = data
 
-            # Check if actor ID is valid
-            if 0 <= type_ < globals_.NumActors and globals_.Actors[type_] is not None:
+            # Check if sprite ID is valid
+            if 0 <= type_ < globals_.NumSprites and globals_.Sprites[type_] is not None:
                 pass
             else:
-                # Unknown actor ID - track it and use default settings
-                unknown_actor_ids = set()
-                unknown_actor_ids.add(type_)
+                # Unknown sprite ID - track it and use default settings
+                unknown_sprite_ids = set()
+                unknown_sprite_ids.add(type_)
 
-        self.actors = actors
-        self.force_loaded_actors = self.loaded_actors - {actor.actor_num for actor in actors}
+        self.sprites = sprites
+        self.force_loaded_sprites = self.loaded_sprites - {sprite.sprite_num for sprite in sprites}
 
-        # Store unknown actor IDs for later warning
-        self.unknown_actor_ids = unknown_actor_ids
+        # Store unknown sprite IDs for later warning
+        self.unknown_sprite_ids = unknown_sprite_ids
 
-    def LoadLoadedActors(self) -> None:
+    def LoadLoadedSprites(self) -> None:
         """
-        Loads block 9, the loaded actor resources.
+        Loads block 9, the loaded sprite resources.
         """
-        self.loaded_actors = set()
+        self.loaded_sprites = set()
         loading_data = self.blocks[8]
         struct_ = struct.Struct('>Hxx')
 
         for offset in range(0, len(loading_data), 4):
-            actor_id, = struct_.unpack_from(loading_data, offset)
-            self.loaded_actors.add(actor_id)
+            sprite_id, = struct_.unpack_from(loading_data, offset)
+            self.loaded_sprites.add(sprite_id)
 
     def LoadZones(self) -> None:
         """
@@ -716,7 +714,7 @@ class Area:
         offset = 0
         entstruct = struct.Struct('>HHxxxxBBBBxBBBHBB')
         buffer = bytearray(len(self.entrances) * 20)
-        f_MapPositionToZoneID = actorlib.MapPositionToZoneID
+        f_MapPositionToZoneID = SLib.MapPositionToZoneID
         zonelist = self.zones
         for entrance in self.entrances:
             zoneID = f_MapPositionToZoneID(zonelist, entrance.objx, entrance.objy, True)
@@ -772,22 +770,22 @@ class Area:
             nodestruct.pack_into(buffer, offset, *path.get_node_data(i))
             offset += 16
 
-    def SaveActors(self) -> None:
+    def SaveSprites(self) -> None:
         """
-        Saves the actors back to block 8
+        Saves the sprites back to block 8
         """
         offset = 0
         sprstruct = struct.Struct('>HHH6sBc2s')
         buffer = bytearray((len(self.sprites) * 16) + 4)
         f_int = int
-        for actor in self.actors:
-            if actor.zoneID == -1:
+        for sprite in self.sprites:
+            if sprite.zoneID == -1:
                 # No zone was found in the area.
-                # Pretend the actor belongs to zone 0, even though this zone
+                # Pretend the sprite belongs to zone 0, even though this zone
                 # does not exist. The area won't work in-game anyway, because
                 # there are no zones. This default allows users to save areas
                 # without zones, so it adds greater flexibility.
-                actor.zoneID = 0
+                sprite.zoneID = 0
 
             try:
                 sprstruct.pack_into(buffer, offset, f_int(sprite.sprite_num) % 0xFFFF, f_int(sprite.objx), f_int(sprite.objy),
@@ -795,14 +793,14 @@ class Area:
             except:
                 # Hopefully this will solve the mysterious bug, and will
                 # soon no longer be necessary.
-                raise ValueError('SaveActors struct.error. Current actor data dump:\n' + \
+                raise ValueError('SaveSprites struct.error. Current sprite data dump:\n' + \
                                  str(offset) + '\n' + \
-                                 str(actor.actor_num) + '\n' + \
-                                 str(actor.objx) + '\n' + \
-                                 str(actor.objy) + '\n' + \
-                                 str(actor.actordata[:6]) + '\n' + \
-                                 str(actor.zoneID) + '\n' + \
-                                 str(bytes([actor.actordata[7]])) + '\n',
+                                 str(sprite.sprite_num) + '\n' + \
+                                 str(sprite.objx) + '\n' + \
+                                 str(sprite.objy) + '\n' + \
+                                 str(sprite.spritedata[:6]) + '\n' + \
+                                 str(sprite.zoneID) + '\n' + \
+                                 str(bytes([sprite.spritedata[7]])) + '\n',
                                  )
             offset += 16
         buffer[offset] = 0xFF
@@ -811,11 +809,11 @@ class Area:
         buffer[offset + 3] = 0xFF
         self.blocks[7] = bytes(buffer)
 
-    def SaveLoadedActors(self) -> None:
+    def SaveLoadedSprites(self) -> None:
         """
-        Saves the list of loaded actors back to block 9
+        Saves the list of loaded sprites back to block 9
         """
-        ls = sorted({actor.actor_num for actor in self.actors} | self.force_loaded_actors)
+        ls = sorted({sprite.sprite_num for sprite in self.sprites} | self.force_loaded_sprites)
 
         offset = 0
         sprstruct = struct.Struct('>Hxx')
@@ -928,22 +926,22 @@ class Area:
         Initialises all used id types in this area.
         """
 
-        self.actor_idtypes = {}
-        decoder = PropertyDecoder(ActorField())
+        self.sprite_idtypes = {}
+        decoder = PropertyDecoder(SpriteField())
 
-        for actor in self.actors:
-            # Check if actor data exists for this type
-            if not (0 <= actor.actor_num < globals_.NumActors) or globals_.Actors[actor.actor_num] is None:
-                # Unknown actor, skip it
+        for sprite in self.sprites:
+            # Check if sprite data exists for this type
+            if not (0 <= sprite.sprite_num < globals_.NumSprites) or globals_.Sprites[sprite.sprite_num] is None:
+                # Unknown sprite, skip it
                 continue
 
-            sdef = globals_.Actors[actor.actor_num]
+            sdef = globals_.Sprites[sprite.sprite_num]
 
-            # Find what values are used by this actor
-            data = actor.actordata
+            # Find what values are used by this sprite
+            data = sprite.spritedata
 
             for field in sdef.fields:
-                if not isinstance(field, (ListActorField, ValueActorField)):
+                if not isinstance(field, (ListSpriteField, ValueSpriteField)):
                     # Only values and lists can be idtypes
                     continue
 
@@ -954,33 +952,33 @@ class Area:
 
                 value = decoder.retrieve(data, field.bit)
 
-                # 3. Add the value to self.actor_idtypes
+                # 3. Add the value to self.sprite_idtypes
                 try:
-                    counter = self.actor_idtypes[idtype]
+                    counter = self.sprite_idtypes[idtype]
                 except KeyError:
-                    self.actor_idtypes[idtype] = {value: 1}
+                    self.sprite_idtypes[idtype] = {value: 1}
                     continue
 
                 counter[value] = counter.get(value, 0) + 1
 
-    def RemoveActor(self, actor: ActorItem) -> None:
+    def RemoveSprite(self, sprite: SpriteItem) -> None:
         """
-        This properly removes an actor from the area.
+        This properly removes a sprite from the area.
         """
-        # Remove the actor from the actors list
-        self.actors.remove(actor)
+        # Remove the sprite from the sprites list
+        self.sprites.remove(sprite)
 
-        # Skip unknown actors
-        if actor.actor_num >= globals_.NumActors or globals_.Actors[actor.actor_num] is None:
+        # Skip unknown sprites
+        if sprite.sprite_num >= globals_.NumSprites or globals_.Sprites[sprite.sprite_num] is None:
             return
 
-        # Remove the ids the actor used from the id list
-        decoder = PropertyDecoder(ActorField())
-        sdef = globals_.Actors[actor.actor_num]
+        # Remove the ids the sprite used from the id list
+        decoder = PropertyDecoder(SpriteField())
+        sdef = globals_.Sprites[sprite.sprite_num]
 
-        # Find what values are used by this actor
+        # Find what values are used by this sprite
         for field in sdef.fields:
-            if not isinstance(field, (ListActorField, ValueActorField)):
+            if not isinstance(field, (ListSpriteField, ValueSpriteField)):
                 # Only <value> and <list> tags can have id types
                 continue
 
@@ -989,10 +987,10 @@ class Area:
                 # Only look at settings with idtypes
                 continue
 
-            value = decoder.retrieve(actor.actordata, field.bit)
+            value = decoder.retrieve(sprite.spritedata, field.bit)
 
             # 3. Decrement the counter for this idtype
-            counter = self.actor_idtypes[idtype]
+            counter = self.sprite_idtypes[idtype]
 
             if counter[value] == 1:
                 del counter[value]

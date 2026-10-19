@@ -60,7 +60,7 @@ class ReggieTheme:
             'overview_location_fill': QtGui.QColor(114, 42, 188, 50),  # Overview location fill
             'overview_location_lines': QtGui.QColor(0, 0, 0),  # Overview location lines
             'overview_object': QtGui.QColor(255, 255, 255),  # Overview object fill
-            'overview_actor': QtGui.QColor(0, 92, 196),  # Overview actor fill
+            'overview_sprite': QtGui.QColor(0, 92, 196),  # Overview sprite fill
             'overview_viewbox': QtGui.QColor(0, 0, 255),  # Overview background fill
             'overview_zone_fill': QtGui.QColor(47, 79, 79, 120),  # Overview zone fill
             'overview_zone_lines': QtGui.QColor(0, 255, 255),  # Overview zone lines
@@ -70,13 +70,13 @@ class ReggieTheme:
             'path_fill_s': QtGui.QColor(6, 249, 20, 240),  # Selected path node fill
             'path_lines': QtGui.QColor(0, 0, 0),  # Unselected path node lines
             'path_lines_s': QtGui.QColor(255, 255, 255),  # Selected path node lines
-            'smi': QtGui.QColor(255, 255, 255, 80),  # Actor movement indicator
-            'actor_fill_s': QtGui.QColor(255, 255, 255, 64),  # Selected actor w/ image fill
-            'actor_lines_s': QtGui.QColor(255, 255, 255),  # Selected actor w/ image lines
-            'actorbox_fill': QtGui.QColor(0, 92, 196, 120),  # Unselected actor w/o image fill
-            'actorbox_fill_s': QtGui.QColor(0, 92, 196, 240),  # Selected actor w/o image fill
-            'actorbox_lines': QtGui.QColor(0, 0, 0),  # Unselected actor w/o image fill
-            'actorbox_lines_s': QtGui.QColor(255, 255, 255),  # Selected actor w/o image fill
+            'smi': QtGui.QColor(255, 255, 255, 80),  # Sprite movement indicator
+            'sprite_fill_s': QtGui.QColor(255, 255, 255, 64),  # Selected sprite w/ image fill
+            'sprite_lines_s': QtGui.QColor(255, 255, 255),  # Selected sprite w/ image lines
+            'spritebox_fill': QtGui.QColor(0, 92, 196, 120),  # Unselected sprite w/o image fill
+            'spritebox_fill_s': QtGui.QColor(0, 92, 196, 240),  # Selected sprite w/o image fill
+            'spritebox_lines': QtGui.QColor(0, 0, 0),  # Unselected sprite w/o image fill
+            'spritebox_lines_s': QtGui.QColor(255, 255, 255),  # Selected sprite w/o image fill
             'zone_entrance_helper': QtGui.QColor(190, 0, 0, 120),  # Zone entrance-placement left border indicator
             'zone_lines': QtGui.QColor(145, 200, 255, 176),  # Zone lines
             'zone_corner': QtGui.QColor(255, 255, 255),  # Zone grabbers/corners

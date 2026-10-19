@@ -28,10 +28,10 @@ class InstanceDefinition_LocationItem(InstanceDefinition):
 
 class LocationItem(LevelEditorItem):
     """
-    Level editor item that represents a location
+    Level editor item that represents a sprite location
     """
     instanceDef = InstanceDefinition_LocationItem
-    sizeChanged = None  # Callback: sizeChanged(ActorItem obj, int width, int height)
+    sizeChanged = None  # Callback: sizeChanged(SpriteItem obj, int width, int height)
     dragstartx: int = -1
     dragstarty: int = -1
 
@@ -238,13 +238,13 @@ class LocationItem(LevelEditorItem):
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
         # Paint liquids/fog
-        if globals_.ActorsShown and globals_.ActorImagesShown and globals_.RealViewEnabled:
+        if globals_.SpritesShown and globals_.SpriteImagesShown and globals_.RealViewEnabled:
             location_rect = self.sceneTransform().mapRect(self.DrawRect)
-            from actors import ActorImage_LiquidOrFog as liquidOrFogType
+            from sprites import SpriteImage_LiquidOrFog as liquidOrFogType
 
-            for actor in globals_.Area.actors:
-                if isinstance(actor.ImageObj, liquidOrFogType) and self.id == actor.ImageObj.locId:
-                    actor.ImageObj.realViewLocation(painter, location_rect)
+            for sprite in globals_.Area.sprites:
+                if isinstance(sprite.ImageObj, liquidOrFogType) and self.id == sprite.ImageObj.locId:
+                    sprite.ImageObj.realViewLocation(painter, location_rect)
 
         # Draw the purple rectangle
         if not self.isSelected():
@@ -328,8 +328,8 @@ class LocationItem(LevelEditorItem):
 
                 # This code causes an error or something.
                 # if RealViewEnabled:
-                #     for actor in globals_.Area.actors:
-                #         if self.id in actor.ImageObj.locationIDs and actor.ImageObj.updateSceneAfterLocationMoved:
+                #     for sprite in globals_.Area.sprites:
+                #         if self.id in sprite.ImageObj.locationIDs and sprite.ImageObj.updateSceneAfterLocationMoved:
                 #             self.scene().update()
 
             event.accept()

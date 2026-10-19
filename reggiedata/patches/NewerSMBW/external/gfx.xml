@@ -1,6 +1,6 @@
 <!--
-    All NSMBW Graphics Effects for actor 332 Sound and Effect Spawner. This list needs to be updated, but at least it's not in the
-    actordata xml anymore.
+    All NSMBW Graphics Effects for sprite 332 Sound and Effect Spawner. This list needs to be updated, but at least it's not in the
+    spritedata xml anymore.
 	
 	Properties:
 		- Description	  		Description of the graphics effect
@@ -26,7 +26,7 @@
 		<property name="Level Used" value="" />
 	</option>
 	<option value="3">
-		<property name="Description" value="Smoky clouds appear from the left and right side of the actor." />
+		<property name="Description" value="Smoky clouds appear from the left and right side of the sprite." />
 		<property name="Level Used" value="[02-25]" />
 	</option>
 	<option value="4">
@@ -650,7 +650,7 @@
 		<property name="Level Used" value="" />
 	</option>
 	<option value="159">
-		<property name="Description" value="Medium or big yellow star appears from the top-left and top-right where the actor is placed." />
+		<property name="Description" value="Medium or big yellow star appears from the top-left and top-right where the sprite is placed." />
 		<property name="Level Used" value="[08-24]" />
 	</option>
 	<option value="160">

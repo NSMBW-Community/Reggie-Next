@@ -5,7 +5,7 @@ from ui.widgets.icon_only_tab_bar import IconsOnlyTabBar
 from ui.theme.reggie_theme import GetIcon
 
 from ui.widgets.palette.object import ObjectTab
-from ui.widgets.palette.actor import ActorTab
+from ui.widgets.palette.sprite import SpriteTab
 from ui.widgets.palette.entrance import EntranceTab
 from ui.widgets.palette.location import LocationTab
 from ui.widgets.palette.path import PathTab
@@ -13,7 +13,7 @@ from ui.widgets.palette.event import EventTab
 from ui.widgets.palette.stamp import StampTab
 from ui.widgets.palette.comment import CommentTab
 
-from data.level.items.actor import ActorItem
+from data.level.items.sprite import SpriteItem
 from data.level.items.entrance import EntranceItem
 from data.level.items.location import LocationItem
 from data.level.items.comment import CommentItem
@@ -38,9 +38,9 @@ class PaletteDock(QtWidgets.QDockWidget):
         self.tabs.addTab(self.object_tab, GetIcon('block'), '')
         self.tabs.setTabToolTip(0, globals_.trans.string('Palette', 13))
 
-        # Actors
-        self.actor_tab = ActorTab()
-        self.tabs.addTab(self.actor_tab, GetIcon('rocket'), '')
+        # Sprites
+        self.sprite_tab = SpriteTab()
+        self.tabs.addTab(self.sprite_tab, GetIcon('rocket'), '')
         self.tabs.setTabToolTip(1, globals_.trans.string('Palette', 14))
 
         # Entrances
@@ -89,17 +89,17 @@ class PaletteDock(QtWidgets.QDockWidget):
 
         # Add all the level items
 
-        # Actors
-        self.actor_tab.prepare_batch_add()
+        # Sprites
+        self.sprite_tab.prepare_batch_add()
 
-        pos_change = ActorItem.position_changed
-        for spr in globals_.Area.actors:
+        pos_change = SpriteItem.position_changed
+        for spr in globals_.Area.sprites:
             spr.positionChanged = pos_change
-            self.actor_tab.add_actor(spr)
+            self.sprite_tab.add_sprite(spr)
             globals_.mainWindow.scene.addItem(spr)
             spr.UpdateListItem()
 
-        self.actor_tab.end_batch_add()
+        self.sprite_tab.end_batch_add()
 
         # Entrances
         pos_change = EntranceItem.position_changed
@@ -150,10 +150,10 @@ class PaletteDock(QtWidgets.QDockWidget):
 
         if new_tab == 0: # Objects
             paint_type = self.object_tab.currentIndex()
-        elif new_tab == 1: # Actors
-            # Ensure the user can't paint actors when the
-            # Current Actors tab is opened.
-            if self.actor_tab.currentIndex() != 1:
+        elif new_tab == 1: # Sprites
+            # Ensure the user can't paint sprites when the
+            # 'current sprites' tab is opened.
+            if self.sprite_tab.currentIndex() != 1:
                 paint_type = 4
         elif new_tab == 2: # Entrances
             paint_type = 5

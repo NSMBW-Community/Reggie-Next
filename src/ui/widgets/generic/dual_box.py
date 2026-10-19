@@ -3,7 +3,7 @@ from PyQt6 import QtCore, QtWidgets
 
 class DualBox(QtWidgets.QWidget):
     """
-    A dualbox widget for the actor data
+    A dualbox widget for the sprite data
     """
     toggled = QtCore.pyqtSignal('PyQt_PyObject')
 

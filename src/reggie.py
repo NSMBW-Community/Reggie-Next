@@ -83,8 +83,8 @@ Qt = QtCore.Qt
 # Local imports
 from data import globals_
 
-import actorlib
-from data.common.actor_images import LoadBasics
+import spritelib as SLib
+from data.common.sprites import LoadBasics
 
 from ui.theme.reggie_theme import SetAppStyle, LoadNumberFont, SetColorScheme, GetAppIcon
 from data.common.loaders import LoadToolbarActionsLists, LoadTheme, LoadDefaultKeybinds
@@ -212,15 +212,15 @@ def main():
     if FilesAreMissing():
         sys.exit(1)
 
-    # Load some requirements for actorlib
+    # Load some requirements for spritelib
     LoadTheme()
     LoadOverrides()
 
-    # Initialise actorlib
-    actorlib.OutlineColor = globals_.theme.color('smi')
-    actorlib.main()
+    # Initialise spritelib
+    SLib.OutlineColor = globals_.theme.color('smi')
+    SLib.main()
 
-    # Load the gamedef (including actor image path, for which we need actorlib)
+    # Load the gamedef (including sprite image path, for which we need spritelib)
     LoadGameDef(setting('LastGameDef'))
     LoadBasics()
 
@@ -240,13 +240,13 @@ def main():
     globals_.CollisionsShown = setting('ShowCollisions', False)
     globals_.RealViewEnabled = setting('RealViewEnabled', True)
     globals_.ObjectsFrozen = setting('FreezeObjects', False)
-    globals_.ActorsFrozen = setting('FreezeActors', False)
+    globals_.SpritesFrozen = setting('FreezeSprites', False)
     globals_.EntrancesFrozen  = setting('FreezeEntrances', False)
     globals_.LocationsFrozen = setting('FreezeLocations', False)
     globals_.PathsFrozen = setting('FreezePaths', False)
     globals_.CommentsFrozen = setting('FreezeComments', False)
-    globals_.ActorsShown = setting('ShowActors', True)
-    globals_.ActorImagesShown = setting('ShowActorImages', True)
+    globals_.SpritesShown = setting('ShowSprites', True)
+    globals_.SpriteImagesShown = setting('ShowSpriteImages', True)
     globals_.LocationsShown = setting('ShowLocations', True)
     globals_.EntrancesShown = setting('ShowEntrances', True)
     globals_.CommentsShown = setting('ShowComments', True)
@@ -268,10 +268,10 @@ def main():
     globals_.UseRecentFileKeys = setting('UseRecentFileKeys', True)
     globals_.AutoDiagEnabled = setting('AutoDiagEnabled', True)
     globals_.AutoDiagFrequency = setting('AutoDiagFrequency', 1)
-    globals_.ShowUnknownActorWarning = setting('ShowUnknownActorWarning', True)
+    globals_.ShowUnknownSpriteWarning = setting('ShowUnknownSpriteWarning', True)
     globals_.MoveItemsWithArrowKeys = setting('MoveItemsWithArrowKeys', True)
     globals_.ShowTilesetPreview = setting('ShowTilesetPreview', True)
-    actorlib.RealViewEnabled = globals_.RealViewEnabled
+    SLib.RealViewEnabled = globals_.RealViewEnabled
 
     # Toggle light/dark mode
     SetColorScheme()

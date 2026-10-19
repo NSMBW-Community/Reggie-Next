@@ -2,9 +2,9 @@
 <colors>
     <color id="bg"                value="#14143C"   />
     <color id="grid"              value="#FFFFFF41" />
-    <color id="actorbox_fill"    value="#9A3AFF78" />
-    <color id="actorbox_fill_s"  value="#9A3AFFF0" />
+    <color id="spritebox_fill"    value="#9A3AFF78" />
+    <color id="spritebox_fill_s"  value="#9A3AFFF0" />
     <color id="ui"                value="#323241"   />
     <color id="zone_text"         value="#F5F5F5"   />
-    <color id="overview_actor"   value="#9A3AFF" />
+    <color id="overview_sprite"   value="#9A3AFF" />
 </colors>
