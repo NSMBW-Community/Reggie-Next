@@ -125,7 +125,7 @@ class ZonesDialog(QtWidgets.QDialog):
             if tab.boss_flag.isChecked():
                 z.sfxmod |= 1
 
-        for spr in globals_.Area.actors:
+        for spr in globals_.Area.sprites:
             spr.ImageObj.positionChanged()
 
         globals_.mainWindow.action_list['backgrounds'].setEnabled(len(globals_.Area.zones) > 0)
