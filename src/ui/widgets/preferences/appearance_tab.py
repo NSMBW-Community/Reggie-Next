@@ -205,7 +205,7 @@ class AppearanceTab(PreferenceTabWidget):
         sprite = SpriteItem.CreateSprite(11 * 16, 4 * 16, 38, data=bytes(10), add_to_scene=False)
         scene.addItem(sprite)
 
-        # Actor [53] at (1, 6)
+        # Sprite [53] at (1, 6)
         sprite = SpriteItem.CreateSprite(1 * 16, 6 * 16, 53, data=bytes(10), add_to_scene=False)
         scene.addItem(sprite)
 
