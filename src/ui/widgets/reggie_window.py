@@ -2332,30 +2332,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
 
-        SetDirty()
-        for tab, z in zip(dlg.bgTabs, globals_.Area.zones):
-            # First index: BGA/BGB
-            # Second index: X/Y
-            z.XpositionA = tab.posBoxes[0][0].value()
-            z.YpositionA = -tab.posBoxes[0][1].value()
-            z.XpositionB = tab.posBoxes[1][0].value()
-            z.YpositionB = -tab.posBoxes[1][1].value()
-
-            z.XscrollA = tab.scrollBoxes[0][0].currentIndex()
-            z.YscrollA = tab.scrollBoxes[0][1].currentIndex()
-            z.XscrollB = tab.scrollBoxes[1][0].currentIndex()
-            z.YscrollB = tab.scrollBoxes[1][1].currentIndex()
-
-            z.ZoomA = tab.zoomBoxes[0].currentIndex()
-            z.ZoomB = tab.zoomBoxes[1].currentIndex()
-
-            z.bg1A = tab.hexBoxes[0][0].value()
-            z.bg2A = tab.hexBoxes[0][1].value()
-            z.bg3A = tab.hexBoxes[0][2].value()
-
-            z.bg1B = tab.hexBoxes[1][0].value()
-            z.bg2B = tab.hexBoxes[1][1].value()
-            z.bg3B = tab.hexBoxes[1][2].value()
+        dlg.save()
 
     def HandleScreenshot(self):
         """
