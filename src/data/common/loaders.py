@@ -10,12 +10,14 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 import spritelib as SLib
 from data import globals_
 from data.common import archive
+from data.common.gamedef_update import convert_bg_lists
 from data.common.keybind import Keybind
 from data.common.menu_action import MenuAction
 from data.common.reggie_translation import ReggieTranslation
 from data.common.settings import delSetting, setSetting, setting
 from data.common.toolbar_action import ToolbarAction
 from data.common.utils import get_main_path, get_reggiedata_folder
+from data.level.background_file import BackgroundFileEntry
 from data.level.items.location import LocationItem
 from data.level.sprite_definition import SpriteDefinition
 from data.sprite.sprite_category import SpriteCategory, SpriteSubCategory
@@ -30,7 +32,6 @@ from ui.dialogs.about import AboutDialog
 from ui.dialogs.diagnostic_tool import DiagnosticToolDialog
 from ui.dialogs.object_swap import ObjectTypeSwapDialog
 from ui.theme.reggie_theme import GetAppIcon, GetIcon, ReggieTheme
-
 
 def getResourcePaths(res_name: str) -> list[str]:
     """
@@ -241,64 +242,60 @@ def LoadObjDescriptions(reload_: bool = False) -> None:
             globals_.ObjDesc[int(w[0])] = w[1]
 
 
-def LoadBgANames(reload_: bool = False) -> None:
+def LoadBgFiles(reload_: bool = False) -> None:
     """
-    Ensures that the background name info is loaded
+    Ensures that the background info is loaded
     """
-    if globals_.BgANames and not reload_: return
+    if globals_.BgAFiles and globals_.BgBFiles and not reload_:
+        return
+    
+    globals_.BgAFiles = []
+    globals_.BgBFiles = []
 
-    paths = getResourcePaths('bga')
+    res_name = ['bga', 'bgb']
+    global_set = [globals_.BgAFiles, globals_.BgBFiles]
 
-    globals_.BgANames = []
-    for path in paths:
-        if path is None:
-            continue
+    # Needs to run twice for bgA and bgB
+    for i in range(2):
+        paths = getResourcePaths(res_name[i])
 
-        with open(path, 'r', encoding='utf-8') as f:
-            raw = [x.strip() for x in f]
+        for path in paths:
+            # Before we begin, we might need to convert a txt file
+            convert_bg_lists(path)
 
-        for line in raw:
-            w = line.split('=')
+            if path is None:
+                continue
 
-            found = False
-            for check in globals_.BgANames:
-                if check[0] == w[0]:
-                    check[1] = w[1]
-                    found = True
+            tree = ElementTree.parse(path)
 
-            if not found: globals_.BgANames.append([w[0], w[1]])
+            for node in tree.getroot():
+                if node.tag.lower() == 'background':
+                    attribs = node.attrib
 
-        globals_.BgANames.sort(key=lambda entry: int(entry[0], 16))
+                    bg_id = attribs['id']
+                    name = attribs['name']
 
+                    if 'image' in attribs:
+                        image = node.attrib['image']
+                    else:
+                        image = bg_id
 
-def LoadBgBNames(reload_: bool = False) -> None:
-    """
-    Ensures that the background name info is loaded
-    """
-    if (globals_.BgBNames) and not reload_: return
+                    background = BackgroundFileEntry(bg_id, name, image)
 
-    paths = getResourcePaths('bgb')
+                    # Prevent adding duplicate BGs
+                    exists = False
+                    for file in global_set[i]:
+                        # If two IDs repeat, override with the new data
+                        if file.bg_id == background.bg_id:
+                            file.name = background.name
+                            file.image = background.image
+                            exists = True
 
-    globals_.BgBNames = []
-    for path in paths:
-        if path is None:
-            continue
+                    if not exists:
+                        global_set[i].append(background)
 
-        with open(path, 'r', encoding='utf-8') as f:
-            raw = [x.strip() for x in f]
-
-        for line in raw:
-            w = line.split('=')
-
-            found = False
-            for check in globals_.BgBNames:
-                if check[0] == w[0]:
-                    check[1] = w[1]
-                    found = True
-
-            if not found: globals_.BgBNames.append([w[0], w[1]])
-
-        globals_.BgBNames.sort(key=lambda entry: int(entry[0], 16))
+            # Sort them by ID
+            global_set[i].sort(key=lambda file: int(file.bg_id, 16))
 
 
 def LoadZoneThemes(reload_: bool = False) -> None:

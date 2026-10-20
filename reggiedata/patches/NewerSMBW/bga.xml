@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<backgrounds>
+    <background id="0B02" name="Broken (Doesn't appear in-game)" image="none" />
+    <background id="0C03" name="Volcano Smoke" />
+    <background id="1003" name="Sunset Beach" />
+    <background id="3DC2" name="Toad House Lobby (Blue)" />
+    <background id="3F03" name="Star Haven" />
+    <background id="3FE2" name="Mossdeep Greens" />
+    <background id="3FF2" name="Pumpkin Boneyard" />
+    <background id="9986" name="Pyramid Castle" />
+    <background id="9989" name="Autumn Forest" />
+    <background id="9990" name="Desert (Sunset)" />
+    <background id="9995" name="Underground (Red)" />
+    <background id="9998" name="Sakura Hills" />
+    <background id="A602" name="Forest (Night)" />
+    <background id="B602" name="Autumn Forest (Alt)" />
+    <background id="CCC1" name="Overworld Hills (Bright)" />
+    <background id="EFEF" name="Volcanoes (Ending Cutscene)" />
+    <background id="F1F2" name="Overworld Hills (Red)" />
+    <background id="F949" name="Space" />
+</backgrounds>

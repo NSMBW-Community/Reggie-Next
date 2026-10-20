@@ -10,6 +10,7 @@ from data.common.reggie_translation import ReggieTranslation
 from data.common.toolbar_action import ToolbarAction
 from data.level.abstract_level import AbstractLevel
 from data.level.area import Area as AreaType
+from data.level.background_file import BackgroundFileEntry
 from data.level.sprite_definition import SpriteDefinition
 from data.sprite.sprite_category import SpriteCategory
 from data.tileset.object.object_def import ObjectDef
@@ -25,8 +26,8 @@ AutoDiagFrequency: int = 1
 AutoSaveData: bytes = b''
 AutoSaveDirty: bool = False
 AutoSavePath: str = ''
-BgANames: list[list[str]] = []
-BgBNames: list[list[str]] = []
+BgAFiles: list[BackgroundFileEntry] = []
+BgBFiles: list[BackgroundFileEntry] = []
 CursorMode: int = 0
 DarkMode: bool = False
 EntranceTypeNames: OrderedDict[int, str] = OrderedDict()

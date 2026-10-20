@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8'?>
+<backgrounds>
+    <background id="0CA2" name="Rocky Hills (Blue Sky)" />
+    <background id="1003" name="Sunset Beach" />
+    <background id="3FE2" name="Mossdeep Greens" />
+    <background id="3FF2" name="Pumpkin Boneyard" />
+    <background id="43A2" name="Mountains (Orange Prairie)" />
+    <background id="5212" name="Sky City Gears (Unused)" />
+    <background id="52AA" name="Yellow Clouds (New File Titlescreen)" />
+    <background id="6000" name="Stone Ruins" />
+    <background id="6001" name="Gold Bricks" />
+    <background id="6005" name="Dirt" />
+    <background id="6006" name="Checkered Wall" />
+    <background id="7003" name="Wood Floor &amp; Wall" />
+    <background id="9000" name="Old Bricks" />
+    <background id="9002" name="Reflected Brown Plains" />
+    <background id="9003" name="Reflected Swamp" />
+    <background id="9004" name="Reflected Plains Tree" />
+    <background id="9008" name="Star Haven" />
+    <background id="9009" name="Star Haven (Alt)" />
+    <background id="9010" name="Reflected Nohara" />
+    <background id="9011" name="Reflected Block House" />
+    <background id="9198" name="Space (Aurora)" />
+    <background id="9986" name="Pyramid Castle" />
+    <background id="9987" name="Sky Mushrooms" />
+    <background id="9988" name="Sakura Plains" />
+    <background id="9989" name="Autumn Forest" />
+    <background id="9991" name="Desert (Sunset)" />
+    <background id="9997" name="Sakura Hills" />
+    <background id="9999" name="Tower (Space)" />
+    <background id="A474" name="Freezeflame Volcano" />
+    <background id="A602" name="Night Forest" />
+    <background id="AA02" name="Autumn Ridge" />
+    <background id="ABCD" name="Overworld Hills (Distant Red)" />
+    <background id="B00B" name="Sakura Hills (Orange Sky)" />
+    <background id="B602" name="Autumn Forest (Alt)" />
+    <background id="B6B2" name="Forest Canopy (Clouds)" />
+    <background id="C02C" name="Sakura Mountains" />
+    <background id="C02E" name="Sakura Mountains (Rain)" />
+    <background id="C415" name="Clouds (Purple)" />
+    <background id="CA22" name="Mountains (Purple Sky)" />
+    <background id="F1F2" name="Overworld Hills (Red)" />
+    <background id="FAE2" name="Beanstalk Ascent Mountains B" />
+    <background id="FAF2" name="Beanstalk Ascent Mountains A" />
+    <background id="FCB2" name="Space Hills (Unused)" />
+</backgrounds>

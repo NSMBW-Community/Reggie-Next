@@ -66,7 +66,7 @@ class BackgroundTab(QtWidgets.QWidget):
         self.bgBSettings = QtWidgets.QGroupBox(globals_.trans.string('BGDlg', 4)) # 'Backdrop'
 
         bgIDs = (z.bg1A, z.bg2A, z.bg3A), (z.bg1B, z.bg2B, z.bg3B)
-        bgNames = globals_.BgANames, globals_.BgBNames
+        bgNames = globals_.BgAFiles, globals_.BgBFiles
         bgPosVals = (z.XpositionA, -z.YpositionA), (z.XpositionB, -z.YpositionB)
         bgZooms = z.ZoomA, z.ZoomB
         bgScrollVals = (z.XscrollA, z.YscrollA), (z.XscrollB, z.YscrollB)
@@ -91,10 +91,10 @@ class BackgroundTab(QtWidgets.QWidget):
                 box.activated.connect(self.handleNameBox)
 
             # Fill the name comboboxes with values
-            for i, (fileRaw, bgName) in enumerate(bgNames[slotID]):
-                bfile = int(fileRaw, 16)
+            for i, bg in enumerate(bgNames[slotID]):
+                file_id = int(bg.bg_id, 16)
                 for name in self.nameBoxes[-1]:
-                    name.addItem(globals_.trans.string('BGDlg', 17, '[name]', bgName, '[hex]', f'{bfile:04X}'), bfile)
+                    name.addItem(globals_.trans.string('BGDlg', 17, '[name]', bg.name, '[hex]', f'{file_id:04X}'), file_id)
 
             # Find the correct one to select
             for nameBox, value in zip(self.nameBoxes[-1], bgIDs[slotID]):
@@ -258,9 +258,13 @@ class BackgroundTab(QtWidgets.QWidget):
 
         for slotID, alignBox in enumerate((self.alignA, self.alignB)):
             for boxNum in range(3):
-                val = f'{self.hexBoxes[slotID][boxNum].value():04X}'
+                img_name = f'{self.hexBoxes[slotID][boxNum].value():04X}'
 
-                filename = globals_.gamedef.bgFile(val + '.png', 'ab'[slotID])
+                for file in [globals_.BgAFiles, globals_.BgBFiles][slotID]:
+                    if file.bg_id == img_name:
+                        img_name = file.image
+
+                filename = globals_.gamedef.bgFile(img_name + '.png', 'ab'[slotID])
                 if not os.path.isfile(filename):
                     filename = os.path.join(get_reggiedata_folder(), ['bga', 'bgb'][slotID], 'no_preview.png')
 

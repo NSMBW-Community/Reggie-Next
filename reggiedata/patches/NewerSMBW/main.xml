@@ -8,8 +8,8 @@
     <folder name="external" path="external" />
 
     <!-- Files -->
-    <file name="bga" path="bga.txt" />
-    <file name="bgb" path="bgb.txt" />
+    <file name="bga" path="bga.xml" />
+    <file name="bgb" path="bgb.xml" />
     <file name="config" path="config.xml" />
     <file name="levelnames" path="levelnames.xml" patch="False" />
     <file name="music" path="music.txt" patch="False" />
@@ -18,5 +18,4 @@
     <file name="spritecategories" path="spritecategories.xml" />
     <file name="tilesets" path="tilesets.xml" />
     <file name="tilesetinfo" path="tilesetinfo.xml" />
-
 </game>

@@ -10,9 +10,9 @@ from PyQt6 import QtWidgets
 import spritelib as SLib
 import sprites
 from data import globals_
+from data.common.gamedef_update import update_main, update_sprites_module
 from data.common.loaders import (
-    LoadBgANames,
-    LoadBgBNames,
+    LoadBgFiles,
     LoadConfig,
     LoadEntranceNames,
     LoadMusicInfo,
@@ -81,8 +81,8 @@ class ReggieGameDefinition:
 
         reggiedata_folder = get_reggiedata_folder()
         self.files = {
-            'bga': gdf(os.path.join(reggiedata_folder, 'bga.txt'), False),
-            'bgb': gdf(os.path.join(reggiedata_folder, 'bgb.txt'), False),
+            'bga': gdf(os.path.join(reggiedata_folder, 'bga.xml'), False),
+            'bgb': gdf(os.path.join(reggiedata_folder, 'bgb.xml'), False),
             'config': gdf(os.path.join(reggiedata_folder, 'config.xml'), False),
             'entrancetypes': gdf(os.path.join(reggiedata_folder, 'entrancetypes.txt'), False),
             'levelnames': gdf(os.path.join(reggiedata_folder, 'levelnames.xml'), False),
@@ -113,6 +113,7 @@ class ReggieGameDefinition:
         # Parse the file (errors are handled by __init__())
         path = os.path.join(get_reggiedata_folder(), "patches", name, "main.xml")
         try:
+            update_main(path)
             tree = etree.parse(path)
         except FileNotFoundError:
             return False
@@ -508,8 +509,7 @@ def LoadGameDef(name: str | None = None):
         globals_.mainWindow.spriteDataEditor.setSprite(globals_.mainWindow.spriteDataEditor.spritetype,
                                                 True)  # Reloads the sprite data editor fields
 
-    LoadBgANames(True)
-    LoadBgBNames(True)
+    LoadBgFiles(True)
 
     LoadZoneThemes(True)
     LoadMusicInfo(True)
@@ -605,50 +605,3 @@ def FindGameDef(name: str, skip: str | None = None):
 
         def_.__init2__()
         return def_
-
-
-def update_sprites_module(filename: str):
-    """
-    Fixes compatibility issues with sprites.py modules made for older versions of Reggie Next
-    """
-    with open(filename, "r", encoding="utf-8") as f:
-        orig_data = f.read()
-
-    # Fix the import
-    new_data = orig_data.replace("PyQt5", "PyQt6")
-
-    # Common PyQt5 -> 6 changes that need to be fixed
-    pyqt_strings = [
-        ("QPainter.Antialiasing",   "QPainter.RenderHint.Antialiasing"),
-        ("Qt.SmoothTransformation", "Qt.TransformationMode.SmoothTransformation"),
-        ("Qt.IgnoreAspectRatio",    "Qt.AspectRatioMode.IgnoreAspectRatio"),
-        ("QPoint(",                 "QPointF("),
-        ("Qt.transparent",          "Qt.GlobalColor.transparent"),
-        ("Qt.Align",                "Qt.AlignmentFlag.Align")
-    ]
-
-    for old, new in pyqt_strings:
-        new_data = new_data.replace(old, new)
-
-    # Regex fixes
-    regex_strings = [
-        # Fix BlockContents accesses
-        (r"\['BlockContents'\]\[(\d+)\]", r"['BlockContents\1']"),
-        (r"\['BlockContents'\]\[(.*?)\]", r"[f'BlockContents{\1}']"),
-        # Update GetImg() calls to the proper function
-        (r"SLib\.GetImg\((\w?[\"']?[\w{}%\.]+[\"']?(?: ?% ?(?:(?:\([\w, +-\.()]+\))|(?:[\w +\-\.()]+)))?)(?:, ?False)?\)", r"SLib.GetPixmap(\1)"),
-        (r"SLib\.GetImg\((\w?[\"']?[\w{}%\.]+[\"']?(?: ?% ?(?:(?:\([\w, +-\.()]+\))|(?:[\w +\-\.()]+)))?)(?:, ?True)\)", r"SLib.GetImage(\1)")
-    ]
-
-    for pattern, replace in regex_strings:
-        new_data = re.sub(pattern, replace, new_data)
-
-    # Fix old sprites_common imports
-    new_data = new_data.replace("import sprites_common", "import data.common.sprites")
-
-    # Fix (very rarely used) references to the sprite ID
-    new_data = new_data.replace("parent.type", "parent.sprite_num")
-
-    # All done, save the file
-    with open(filename, 'w') as file_out:
-        file_out.write(new_data)

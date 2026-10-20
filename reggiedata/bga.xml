@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8'?>
+<backgrounds>
+    <background id="0000" name="Invalid (Crashes)" />
+    <background id="0001" name="Black" image="none" />
+    <background id="000A" name="Transparent" image="none" />
+    <background id="0102" name="Overworld Hills" />
+    <background id="0104" name="Peach's Castle" />
+    <background id="0202" name="Tower" />
+    <background id="0302" name="Underground" />
+    <background id="0402" name="Desert" />
+    <background id="0502" name="Underwater" />
+    <background id="0602" name="Forest" />
+    <background id="0702" name="Snow Overworld" />
+    <background id="0802" name="Desert Cave" />
+    <background id="0902" name="Ice Cave" />
+    <background id="0A02" name="Mountains" />
+    <background id="0B02" name="Sky Gradient Clouds A" />
+    <background id="0C02" name="Volcanoes" />
+    <background id="0D02" name="Lava Cave" />
+    <background id="0E02" name="Castle" />
+    <background id="0F02" name="Ghost House" />
+    <background id="1002" name="Beach" />
+    <background id="2202" name="Tower Boss" />
+    <background id="2302" name="Tower Boss (Desert)" />
+    <background id="2402" name="Tower Boss (Ice)" />
+    <background id="2502" name="Tower Boss (Beach)" />
+    <background id="2602" name="Tower Boss (Forest)" />
+    <background id="2702" name="Tower Boss (Mountain)" />
+    <background id="2802" name="Tower Boss (Sky)" />
+    <background id="2902" name="Tower Boss (Lava)" />
+    <background id="2A02" name="None (Castle Boss)" image="none" />
+    <background id="3102" name="Final Boss" />
+    <background id="3302" name="River Cave" />
+    <background id="3402" name="Castle (Sub Area)" />
+    <background id="3B02" name="Minigame (Power-Up Panels)" />
+    <background id="3C02" name="Minigame (1-Up Blast)" />
+    <background id="3D02" name="Toad House Lobby" />
+    <background id="3E02" name="Peach's Castle" />
+    <background id="3F02" name="Ghost House Exterior" />
+    <background id="4002" name="Castle (Lava)" />
+    <background id="4102" name="Castle Boss (Forest)" />
+    <background id="4202" name="Castle Boss (Beach)" />
+    <background id="4302" name="Mountain Oasis" />
+    <background id="4402" name="None (Castle Boss Desert)" image="none" />
+    <background id="4502" name="Sky Athletic Clouds (Hills)" />
+    <background id="4602" name="Desert Athletic Clouds" />
+    <background id="4D02" name="Underwater (Mostly submerged)" />
+    <background id="4F02" name="Tower (Desert/Mountain)" />
+    <background id="5002" name="Tower (Ice)" />
+    <background id="5102" name="Tower (Lava)" />
+    <background id="5202" name="Sky Clouds" />
+    <background id="5302" name="World 4 Airship" />
+    <background id="5402" name="Sky Cloud Cover" />
+    <background id="5502" name="World 8 Airship" />
+    <background id="5602" name="Large Clouds" />
+    <background id="5702" name="Snow Athletic" />
+    <background id="5802" name="Sky Gradient Clouds B" />
+    <background id="5902" name="Bowser's Castle" />
+    <background id="5A02" name="Castle Boss (Ice)" />
+    <background id="A302" name="Sky Gradient Clouds C (Unused)" />
+    <background id="A402" name="Credits" />
+    <background id="A502" name="Lava Cave (Alt)" />
+</backgrounds>
