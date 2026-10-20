@@ -13,7 +13,8 @@ def update_main(path: str) -> None:
     regex_strings = [
         (r'<file name="bg(\w)" path="(.*?).txt"', r'<file name="bg\1" path="\2.xml"'),
         (r'name="music" path="(.*?).txt"', r'name="music" path="\1.xml"'),
-        (r'name="zonethemes" path="(.*?).txt"', r'name="zonethemes" path="\1.xml"')
+        (r'name="zonethemes" path="(.*?).txt"', r'name="zonethemes" path="\1.xml"'),
+        (r'name="ts1_descriptions" path="(.*?).txt"', r'name="ts1_descriptions" path="\1.xml"')
     ]
 
     for pattern, replace in regex_strings:

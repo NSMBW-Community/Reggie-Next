@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='utf-8'?>
+<objects>
+    <object id="0" name="Blank tile" />
+    <object id="1" name="Invisible solid tile" />
+    <object id="2" name="Invisible solid-on-top tile" />
+    <object id="3" name="Invisible Mini-Mario passageway" />
+    <object id="4" name="1x1 slope" />
+    <object id="5" name="1x1 slope" />
+    <object id="6" name="1x1 roof" />
+    <object id="7" name="1x1 roof" />
+    <object id="8" name="2x1 slope" />
+    <object id="9" name="2x1 slope" />
+    <object id="10" name="2x1 roof" />
+    <object id="11" name="2x1 roof" />
+    <object id="12" name="4x1 slope" />
+    <object id="13" name="4x1 slope" />
+    <object id="14" name="4x1 roof" />
+    <object id="15" name="4x1 roof" />
+    <object id="16" name="Invisible tile (stops a vine from growing further)" />
+    <object id="17" name="Invisible coin block" />
+    <object id="18" name="Invisible block containing a Mushroom or Fire Flower" />
+    <object id="19" name="Invisible block containing a Star" />
+    <object id="20" name="Invisible block containing a 1-up Mushroom" />
+    <object id="21" name="Invisible block containing a Vine" />
+    <object id="22" name="Invisible block containing a Mini Mushroom" />
+    <object id="23" name="Invisible block containing a Mushroom or Propeller Shroom" />
+    <object id="24" name="Invisible block containing a Mushroom or Penguin Suit" />
+    <object id="25" name="Invisible block containing a Mushroom or Ice Flower" />
+    <object id="26" name="Brick block" />
+    <object id="27" name="Brick block containing a coin" />
+    <object id="28" name="Brick block containing 10 coins" />
+    <object id="29" name="Brick block containing a Fire Flower" />
+    <object id="30" name="Brick block containing a Star" />
+    <object id="31" name="Brick block containing a 1-up Mushroom" />
+    <object id="32" name="Brick block containing a Vine" />
+    <object id="33" name="Brick block containing a Mini Mushroom" />
+    <object id="34" name="Brick block containing a Mushroom or Propeller Shroom" />
+    <object id="35" name="Brick block containing a Mushroom or Penguin Suit" />
+    <object id="36" name="Brick block containing a Yoshi Egg" />
+    <object id="37" name="Brick block containing a Mushroom or Ice Flower" />
+    <object id="38" name="? block containing a coin" />
+    <object id="39" name="? block containing a Mushroom or Fire Flower" />
+    <object id="40" name="? block containing a Star" />
+    <object id="41" name="? block containing a Continuous Star" />
+    <object id="42" name="? block containing a Vine" />
+    <object id="43" name="? block containing a Spring" />
+    <object id="44" name="? block containing a Mini Mushroom" />
+    <object id="45" name="? block containing a Mushroom or Propeller Shroom" />
+    <object id="46" name="? block containing a Mushroom or Penguin Suit" />
+    <object id="47" name="? block containing a Yoshi Egg" />
+    <object id="48" name="? block containing a Mushroom or Ice Flower" />
+    <object id="49" name="Used item block" />
+    <object id="50" name="Wooden block" />
+    <object id="51" name="Stone block" />
+    <object id="52" name="Donut Lift" />
+    <object id="53" name="Steel block" />
+    <object id="54" name="Dark block" />
+    <object id="55" name="Solid-on-top platform" />
+    <object id="56" name="Mini-Mario passageway" />
+    <object id="57" name="Block outlines (turns into red block if either a red ! switch or the huge switch in World 3 is hit)" />
+    <object id="58" name="Coin" />
+    <object id="59" name="Coin (horizontal alternating pattern)" />
+    <object id="60" name="Coin (vertical alternating pattern)" />
+    <object id="61" name="Coin (NW-SE slope alternating pattern)" />
+    <object id="62" name="Coin (NE-SW slope alternating pattern)" />
+    <object id="63" name="P-switch Coin" />
+    <object id="64" name="Coin Outline (turns into coin when touched)" />
+    <object id="65" name="Green Pipe Top" />
+    <object id="66" name="Green Pipe Bottom" />
+    <object id="67" name="Green Pipe Left" />
+    <object id="68" name="Green Pipe Right" />
+    <object id="69" name="Green Pipe Middle" />
+    <object id="70" name="Green Pipe Center" />
+    <object id="71" name="Green Pipe Overlap 1" />
+    <object id="72" name="Green Pipe Overlap 2" />
+    <object id="73" name="Yellow Pipe Top" />
+    <object id="74" name="Yellow Pipe Bottom" />
+    <object id="75" name="Yellow Pipe Left" />
+    <object id="76" name="Yellow Pipe Right" />
+    <object id="77" name="Yellow Pipe Middle" />
+    <object id="78" name="Yellow Pipe Center" />
+    <object id="79" name="Red Pipe Top" />
+    <object id="80" name="Red Pipe Bottom" />
+    <object id="81" name="Red Pipe Left" />
+    <object id="82" name="Red Pipe Right" />
+    <object id="83" name="Red Pipe Middle" />
+    <object id="84" name="Red Pipe Center" />
+    <object id="85" name="Pipe Joint" />
+    <object id="86" name="Mini Pipe Top" />
+    <object id="87" name="Mini Pipe Bottom" />
+    <object id="88" name="Mini Pipe Left" />
+    <object id="89" name="Mini Pipe Right" />
+    <object id="90" name="Mini Pipe Middle" />
+    <object id="91" name="Mini Pipe Center" />
+    <object id="92" name="Mini Pipe Overlap 1" />
+    <object id="93" name="Mini Pipe Overlap 2" />
+    <object id="94" name="Mini Pipe Joint" />
+    <object id="95" name="Closed Door" />
+    <object id="96" name="Invisible Deadly Tile (hurts when touched)" />
+    <object id="97" name="Coin-Battle-only Coin Outline (invisible in all other modes)" />
+    <object id="98" name="Brick block containing nothing (turns into a used item block when hit)" />
+</objects>

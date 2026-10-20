@@ -226,21 +226,27 @@ def LoadObjDescriptions(reload_: bool = False) -> None:
     """
     Ensures that the object description is loaded
     """
-    if globals_.ObjDesc and not reload_: return
+    if globals_.ObjDesc and not reload_:
+        return
 
     paths = getResourcePaths('ts1_descriptions')
 
     globals_.ObjDesc = {}
     for path in paths:
+        # Check if a conversion needs to be done
+        convert_txt_to_xml(path, '=', 'objects', 'object')
+
         if path is None:
             continue
 
-        with open(path, 'r', encoding='utf-8') as f:
-            raw = [x.strip() for x in f]
+        tree = ElementTree.parse(path)
+        
+        for node in tree.getroot():
+            if node.tag.lower() == 'object':
+                object_id = node.attrib['id']
+                name = node.attrib['name']
 
-        for line in raw:
-            w = line.split('=')
-            globals_.ObjDesc[int(w[0])] = w[1]
+                globals_.ObjDesc[int(object_id)] = name
 
 
 def LoadBgFiles(reload_: bool = False) -> None:

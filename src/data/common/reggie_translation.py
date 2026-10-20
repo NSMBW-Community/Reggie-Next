@@ -39,7 +39,7 @@ class ReggieTranslation:
             'spritecategories': os.path.join(get_reggiedata_folder(), 'spritecategories.xml'),
             'spritedata': os.path.join(get_reggiedata_folder(), 'spritedata.xml'),
             'tilesets': os.path.join(get_reggiedata_folder(), 'tilesets.xml'),
-            'ts1_descriptions': os.path.join(get_reggiedata_folder(), 'ts1_descriptions.txt'),
+            'ts1_descriptions': os.path.join(get_reggiedata_folder(), 'ts1_descriptions.xml'),
             'zonethemes': os.path.join(get_reggiedata_folder(), 'zonethemes.xml'),
             'external-actors': os.path.join(get_reggiedata_folder(), 'external', 'actors.xml')
         }}
