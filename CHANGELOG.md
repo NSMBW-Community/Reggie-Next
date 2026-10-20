@@ -66,9 +66,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The Area Import dialog can now change the source level without needing to be re-opened.
 - ID Types in the Current Sprites tab are now sorted numerically rather than alphabetically.
 - The README view in the About dialog now uses markdown formatting.
-- The music list now uses the track order in music.txt instead of sorting by numerical ID.
+- The music list now uses the track order in music.xml instead of sorting by numerical ID.
 - Overhauled the level metadata system to be cleaner and easier to use.
-- Backgrounds now load from an XML file instead of a key-value text file.
+- Backgrounds and music now load from an XML file instead of key-value text files.
 
 ### Removed
 

@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='utf-8'?>
+<songs>
+    <song id="0" name="None" />
+    <song id="1" name="World Map Drums" />
+    <song id="2" name="World Map Drums" />
+    <song id="3" name="Underwater [NSMBW]" />
+    <song id="4" name="Hijacked for Custom Music" />
+    <song id="5" name="Ghost House [NSMBW]" />
+    <song id="6" name="Pyramids [NSMBW]" />
+    <song id="7" name="Snow [NSMBW]" />
+    <song id="8" name="Lava [NSMBW]" />
+    <song id="9" name="Opening Cutscene" />
+    <song id="10" name="Hijacked for Custom Music" />
+    <song id="11" name="Airship [NSMBW]" />
+    <song id="12" name="Bonus Area [NSMBW]" />
+    <song id="13" name="Drum Rolls [NSMBW]" />
+    <song id="14" name="Tower Boss" />
+    <song id="15" name="Castle Boss [NSMBW]" />
+    <song id="16" name="Toad House [NSMBW]" />
+    <song id="17" name="Airship Boss [NSMBW]" />
+    <song id="18" name="Forest [NSMBW]" />
+    <song id="19" name="Enemy Ambush [NSMBW]" />
+    <song id="20" name="Beach [NSMBW]" />
+    <song id="21" name="Lava Cave [NSMBW]" />
+    <song id="22" name="Peach's Castle [NSMBW]" />
+    <song id="23" name="Credits" />
+    <song id="24" name="Airship Drums [NSMBW]" />
+    <song id="25" name="Bowser Bridge" />
+    <song id="26" name="Mega Bowser [NSMBW]" />
+    <song id="27" name="Epilogue [NSMBW]" />
+    <song id="100" name="Airship" />
+    <song id="101" name="Tower Boss" />
+    <song id="102" name="Menu" />
+    <song id="103" name="Underwater" />
+    <song id="104" name="Mushrooms/Athletic" />
+    <song id="105" name="Castle" />
+    <song id="106" name="Main" />
+    <song id="107" name="Mountain" />
+    <song id="108" name="Tower" />
+    <song id="109" name="Underground" />
+    <song id="110" name="Desert" />
+    <song id="111" name="Fire" />
+    <song id="112" name="Forest" />
+    <song id="113" name="Freezeflame" />
+    <song id="114" name="Japan" />
+    <song id="115" name="Pumpkin" />
+    <song id="116" name="Sewer" />
+    <song id="117" name="Space" />
+    <song id="118" name="Bowser" />
+    <song id="119" name="Bonus" />
+    <song id="120" name="Ambush" />
+    <song id="121" name="Bridge Drums" />
+    <song id="122" name="Snow" />
+    <song id="123" name="Mini-Mega" />
+    <song id="124" name="Cliffs" />
+    <song id="125" name="Autumn" />
+    <song id="126" name="Crystal Caves" />
+    <song id="127" name="Graveyard" />
+    <song id="128" name="Ghost House" />
+    <song id="129" name="Jungle" />
+    <song id="130" name="Tropical" />
+    <song id="131" name="Sky City" />
+    <song id="132" name="Snow (2)" />
+    <song id="133" name="Star Haven" />
+    <song id="134" name="Singalong" />
+    <song id="135" name="Factory" />
+    <song id="136" name="Tank" />
+    <song id="137" name="Train" />
+    <song id="138" name="Yoshi House" />
+    <song id="139" name="Factory (2)" />
+    <song id="140" name="Cavern" />
+    <song id="141" name="Sand" />
+    <song id="142" name="Shy Guy" />
+    <song id="143" name="Minigame" />
+    <song id="144" name="Bonus Area" />
+    <song id="145" name="Challenge" />
+    <song id="146" name="Bowser's Castle" />
+    <song id="156" name="Castle Boss" />
+    <song id="157" name="Airship Boss" />
+</songs>

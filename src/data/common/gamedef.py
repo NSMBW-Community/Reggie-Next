@@ -86,7 +86,7 @@ class ReggieGameDefinition:
             'config': gdf(os.path.join(reggiedata_folder, 'config.xml'), False),
             'entrancetypes': gdf(os.path.join(reggiedata_folder, 'entrancetypes.txt'), False),
             'levelnames': gdf(os.path.join(reggiedata_folder, 'levelnames.xml'), False),
-            'music': gdf(os.path.join(reggiedata_folder, 'music.txt'), False),
+            'music': gdf(os.path.join(reggiedata_folder, 'music.xml'), False),
             'spritecategories': gdf(os.path.join(reggiedata_folder, 'spritecategories.xml'), False),
             'spritedata': gdf(os.path.join(reggiedata_folder, 'spritedata.xml'), False),
             'tilesetinfo': gdf(os.path.join(reggiedata_folder, 'tilesetinfo.xml'), False),

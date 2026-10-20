@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<songs>
+    <song id="0" name="None" />
+    <song id="1" name="Overworld" />
+    <song id="2" name="Underground" />
+    <song id="3" name="Underwater" />
+    <song id="4" name="Mushrooms/Athletic" />
+    <song id="5" name="Ghost House" />
+    <song id="6" name="Pyramids" />
+    <song id="7" name="Snow" />
+    <song id="8" name="Lava" />
+    <song id="9" name="Tower" />
+    <song id="10" name="Castle" />
+    <song id="11" name="Airship" />
+    <song id="12" name="Bonus Area" />
+    <song id="13" name="Drum Rolls" />
+    <song id="14" name="Tower Boss" />
+    <song id="15" name="Castle Boss" />
+    <song id="16" name="Toad House" />
+    <song id="17" name="Airship Boss" />
+    <song id="18" name="Forest" />
+    <song id="19" name="Enemy Ambush" />
+    <song id="20" name="Beach" />
+    <song id="21" name="Lava Cave" />
+    <song id="22" name="Peach's Castle" />
+    <song id="23" name="Credits Jazz" />
+    <song id="24" name="Airship Drums" />
+    <song id="25" name="Bowser" />
+    <song id="26" name="Mega Bowser" />
+    <song id="27" name="Epilogue" />
+</songs>

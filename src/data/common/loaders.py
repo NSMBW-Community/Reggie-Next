@@ -10,7 +10,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 import spritelib as SLib
 from data import globals_
 from data.common import archive
-from data.common.gamedef_update import convert_bg_lists
+from data.common.gamedef_update import convert_bg_lists, convert_music_list
 from data.common.keybind import Keybind
 from data.common.menu_action import MenuAction
 from data.common.reggie_translation import ReggieTranslation
@@ -672,24 +672,21 @@ def LoadMusicInfo(reload_: bool = False) -> None:
 
     songs = {}
     for path in paths:
+        # Check if we need to convert anything
+        convert_music_list(path)
+
         if path is None:
             continue
 
-        with open(path, 'r', encoding='utf-8') as musicfile:
-            data = musicfile.read()
-
-        del musicfile
-
         # Apply the data
-        for line in data.split('\n'):
-            line_items = line.strip().split(':')
+        tree = ElementTree.parse(path)
 
-            if len(line_items) != 2:
-                # Ignore lines that do not follow the <songid>:<name> format
-                continue
+        for node in tree.getroot():
+            if node.tag.lower() == 'song':
+                song_id = node.attrib['id']
+                name = node.attrib['name']
 
-            songid, name = line_items
-            songs[songid] = name
+                songs[song_id] = name
 
     globals_.MusicInfo = songs.items()
 

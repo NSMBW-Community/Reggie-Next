@@ -9,9 +9,10 @@ def update_main(path: str) -> None:
     with open(path, 'r', encoding='utf-8') as f:
         data = f.read()
 
-    # Fixes old BG references
+    # Fix old references
     regex_strings = [
-        (r'<file name="bg(\w)" path="(.*?).txt"', r'<file name="bg\1" path="\2.xml"')
+        (r'<file name="bg(\w)" path="(.*?).txt"', r'<file name="bg\1" path="\2.xml"'),
+        (r'name="music" path="(.*?).txt"', r'name="music" path="\1.xml"')
     ]
 
     for pattern, replace in regex_strings:
@@ -91,6 +92,38 @@ def convert_bg_lists(path: str) -> None:
 
         # Make each element
         element = etree.SubElement(root, 'background', id=data[0], name=data[1])
+
+    etree.indent(root, space='    ')
+    tree = etree.ElementTree(root)
+    tree.write(path, encoding='utf-8', xml_declaration=True)
+
+    # Delete the text file, should be safe to assume it exists
+    os.remove(txt_path)
+
+
+def convert_music_list(path: str) -> None:
+    """
+    Converts music.txt files into the new XML format
+    """
+    # XML exists, return
+    if os.path.isfile(path):
+        return
+
+    txt_path = path.replace('.xml', '.txt')
+
+    try:
+        with open(txt_path, 'r', encoding='utf-8') as f:
+            raw = [x.strip() for x in f]
+    except FileNotFoundError:
+        return
+
+    root = etree.Element('songs')
+
+    for line in raw:
+        data = line.split(':')
+
+        # Make each element
+        element = etree.SubElement(root, 'song', id=data[0], name=data[1])
 
     etree.indent(root, space='    ')
     tree = etree.ElementTree(root)
