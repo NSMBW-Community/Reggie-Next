@@ -290,7 +290,7 @@
         </stringlist>
         <string id="28">([id]) [name]</string>
         <string id="29">Send to World Map</string>
-        <string id="30">[b]Send to World Map:[/b][br]If this is checked, the player will be sent to the world map when entering this entrance.</string>
+        <string id="30">[b]Send to World Map:[/b][br]If this is checked, the player will be sent to the world map when entering this entrance, and the level will be cleared.</string>
         <string id="31">Spawn Half a Tile Left</string>
         <string id="32">[b]Spawn Half a Tile Left:[/b][br]If this is checked, the entrance will spawn Mario half a tile to the left.</string>
     </section>

@@ -325,7 +325,7 @@ class ReggieTranslation:
                 ),
                 28: '([id]) [name]',
                 29: 'Send to World Map',
-                30: '[b]Send to World Map:[/b][br]If this is checked, the player will be sent to the world map when entering this entrance.',
+                30: '[b]Send to World Map:[/b][br]If this is checked, the player will be sent to the world map when entering this entrance, and the level will be cleared.',
                 31: 'Spawn Half a Tile Left',
                 32: '[b]Spawn Half a Tile Left:[/b][br]If this is checked, the entrance will spawn Mario half a tile to the left.',
             },
