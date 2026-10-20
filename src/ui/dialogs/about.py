@@ -64,7 +64,7 @@ class AboutDialog(QtWidgets.QDialog):
         readme_view.setOpenExternalLinks(True)
 
         changelog_button = QtWidgets.QPushButton(globals_.trans.string('AboutDlg', 5))
-        changelog_button.pressed.connect(lambda: ChangelogDialog().exec())
+        changelog_button.clicked.connect(lambda: ChangelogDialog().exec())
 
         close_button = QtWidgets.QPushButton(globals_.trans.string('AboutDlg', 6))
 
