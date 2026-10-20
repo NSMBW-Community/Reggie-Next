@@ -12,7 +12,8 @@ def update_main(path: str) -> None:
     # Fix old references
     regex_strings = [
         (r'<file name="bg(\w)" path="(.*?).txt"', r'<file name="bg\1" path="\2.xml"'),
-        (r'name="music" path="(.*?).txt"', r'name="music" path="\1.xml"')
+        (r'name="music" path="(.*?).txt"', r'name="music" path="\1.xml"'),
+        (r'name="zonethemes" path="(.*?).txt"', r'name="zonethemes" path="\1.xml"')
     ]
 
     for pattern, replace in regex_strings:
@@ -69,41 +70,9 @@ def update_sprites_module(filename: str) -> None:
         file_out.write(new_data)
 
 
-def convert_bg_lists(path: str) -> None:
+def convert_txt_to_xml(path: str, split: str, root_name: str, element_name: str, has_key: bool = True) -> None:
     """
-    Converts bga/bgb.txt files into the new XML format
-    """
-    # XML exists, return
-    if os.path.isfile(path):
-        return
-
-    txt_path = path.replace('.xml', '.txt')
-
-    try:
-        with open(txt_path, 'r', encoding='utf-8') as f:
-            raw = [x.strip() for x in f]
-    except FileNotFoundError:
-        return
-
-    root = etree.Element('backgrounds')
-
-    for line in raw:
-        data = line.split('=')
-
-        # Make each element
-        element = etree.SubElement(root, 'background', id=data[0], name=data[1])
-
-    etree.indent(root, space='    ')
-    tree = etree.ElementTree(root)
-    tree.write(path, encoding='utf-8', xml_declaration=True)
-
-    # Delete the text file, should be safe to assume it exists
-    os.remove(txt_path)
-
-
-def convert_music_list(path: str) -> None:
-    """
-    Converts music.txt files into the new XML format
+    Simple base for converting key-value txt files into an XML format
     """
     # XML exists, return
     if os.path.isfile(path):
@@ -117,17 +86,19 @@ def convert_music_list(path: str) -> None:
     except FileNotFoundError:
         return
 
-    root = etree.Element('songs')
+    root = etree.Element(root_name)
 
-    for line in raw:
-        data = line.split(':')
-
+    for idx, line in enumerate(raw):
         # Make each element
-        element = etree.SubElement(root, 'song', id=data[0], name=data[1])
+        if has_key:
+            data = line.split(split)
+            element = etree.SubElement(root, element_name, id=data[0], name=data[1])
+        else:
+            element = etree.SubElement(root, element_name, id=str(idx), name=line)
 
     etree.indent(root, space='    ')
     tree = etree.ElementTree(root)
     tree.write(path, encoding='utf-8', xml_declaration=True)
 
-    # Delete the text file, should be safe to assume it exists
+    # Delete the text file
     os.remove(txt_path)

@@ -12,6 +12,7 @@ from data.level.abstract_level import AbstractLevel
 from data.level.area import Area as AreaType
 from data.level.background_file import BackgroundFileEntry
 from data.level.sprite_definition import SpriteDefinition
+from data.level.zone_theme import ZoneThemeEntry
 from data.sprite.sprite_category import SpriteCategory
 from data.tileset.object.object_def import ObjectDef
 from data.tileset.tile.rand_tile_selection import RandTileSelection
@@ -102,7 +103,7 @@ EnablePadding: bool = False
 FileExtentions: tuple[str, ...] = ('.arc', '.arc.LH', '.arc.LZ')
 Level: AbstractLevel  # Uninitialized on purpose. It's never accessed before being written to. Reduces redudant "is None" checks.
 PaddingLength: int = 0
-ZoneThemeValues: list[str] = []
+ZoneThemes: list[ZoneThemeEntry] = []
 
 # Tilesets
 ObjectDefinitions: list[list[ObjectDef | None]] = []  # 4 tilesets

@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<themes>
+    <theme id="0" name="Overworld" />
+    <theme id="1" name="Underground" />
+    <theme id="2" name="Underwater" description="The player/mushroom bubble uses a special underwater texture, and loads special &quot;WaterDepth&quot; depth-of-field effect." />
+    <theme id="3" name="Lava Underground" />
+    <theme id="4" name="Desert" description="Loads special &quot;SabakuDepth&quot; depth-of-field effect." />
+    <theme id="5" name="Beach" description="Loads special &quot;KaiganDepth&quot; depth-of-field effect." />
+    <theme id="6" name="Forest" />
+    <theme id="7" name="Snow Overworld" />
+    <theme id="8" name="Sky/Bonus*" description="Visually identical to &quot;Overworld&quot;." />
+    <theme id="9" name="Mountains" />
+    <theme id="10" name="Tower" />
+    <theme id="11" name="Castle" />
+    <theme id="12" name="Ghost House" description="Items that jump out of a ? Block will play a Boo laugh sound effect." />
+    <theme id="13" name="River Cave" />
+    <theme id="14" name="Ghost House Exit" />
+    <theme id="15" name="Underwater Cave" />
+    <theme id="16" name="Desert Cave" />
+    <theme id="17" name="Icy Cave*" description="Visually identical to &quot;Overworld&quot;." />
+    <theme id="18" name="Lava" description="Loads special &quot;Fire2Depth&quot; depth-of-field effect." />
+    <theme id="19" name="Final Battle" description="Loads special &quot;KoopaDepth&quot; depth-of-field effect." />
+    <theme id="20" name="World 8 Tower/Castle" />
+    <theme id="21" name="World 8 Airship*" description="Visually identical to &quot;Overworld&quot;." />
+    <theme id="22" name="World 7 Tower Indoors" />
+</themes>

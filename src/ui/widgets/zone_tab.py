@@ -125,15 +125,16 @@ class ZoneTab(QtWidgets.QWidget):
 
         combobox_size_policy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.Fixed)
 
-        theme_values = globals_.ZoneThemeValues
         terrain_light_values = globals_.trans.stringList('ZonesDlg', 2)
 
         self.theme = QtWidgets.QComboBox()
-        self.theme.addItems(theme_values)
-        self.theme.setToolTip(globals_.trans.string('ZonesDlg', 21))
         self.theme.setSizePolicy(combobox_size_policy)
+        self.theme.currentIndexChanged.connect(self.set_zone_theme)
 
-        zone.modeldark = clamp(zone.modeldark, 0, len(theme_values))
+        for theme in globals_.ZoneThemes:
+            self.theme.addItem(theme.name, theme.idx)
+
+        zone.modeldark = clamp(zone.modeldark, 0, len(globals_.ZoneThemes))
         self.theme.setCurrentIndex(zone.modeldark)
 
         self.terrain_light = QtWidgets.QComboBox()
@@ -379,6 +380,19 @@ class ZoneTab(QtWidgets.QWidget):
         self.pos_y.setValue(top)
         self.zone_width.setValue(right)
         self.zone_height.setValue(bottom)
+
+    def set_zone_theme(self) -> None:
+        """
+        Handles changing the current Zone theme
+        """
+        tooltip = globals_.trans.string('ZonesDlg', 21)
+        theme_comment = ''
+
+        curr_theme = globals_.ZoneThemes[self.theme.currentIndex()]
+        if curr_theme.desc is not None:
+            theme_comment = globals_.trans.string('ZonesDlg', 109, '[info]', curr_theme.desc)
+
+        self.theme.setToolTip(f'{tooltip}{theme_comment}')
 
     def set_visibility_list(self) -> None:
         """

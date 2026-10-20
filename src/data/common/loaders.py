@@ -10,7 +10,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 import spritelib as SLib
 from data import globals_
 from data.common import archive
-from data.common.gamedef_update import convert_bg_lists, convert_music_list
+from data.common.gamedef_update import convert_txt_to_xml
 from data.common.keybind import Keybind
 from data.common.menu_action import MenuAction
 from data.common.reggie_translation import ReggieTranslation
@@ -20,6 +20,7 @@ from data.common.utils import get_main_path, get_reggiedata_folder
 from data.level.background_file import BackgroundFileEntry
 from data.level.items.location import LocationItem
 from data.level.sprite_definition import SpriteDefinition
+from data.level.zone_theme import ZoneThemeEntry
 from data.sprite.sprite_category import SpriteCategory, SpriteSubCategory
 from data.tileset.object.object_def import ObjectDef
 from data.tileset.object.renderers import IncrementTilesetFrame
@@ -261,7 +262,7 @@ def LoadBgFiles(reload_: bool = False) -> None:
 
         for path in paths:
             # Before we begin, we might need to convert a txt file
-            convert_bg_lists(path)
+            convert_txt_to_xml(path, '=', 'backgrounds', 'background')
 
             if path is None:
                 continue
@@ -302,16 +303,46 @@ def LoadZoneThemes(reload_: bool = False) -> None:
     """
     Ensures that custom zone themes get loaded
     """
-    if globals_.ZoneThemeValues and not reload_: return
+    if globals_.ZoneThemes and not reload_:
+        return
 
     paths = getResourcePaths('zonethemes')
 
+    globals_.ZoneThemes = []
+
     for path in paths:
+        # Before we begin, we might need to convert a txt file
+        convert_txt_to_xml(path, '', 'themes', 'theme', False)
+
         if path is None:
             continue
 
-        with open(path, 'r', encoding='utf-8') as f:
-            globals_.ZoneThemeValues = [x.strip() for x in f]
+        tree = ElementTree.parse(path)
+        
+        for node in tree.getroot():
+            if node.tag.lower() == 'theme':
+                attribs = node.attrib
+
+                theme_id = attribs['id']
+                name = attribs['name']
+                desc = None
+
+                if 'description' in attribs:
+                    desc = node.attrib['description']
+
+                new_theme = ZoneThemeEntry(theme_id, name, desc)
+
+                # Avoid duplicates
+                exists = False
+                for theme in globals_.ZoneThemes:
+                    # If two IDs repeat, override with the new data
+                    if theme.idx == new_theme.idx:
+                        theme.name = new_theme.name
+                        theme.desc = new_theme.desc
+                        exists = True
+
+                if not exists:
+                    globals_.ZoneThemes.append(new_theme)
 
 
 def LoadConfig() -> None:
@@ -673,7 +704,7 @@ def LoadMusicInfo(reload_: bool = False) -> None:
     songs = {}
     for path in paths:
         # Check if we need to convert anything
-        convert_music_list(path)
+        convert_txt_to_xml(path, ':', 'songs', 'song')
 
         if path is None:
             continue

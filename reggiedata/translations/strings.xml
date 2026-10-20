@@ -1019,7 +1019,7 @@
         <string id="18">[b]Preset:[/b][br]Snaps the zone to common sizes.</string>
         <string id="19">Rendering and Camera</string>
         <string id="20">Zone Theme:</string>
-        <string id="21">[b]Zone Theme:[/b][br]Changes the way models and parts of the background are rendered (for blurring, darkness, lava effects, and so on).[br]Certain Zone Themes may have additional affects. For example, when "Ghost House" is selected, blocks with items jumping out of them make a Boo laugh.[br][b]Note:[/b] Settings with an asterisk appear to the look the same as "Overworld".</string>
+        <string id="21">[b]Zone Theme:[/b][br]Changes the way models and parts of the background are rendered (for blurring, darkness, lava effects, and so on).</string>
         <string id="22">Terrain Lighting:</string>
         <string id="23">[b]Terrain Lighting:[/b][br]Changes the way the terrain is rendered. It also affects the parts of the background which the normal theme doesn't change.</string>
         <string id="24">Normal</string>
@@ -1149,5 +1149,6 @@
         <string id="106">[b]Multiplayer Lower Bounds Adjust:[/b][br]Added to the lower bounds value (regular or Lakitu) during multiplayer mode, and during the transition back to normal camera behavior after an Auto-Scrolling Controller reaches the end of its path.</string>
         <string id="107">Duplicate</string>
         <string id="108">Undefined Track [id]</string>
+        <string id="109">[br][br][b]Current Theme:[/b][br][info]</string>
     </section>
 </strings>

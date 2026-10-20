@@ -92,7 +92,7 @@ class ReggieGameDefinition:
             'tilesetinfo': gdf(os.path.join(reggiedata_folder, 'tilesetinfo.xml'), False),
             'tilesets': gdf(os.path.join(reggiedata_folder, 'tilesets.xml'), False),
             'ts1_descriptions': gdf(os.path.join(reggiedata_folder, 'ts1_descriptions.txt'), False),
-            'zonethemes': gdf(os.path.join(reggiedata_folder, 'zonethemes.txt'), False),
+            'zonethemes': gdf(os.path.join(reggiedata_folder, 'zonethemes.xml'), False),
         }
         self.folders = {
             'bga': gdf(None, False),

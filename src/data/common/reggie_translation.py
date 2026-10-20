@@ -40,7 +40,7 @@ class ReggieTranslation:
             'spritedata': os.path.join(get_reggiedata_folder(), 'spritedata.xml'),
             'tilesets': os.path.join(get_reggiedata_folder(), 'tilesets.xml'),
             'ts1_descriptions': os.path.join(get_reggiedata_folder(), 'ts1_descriptions.txt'),
-            'zonethemes': os.path.join(get_reggiedata_folder(), 'zonethemes.txt'),
+            'zonethemes': os.path.join(get_reggiedata_folder(), 'zonethemes.xml'),
             'external-actors': os.path.join(get_reggiedata_folder(), 'external', 'actors.xml')
         }}
 
@@ -1026,7 +1026,7 @@ class ReggieTranslation:
             },
             'ZonesDlg': {
                 0: 'Zones',
-                1: None,  # REMOVED: This list of zone theme values was moved to reggidata/zonethemes.txt
+                1: None,  # REMOVED: This list of zone theme values was moved to reggiedata/zonethemes.xml
                 2: (
                     'Normal/Overworld',
                     'Underground',
@@ -1051,7 +1051,7 @@ class ReggieTranslation:
                 18: '[b]Preset:[/b][br]Snaps the zone to common sizes.',
                 19: 'Rendering and Camera',
                 20: 'Zone Theme:',
-                21: '[b]Zone Theme:[/b][br]Changes the way models and parts of the background are rendered (for blurring, darkness, lava effects, and so on).[br]Certain Zone Themes may have additional affects. For example, when "Ghost House" is selected, blocks with items jumping out of them make a Boo laugh.[br][b]Note:[/b] Settings with an asterisk appear to the look the same as "Overworld".',
+                21: '[b]Zone Theme:[/b][br]Changes the way models and parts of the background are rendered (for blurring, darkness, lava effects, and so on).',
                 22: 'Terrain Lighting:',
                 23: '[b]Terrain Lighting:[/b][br]Changes the way the terrain is rendered. It also affects the parts of the background which the normal theme doesn\'t change.',
                 24: 'Normal',
@@ -1181,6 +1181,7 @@ class ReggieTranslation:
                 106: '[b]Multiplayer Lower Bounds Adjust:[/b][br]Added to the lower bounds value (regular or Lakitu) during multiplayer mode, and during the transition back to normal camera behavior after an Auto-Scrolling Controller reaches the end of its path.',
                 107: 'Duplicate',
                 108: 'Undefined Track [id]',
+                109: '[br][br][b]Current Theme:[/b][br][info]',
             },
             'Zones': {
                 0: 'Zone [num]',
