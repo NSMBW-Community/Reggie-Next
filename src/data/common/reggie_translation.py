@@ -848,6 +848,8 @@ class ReggieTranslation:
                     'Standard',
                     'Checker',
                 ),
+                10: 'Margins:',
+                11: '[b]Margins:[/b][br]This determines how many pixels of space will be visible past the zone edge in all directions.'
             },
             'ShftItmDlg': {
                 0: 'Shift Items',

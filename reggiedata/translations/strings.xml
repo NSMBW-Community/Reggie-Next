@@ -813,6 +813,8 @@
             <entry>Standard</entry>
             <entry>Checker</entry>
         </stringlist>
+        <string id="10">Margins:</string>
+        <string id="11">[b]Margins:[/b][br]This determines how many pixels of space will be visible past the zone edge in all directions.</string>
     </section>
     <section id="ShftItmDlg">
         <string id="0">Shift Items</string>

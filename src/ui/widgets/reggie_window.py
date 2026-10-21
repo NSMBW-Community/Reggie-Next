@@ -1739,7 +1739,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         a0.accept()
 
-    def LoadLevel(self, name: str, isFullPath: bool, areaNum: int):
+    def LoadLevel(self, name: str | None, isFullPath: bool, areaNum: int):
         """
         Load a level from NSMBW into the editor.
         """
@@ -2357,88 +2357,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
 
-        target = dlg.target_combo.currentIndex()
-        grid_type = dlg.grid_type.currentIndex()
-        hide_background = dlg.hide_background.isChecked()
-        save_to_file = dlg.save_img.isChecked()
-
-        # Update the canvas grid while we take the screenshot
-        grid_type_list = [None, 'grid', 'checker']
-        current_grid_type = globals_.GridType
-        globals_.GridType = grid_type_list[grid_type]
-        self.scene.update()
-
-        file_name = ''
-        if save_to_file:
-            filt = f'{globals_.trans.string('FileDlgs', 4)} (*.png)'
-
-            file_name = QtWidgets.QFileDialog.getSaveFileName(self, globals_.trans.string('FileDlgs', 3), None, filt)[0]
-            if file_name == '':
-                return
-
-        # Current view
-        if target == 0:
-            screenshot_rect = QtCore.QRect(QtCore.QPoint(), self.view.size())
-            renderer = self.view
-            ss_img = QtGui.QImage(screenshot_rect.size(), QtGui.QImage.Format.Format_ARGB32)
-        else:
-            # All zones together
-            if target == 1:
-                screenshot_rect = QtCore.QRectF()
-
-                for z in globals_.Area.zones:
-                    screenshot_rect |= z.ZoneRect
-
-            # Specific zone
-            else:
-                screenshot_rect = globals_.Area.zones[target - 2].ZoneRect
-
-            # Map the zone rects to the scene coordinate system
-            screenshot_rect = (QtGui.QTransform() * 1.5).mapRect(screenshot_rect)
-            # Add 40 pixels of padding on all sides
-            screenshot_rect += QtCore.QMarginsF(40, 40, 40, 40)
-            # Make sure the rectangle doesn't go out of bounds
-            screenshot_rect &= QtCore.QRectF(0, 0, 1024 * 24, 512 * 24)
-
-            renderer = self.scene
-            renderer.is_screenshot = True
-            ss_img = QtGui.QImage(screenshot_rect.size().toSize(), QtGui.QImage.Format.Format_ARGB32)
-
-        ss_img.fill(Qt.GlobalColor.transparent)
-        ss_painter = QtGui.QPainter(ss_img)
-
-        # Remove the background
-        if hide_background:
-            brush = self.scene.backgroundBrush()
-            style = brush.style()
-            brush.setStyle(Qt.BrushStyle.NoBrush)
-            self.scene.setBackgroundBrush(brush)
-
-            # Render
-            renderer.render(ss_painter, source=screenshot_rect)
-
-            # Restore the background
-            brush.setStyle(style)
-            self.scene.setBackgroundBrush(brush)
-        else:
-            renderer.render(ss_painter, source=screenshot_rect)
-
-        ss_painter.end()
-
-        if save_to_file:
-            ss_img.save(file_name, 'PNG', 50)
-        else:
-            if globals_.app is not None:
-                clip = globals_.app.clipboard()
-                if clip is not None:
-                    clip.setImage(ss_img)
-
-        if target != 0:
-            self.scene.is_screenshot = False
-
-        # Restore grid
-        globals_.GridType = current_grid_type
-        self.scene.update()
+        dlg.create_screenshot()
 
     def HandleCameraProfiles(self):
         """
