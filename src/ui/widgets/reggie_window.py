@@ -62,6 +62,7 @@ from ui.widgets.editors.path_node import PathNodeEditorWidget
 
 from ui.widgets.palette_dock import PaletteDock
 from data.common.reggie_clip import ReggieClip
+from ui.widgets.item_editor_dock import ItemEditorDockWidget
 
 ################################################################################
 ################################################################################
@@ -73,12 +74,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
     """
     action_list: dict[str, QtGui.QAction] = {}
 
-    def CreateDockWidget(self, title, obj_name, widget, features, area, allowed_areas, visible, floating, is_palette = False):
+    def CreateDockWidget(self, title, obj_name, widget, features, area, allowed_areas, visible, floating, is_palette = False, is_editor = False):
         """
         Helper function to create docks
         """
         if is_palette:
             dock = PaletteDock(title, self)
+        elif is_editor:
+            dock = ItemEditorDockWidget(title, self)
         else:
             dock = QtWidgets.QDockWidget(title, self)
 
@@ -602,8 +605,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.spriteDataEditor = SpriteEditorWidget()
         self.spriteDataEditor.DataUpdate.connect(self.SpriteDataUpdated)
         sprite_dock = self.CreateDockWidget(globals_.trans.string('SpriteDataEditor', 0), 'spriteeditor', self.spriteDataEditor,
-                                            features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True)
-        self.spriteEditorDock = sprite_dock
+                                            features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True, is_editor=True)
+        self.spriteEditorDock = cast(ItemEditorDockWidget, sprite_dock)
 
         # Default Sprite Editor
         self.defaultDataEditor = SpriteEditorWidget(True)
@@ -616,20 +619,20 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Entrance Editor
         self.entrance_editor = EntranceEditorWidget()
         entrance_dock = self.CreateDockWidget(globals_.trans.string('EntranceDataEditor', 24), 'entranceeditor', self.entrance_editor,
-                                              features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True)
-        self.entrance_editor_dock = entrance_dock
+                                              features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True, is_editor=True)
+        self.entrance_editor_dock = cast(ItemEditorDockWidget, entrance_dock)
 
         # Location Editor
         self.location_editor = LocationEditorWidget()
         location_dock = self.CreateDockWidget(globals_.trans.string('LocationDataEditor', 12), 'locationeditor', self.location_editor,
-                                              features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True)
-        self.location_editor_dock = location_dock
+                                              features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True, is_editor=True)
+        self.location_editor_dock = cast(ItemEditorDockWidget, location_dock)
 
         # Path (Node) Editor
         self.path_editor = PathNodeEditorWidget()
         path_dock = self.CreateDockWidget(globals_.trans.string('PathDataEditor', 10), 'pathnodeeditor', self.path_editor,
-                                            features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True)
-        self.path_editor_dock = path_dock
+                                            features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True, is_editor=True)
+        self.path_editor_dock = cast(ItemEditorDockWidget, path_dock)
 
         # Palette
         features = QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable   | \
@@ -1703,10 +1706,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
             return
 
         # Save our state
-        self.spriteEditorDock.setVisible(False)
-        self.entrance_editor_dock.setVisible(False)
-        self.path_editor_dock.setVisible(False)
-        self.location_editor_dock.setVisible(False)
+        self.spriteEditorDock.set_active(False)
+        self.entrance_editor_dock.set_active(False)
+        self.path_editor_dock.set_active(False)
+        self.location_editor_dock.set_active(False)
         self.defaultPropDock.setVisible(False)
 
         # State: determines positions of docks
@@ -2184,10 +2187,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 thing.dragoffsetx = (((thing.objx // 16) * 16) - thing.objx) * 1.5
                 thing.dragoffsety = (((thing.objy // 16) * 16) - thing.objy) * 1.5
 
-        self.spriteEditorDock.setVisible(showSpritePanel)
-        self.entrance_editor_dock.setVisible(showEntrancePanel)
-        self.location_editor_dock.setVisible(showLocationPanel)
-        self.path_editor_dock.setVisible(showPathPanel)
+        self.spriteEditorDock.set_active(showSpritePanel)
+        self.entrance_editor_dock.set_active(showEntrancePanel)
+        self.location_editor_dock.set_active(showLocationPanel)
+        self.path_editor_dock.set_active(showPathPanel)
 
         self.action_list['deselect'].setEnabled(bool(selitems))
 
@@ -2200,7 +2203,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle the current sprite's data being updated
         """
-        if self.spriteEditorDock.isVisible():
+        if self.spriteEditorDock.is_active():
             obj = self.selObj
             if isinstance(obj, SpriteItem):
                 obj.spritedata = data
@@ -2216,14 +2219,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         self.UpdateFlag = True
 
-        if isinstance(self.selObj, SpriteItem) and self.spriteEditorDock.isVisible():
+        if isinstance(self.selObj, SpriteItem) and self.spriteEditorDock.is_active():
             obj = self.selObj
             self.spriteDataEditor.setSprite(obj.sprite_num, initial_data=obj.spritedata)
-        elif isinstance(self.selObj, EntranceItem) and self.entrance_editor_dock.isVisible():
+        elif isinstance(self.selObj, EntranceItem) and self.entrance_editor_dock.is_active():
             self.entrance_editor.set_entrance(self.selObj)
-        elif isinstance(self.selObj, PathItem) and self.path_editor_dock.isVisible():
+        elif isinstance(self.selObj, PathItem) and self.path_editor_dock.is_active():
             self.path_editor.setPath(self.selObj)
-        elif isinstance(self.selObj, LocationItem) and self.location_editor_dock.isVisible():
+        elif isinstance(self.selObj, LocationItem) and self.location_editor_dock.is_active():
             self.location_editor.set_location(self.selObj)
 
         self.UpdateFlag = False

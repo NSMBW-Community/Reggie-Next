@@ -293,6 +293,7 @@
         <string id="30">[b]Send to World Map:[/b][br]If this is checked, the player will be sent to the world map when entering this entrance, and the level will be cleared.</string>
         <string id="31">Spawn Half a Tile Left</string>
         <string id="32">[b]Spawn Half a Tile Left:[/b][br]If this is checked, the entrance will spawn Mario half a tile to the left.</string>
+        <string id="33">[i]No Entrance Selected[/i]</string>
     </section>
     <section id="Entrances">
         <string id="0">[b]Entrance [ent]:[/b][br]Type: [type][br][i][dest][/i]</string>
@@ -429,6 +430,7 @@
         <string id="10">Snap to Grid</string>
         <string id="11">[b]Location [id]:[/b]</string>
         <string id="12">Modify Selected Location Properties</string>
+        <string id="13">[i]No Location Selected[/i]</string>
     </section>
     <section id="Locations">
         <string id="0">[id]</string>
@@ -668,6 +670,7 @@
         <string id="12">Append Node to End of Path</string>
         <string id="13">Insert After Selected Node</string>
         <string id="14">[b]Placement Mode:[/b][br]This determines how new nodes will be added onto the path.[br][b]Appending[/b] will add each node to the end of the path.[br][b]Inserting[/b] will add a new node after the [i]selected[/i] node.</string>
+        <string id="15">[i]No Node Selected[/i]</string>
     </section>
     <section id="Paths">
         <string id="0">[b]Path [path][/b][br]Node [node]</string>

@@ -83,8 +83,34 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         layout.addRow(globals_.trans.string('PathDataEditor', 4), self.accel)
         layout.addRow(globals_.trans.string('PathDataEditor', 6), self.delay)
 
+        self.set_dummy()
+
         self.path_node = None
         self.update_flag = False
+
+    def set_widget_visibility(self, enabled: bool) -> None:
+        """
+        Quickly show/hide all child widgets
+        """
+        layout = self.layout()
+        if layout is None:
+            return
+
+        for i in range(layout.count()):
+            item = layout.itemAt(i)
+            if item is not None:
+                widget = item.widget()
+                if widget is not None:
+                    widget.setVisible(enabled)
+
+    def set_dummy(self) -> None:
+        """
+        Hide all fields and put the editor into a blank state
+        """
+        self.set_widget_visibility(False)
+
+        self.editing_label.setText(globals_.trans.string('PathDataEditor', 15))
+        self.editing_label.setVisible(True)
 
     def setPath(self, path_item: PathItem):
         """
@@ -92,6 +118,8 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         """
         if self.path_node == path_item:
             return
+
+        self.set_widget_visibility(True)
 
         self.path_node = path_item
 

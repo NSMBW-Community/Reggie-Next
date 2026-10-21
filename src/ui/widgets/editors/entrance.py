@@ -134,8 +134,34 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         layout.addWidget(self.pipe_exit_dir_label, 11, 0, 1, 2, QtCore.Qt.AlignmentFlag.AlignRight)
         layout.addWidget(self.connect_exit_dir, 11, 2, 1, 2)
 
+        self.set_dummy()
+
         self.ent = None
         self.update_flag = False
+
+    def set_widget_visibility(self, enabled: bool) -> None:
+        """
+        Quickly show/hide all child widgets
+        """
+        layout = self.layout()
+        if layout is None:
+            return
+
+        for i in range(layout.count()):
+            item = layout.itemAt(i)
+            if item is not None:
+                widget = item.widget()
+                if widget is not None:
+                    widget.setVisible(enabled)
+
+    def set_dummy(self) -> None:
+        """
+        Hide all fields and put the editor into a blank state
+        """
+        self.set_widget_visibility(False)
+
+        self.editing_label.setText(globals_.trans.string('EntranceDataEditor', 33)) # Default 'No Entrance Selected' label
+        self.editing_label.setVisible(True)
 
     def set_entrance(self, ent: EntranceItem, reset = False):
         """
@@ -143,6 +169,9 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         """
         if self.ent == ent and not reset:
             return
+
+        # Show everything
+        self.set_widget_visibility(True)
 
         self.editing_label.setText(globals_.trans.string('EntranceDataEditor', 23, '[id]', ent.entid))
         self.ent = ent

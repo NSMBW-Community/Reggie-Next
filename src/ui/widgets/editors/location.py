@@ -76,8 +76,34 @@ class LocationEditorWidget(QtWidgets.QWidget):
         layout.addWidget(self.location_width, 3, 3, 1, 1)
         layout.addWidget(self.location_height, 4, 3, 1, 1)
 
+        self.set_dummy()
+
         self.loc = None
         self.update_flag = False
+
+    def set_widget_visibility(self, enabled: bool) -> None:
+        """
+        Quickly show/hide all child widgets
+        """
+        layout = self.layout()
+        if layout is None:
+            return
+
+        for i in range(layout.count()):
+            item = layout.itemAt(i)
+            if item is not None:
+                widget = item.widget()
+                if widget is not None:
+                    widget.setVisible(enabled)
+
+    def set_dummy(self) -> None:
+        """
+        Hide all fields and put the editor into a blank state
+        """
+        self.set_widget_visibility(False)
+
+        self.editingLabel.setText(globals_.trans.string('LocationDataEditor', 13))
+        self.editingLabel.setVisible(True)
 
     def set_location(self, loc: LocationItem):
         """
@@ -85,6 +111,8 @@ class LocationEditorWidget(QtWidgets.QWidget):
         """
         self.loc = loc
         self.update_flag = True
+
+        self.set_widget_visibility(True)
 
         self.fix_title()
         self.location_id.setValue(loc.id)

@@ -328,6 +328,7 @@ class ReggieTranslation:
                 30: '[b]Send to World Map:[/b][br]If this is checked, the player will be sent to the world map when entering this entrance, and the level will be cleared.',
                 31: 'Spawn Half a Tile Left',
                 32: '[b]Spawn Half a Tile Left:[/b][br]If this is checked, the entrance will spawn Mario half a tile to the left.',
+                33: '[i]No Entrance Selected[/i]'
             },
             'Entrances': {
                 0: '[b]Entrance [ent]:[/b][br]Type: [type][br][i][dest][/i]',
@@ -464,6 +465,7 @@ class ReggieTranslation:
                 10: 'Snap to Grid',
                 11: '[b]Location [id]:[/b]',
                 12: 'Modify Selected Location Properties',
+                13: '[i]No Location Selected[/i]'
             },
             'Locations': {
                 0: '[id]',
@@ -702,7 +704,8 @@ class ReggieTranslation:
                 11: 'ID',
                 12: 'Append Node to End of Path',
                 13: 'Insert After Selected Node',
-                14: '[b]Placement Mode:[/b][br]This determines how new nodes will be added onto the path.[br][b]Appending[/b] will add each node to the end of the path.[br][b]Inserting[/b] will add a new node after the [i]selected[/i] node.'
+                14: '[b]Placement Mode:[/b][br]This determines how new nodes will be added onto the path.[br][b]Appending[/b] will add each node to the end of the path.[br][b]Inserting[/b] will add a new node after the [i]selected[/i] node.',
+                15: '[i]No Node Selected[/i]'
             },
             'Paths': {
                 0: '[b]Path [path][/b][br]Node [node]',
