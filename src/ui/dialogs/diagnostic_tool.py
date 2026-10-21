@@ -1,13 +1,13 @@
-from PyQt6 import QtWidgets, QtGui
+import math
 from collections.abc import Callable
 from enum import IntEnum
 from typing import cast
 
-from data import globals_
 from PyQt6 import QtGui, QtWidgets
 
-from data.level.dirty import SetDirty
 import spritelib as SLib
+from data import globals_
+from data.level.dirty import SetDirty
 from data.level.items.entrance import EntranceItem
 from data.level.items.sprite import SpriteItem
 from data.level.items.zone import ZoneItem
@@ -469,10 +469,37 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             # TODO: Maybe place it 6 blocks right, 3 blocks up from Zone 1's bottom-left corner?
             EntranceItem.CreateEntrance(1024, 512, globals_.Area.start_entrance)
 
+    def get_entrance_min_offset(self, zone: ZoneItem, entrance: EntranceItem) -> int:
+        """
+        Returns the minimum offset required for the given entrance item
+        according to the position and screen heights set within the given zone.
+
+        :param zone: The zone to fetch the settings from.
+        :param entrance: The entrance to get a minimum offset for.
+
+        :return: The minimum x-offset in units rounded up to the start position
+        of the next tile.
+        """
+        offset: int = 0
+        zone_width_14: int = math.ceil(14 / 9 * 16)
+        height: float = max(zone.getCameraHeight())
+        extra_offset: float = 0
+
+        if height > 14:
+            offset = math.ceil(height / 9 * 16)
+
+        if entrance.enttype in {0, 1, 23}:
+            # Additional safety offset due to multiplayer
+            extra_offset += 2.5
+
+        return max(math.ceil(((offset - zone_width_14) / 2) + extra_offset), 0) * 16
+
     def check_entrance_near_edge(self, mode: str) -> bool | None:
         """
         Checks if the start entrance is too close to the left zone edge
         """
+        # TODO update this function to check every entrance
+        # within zones that do not have static zoom active
         if not globals_.Area.zones:
             return False
 
@@ -494,7 +521,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             return False
 
         first_zone: ZoneItem = globals_.Area.zones[first_zone_idx]
-        offset = 24 * 8  # 8 blocks from left edge
+        offset = self.get_entrance_min_offset(first_zone, start)
 
         problem = start.objx < first_zone.objx + offset
         if mode == 'c':
