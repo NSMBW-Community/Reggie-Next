@@ -1174,13 +1174,19 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if CheckDirty():
             return
 
+        # Use the currently open level's directory, if applicable
+        if self.fileSavePath is not None:
+            open_dir = os.path.dirname(self.fileSavePath)
+        else:
+            open_dir = ''
+
         filetypes = ''
         filetypes += globals_.trans.string('FileDlgs', 9) + ' (*.arc *.arc.LH *.arc.LZ);;'   # *.arc, *arc.LH, *.arc.LZ
         filetypes += globals_.trans.string('FileDlgs', 1) + ' (*.arc);;'            # *.arc
         filetypes += globals_.trans.string('FileDlgs', 5) + ' (*.arc.LH);;'         # *.arc.LH
         filetypes += globals_.trans.string('FileDlgs', 10) + ' (*.arc.LZ);;'         # *.arc.LZ
         filetypes += globals_.trans.string('FileDlgs', 2) + ' (*)'                  # *
-        fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('FileDlgs', 0), '', filetypes)[0]
+        fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('FileDlgs', 0), open_dir, filetypes)[0]
         if fn == '':
             return
 
@@ -1727,7 +1733,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         a0.accept()
 
-    def LoadLevel(self, name, isFullPath, areaNum):
+    def LoadLevel(self, name: str, isFullPath: bool, areaNum: int):
         """
         Load a level from NSMBW into the editor.
         """
