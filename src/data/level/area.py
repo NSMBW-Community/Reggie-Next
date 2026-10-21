@@ -40,6 +40,7 @@ class Area:
         self.L0: bytes | None = None
         self.L1: bytes | None = None
         self.L2: bytes | None = None
+        self.meta: bytes | None = None
 
         # Default tileset names
         self.tilesets: list[str] = ['Pa0_jyotyu', '', '', '']
