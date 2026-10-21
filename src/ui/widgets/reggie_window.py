@@ -1250,9 +1250,15 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Save a level back to the archive, with a new filename. Returns whether
         saving was successful.
         """
+        # Use the currently open level's directory, if applicable
+        if self.fileSavePath is not None:
+            save_dir = os.path.dirname(self.fileSavePath)
+        else:
+            save_dir = ''
+
         fn = QtWidgets.QFileDialog.getSaveFileName(self,
             globals_.trans.string('FileDlgs', 8 if copy else 3),
-            '',
+            save_dir,
             globals_.trans.string('FileDlgs', 1) + ' (*' + '.arc' + ');;' +
             globals_.trans.string('FileDlgs', 10) + ' (*' + '.arc.LZ'+ ');;' +
             globals_.trans.string('FileDlgs', 2) + ' (*)'

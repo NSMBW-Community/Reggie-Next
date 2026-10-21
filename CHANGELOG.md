@@ -70,6 +70,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Overhauled the level metadata system to be cleaner and easier to use.
 - Backgrounds, music, Pa0 object descriptions, and zone themes now load from XMLs file instead of text files.
 - If docked, the property editors now stay visible but disabled when an item is de-selected.
+- Level opening/saving file dialogs now always open in the directory of the current level.
 
 ### Removed
 
