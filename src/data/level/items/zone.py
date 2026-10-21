@@ -1,3 +1,4 @@
+import math
 from typing import Any
 
 from PyQt6 import QtCore, QtGui, QtWidgets
@@ -6,6 +7,7 @@ import spritelib as SLib
 from data import globals_
 from data.level.dirty import SetDirty
 from data.level.items.basic import LevelEditorItem
+from data.level.items.entrance import EntranceItem
 from data.level.items.zone_grabber import ZoneGrabberItem
 
 
@@ -213,30 +215,35 @@ class ZoneItem(LevelEditorItem):
 
         return heights[self.camzoom]
 
+    def get_min_entrance_offset(self, entrance: EntranceItem | None = None) -> int:
+        """
+        Returns the minimum offset required for the given entrance item
+        according to the position and screen heights set within the given zone.
+
+        :param entrance: The entrance to get a minimum offset for. If omitted,
+        a more generalised offset will be returned.
+
+        :return: The minimum x-offset in units rounded up to the start position
+        of the next tile.
+        """
+        offset: int = 0
+        zone_width_14: int = math.ceil(14 / 9 * 16)
+        height: float = max(self.getCameraHeight())
+        extra_offset: float = 0
+
+        if height > 14:
+            offset = math.ceil(height / 9 * 16)
+
+        if entrance is not None and entrance.enttype in {0, 1, 23}:
+            # Additional safety offset due to multiplayer
+            extra_offset += 2.5
+
+        return max(math.ceil(((offset - zone_width_14) / 2) + extra_offset), 0) * 16
+
     def updateEntranceIndicator(self) -> None:
         """
         Updates the member fields related to the entrance indicator.
         """
-        # Only show the indicator in area 1.
-        if globals_.Area.areanum != 1:
-            self.ent_indicator_show = False
-            return
-
-        # Only show the indicator when this zone contains the initial entrance.
-        for entrance in globals_.Area.entrances:
-            if entrance.entid == globals_.Area.start_entrance:
-                break
-        else:
-            # The initial entrance does not exist.
-            self.ent_indicator_show = False
-            return
-
-        initial_id = SLib.MapPositionToZoneID(globals_.Area.zones, entrance.objx, entrance.objy, get_id=True)
-        if initial_id != self.id:
-            # The initial entrance is not closest to this zone.
-            self.ent_indicator_show = False
-            return
-
         # Only show the indicator when this zone does not contain an autoscroller
         # or ambush controller.
         for sprite in globals_.Area.sprites:
@@ -257,19 +264,15 @@ class ZoneItem(LevelEditorItem):
             self.ent_indicator_show = False
             return
 
-        # Only show the indicator when this zone's size is
-        height = self.getCameraHeight()[0]
+        # Only show the indicator when this zone's largest screen height is greater than 14
+        height = self.getCameraHeight()
 
-        if height in {14, 17}:  # These final heights are too small
+        if max(height) <= 14:
             self.ent_indicator_show = False
             return
 
         self.ent_indicator_show = True
-
-        # Multiply the height by the aspect ratio to get the width, divide by 2
-        # to get half of it and by 24 to convert blocks to pixels. This is all
-        # combined to reduce floating point rounding errors.
-        self.ent_indicator_offset = height * 24 * 16 / 18
+        self.ent_indicator_offset = self.get_min_entrance_offset()
 
     def paint(self, painter: QtGui.QPainter | None, option: QtWidgets.QStyleOptionGraphicsItem | None, widget: QtWidgets.QWidget | None = None) -> None:
         """
@@ -281,7 +284,7 @@ class ZoneItem(LevelEditorItem):
         painter.setClipRect(option.exposedRect)
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
-        # Paint an indicator line to show the leftmost edge of where entrances
+        # Paint an indicator line to show the left- and rightmost edge of where entrances
         # can be safely placed.
         if globals_.DrawEntIndicators:
             # This function could be called only when a sprite or entrance is
@@ -298,6 +301,9 @@ class ZoneItem(LevelEditorItem):
                 lineStart = QtCore.QPointF(self.DrawRect.x() + offset, self.DrawRect.y())
                 lineEnd = QtCore.QPointF(self.DrawRect.x() + offset, self.DrawRect.y() + self.DrawRect.height())
                 painter.drawLine(lineStart, lineEnd)
+                rightLineStart = QtCore.QPointF(self.DrawRect.x() + self.DrawRect.right() - offset, self.DrawRect.y())
+                rightLineEnd = QtCore.QPointF(self.DrawRect.x() + self.DrawRect.right() - offset, self.DrawRect.y() + self.DrawRect.height())
+                painter.drawLine(rightLineStart, rightLineEnd)
 
         # Paint liquids/fog
         if globals_.SpritesShown and globals_.SpriteImagesShown and globals_.RealViewEnabled:

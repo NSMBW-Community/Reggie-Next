@@ -219,7 +219,7 @@ class ReggieTranslation:
                 14: 'Y Expanding Only',
                 15: 'In this mode, the camera will zoom out during multiplayer if the players are far apart vertically. The largest screen size will only be used if a player is flying with a Propeller Suit or Block.',
                 16: 'Screen Heights:',
-                17: '[b]Screen Heights:[/b][br]Selects screen heights (in blocks) the camera can use during multiplayer. The camera will zoom out if the players are too far apart, and zoom back in when they get closer together. Values represent screen heights, measured in tiles.[br][br]In single-player, only the smallest height will be used.[br][br]Options marked with * or ** are glitchy if zone bounds are set to 0; see the Upper/Lower Bounds tooltips for more info.[br]Options marked with ** are also unplayably glitchy in multiplayer.',          
+                17: '[b]Screen Heights:[/b][br]Selects screen heights (in blocks) the camera can use during multiplayer. The camera will zoom out if the players are too far apart, and zoom back in when they get closer together. Values represent screen heights, measured in tiles.[br][br]In single-player, only the smallest height will be used.[br][br]Options marked with * or ** are glitchy if zone bounds are set to 0; see the Upper/Lower Bounds tooltips for more info.[br]Options marked with ** are also unplayably glitchy in multiplayer.',
             },
             'CamProfsDlg': {
                 0: 'Camera Profiles',
@@ -743,7 +743,7 @@ class ReggieTranslation:
                 28: None,  # REMOVED: 'Use Default Tileset Picker (recommended)',
                 29: None,  # REMOVED: 'Use Old Tileset Picker',
                 30: 'You will need to restart Reggie Next for certain changes to take effect.',
-                31: 'Display lines indicating the leftmost x-position where entrances can be safely placed in zones',
+                31: 'Display lines indicating the left- and rightmost x-position where entrances can be safely placed in zones',
                 32: None,  # REMOVED: 'Enable advanced mode',
                 33: 'Reset sprite data when hiding sprite fields',
                 34: 'Hide Reset Spritedata button',
