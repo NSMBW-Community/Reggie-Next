@@ -69,6 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The music list now uses the track order in music.xml instead of sorting by numerical ID.
 - Overhauled the level metadata system to be cleaner and easier to use.
 - Backgrounds, music, Pa0 object descriptions, and zone themes now load from XMLs file instead of text files.
+- If docked, the property editors now stay visible but disabled when an item is de-selected.
 
 ### Removed
 
