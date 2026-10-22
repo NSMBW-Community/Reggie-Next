@@ -918,6 +918,7 @@
             <entry>Colony ID</entry>
             <entry>Entrance ID</entry>
             <entry>Path Node ID</entry>
+            <entry>Limit ID</entry>
         </stringlist>
         <string id="24">UNKNOWN</string>
         <string id="25">Move Up</string>

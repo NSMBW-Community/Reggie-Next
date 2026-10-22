@@ -953,6 +953,7 @@ class ReggieTranslation:
                     'Colony ID',
                     'Entrance ID',
                     'Path Node ID',
+                    'Limit ID',
                 ),
                 24: 'UNKNOWN',
                 25: 'Move Up',

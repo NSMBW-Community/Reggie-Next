@@ -25,7 +25,7 @@ class SpriteList(QtWidgets.QWidget):
         "Group", "Bolt", "Target Event", "Triggering Event", "Collection",
         "Location", "Message", "Path", "Path Movement", "Red Coin",
         "Hill", "Stretch", "Ray", "Coaster", "Bubble Cannon", "Burner",
-        "Wiggling", "Panel", "Colony", "Entrance", "Path Node"
+        "Wiggling", "Panel", "Colony", "Entrance", "Path Node", "Limit"
     )
 
     def __init__(self):
