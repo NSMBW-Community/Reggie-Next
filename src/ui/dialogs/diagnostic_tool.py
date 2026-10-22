@@ -495,7 +495,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             return False
 
         first_zone: ZoneItem = globals_.Area.zones[first_zone_idx]
-        offset = first_zone.get_min_entrance_offset(start)
+        offset = first_zone.get_min_entrance_offset()
 
         problem = start.objx < first_zone.objx + offset
         if mode == 'c':

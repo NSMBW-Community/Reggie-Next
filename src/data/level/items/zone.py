@@ -250,13 +250,10 @@ class ZoneItem(LevelEditorItem):
 
         return heights[self.camzoom]
 
-    def get_min_entrance_offset(self, entrance: EntranceItem | None = None) -> int:
+    def get_min_entrance_offset(self) -> int:
         """
-        Returns the minimum offset required for the given entrance item
-        according to the position and screen heights set within the given zone.
-
-        :param entrance: The entrance to get a minimum offset for. If omitted,
-        a more generalised offset will be returned.
+        Returns the minimum x-offset required for an entrance item according
+        to the position and screen heights of the given zone.
 
         :return: The minimum x-offset in units rounded up to the start position
         of the next tile.
@@ -268,10 +265,6 @@ class ZoneItem(LevelEditorItem):
 
         if height > 14:
             offset = math.ceil(height / 9 * 16)
-
-        if entrance is not None and entrance.enttype in {0, 1, 23}:
-            # Additional safety offset due to multiplayer
-            extra_offset += 2.5
 
         return max(math.ceil(((offset - zone_width_14) / 2) + extra_offset), 0) * 16
 
