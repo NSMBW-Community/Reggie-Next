@@ -66,9 +66,20 @@ class ZoneItem(LevelEditorItem):
 
         # Create grabbers for resizing
         self.GrabberTL = ZoneGrabberItem(self, 1)
+        self.GrabberBR = ZoneGrabberItem(self, 1)
         self.GrabberTR = ZoneGrabberItem(self, 2)
-        self.GrabberBL = ZoneGrabberItem(self, 3)
-        self.GrabberBR = ZoneGrabberItem(self, 4)
+        self.GrabberBL = ZoneGrabberItem(self, 2)
+
+        self.GrabberML = ZoneGrabberItem(self, 3)
+        self.GrabberMR = ZoneGrabberItem(self, 3)
+        self.GrabberMT = ZoneGrabberItem(self, 4)
+        self.GrabberMB = ZoneGrabberItem(self, 4)
+
+        # Edges
+        self.GrabberEdgeL = ZoneGrabberItem(self, 3, False)
+        self.GrabberEdgeR = ZoneGrabberItem(self, 3, False)
+        self.GrabberEdgeT = ZoneGrabberItem(self, 4, False)
+        self.GrabberEdgeB = ZoneGrabberItem(self, 4, False)
 
         self.UpdateRects()
         self.aux = set()
@@ -182,25 +193,49 @@ class ZoneItem(LevelEditorItem):
             return
 
         if hasattr(globals_.mainWindow, 'ZoomLevel'):
-            grabberWidth = 480 / globals_.mainWindow.ZoomLevel
-            grabberWidth = max(grabberWidth, 4.8)
+            size = 480 / globals_.mainWindow.ZoomLevel
+            size = max(size, 4.8)
         else:
-            grabberWidth = 4.8
+            size = 4.8
+
+        half_width = (self.width * 1.5) / 2 - size
+        half_height = (self.height * 1.5) / 2 - size
 
         self.prepareGeometryChange()
         self.BoundingRect = QtCore.QRectF(-3, -3, self.width * 1.5 + 6, self.height * 1.5 + 6)
         self.ZoneRect = QtCore.QRectF(self.objx, self.objy, self.width, self.height)
         self.DrawRect = QtCore.QRectF(0, 0, self.width * 1.5, self.height * 1.5)
-        self.GrabberRectTL = QtCore.QRectF(-3, -3, grabberWidth, grabberWidth)
-        self.GrabberRectTR = QtCore.QRectF(self.width * 1.5 - grabberWidth + 3, -3, grabberWidth, grabberWidth)
-        self.GrabberRectBL = QtCore.QRectF(-3, self.height * 1.5 - grabberWidth + 3, grabberWidth, grabberWidth)
-        self.GrabberRectBR = QtCore.QRectF(self.width * 1.5 - grabberWidth + 3, self.height * 1.5 - grabberWidth + 3, grabberWidth, grabberWidth)
+        self.GrabberRectTL = QtCore.QRectF(-3, -3, size, size)
+        self.GrabberRectTR = QtCore.QRectF(self.width * 1.5 - size + 3, -3, size, size)
+        self.GrabberRectBL = QtCore.QRectF(-3, self.height * 1.5 - size + 3, size, size)
+        self.GrabberRectBR = QtCore.QRectF(self.width * 1.5 - size + 3, self.height * 1.5 - size + 3, size, size)
+
+        self.GrabberRectMT = QtCore.QRectF(half_width + 3, -3, size, size)
+        self.GrabberRectML = QtCore.QRectF(-3, half_height + 3, size, size)
+        self.GrabberRectMB = QtCore.QRectF(half_width + 3 / 2, self.height * 1.5 - size + 3, size, size)
+        self.GrabberRectMR = QtCore.QRectF(self.width * 1.5 - size + 3, half_height + 3, size, size)
+
+        long_width = self.width * 1.5 - size
+        long_height = self.height * 1.5 - size
+        self.GrabberRectEdgeT = QtCore.QRectF(size - 3, -3, long_width + 1, size)
+        self.GrabberRectEdgeL = QtCore.QRectF(-3, size - 3, size, long_height + 1)
+        self.GrabberRectEdgeB = QtCore.QRectF(size - 3, long_height + 3, long_width + 1, size)
+        self.GrabberRectEdgeR = QtCore.QRectF(long_width + 3, size - 3, size, long_height + 1)
 
         # Update grabber rects
         self.GrabberTL.UpdateRects(self.GrabberRectTL)
         self.GrabberTR.UpdateRects(self.GrabberRectTR)
         self.GrabberBL.UpdateRects(self.GrabberRectBL)
         self.GrabberBR.UpdateRects(self.GrabberRectBR)
+        self.GrabberML.UpdateRects(self.GrabberRectML)
+        self.GrabberMR.UpdateRects(self.GrabberRectMR)
+        self.GrabberMT.UpdateRects(self.GrabberRectMT)
+        self.GrabberMB.UpdateRects(self.GrabberRectMB)
+
+        self.GrabberEdgeT.UpdateRects(self.GrabberRectEdgeT)
+        self.GrabberEdgeL.UpdateRects(self.GrabberRectEdgeL)
+        self.GrabberEdgeB.UpdateRects(self.GrabberRectEdgeB)
+        self.GrabberEdgeR.UpdateRects(self.GrabberRectEdgeR)
 
     def getCameraHeight(self) -> list[float]:
         """
@@ -355,18 +390,24 @@ class ZoneItem(LevelEditorItem):
         if not event:
             return
 
+        self.dragging = True
+
         if self.GrabberRectTL.contains(event.pos()):
-            self.dragging = True
-            self.dragcorner = 1
+            self.drag_section = 1
         elif self.GrabberRectTR.contains(event.pos()):
-            self.dragging = True
-            self.dragcorner = 2
+            self.drag_section = 2
         elif self.GrabberRectBL.contains(event.pos()):
-            self.dragging = True
-            self.dragcorner = 3
+            self.drag_section = 3
         elif self.GrabberRectBR.contains(event.pos()):
-            self.dragging = True
-            self.dragcorner = 4
+            self.drag_section = 4
+        elif self.GrabberRectMT.contains(event.pos()) or self.GrabberEdgeT.contains(event.pos()):
+            self.drag_section = 5
+        elif self.GrabberRectMB.contains(event.pos()) or self.GrabberEdgeB.contains(event.pos()):
+            self.drag_section = 6
+        elif self.GrabberRectML.contains(event.pos()) or self.GrabberEdgeL.contains(event.pos()):
+            self.drag_section = 7
+        elif self.GrabberRectMR.contains(event.pos()) or self.GrabberEdgeR.contains(event.pos()):
+            self.drag_section = 8
         else:
             self.dragging = False
 
@@ -413,37 +454,70 @@ class ZoneItem(LevelEditorItem):
             MIN_W = 204
             MIN_H = 112
 
-            if self.dragcorner == 1: # TL
+            if self.drag_section == 1: # TL
                 # Rect from (x2, y2) to clicked
                 x1 = clickedx
                 y1 = clickedy
                 x1 = max(x1, MIN_X)
                 y1 = max(y1, MIN_Y)
-                if x2 - x1 < MIN_W: x1 = x2 - MIN_W
-                if y2 - y1 < MIN_H: y1 = y2 - MIN_H
+                if x2 - x1 < MIN_W:
+                    x1 = x2 - MIN_W
+                if y2 - y1 < MIN_H:
+                    y1 = y2 - MIN_H
 
-            elif self.dragcorner == 2: # TR
+            elif self.drag_section == 2: # TR
                 # Rect from (x1, y2) to clicked
                 x2 = clickedx
                 y1 = clickedy
                 y1 = max(y1, MIN_Y)
-                if x2 - x1 < MIN_W: x2 = x1 + MIN_W
-                if y2 - y1 < MIN_H: y1 = y2 - MIN_H
+                if x2 - x1 < MIN_W:
+                    x2 = x1 + MIN_W
+                if y2 - y1 < MIN_H:
+                    y1 = y2 - MIN_H
 
-            elif self.dragcorner == 3: # BL
+            elif self.drag_section == 3: # BL
                 # Rect from (x2, y1) to clicked
                 x1 = clickedx
                 y2 = clickedy
                 x1 = max(x1, MIN_X)
-                if x2 - x1 < MIN_W: x1 = x2 - MIN_W
-                if y2 - y1 < MIN_H: y2 = y1 + MIN_H
+                if x2 - x1 < MIN_W:
+                    x1 = x2 - MIN_W
+                if y2 - y1 < MIN_H:
+                    y2 = y1 + MIN_H
 
-            elif self.dragcorner == 4: # BR
+            elif self.drag_section == 4: # BR
                 # Rect from (x1, y1) to clicked
                 x2 = clickedx
                 y2 = clickedy
-                if x2 - x1 < MIN_W: x2 = x1 + MIN_W
-                if y2 - y1 < MIN_H: y2 = y1 + MIN_H
+                if x2 - x1 < MIN_W:
+                    x2 = x1 + MIN_W
+                if y2 - y1 < MIN_H:
+                    y2 = y1 + MIN_H
+
+            elif self.drag_section == 5: # MT
+                # Rect from (x1, y1) to clicked
+                y1 = clickedy
+                y1 = max(y1, MIN_Y)
+                if y2 - y1 < MIN_H:
+                    y1 = y2 - MIN_H
+
+            elif self.drag_section == 6: # MB
+                # Rect from (x1, y1) to clicked
+                y2 = clickedy
+                if y2 - y1 < MIN_H:
+                    y2 = y1 + MIN_H
+
+            elif self.drag_section == 7: # ML
+                # Rect from (x2, y1) to clicked
+                x1 = clickedx
+                x1 = max(x1, MIN_X)
+                if x2 - x1 < MIN_W:
+                    x1 = x2 - MIN_W
+
+            elif self.drag_section == 8: # MR
+                x2 = clickedx
+                if x2 - x1 < MIN_W:
+                    x2 = x1 + MIN_W
 
             oldx = self.x()
             oldy = self.y()

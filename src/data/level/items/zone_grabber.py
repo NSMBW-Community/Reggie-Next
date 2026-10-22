@@ -10,7 +10,7 @@ class ZoneGrabberItem(LevelEditorItem):
     Level editor item that visually represents a Zone's resize grabbers.
     These are separate to allow for hover events
     """
-    def __init__(self, parent: LevelEditorItem | None, corner: int) -> None:
+    def __init__(self, parent: LevelEditorItem | None, cursor_type: int, paints = True) -> None:
         """
         Creates a zone grabber with specific data
         """
@@ -22,7 +22,8 @@ class ZoneGrabberItem(LevelEditorItem):
             self.setAcceptHoverEvents(True)
 
         self.BoundingRect = None
-        self.corner = corner
+        self.cursor_type = cursor_type
+        self.paints = paints
 
     def UpdateRects(self, rect: QtCore.QRectF) -> None:
         """
@@ -35,7 +36,7 @@ class ZoneGrabberItem(LevelEditorItem):
         """
         Paints the grabber on screen
         """
-        if not painter or not option or not globals_.theme:
+        if not painter or not option or not globals_.theme or not self.paints:
             return
 
         painter.setClipRect(option.exposedRect)
@@ -45,12 +46,21 @@ class ZoneGrabberItem(LevelEditorItem):
         if color is not None and self.BoundingRect is not None:
             painter.fillRect(self.BoundingRect, color)
 
-    def hoverMoveEvent(self, event: QtWidgets.QGraphicsSceneHoverEvent) -> None:
+    def hoverMoveEvent(self, event: QtWidgets.QGraphicsSceneHoverEvent | None) -> None:
         # Zones cannot be selected, so the cursor will always be shown for these
-        if self.corner in (1, 4):
-            setOverrideCursor(QtCore.Qt.CursorShape.SizeFDiagCursor)
-        elif self.corner in (2, 3):
-            setOverrideCursor(QtCore.Qt.CursorShape.SizeBDiagCursor)
+        match self.cursor_type:
+            case 1: # Diagonal TL/BR
+                cursor = QtCore.Qt.CursorShape.SizeFDiagCursor
+            case 2: # Diagonal BL/TR
+                cursor = QtCore.Qt.CursorShape.SizeBDiagCursor
+            case 3: # Horizontal
+                cursor = QtCore.Qt.CursorShape.SizeHorCursor
+            case 4: # Vertical
+                cursor = QtCore.Qt.CursorShape.SizeVerCursor
+            case _:
+                cursor = None
 
-    def hoverLeaveEvent(self, event: QtWidgets.QGraphicsSceneHoverEvent) -> None:
+        setOverrideCursor(cursor)
+
+    def hoverLeaveEvent(self, event: QtWidgets.QGraphicsSceneHoverEvent | None) -> None:
         setOverrideCursor(None)

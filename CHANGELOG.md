@@ -72,6 +72,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - If docked, the property editors now stay visible but disabled when an item is de-selected.
 - Level opening/saving file dialogs now always open in the directory of the current level.
 - The screenshot dialog can now control the margins around the edges of zones. 
+- Zones can now be extended along the edges, not just the corners.
 
 ### Removed
 
