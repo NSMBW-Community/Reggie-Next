@@ -1904,16 +1904,28 @@ class ReggieWindow(QtWidgets.QMainWindow):
             sprite.ImageObj.positionChanged()
 
         # Scroll to the initial entrance
-        startEntID = globals_.Area.start_entrance
-        startEnt = None
+        center_pos = QtCore.QPointF(0, 0)
+        found_ent = False
+        start_ent_id = globals_.Area.start_entrance
+
         for ent in globals_.Area.entrances:
-            if ent.entid == startEntID:
-                self.view.centerOn(ent)
+            if ent.entid == start_ent_id:
+                center_pos = ent.pos()
+                found_ent = True
                 break
         else:
-            self.view.centerOn(0, 0)
+            # Try to center on the first entrance in the list
+            if globals_.Area.entrances:
+                center_pos = globals_.Area.entrances[0].pos()
+                found_ent = True
 
-        self.ZoomTo(100.0)
+        # For some reason, there's a noticeable offset when launching
+        # Reggie, so we need to manually adjust the position here
+        if found_ent and globals_.Initializing:
+            offset_fix = QtCore.QPointF(492, 179)
+            center_pos -= offset_fix
+
+        self.view.centerOn(center_pos)
 
         # Reset some editor things
         self.action_list['showlay0'].setChecked(True)
@@ -1928,6 +1940,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.action_list['importarea'].setEnabled(len(globals_.Level.areas) < 4)
         self.action_list['deletearea'].setEnabled(len(globals_.Level.areas) > 1)
         self.action_list['backgrounds'].setEnabled(len(globals_.Area.zones) > 0)
+
+        self.ZoomTo(100.0)
 
         # Turn snapping back on
         globals_.OverrideSnapping = False
