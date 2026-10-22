@@ -3945,21 +3945,20 @@
     <dualbox nybble="10.4" title1="Wooden Box" title2="Metal Box" comment="This determines the type of box."/>
   </sprite> <!-- #318: Box Spawner -->
 
-  <sprite id="319" name="(Unused) Wiimote Controlled Door" notes="Graphically identical to 320. Spawns a giant door that loads in front of Mario. Cannot be forced behind Mario, and he cannot be made to enter it. By tilting the Wii Remote you can make it open." files="obj_door.arc"/>
+  <sprite id="319" name="(Unused) Wiimote Controlled Door" notes="Spawns a giant door that loads in front of Mario. Cannot be forced behind Mario, and he cannot be made to enter it. By tilting the Wii Remote you can make it open." files="obj_door.arc"/>
 
   <sprite id="320" name="(Unused) Sliding Wiimote Controlled Door" notes="Graphically identical to 319. Spawns a giant door that loads in front of Mario. Cannot be forced behind Mario, and he cannot be made to enter it. By tilting the Wii Remote you can make it slide." files="obj_door.arc"/>
 
-  <!-- Low Priority Fun: Find a way to make this work in fun ways with the Auto-Scrolling Controller! :D -->
-  <sprite id="321" name="(Unused) Beta Arrow Block" notes="A strange unused block with an arrow that can rotate when the block is ground-pounded. There is also a glitchy and unused association with the Auto-Scrolling Controller." files="block_arrow.arc">
+  <sprite id="321" name="(Unused) Arrow Block" notes="An unused block with an arrow that can rotate when the block is ground-pounded. There is also a glitchy and unused association with the Auto-Scrolling Controller." files="block_arrow.arc">
     <list nybble="12" title="Starting Arrow Direction" comment="This determines which direction the arrow will initially point.">
       <entry value="0">Up</entry>
       <entry value="1">Down</entry>
       <entry value="2">Left</entry>
       <entry value="3">Right</entry>
     </list>
-    <checkbox nybble="11.4" title="Ground-Pound Rotate" comment="When enabled, the arrow on the block will rotate 90 degrees when the block is ground-pounded."/>
-    <dualbox nybble="10.4" title1="Rotates Clockwise" title2="Rotates Counter-Clockwise" comment="This determines which direction the arrow will rotate." requirednybble="11.4"/> <!-- Appears if Ground-Pound Rotate is enabled -->
-  </sprite> <!-- #321: Beta Arrow Block -->
+    <checkbox nybble="11" fullnybble="True" title="Ground-Pound Rotate" comment="When enabled, the arrow on the block will rotate 90 degrees when the block is ground-pounded."/>
+    <dualbox nybble="10" fullnybble="True" title1="Rotates Clockwise" title2="Rotates Counter-Clockwise" comment="This determines which direction the arrow will rotate." requirednybble="11.4"/> <!-- Appears if Ground-Pound Rotate is enabled -->
+  </sprite> <!-- #321: (Unused) Arrow Block -->
 
   <sprite id="322" name="Incomplete Sprite - EN_GHOST_JUGEM" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #322: Incomplete Sprite - EN_GHOST_JUGEM -->
