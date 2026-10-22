@@ -101,10 +101,10 @@ class BackgroundEditorLayout(QtWidgets.QHBoxLayout):
         scroll_names = globals_.trans.stringList('BGDlg', 1)
 
         # Scroll speed
-        for value in bg_scroll_speeds:
+        for i, value in enumerate(bg_scroll_speeds):
             scroll_box = QtWidgets.QComboBox()
             scroll_box.addItems(scroll_names)
-            scroll_box.setToolTip(globals_.trans.string('BGDlg', 11))
+            scroll_box.setToolTip(globals_.trans.string('BGDlg', [11, 12][i]))
 
             if scroll_names is not None:
                 value = clamp(value, 0, len(scroll_names) - 1)
