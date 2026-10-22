@@ -57,16 +57,15 @@ class BackgroundEditorLayout(QtWidgets.QHBoxLayout):
         self.pos_boxes: list[QtWidgets.QSpinBox] = []
         self.scroll_boxes: list[QtWidgets.QComboBox] = []
 
-        # Raw file IDs
         for value in bg_ids:
+            # Raw file IDs
             file_box = HexSpinBox()
             file_box.setRange(0, 0xFFFF)
             file_box.setValue(value)
             file_box.valueChanged.connect(self.set_hex_box)
             self.hex_boxes.append(file_box)
 
-        # Name combobox
-        for i in range(3):
+            # Name comboboxes
             name_box = QtWidgets.QComboBox()
             name_box.activated.connect(self.set_name_box)
 
@@ -76,19 +75,17 @@ class BackgroundEditorLayout(QtWidgets.QHBoxLayout):
                 name_box.addItem(globals_.trans.string('BGDlg', 17, '[name]', file.name, '[hex]', f'{file_id:04X}'), file_id)
 
             # Find the correct one to select
-            for value in bg_ids:
-                idx = name_box.findData(value)
-    
-                if idx != -1: # Defined BG entry
-                    name_box.setCurrentIndex(idx)
-                else: # Undefined BG entry
-                    custom_text = globals_.trans.string('BGDlg', 18)
-                    last_entry = name_box.itemText(name_box.count() - 1)
-    
-                    if last_entry != custom_text:
-                        name_box.addItem(custom_text)
+            idx = name_box.findData(value)
+            if idx != -1: # Defined BG entry
+                name_box.setCurrentIndex(idx)
+            else: # Undefined BG entry
+                custom_text = globals_.trans.string('BGDlg', 18)
+                last_entry = name_box.itemText(name_box.count() - 1)
 
-                    name_box.setCurrentIndex(name_box.count() - 1)
+                if last_entry != custom_text:
+                    name_box.addItem(custom_text)
+
+                name_box.setCurrentIndex(name_box.count() - 1)
 
             self.name_boxes.append(name_box)
 
