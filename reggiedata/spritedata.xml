@@ -5455,7 +5455,7 @@
     <value nybble="11-12" title="Rotation ID" comment="This pairs the block to a matching rotation controller." idtype="Rotation"/>
   </sprite> <!-- #457: Rotation Controlled 4-Way Thin Bar -->
 
-  <sprite id="458" name="Rotation Controlled Metal Bar" notes="A very large metal bar block that can be paired with rotation controllers. It is approximately 22 blocks long by 4 blocks wide. It will load just slightly behind Layer 1 terrain." files="lift_zen_kaiten_kanaami.arc">
+  <sprite id="458" name="Rotation Controlled Metal Bar" notes="A very large metal bar block that can be paired with rotation controllers. It appears just slightly behind Layer 1 terrain." files="lift_zen_kaiten_kanaami.arc">
     <dependency notes="This block does not appear unless actually paired to a rotation controller.">
       <suggested sprite="96"/>
       <suggested sprite="149"/>
