@@ -1201,6 +1201,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             return self.HandleSaveAs()
 
         data = globals_.Level.save()
+        is_lz_compression = False
 
         # maybe need to compress the data
         if self.fileSavePath.endswith(".arc.LZ"):
@@ -1216,10 +1217,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 # Delegate to HandleSaveAs
                 return self.HandleSaveAs()
 
+            is_lz_compression = True
             data = compressed
 
         # maybe pad with null bytes
-        if globals_.EnablePadding:
+        if globals_.EnablePadding and not is_lz_compression:
             pad_length = globals_.PaddingLength - len(data)
 
             if pad_length < 0:
@@ -1278,6 +1280,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 self.fileTitle = os.path.basename(fn)
 
         data = globals_.Level.save()
+        is_lz_compression = False
 
         # maybe need to compress the data
         if fn.endswith(".arc.LZ"):
@@ -1292,10 +1295,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
                 return False
 
+            is_lz_compression = True
             data = compressed
 
         # maybe pad with null bytes
-        if globals_.EnablePadding:
+        if globals_.EnablePadding and not is_lz_compression:
             pad_length = globals_.PaddingLength - len(data)
 
             if pad_length < 0:
