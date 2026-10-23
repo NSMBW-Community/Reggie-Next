@@ -1043,10 +1043,15 @@
   <sprite id="94" name="Boomerang Bro" notes="A standard Brothers enemy that throws Boomerangs at the player." files="bros.arc">
   </sprite> <!-- #94: Boomerang Bro" -->
 
-  <sprite id="95" name="Hammer Bro Plus" notes="A standard Brothers enemy that throws hammers at the player." files="bros.arc">
-    <dependency notes="The Hammer Bro will first calculate where the nearest solid ground is. This is defined as a terrain object with solid block collision. With a platform limit of one, he can jump onto any passthrough terrain or brick blocks above this solid ground at a distance of 4. With a platform limit of two, he can jump between this platform and another one above it. When on the top of this platform limit, he will not try and jump upwards. He can also jump down from passthrough terrain set higher than 8 blocks above the solid ground, though he will not be able to return."/>
-    <dualbox nybble="12.4" title1="Uses 2 Platforms" title2="Uses 1 Platform" comment="This determines the number of Platforms the AI of the Hammer Bro tries to make use of. See Dependency Notes for more information."/>
-  </sprite> <!-- #95: Hammer Bro Plus -->
+  <sprite id="95" name="Hammer Bro" notes="A standard Brothers enemy that throws hammers at the player." files="bros.arc">
+    <dependency notes="The Hammer Bro will first calculate where the nearest solid ground is. This is defined as a terrain object with solid block collision. If one or two platforms are present 4 tiles above/below him, he will attempt to jump to those."/>
+    <list nybble="12.3-12.4" title="Jumping Behavior" comment="This determines the conditions in which the Hammer Bro will throw a hammer while jumping to a different platform." comment2="For mode 1, the Hammer Bro will throw a hammer only if on the platform directly above the terrain/lowest platform. If not on that platform, it is a random chance.">
+      <entry value="0">Random Chance to Throw Hammer</entry>
+      <entry value="1">Throws Hammer if on Middle Platform</entry>
+      <entry value="2">Always Throws Hammer</entry>
+      <entry value="3">Same as 0</entry>
+    </list>
+  </sprite> <!-- #95: Hammer Bro -->
 
   <sprite id="96" name="Rotation Controller - Swaying" notes="This controller will create synchronized movement between matched sprites and cause them to sway back and forth.">
     <value nybble="11-12" title="Rotation ID" comment="This pairs matching rotation controlled objects to this controller." idtype="Rotation"/>
@@ -3823,10 +3828,8 @@
     <value nybble="12" title="Burner ID" comment="This determines which flame jets are linked to this controller." idtype="Burner"/>
   </sprite> <!-- #307: Burner - Pulsating (Synchronized) Controller -->
 
-  <!-- Do we know what makes this one special compared to #95? -->
-  <sprite id="308" name="Platform Hammer Bro" notes="EN_LIFT_HAMMERBROS - Likely allows it to be used on places where he shouldn't jump off." files="bros.arc">
-    <dualbox nybble="12.4" title1="Uses 2 Platforms" title2="Uses 1 Platform" comment="This determines the number of Platforms the AI of the Hammer Bro tries to make use of. See Dependency Notes for more information."/>
-  </sprite> <!-- #308: Platform Hammer Brother -->
+  <sprite id="308" name="(Unused) Platform Hammer Bro" notes="An unused Hammer Bro that only throws two hammers as opposed to four. A platform is required above and below his current position for him to work properly." files="bros.arc">
+  </sprite> <!-- #308: (Unused) Platform Hammer Bro -->
 
   <sprite id="309" name="Burner - Pulsating (Synchronized)" notes="A pulsating flame jet that can be paired with a controller to allow for synchronized activation." files="fire_cannon.arc">
     <dependency notes="Synchronized flame jets will only function if associated with a matching controller.">

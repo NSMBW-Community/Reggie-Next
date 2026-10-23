@@ -37,10 +37,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bumped minimum Python version to 3.12.
 - Improved level diagnostics tool.
 - Updated spritedata of sprites:
-  - 30, 38, 53, 55, 78, 81 - 87, 91, 92, 93, 96, 138, 139, 152, 162 - 165, 179, 185, 188, 191, 195, 205,
-  216, 226, 243, 248, 249, 310, 319, 321, 361, 362, 368, 369, 373, 399, 414, 437, 451, 459, 461, 475
+  - 30, 38, 53, 55, 78, 81 - 87, 91, 92, 93, 95, 96, 138, 139, 152, 162 - 165, 179, 185, 188, 191, 195, 205,
+  216, 226, 243, 248, 249, 308, 310, 319, 321, 361, 362, 368, 369, 373, 399, 414, 437, 451, 459, 461, 475
 - Updated spritedata for (Newer) sprites:
-  - 18, 63, 80, 94, 113, 272, 273, 414, 441, 446, 451
+  - 18, 63, 80, 94, 95, 113, 272, 273, 308, 414, 441, 446, 451
 - Added/updated image previews for sprites:
   - 30, 40, 41, 42, 50, 57, 60, 62, 81-87, 105, 128, 178, 195, 202, 214, 233, 255, 256, 310, 354, 356, 425, 428, 433
 - Added/updated image previews for (Newer) sprites:
