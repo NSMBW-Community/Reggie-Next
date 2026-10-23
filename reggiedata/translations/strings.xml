@@ -775,6 +775,7 @@
         <string id="79">Ignore Windows Scale</string>
         <string id="80">[b]Ignore Windows Scale[/b][br]This will force the program to ignore the app scaling applied by Windows, which may help in some cases.</string>
         <string id="81">Show tileset preview in Area Options</string>
+        <string id="82">[small]Note: Due to in-game limitations, Reggie Next will not pad LZ-compressed level archives.[/small]</string>
     </section>
     <section id="ResizeChoiceDlg">
         <string id="0">Let's resize your sprite. In order to do this, choose one of the two modes, based on the below information. Note that some choices can overlap with other settings, leading to undesired effects.</string>

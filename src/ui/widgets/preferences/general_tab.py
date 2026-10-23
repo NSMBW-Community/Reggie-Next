@@ -1,4 +1,4 @@
-from PyQt6 import QtCore, QtWidgets
+from PyQt6 import QtWidgets
 import os
 
 from data import globals_
@@ -61,6 +61,8 @@ class GeneralTab(PreferenceTabWidget):
         self.padding_value = QtWidgets.QSpinBox()
         self.padding_value.setRange(0, 500000) # Set maximum to 500kb, more than enough for any level
 
+        padding_warning = QtWidgets.QLabel(globals_.trans.string('PrefsDlg', 82))
+
         # Place objects at full size
         self.full_object_size = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 37))
 
@@ -90,6 +92,7 @@ class GeneralTab(PreferenceTabWidget):
         main_layout.addWidget(trans_info_box)
         main_layout.addWidget(clear_recent_button)
         main_layout.addWidget(self.enable_padding)
+        main_layout.addWidget(padding_warning)
         main_layout.addRow(globals_.trans.string('PrefsDlg', 36), self.padding_value)
         main_layout.addWidget(self.zone_entrance_line)
         main_layout.addWidget(self.zone_bound_indicators)

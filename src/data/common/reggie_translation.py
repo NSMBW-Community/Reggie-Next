@@ -809,7 +809,8 @@ class ReggieTranslation:
                 78: 'Are you sure you want to reset the toolbar to its default configuration?[br]This cannot be undone.',
                 79: 'Ignore Windows Scale',
                 80: '[b]Ignore Windows Scale[/b][br]This will force the program to ignore the app scaling applied by Windows, which may help in some cases.',
-                81: 'Show tileset preview in Area Options'
+                81: 'Show tileset preview in Area Options',
+                82: '[small]Note: Due to in-game limitations, Reggie Next will not pad LZ-compressed level archives.[/small]'
             },
             'ResizeChoiceDlg': {
                 0: 'Let\'s resize your sprite. In order to do this, choose one of the two modes, based on the below information. Note that some choices can overlap with other settings, leading to undesired effects.',
@@ -1354,6 +1355,8 @@ class ReggieTranslation:
             '\\n': '\n',
             '//n': '\n',
             '[tm]': '™',
+            '[small]': '<small>',
+            '[/small]': '</small>',
         }
         for old, value in replace.items():
             astring = astring.replace(old, value)

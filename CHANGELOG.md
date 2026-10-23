@@ -75,6 +75,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Level opening/saving file dialogs now always open in the directory of the current level.
 - The screenshot dialog can now control the margins around the edges of zones. 
 - Zones can now be extended along the edges, not just the corners.
+- LZ-compressed levels can no longer be padded, due to the in-game instability caused by it.
 
 ### Removed
 
@@ -99,7 +100,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed the autosave message not applying the color scheme set in the preferences.
 - The music list can no longer add tracks with IDs > 255.
 - The Level Information dialog can now be opened in any area.
-- Disabled padding for LZ-compressed files to fix issues with invalid levels in-game.
 
 ## [4.10.0] - 2026-07-25
 
