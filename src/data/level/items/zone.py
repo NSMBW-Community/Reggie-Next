@@ -383,6 +383,10 @@ class ZoneItem(LevelEditorItem):
         if not event:
             return
 
+        if event.buttons() & QtCore.Qt.MouseButton.MiddleButton:
+            event.ignore()
+            return
+
         self.dragging = True
 
         if self.GrabberRectTL.contains(event.pos()):
@@ -423,7 +427,11 @@ class ZoneItem(LevelEditorItem):
         if not event or not globals_.mainWindow:
             return
 
-        if event.buttons() != QtCore.Qt.MouseButton.NoButton and self.dragging:
+        if event.buttons() & QtCore.Qt.MouseButton.MiddleButton:
+            event.ignore()
+            return
+
+        if event.buttons() == QtCore.Qt.MouseButton.LeftButton and self.dragging:
             # Resize it
             clickedx = int(event.scenePos().x() / 1.5)
             clickedy = int(event.scenePos().y() / 1.5)
