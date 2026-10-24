@@ -44,13 +44,14 @@ WIN_ICON = os.path.join('reggiedata', 'win_icon.ico')
 MAC_ICON = os.path.join('reggiedata', 'reggie.icns')
 MAC_BUNDLE_IDENTIFIER = 'ca.chronometry.reggie'
 
-SCRIPT_FILE = 'src/reggie.py'
+SCRIPT_PATH = 'src/reggie.py'
+SCRIPT_FILE = SCRIPT_PATH[4:-3] # Drops 'src/' and the .py extension
 DATA_FOLDERS = ['reggiedata', 'reggieextras']
 DATA_FILES = ['README.md', 'CHANGELOG.md', 'license.txt']
 
 # macOS only
-AUTO_APP_BUNDLE_NAME = SCRIPT_FILE.split('.')[0] + '.app'
-FINAL_APP_BUNDLE_NAME = FULL_PROJECT_NAME + '.app'
+AUTO_APP_BUNDLE_NAME = f'{SCRIPT_FILE}.app'
+FINAL_APP_BUNDLE_NAME = f'{FULL_PROJECT_NAME}.app'
 
 
 ########################################################################
@@ -64,34 +65,41 @@ elif sys.platform == 'darwin':
 else:
     platform = sys.platform
 
-DIR = os.path.join('distrib', 'reggie_next_v%s_%s' % (PROJECT_VERSION, platform))
+DIR = os.path.join('distrib', f'reggie_next_v{PROJECT_VERSION}_{platform}')
 WORKPATH = 'build_temp'
-SPECFILE = SCRIPT_FILE[4:-3] + '.spec'
+SPECFILE = f'{SCRIPT_FILE}.spec'
 
 def print_emphasis(s):
     print('>>')
-    print('>> ' + '=' * (len(s) - 3))
+    print(f'>> {'=' * (len(s) - 3)}')
     print(s)
-    print('>> ' + '=' * (len(s) - 3))
+    print(f'>> {'=' * (len(s) - 3)}')
     print('>>')
 
-print('[[ Building ' + PROJECT_NAME + ' ]]')
+print(f'[[ Building {PROJECT_NAME} ]]')
 print('>> Please note: extra command-line arguments passed to this script will be passed through to PyInstaller.')
-print('>> Destination directory: ' + DIR)
+print(f'>> Destination directory: {DIR}')
 
-if os.path.isdir(DIR): shutil.rmtree(DIR)
-if os.path.isdir(WORKPATH): shutil.rmtree(WORKPATH)
-if os.path.isdir(SPECFILE): os.remove(SPECFILE)
+# Remove any leftovers from previous build(s)
+if os.path.isdir(DIR):
+    shutil.rmtree(DIR)
+
+if os.path.isdir(WORKPATH):
+    shutil.rmtree(WORKPATH)
+
+if os.path.isdir(SPECFILE):
+    os.remove(SPECFILE)
 
 def run_pyinstaller(args):
     print('>>')
-    printMessage = ['>> Running PyInstaller with the following arguments:']
+    print_msg = ['>> Running PyInstaller with the following arguments:']
     for a in args:
         if ' ' in a:
-            printMessage.append('"' + a + '"')
+            print_msg.append(f'"{a}"')
         else:
-            printMessage.append(a)
-    print(' '.join(printMessage))
+            print_msg.append(a)
+
+    print(' '.join(print_msg))
     print('>>')
 
     PyInstaller.__main__.run(args)
@@ -119,19 +127,16 @@ except ImportError:
     print('>>   [ ] NSMBLib is installed')
 
 # UPX being installed
-
 # There seems to be no reliable way to determine in this script if
 # PyInstaller will detect UPX or not. PyInstaller itself provides no
 # public API for this, and doing horrible things with its private API
 # didn't ultimately work well enough to be useful.
-# So all we can do is show this generic message, unfortunately.
-print('>>   [?] UPX is installed')
 
 
 # Now show big warning messages if any of those failed
 if sys.flags.optimize < 2:
     msg = 'without' if sys.flags.optimize == 0 else 'with only one level of'
-    print_emphasis('>> WARNING: Python is being run ' + msg + ' optimizations enabled! Please consider building with -OO.')
+    print_emphasis(f'>> WARNING: Python is being run {msg} optimizations enabled! Please consider building with -OO.')
 
 if nsmblib is None:
     print_emphasis('>> WARNING: NSMBLib does not seem to be installed! Please consider installing it prior to building.')
@@ -155,25 +160,12 @@ if sys.platform == 'nt':
     excludes.append('posixpath')
 
 # Add excludes for other Qt modules
+qt_exclude = ['Designer', 'Network', 'OpenGL', 'Qml', 'Script', 'Sql', 'Test', 'WebKit', 'Xml']
+qt_require = ['Core', 'Gui', 'Widgets']
 
-unneededQtModules = ['Designer', 'Network', 'OpenGL', 'Qml', 'Script', 'Sql', 'Test', 'WebKit', 'Xml']
-neededQtModules = ['Core', 'Gui', 'Widgets']
-
-targetQt = 'PyQt' + str(5 if sys.version_info.major < 3 else 6)
-print('>> Targeting ' + targetQt)
-
-for qt in ['PySide2', 'PyQt5', 'PyQt6']:
-    # Exclude all the stuff we don't use
-    for m in unneededQtModules:
-        excludes.append(qt + '.Qt' + m)
-
-    if qt != targetQt:
-        # Since we're not using this copy of Qt, exclude it
-        excludes.append(qt)
-
-        # As well as its QtCore/QtGui/etc
-        for m in neededQtModules:
-            excludes.append(qt + '.Qt' + m)
+# Exclude all the stuff we don't use
+for name in qt_exclude:
+    excludes.append(f'PyQt6.Qt{name}')
 
 # Includes
 includes = ['pkgutil']
@@ -196,11 +188,11 @@ if sys.platform == 'win32':
 elif sys.platform == 'darwin':
     # Sadly, we can't exclude anything on macOS -- it just crashes. :(
     # If a workaround could be found, here's the list we'd use:
-    # excludes_binaries = [
-    #     # Qt stuff (none of these have any file extensions at all)
-    #     'QtNetwork', 'QtPrintSupport', 'QtQml', 'QtQmlModels',
-    #     'QtQuick', 'QtWebSockets',
-    # ]
+    excludes_binaries = [
+        # Qt stuff (none of these have any file extensions at all)
+        'QtNetwork', 'QtPrintSupport', 'QtQml', 'QtQmlModels',
+        'QtQuick', 'QtWebSockets',
+    ]
     pass
 
 elif sys.platform == 'linux':
@@ -216,9 +208,9 @@ elif sys.platform == 'linux':
     ]
 
 
-print('>> Will use the following excludes list: ' + ', '.join(excludes))
-print('>> Will use the following includes list: ' + ', '.join(includes))
-print('>> Will use the following binaries excludes list: ' + ', '.join(excludes_binaries))
+print(f'>> Will use the following excludes list: {', '.join(excludes)}')
+print(f'>> Will use the following includes list: {', '.join(includes)}')
+print(f'>> Will use the following binaries excludes list: {', '.join(excludes_binaries)}')
 
 
 ########################################################################
@@ -233,22 +225,24 @@ args = [
     '--windowed',
     '--onefile',
     '--upx-exclude=vcruntime140.dll',
-    '--distpath=' + DIR,
-    '--workpath=' + WORKPATH,
+    f'--distpath={DIR}',
+    f'--workpath={WORKPATH}',
 ]
 
 if sys.platform == 'win32':
-    args.append('--icon=' + os.path.abspath(WIN_ICON))
+    args.append(f'--icon={os.path.abspath(WIN_ICON)}')
 elif sys.platform == 'darwin':
-    args.append('--icon=' + os.path.abspath(MAC_ICON))
-    args.append('--osx-bundle-identifier=' + MAC_BUNDLE_IDENTIFIER)
+    args.append(f'--icon={os.path.abspath(MAC_ICON)}')
+    args.append(f'--osx-bundle-identifier={MAC_BUNDLE_IDENTIFIER}')
 
 for e in excludes:
-    args.append('--exclude-module=' + e)
+    args.append(f'--exclude-module={e}')
+
 for i in includes:
-    args.append('--hidden-import=' + i)
+    args.append(f'--hidden-import={i}')
+
 args.extend(sys.argv[1:])
-args.append(SCRIPT_FILE)
+args.append(SCRIPT_PATH)
 
 run_pyinstaller(args)
 
@@ -266,8 +260,8 @@ info_plist = {
     'CFBundleName': PROJECT_NAME,
     'CFBundleDisplayName': FULL_PROJECT_NAME,
     'CFBundleShortVersionString': PROJECT_VERSION,
-    'CFBundleGetInfoString': FULL_PROJECT_NAME + ' ' + PROJECT_VERSION,
-    'CFBundleExecutable': SCRIPT_FILE.split('.')[0],
+    'CFBundleGetInfoString': f'{FULL_PROJECT_NAME} {PROJECT_VERSION}',
+    'CFBundleExecutable': SCRIPT_FILE,
 }
 
 # Open original specfile
@@ -279,12 +273,12 @@ new_lines = []
 insert_info_plist = False
 for line in lines:
     if 'PYZ(' in line and excludes_binaries:
-        new_lines.append('EXCLUDES = ' + repr(excludes_binaries))
+        new_lines.append(f'EXCLUDES = {repr(excludes_binaries)}')
         new_lines.append('new_binaries = []')
         new_lines.append('for x, y, z in a.binaries:')
         new_lines.append('    for e in EXCLUDES:')
         new_lines.append('        if x.startswith(e):')
-        new_lines.append('            print("specfile: excluding " + x)')
+        new_lines.append('            print(f"specfile: excluding {x}")')
         new_lines.append('            break')
         new_lines.append('    else:')
         new_lines.append('        new_binaries.append((x, y, z))')
@@ -293,7 +287,7 @@ for line in lines:
     new_lines.append(line)
 
     if insert_info_plist:
-        new_lines.append('    info_plist=' + json.dumps(info_plist) + ',')
+        new_lines.append(f'    info_plist={json.dumps(info_plist)},')
         insert_info_plist = False
 
     if sys.platform == 'darwin' and 'BUNDLE(' in line:
@@ -316,8 +310,8 @@ with open(SPECFILE, 'w', encoding='utf-8') as f:
 # run with minimal arguments this time.
 
 args = [
-    '--distpath=' + DIR,
-    '--workpath=' + WORKPATH,
+    f'--distpath={DIR}',
+    f'--workpath={WORKPATH}',
     SPECFILE,
 ]
 
@@ -370,4 +364,4 @@ if sys.platform == 'darwin':
 ########################################################################
 ################################## End #################################
 ########################################################################
-print('>> %s has been built to the %s folder!' % (PROJECT_NAME, DIR))
+print(f'>> {PROJECT_NAME} has been built to the {DIR} folder!')
