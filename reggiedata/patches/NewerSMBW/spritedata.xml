@@ -702,7 +702,7 @@
   </sprite> <!-- #94: Boomerang Bro" -->
 
   <sprite id="95" name="Hammer Bro" notes="A standard Brothers enemy that throws hammers (or other objects) at the player." files="bros.arc">
-    <dependency notes="The Hammer Bro will first calculate where the nearest solid ground is. This is defined as a terrain object with solid block collision. If one or two platforms are present 4 tiles above/below him, he will attempt to jump to those."/>
+    <dependency notes="The Hammer Bro will first calculate where the nearest solid ground is. This is defined as a terrain object with solid block collision. If one or two platforms are present 4 tiles above/below him, he will attempt to jump to those.">
       <suggestedresource sprite="20"/>
       <suggestedresource sprite="25"/>
       <suggestedresource sprite="101"/>
