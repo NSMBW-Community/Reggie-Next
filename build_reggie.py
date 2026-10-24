@@ -188,11 +188,11 @@ if sys.platform == 'win32':
 elif sys.platform == 'darwin':
     # Sadly, we can't exclude anything on macOS -- it just crashes. :(
     # If a workaround could be found, here's the list we'd use:
-    excludes_binaries = [
-        # Qt stuff (none of these have any file extensions at all)
-        'QtNetwork', 'QtPrintSupport', 'QtQml', 'QtQmlModels',
-        'QtQuick', 'QtWebSockets',
-    ]
+    # excludes_binaries = [
+    #     # Qt stuff (none of these have any file extensions at all)
+    #     'QtNetwork', 'QtPrintSupport', 'QtQml', 'QtQmlModels',
+    #     'QtQuick', 'QtWebSockets',
+    # ]
     pass
 
 elif sys.platform == 'linux':
