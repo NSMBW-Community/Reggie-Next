@@ -108,4 +108,4 @@ See the license file in the distribution for information.
 
 ## Changelog
 
-See [CHANGELOG.md](CHANGELOG.md).
+See CHANGELOG.md.
