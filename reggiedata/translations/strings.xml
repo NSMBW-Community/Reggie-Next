@@ -356,12 +356,12 @@
         <string id="1">This level contains sprite ID [id], which is not defined in the current game patch. The sprite will be displayed as "UNKNOWN" but can still be edited and saved.</string>
         <string id="2">This level contains sprite IDs ([ids]) which are not defined in the current game patch. These sprites will be displayed as "UNKNOWN" but can still be edited and saved.</string>
     </section>
-    <section id="ExternalOptionDlg">
-        <string id="0">Actors</string>
-        <string id="1">Models</string>
-        <string id="2">Sound Effects</string>
-        <string id="3">Graphical Effects</string>
-        <string id="4">Search:</string>
+    <section id="ExternalDatabaseDlg">
+        <string id="0">External Database Viewer</string>
+        <string id="1">Search:</string>
+        <string id="2">ID</string>
+        <string id="3">View Notes...</string>
+        <string id="4">Notes Viewer</string>
     </section>
     <section id="FileDlgs">
         <string id="0">Choose a level archive</string>
@@ -867,6 +867,7 @@
             <entry>Layer 0</entry>
         </stringlist>
         <string id="35">[id]: Undefined Entry</string>
+        <string id="36">Unknown/Undefined</string>
     </section>
     <section id="Sprites">
         <string id="0">[b]Sprite [type]:[/b][br][name]</string>

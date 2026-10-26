@@ -76,6 +76,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The screenshot dialog can now control the margins around the edges of zones. 
 - Zones can now be extended along the edges, not just the corners.
 - LZ-compressed levels can no longer be padded, due to the in-game instability caused by it.
+- The external database viewer now uses a proper table for cleanliness and ease-of-use.
 
 ### Removed
 

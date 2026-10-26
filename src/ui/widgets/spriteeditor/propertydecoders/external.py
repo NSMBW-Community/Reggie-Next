@@ -5,8 +5,8 @@ from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
 from data.sprite.spritefield.external import ExternalSpriteField
-from ui.dialogs.spriteeditor.external_sprite_option import (
-    ExternalSpriteOptionDialog,
+from ui.dialogs.spriteeditor.external_database import (
+    ExternalDatabaseDialog,
 )
 from ui.widgets.spriteeditor.propertydecoders.property_decoder import (
     PropertyDecoder,
@@ -14,6 +14,9 @@ from ui.widgets.spriteeditor.propertydecoders.property_decoder import (
 
 
 class ExternalPropertyDecoder(PropertyDecoder[ExternalSpriteField]):
+    """
+    Class that decodes/encodes sprite data to/from an external database (valuebox + button)
+    """
 
     def __init__(self, field, layout, row, parent_widget):
         """
@@ -23,22 +26,20 @@ class ExternalPropertyDecoder(PropertyDecoder[ExternalSpriteField]):
 
         assert self.field.bit is not None and len(self.field.bit) == 1
 
-        self.dispvalue = 0
-
+        self.disp_value = 0
         bits = self.field.bit[0][1] - self.field.bit[0][0]
 
-        # button that contains the current value
+        # Button that opens the database window
         self.button = QtWidgets.QPushButton()
-        self.button.clicked.connect(self.HandleClicked)
+        self.button.clicked.connect(self.button_clicked)
 
-        # spinbox that contains the current value
+        # Spinbox that contains the current value
         self.box = QtWidgets.QSpinBox()
         self.box.setRange(0, (2 ** bits) - 1)
-        self.box.setValue(self.dispvalue)
-        self.box.valueChanged.connect(self.HandleValueChanged)
+        self.box.setValue(self.disp_value)
+        self.box.valueChanged.connect(self.value_changed)
 
         label = QtWidgets.QLabel(self.field.title + ":")
-        # label.setWordWrap(True)
 
         self.layout.addWidget(label, self.row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
         self.layout.addWidget(self.button, self.row, 1)
@@ -53,77 +54,76 @@ class ExternalPropertyDecoder(PropertyDecoder[ExternalSpriteField]):
         # check if requirements are met
         self.checkReq(data, first)
 
-        self.dispvalue = self.retrieve(data)
-        self.button.setText(self.getShortForValue(self.dispvalue))
-        self.box.setValue(self.dispvalue)
+        self.disp_value = self.retrieve(data)
+        self.button.setText(self.get_entry_name(self.disp_value))
+        self.box.setValue(self.disp_value)
 
     def assign(self, data):
         """
         Assigns the currently selected value to data
         """
-        return self.insertvalue(data, self.dispvalue)
+        return self.insertvalue(data, self.disp_value)
 
-    def HandleClicked(self, e):
+    def button_clicked(self) -> None:
         """
         Handles the button being clicked.
         """
-        dlg = ExternalSpriteOptionDialog(self.field.type, self.dispvalue)
-
-        # only contine if the user pressed "OK"
+        dlg = ExternalDatabaseDialog(self.field.type, self.disp_value)
         if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
 
-        # read set value from dlg and update self.dispwidget
-        self.dispvalue = dlg.getValue()
-        self.button.setText(self.getShortForValue(self.dispvalue))
-        self.box.setValue(self.dispvalue)
+        # Read set value from the dialog and update
+        self.disp_value = dlg.get_value()
+        self.button.setText(self.get_entry_name(self.disp_value))
+        self.box.setValue(self.disp_value)
 
         # update all other fields
         self.updateData.emit(self)
 
-    def HandleValueChanged(self, value):
+    def value_changed(self, value: int) -> None:
         """
         Handles the spin value being changed
         """
-        self.dispvalue = value
-        self.button.setText(self.getShortForValue(self.dispvalue))
+        self.disp_value = value
+        self.button.setText(self.get_entry_name(self.disp_value))
 
         # update all other fields
         self.updateData.emit(self)
 
-    def getShortForValue(self, value):
+    def get_entry_name(self, value: int) -> str:
         """
-        Gets the short form from the xml for a value
+        Gets the name for the entry
         """
         value = int(value)
+        text = str(globals_.trans.string('SpriteDataEditor', 36))
 
-        # find correct xml
-        filename = globals_.gamedef.externalFile(self.field.type + '.xml')
+        # Find the correct XML
+        filename = globals_.gamedef.externalFile(f'{self.field.type}.xml')
         if not os.path.isfile(filename):
-            raise ValueError("The external xml file cannot be found for type: " + self.field.type)
+            return text
 
-        # parse the xml
-        tree = ElementTree.parse(filename)
-        root = tree.getroot()
+        root = ElementTree.parse(filename).getroot()
 
-        fmt = root.attrib['short']
+        target_column = 0
+        if 'name_column' in root.attrib:
+            target_column = int(root.attrib['name_column'])
 
-        option = None
-        for option_ in root:
-            # skip if this is not an <option> or it's not for the correct value
-            if option_.tag.lower() == 'option' and int(option_.attrib['value'], 0) == value:
-                option = option_
-                break
+        # Search for the text of the "Name" column for this entry ID
+        for node in root:
+            if node.tag.lower() != 'entry':
+                continue
 
-        if option is None:
-            return str(value)
+            entry_id = int(node.attrib['id'])
+            if entry_id != value:
+                continue
 
-        # Do replacements
-        for prop in option:
-            name = f"[{prop.attrib['name']}]"
-            fmt = fmt.replace(name, prop.attrib['value'])
+            for prop in node:
+                if prop.tag.lower() != 'column':
+                    continue
 
-        del tree, root
+                column_id = int(prop.attrib['id'])
+                if column_id == target_column:
+                    text = prop.attrib['text']
 
         # Do some automatic replacements
         replace = {
@@ -133,13 +133,11 @@ class ExternalPropertyDecoder(PropertyDecoder[ExternalSpriteField]):
             '[/i]': '</i>',
         }
 
-        for old, value in replace.items():
-            fmt = fmt.replace(old, value)
+        for old, new in replace.items():
+            text = text.replace(old, new)
 
-        # only display the first 27 characters and ...
-        # so len(fmt) is at most 30.
-        if len(fmt) > 30:
-            fmt = fmt[:27] + '...'
+        # Limit the name to 60 characters
+        if len(text) > 60:
+            text = text[:57] + '...'
 
-        # Return it
-        return fmt
+        return text

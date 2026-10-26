@@ -1,2416 +1,2409 @@
-<!--
-    All NSMBW Graphics Effects for sprite 332 Sound and Effect Spawner. This list needs to be updated, but at least it's not in the
-    spritedata xml anymore.
-	
-	Properties:
-		- Description	  		Description of the graphics effect
-	Future:
-		- Name    			Simple name
-		- Problems			Any problems when spawning the gfx
-
-	Original file by by Grop/joietyfull64/Zementblock
-
+<?xml version='1.0' encoding='utf-8'?>
+<!-- TODO:
+    - Add "Name" column with the raw name of the effect spawned by the game
+    - Determine if "None/Crash" rows should even be kept
 -->
-
-<options primary="[id], Level Used, Description" short="[Description]">
-	<option value="0">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="1">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="2">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="3">
-		<property name="Description" value="Smoky clouds appear from the left and right side of the sprite." />
-		<property name="Level Used" value="[02-25]" />
-	</option>
-	<option value="4">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="5">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="6">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="7">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="8">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="9">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="10">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="11">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="12">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="13">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="14">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="15">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="16">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="17">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="18">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="19">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="20">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="21">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="22">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="23">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="24">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="25">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="26">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="27">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="28">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="29">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="30">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="31">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="32">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="33">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="34">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="35">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="36">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="37">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="38">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="39">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="40">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="41">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="42">
-		<property name="Description" value="???" />
-		<property name="Level Used" value="[07-15]" />
-	</option>
-	<option value="43">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="44">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="45">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="46">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="47">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="48">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="49">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="50">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="51">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="52">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="53">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="54">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="55">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="56">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="57">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="58">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="59">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="60">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="61">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="62">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="63">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="64">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="65">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="66">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="67">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="68">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="69">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="70">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="71">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="72">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="73">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="74">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="75">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="76">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="77">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="78">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="79">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="80">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="81">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="82">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="83">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="84">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="85">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="86">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="87">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="88">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="89">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="90">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="91">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="92">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="93">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="94">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="95">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="96">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="97">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="98">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="99">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="100">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="101">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="102">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="103">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="104">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="105">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="106">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="107">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="108">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="109">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="110">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="111">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="112">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="113">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="114">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="115">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="116">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="117">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="118">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="119">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="120">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="121">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="122">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="123">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="124">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="125">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="126">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="127">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="128">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="129">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="130">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="131">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="132">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="133">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="134">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="135">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="136">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="137">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="138">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="139">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="140">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="141">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="142">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="143">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="144">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="145">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="146">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="147">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="148">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="149">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="150">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="151">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="152">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="153">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="154">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="155">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="156">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="157">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="158">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="159">
-		<property name="Description" value="Medium or big yellow star appears from the top-left and top-right where the sprite is placed." />
-		<property name="Level Used" value="[08-24]" />
-	</option>
-	<option value="160">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="161">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="162">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="163">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="164">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="165">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="166">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="167">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="168">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="169">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="170">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="171">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="172">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="173">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="174">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="175">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="176">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="177">
-		<property name="Description" value="5 Clouds of Steam plus a few white Sparks" />
-		<property name="Level Used" value="[08-05]" />
-	</option>
-	<option value="178">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="179">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="180">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="181">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="182">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="183">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="184">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="185">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="186">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="187">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="188">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="189">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="190">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="191">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="192">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="193">
-		<property name="Description" value="Electrical Sparks from Sparky" />
-		<property name="Level Used" value="[07-15]" />
-	</option>
-	<option value="194">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="195">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="196">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="197">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="198">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="199">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="200">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="201">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="202">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="203">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="204">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="205">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="206">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="207">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="208">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="209">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="210">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="211">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="212">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="213">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="214">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="215">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="216">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="217">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="218">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="219">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="220">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="221">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="222">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="223">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="224">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="225">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="226">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="227">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="228">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="229">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="230">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="231">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="232">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="233">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="234">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="235">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="236">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="237">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="238">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="239">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="240">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="241">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="242">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="243">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="244">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="245">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="246">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="247">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="248">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="249">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="250">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="251">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="252">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="253">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="254">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="255">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="256">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="257">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="258">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="259">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="260">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="261">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="262">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="263">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="264">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="265">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="266">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="267">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="268">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="269">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="270">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="271">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="272">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="273">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="274">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="275">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="276">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="277">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="278">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="279">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="280">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="281">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="282">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="283">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="284">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="285">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="286">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="287">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="288">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="289">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="290">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="291">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="292">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="293">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="294">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="295">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="296">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="297">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="298">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="299">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="300">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="301">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="302">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="303">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="304">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="305">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="306">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="307">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="308">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="309">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="310">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="311">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="312">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="313">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="314">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="315">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="316">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="317">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="318">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="319">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="320">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="321">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="322">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="323">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="324">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="325">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="326">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="327">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="328">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="329">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="330">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="331">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="332">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="333">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="334">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="335">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="336">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="337">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="338">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="339">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="340">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="341">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="342">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="343">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="344">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="345">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="346">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="347">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="348">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="349">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="350">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="351">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="352">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="353">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="354">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="355">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="356">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="357">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="358">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="359">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="360">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="361">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="362">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="363">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="364">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="365">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="366">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="367">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="368">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="369">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="370">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="371">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="372">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="373">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="374">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="375">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="376">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="377">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="378">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="379">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="380">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="381">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="382">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="383">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="384">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="385">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="386">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="387">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="388">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="389">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="390">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="391">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="392">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="393">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="394">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="395">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="396">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="397">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="398">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="399">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="400">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="401">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="402">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="403">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="404">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="405">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="406">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="407">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="408">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="409">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="410">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="411">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="412">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="413">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="414">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="415">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="416">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="417">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="418">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="419">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="420">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="421">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="422">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="423">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="424">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="425">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="426">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="427">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="428">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="429">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="430">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="431">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="432">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="433">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="434">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="435">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="436">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="437">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="438">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="439">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="440">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="441">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="442">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="443">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="444">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="445">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="446">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="447">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="448">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="449">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="450">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="451">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="452">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="453">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="454">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="455">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="456">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="457">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="458">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="459">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="460">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="461">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="462">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="463">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="464">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="465">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="466">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="467">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="468">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="469">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="470">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="471">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="472">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="473">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="474">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="475">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="476">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="477">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="478">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="479">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="480">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="481">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="482">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="483">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="484">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="485">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="486">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="487">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="488">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="489">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="490">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="491">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="492">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="493">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="494">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="495">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="496">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="497">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="498">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="499">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="500">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="501">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="502">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="503">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="504">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="505">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="506">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="507">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="508">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="509">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="510">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="511">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="512">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="513">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="514">
-		<property name="Description" value="Yellow Fireworks (8 'Star Sparks')" />
-		<property name="Level Used" value="[04-11]" />
-	</option>
-	<option value="515">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="516">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="517">
-		<property name="Description" value="Bright Blue Fireworks (8 'Glitter Sparks')" />
-		<property name="Level Used" value="[04-11]" />
-	</option>
-	<option value="518">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="519">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="520">
-		<property name="Description" value="Bright Green Fireworks (8 'Glitter Sparks')" />
-		<property name="Level Used" value="[04-11]" />
-	</option>
-	<option value="521">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="522">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="523">
-		<property name="Description" value="Bright Blue Fireworks (8 red/yellow 'Star Sparks')" />
-		<property name="Level Used" value="[04-11]" />
-	</option>
-	<option value="524">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="525">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="526">
-		<property name="Description" value="Yellow Fireworks (8 green/yellow 'Star Sparks' + red Mushroom)" />
-		<property name="Level Used" value="[04-11]" />
-	</option>
-	<option value="527">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="528">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="529">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="530">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="531">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="532">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="533">
-		<property name="Description" value="Yellow Fireworks (8 green/yellow 'Star Sparks' + green Mushroom)" />
-		<property name="Level Used" value="[04-11]" />
-	</option>
-	<option value="534">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="535">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="536">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="537">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="538">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="539">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="540">
-		<property name="Description" value="Yellow Fireworks (8 green/yellow 'Star Sparks' + Star)" />
-		<property name="Level Used" value="[04-11]" />
-	</option>
-	<option value="541">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="542">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="543">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="544">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="545">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="546">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="547">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="548">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="549">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="550">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="551">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="552">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="553">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="554">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="555">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="556">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="557">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="558">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="559">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="560">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="561">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="562">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="563">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="564">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="565">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="566">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="567">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="568">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="569">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="570">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="571">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="572">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="573">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="574">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="575">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="576">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="577">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="578">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="579">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="580">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="581">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="582">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="583">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="584">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="585">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="586">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="587">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="588">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="589">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="590">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="591">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="592">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="593">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="594">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="595">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="596">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="597">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="598">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-	<option value="599">
-		<property name="Description" value="None/Crash!" />
-		<property name="Level Used" value="" />
-	</option>
-</options>
+<database title="Effects" name_column="0">
+    <header name="Description"/>
+    <header name="Usage"/>
+    <entry id="0">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="1">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="2">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="3">
+        <column id="0" text="Smoky clouds appear from the left and right side of the sprite." />
+        <column id="1" text="[02-25]" />
+    </entry>
+    <entry id="4">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="5">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="6">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="7">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="8">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="9">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="10">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="11">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="12">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="13">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="14">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="15">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="16">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="17">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="18">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="19">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="20">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="21">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="22">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="23">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="24">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="25">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="26">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="27">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="28">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="29">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="30">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="31">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="32">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="33">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="34">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="35">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="36">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="37">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="38">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="39">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="40">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="41">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="42">
+        <column id="0" text="???" />
+        <column id="1" text="[07-15]" />
+    </entry>
+    <entry id="43">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="44">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="45">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="46">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="47">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="48">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="49">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="50">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="51">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="52">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="53">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="54">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="55">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="56">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="57">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="58">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="59">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="60">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="61">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="62">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="63">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="64">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="65">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="66">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="67">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="68">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="69">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="70">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="71">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="72">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="73">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="74">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="75">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="76">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="77">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="78">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="79">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="80">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="81">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="82">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="83">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="84">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="85">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="86">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="87">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="88">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="89">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="90">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="91">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="92">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="93">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="94">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="95">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="96">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="97">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="98">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="99">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="100">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="101">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="102">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="103">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="104">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="105">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="106">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="107">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="108">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="109">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="110">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="111">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="112">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="113">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="114">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="115">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="116">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="117">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="118">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="119">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="120">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="121">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="122">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="123">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="124">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="125">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="126">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="127">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="128">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="129">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="130">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="131">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="132">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="133">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="134">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="135">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="136">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="137">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="138">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="139">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="140">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="141">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="142">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="143">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="144">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="145">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="146">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="147">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="148">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="149">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="150">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="151">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="152">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="153">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="154">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="155">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="156">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="157">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="158">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="159">
+        <column id="0" text="Medium or big yellow star appears from the top-left and top-right where the sprite is placed." />
+        <column id="1" text="[08-24]" />
+    </entry>
+    <entry id="160">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="161">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="162">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="163">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="164">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="165">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="166">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="167">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="168">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="169">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="170">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="171">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="172">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="173">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="174">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="175">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="176">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="177">
+        <column id="0" text="5 Clouds of Steam plus a few white Sparks" />
+        <column id="1" text="[08-05]" />
+    </entry>
+    <entry id="178">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="179">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="180">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="181">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="182">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="183">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="184">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="185">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="186">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="187">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="188">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="189">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="190">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="191">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="192">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="193">
+        <column id="0" text="Electrical Sparks from Sparky" />
+        <column id="1" text="[07-15]" />
+    </entry>
+    <entry id="194">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="195">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="196">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="197">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="198">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="199">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="200">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="201">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="202">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="203">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="204">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="205">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="206">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="207">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="208">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="209">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="210">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="211">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="212">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="213">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="214">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="215">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="216">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="217">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="218">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="219">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="220">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="221">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="222">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="223">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="224">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="225">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="226">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="227">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="228">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="229">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="230">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="231">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="232">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="233">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="234">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="235">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="236">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="237">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="238">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="239">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="240">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="241">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="242">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="243">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="244">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="245">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="246">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="247">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="248">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="249">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="250">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="251">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="252">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="253">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="254">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="255">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="256">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="257">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="258">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="259">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="260">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="261">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="262">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="263">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="264">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="265">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="266">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="267">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="268">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="269">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="270">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="271">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="272">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="273">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="274">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="275">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="276">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="277">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="278">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="279">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="280">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="281">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="282">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="283">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="284">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="285">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="286">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="287">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="288">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="289">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="290">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="291">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="292">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="293">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="294">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="295">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="296">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="297">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="298">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="299">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="300">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="301">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="302">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="303">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="304">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="305">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="306">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="307">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="308">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="309">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="310">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="311">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="312">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="313">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="314">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="315">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="316">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="317">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="318">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="319">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="320">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="321">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="322">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="323">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="324">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="325">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="326">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="327">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="328">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="329">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="330">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="331">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="332">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="333">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="334">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="335">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="336">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="337">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="338">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="339">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="340">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="341">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="342">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="343">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="344">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="345">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="346">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="347">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="348">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="349">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="350">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="351">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="352">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="353">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="354">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="355">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="356">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="357">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="358">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="359">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="360">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="361">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="362">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="363">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="364">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="365">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="366">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="367">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="368">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="369">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="370">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="371">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="372">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="373">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="374">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="375">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="376">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="377">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="378">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="379">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="380">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="381">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="382">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="383">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="384">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="385">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="386">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="387">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="388">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="389">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="390">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="391">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="392">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="393">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="394">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="395">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="396">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="397">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="398">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="399">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="400">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="401">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="402">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="403">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="404">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="405">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="406">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="407">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="408">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="409">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="410">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="411">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="412">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="413">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="414">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="415">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="416">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="417">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="418">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="419">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="420">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="421">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="422">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="423">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="424">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="425">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="426">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="427">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="428">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="429">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="430">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="431">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="432">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="433">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="434">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="435">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="436">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="437">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="438">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="439">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="440">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="441">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="442">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="443">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="444">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="445">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="446">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="447">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="448">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="449">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="450">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="451">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="452">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="453">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="454">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="455">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="456">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="457">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="458">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="459">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="460">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="461">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="462">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="463">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="464">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="465">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="466">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="467">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="468">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="469">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="470">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="471">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="472">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="473">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="474">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="475">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="476">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="477">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="478">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="479">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="480">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="481">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="482">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="483">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="484">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="485">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="486">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="487">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="488">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="489">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="490">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="491">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="492">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="493">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="494">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="495">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="496">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="497">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="498">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="499">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="500">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="501">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="502">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="503">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="504">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="505">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="506">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="507">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="508">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="509">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="510">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="511">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="512">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="513">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="514">
+        <column id="0" text="Yellow Fireworks (8 'Star Sparks')" />
+        <column id="1" text="[04-11]" />
+    </entry>
+    <entry id="515">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="516">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="517">
+        <column id="0" text="Bright Blue Fireworks (8 'Glitter Sparks')" />
+        <column id="1" text="[04-11]" />
+    </entry>
+    <entry id="518">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="519">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="520">
+        <column id="0" text="Bright Green Fireworks (8 'Glitter Sparks')" />
+        <column id="1" text="[04-11]" />
+    </entry>
+    <entry id="521">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="522">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="523">
+        <column id="0" text="Bright Blue Fireworks (8 red/yellow 'Star Sparks')" />
+        <column id="1" text="[04-11]" />
+    </entry>
+    <entry id="524">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="525">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="526">
+        <column id="0" text="Yellow Fireworks (8 green/yellow 'Star Sparks' + red Mushroom)" />
+        <column id="1" text="[04-11]" />
+    </entry>
+    <entry id="527">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="528">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="529">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="530">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="531">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="532">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="533">
+        <column id="0" text="Yellow Fireworks (8 green/yellow 'Star Sparks' + green Mushroom)" />
+        <column id="1" text="[04-11]" />
+    </entry>
+    <entry id="534">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="535">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="536">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="537">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="538">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="539">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="540">
+        <column id="0" text="Yellow Fireworks (8 green/yellow 'Star Sparks' + Star)" />
+        <column id="1" text="[04-11]" />
+    </entry>
+    <entry id="541">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="542">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="543">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="544">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="545">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="546">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="547">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="548">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="549">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="550">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="551">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="552">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="553">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="554">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="555">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="556">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="557">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="558">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="559">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="560">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="561">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="562">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="563">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="564">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="565">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="566">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="567">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="568">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="569">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="570">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="571">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="572">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="573">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="574">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="575">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="576">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="577">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="578">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="579">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="580">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="581">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="582">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="583">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="584">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="585">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="586">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="587">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="588">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="589">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="590">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="591">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="592">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="593">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="594">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="595">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="596">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="597">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="598">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+    <entry id="599">
+        <column id="0" text="None/Crash!" />
+        <column id="1" text="" />
+    </entry>
+</database>

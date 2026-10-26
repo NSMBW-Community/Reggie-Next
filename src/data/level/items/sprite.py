@@ -489,10 +489,13 @@ class SpriteItem(LevelEditorItem):
         self.setPos(newobjx * 1.5, newobjy * 1.5)
 
     @staticmethod
-    def moveToSprite(item: 'SpriteItem') -> None:
+    def moveToSprite(item: QtWidgets.QTableWidgetItem | None) -> None:
         """
         Moves the view to the sprite and selects it.
         """
+        if item is None:
+            return
+
         sprite = item.data(QtCore.Qt.ItemDataRole.UserRole)
 
         if sprite is None:

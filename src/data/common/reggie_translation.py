@@ -391,12 +391,12 @@ class ReggieTranslation:
                 1: 'This level contains sprite ID [id], which is not defined in the current game patch. The sprite will be displayed as "UNKNOWN" but can still be edited and saved.',
                 2: 'This level contains sprite IDs ([ids]) which are not defined in the current game patch. These sprites will be displayed as "UNKNOWN" but can still be edited and saved.',
             },
-            'ExternalOptionDlg': {
-                0: 'Actors',
-                1: 'Models',
-                2: 'Sound Effects',
-                3: 'Graphical Effects',
-                4: 'Search:',
+            'ExternalDatabaseDlg': {
+                0: 'External Database Viewer',
+                1: 'Search:',
+                2: 'ID',
+                3: 'View Notes...',
+                4: 'Notes Viewer'
             },
             'FileDlgs': {
                 0: 'Choose a level archive',
@@ -902,6 +902,7 @@ class ReggieTranslation:
                     'Layer 0',
                 ),
                 35: '[id]: Undefined Entry',
+                36: 'Unknown/Undefined'
             },
             'Sprites': {
                 0: '[b]Sprite [type]:[/b][br][name]',
