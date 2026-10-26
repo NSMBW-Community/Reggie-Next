@@ -72,22 +72,22 @@ class ZoneTab(QtWidgets.QWidget):
         self.zone_height.setValue(zone.height)
         self.zone_height.valueChanged.connect(self.preset_changed)
 
-        # Common retail zone presets:
-        # 416 x 224 (used with minigames)
-        # 448 x 224 (used with boss battles)
-        # 512 x 272 (used in many, many places)
-        # 560 x 304
-        # 608 x 320 (actually 609x320; rounded it down myself)
-        # 784 x 320 (not added to list because it's just an expansion of 608x320)
-        # 704 x 384 (used multiple times; therefore it's important)
-        # 944 x 448 (used in 9-3 zone 3)
-        self.size_presets = (
-            '204x112', '308x168', '408x224', '468x256',
-            '496x272', '556x304', '584x320', '700x384', '816x448'
+        self.size_presets: tuple[tuple[int, int], ...] = (
+            (208, 112),  # 7
+            (320, 168),  # 10.5
+            (416, 224),  # 14
+            (480, 256),  # 16
+            (512, 272),  # 17
+            (560, 304),  # 19
+            (592, 320),  # 20
+            (704, 384),  # 24
+            (832, 448),  # 28
         )
 
         self.preset_chooser = QtWidgets.QComboBox()
-        self.preset_chooser.addItems(self.size_presets)
+        self.preset_chooser.addItems(
+            "x".join(str(val) for val in preset) for preset in self.size_presets
+        )
         self.preset_chooser.setToolTip(globals_.trans.string('ZonesDlg', 18))
         self.preset_chooser.currentIndexChanged.connect(self.select_preset)
 
@@ -471,11 +471,11 @@ class ZoneTab(QtWidgets.QWidget):
         if self.preset_chooser.currentText() == globals_.trans.string('ZonesDlg', 60):
             return
 
-        w, h = self.preset_chooser.currentText().split('x')
+        w, h = self.size_presets[self.preset_chooser.currentIndex()]
 
         self.auto_change_size = True
-        self.zone_width.setValue(int(w))
-        self.zone_height.setValue(int(h))
+        self.zone_width.setValue(w)
+        self.zone_height.setValue(h)
         self.auto_change_size = False
 
         # Since a preset is now chosen, remove the None option from the list
@@ -492,7 +492,7 @@ class ZoneTab(QtWidgets.QWidget):
         self.auto_change_size = True
         w = self.zone_width.value()
         h = self.zone_height.value()
-        check = str(w) + 'x' + str(h)
+        check = (w, h)
 
         sizeName = globals_.trans.string('ZonesDlg', 60)
 
