@@ -1,3 +1,4 @@
+import math
 from collections.abc import Callable
 from enum import IntEnum
 from typing import cast
@@ -6,6 +7,7 @@ from PyQt6 import QtGui, QtWidgets
 
 import spritelib as SLib
 from data import globals_
+from data.common.units import NSMBW_UNITS_PER_TILE
 from data.level.dirty import SetDirty
 from data.level.items.entrance import EntranceItem
 from data.level.items.sprite import SpriteItem
@@ -495,7 +497,10 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             return False
 
         first_zone: ZoneItem = globals_.Area.zones[first_zone_idx]
-        offset = first_zone.get_min_entrance_offset()
+        offset = math.ceil(first_zone.get_min_entrance_offset(NSMBW_UNITS_PER_TILE) / 16) * 16
+        if ent.enttype in {0, 1, 23}:
+            # additional safety offset of 2.5 tiles if entrance is wider due to multiplayer
+            offset += 40
 
         problem = start.objx < first_zone.objx + offset
         if mode == 'c':

@@ -5,9 +5,9 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 import spritelib as SLib
 from data import globals_
+from data.common.units import PIXELS_PER_TILE
 from data.level.dirty import SetDirty
 from data.level.items.basic import LevelEditorItem
-from data.level.items.entrance import EntranceItem
 from data.level.items.zone_grabber import ZoneGrabberItem
 
 
@@ -250,23 +250,23 @@ class ZoneItem(LevelEditorItem):
 
         return heights[self.camzoom]
 
-    def get_min_entrance_offset(self) -> int:
+    def get_min_entrance_offset(self, factor: float | None = None) -> int:
         """
         Returns the minimum x-offset required for an entrance item according
         to the position and screen heights of the given zone.
 
-        :return: The minimum x-offset in units rounded up to the start position
-        of the next tile.
+        :param factor: The factor to multiply the result by. If omitted, the
+        resulting offset will be in tiles.
+        :return: The minimum x-offset multiplied by the given `factor`. If
+        `factor` is omitted, the distance returned will be an amount of tiles.
         """
-        offset: int = 0
-        zone_width_14: int = math.ceil(14 / 9 * 16)
-        height: float = max(self.getCameraHeight())
-        extra_offset: float = 0
+        cam_height: float = max(self.getCameraHeight())
 
-        if height > 14:
-            offset = math.ceil(height / 9 * 16)
+        result = max(((cam_height - 14) / 131 * 240) / 2, 0)  # NSMBW aspect ratio (1920x1048 = 240:131)
+        if result > 0 and factor is not None:
+            result *= factor
 
-        return max(math.ceil(((offset - zone_width_14) / 2) + extra_offset), 0) * 16
+        return math.ceil(result)
 
     def updateEntranceIndicator(self) -> None:
         """
@@ -300,7 +300,7 @@ class ZoneItem(LevelEditorItem):
             return
 
         self.ent_indicator_show = True
-        self.ent_indicator_offset = self.get_min_entrance_offset()
+        self.ent_indicator_offset = self.get_min_entrance_offset(PIXELS_PER_TILE)
 
     def paint(self, painter: QtGui.QPainter | None, option: QtWidgets.QStyleOptionGraphicsItem | None, widget: QtWidgets.QWidget | None = None) -> None:
         """
