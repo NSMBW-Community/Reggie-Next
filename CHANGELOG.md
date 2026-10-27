@@ -102,6 +102,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The music list can no longer add tracks with IDs > 255.
 - The Level Information dialog can now be opened in any area.
 - Fixed Dependency Notes not supporting bracketed element formatting.
+- Fixed invalid ReggieClips still marking the level as modified.
 
 ## [4.10.0] - 2026-07-25
 

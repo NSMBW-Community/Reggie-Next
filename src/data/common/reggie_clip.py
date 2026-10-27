@@ -148,6 +148,10 @@ class ReggieClip:
 
         layers, sprites, entrances, locations, paths, path_nodes, comments = ReggieClip.decode_reggie_clip(reggie_clip)
 
+        # Did we actually get anything from that?
+        if not any([layers[0], layers[1], layers[2], sprites, entrances, locations, paths, path_nodes, comments]):
+            return added
+
         # Find the bounding box of all created objects
         bounding = QtCore.QRectF()
 
@@ -308,13 +312,22 @@ class ReggieClip:
 
                 # Sprite
                 elif split[0] == '1':
-                    if len(split) != 13:
+                    if len(split) not in (11, 13):
                         continue
+
+                    # Old spritedata ReggieClip won't have these
+                    # so we need to handle them specially
+                    try:
+                        pad_1 = split[11]
+                        pad_2 = split[12]
+                    except IndexError:
+                        pad_1 = '0'
+                        pad_2 = '0'
 
                     objx = int(split[2])
                     objy = int(split[3])
                     type = int(split[1])
-                    data = bytes(map(int, [split[4], split[5], split[6], split[7], split[8], split[9], '0', split[10], split[11], split[12]]))
+                    data = bytes(map(int, [split[4], split[5], split[6], split[7], split[8], split[9], '0', split[10], pad_1, pad_2]))
 
                     newitem = SpriteItem.CreateSprite(objx, objy, type, data, add_to_scene)
                     sprites.append(newitem)
