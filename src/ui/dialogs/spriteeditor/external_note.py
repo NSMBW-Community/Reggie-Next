@@ -1,6 +1,7 @@
 import os
 from PyQt6 import QtWidgets
 from data import globals_
+from data.common.reggie_translation import convert_formatting
 
 class ExternalNotesDialog(QtWidgets.QDialog):
     """
@@ -14,24 +15,7 @@ class ExternalNotesDialog(QtWidgets.QDialog):
         super().__init__()
         self.setWindowTitle(globals_.trans.string('ExternalDatabaseDlg', 4))
 
-        # Do some automatic replacements
-        replace = {
-            '[br]': '<br>',
-            '[b]': '<b>',
-            '[/b]': '</b>',
-            '[i]': '<i>',
-            '[/i]': '</i>',
-            '[a': '<a',
-            '"]': '">',  # Workaround
-            '[/a]': '</a>',
-            '\\n': '\n',
-            '//n': '\n',
-            '[tm]': '™',
-            '[small]': '<small>',
-            '[/small]': '</small>',
-        }
-        for old, value in replace.items():
-            text = text.replace(old, value)
+        text = convert_formatting(text)
 
         text_view = QtWidgets.QTextEdit()
         text_view.setText(text)

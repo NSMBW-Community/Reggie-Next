@@ -1343,27 +1343,8 @@ class ReggieTranslation:
             astring = astring.replace(old, new)
             i += 2
 
-        # Do some automatic replacements
-        replace = {
-            '[br]': '<br>',
-            '[b]': '<b>',
-            '[/b]': '</b>',
-            '[i]': '<i>',
-            '[/i]': '</i>',
-            '[a': '<a',
-            '"]': '">',  # workaround
-            '[/a]': '</a>',
-            '\\n': '\n',
-            '//n': '\n',
-            '[tm]': '™',
-            '[small]': '<small>',
-            '[/small]': '</small>',
-        }
-        for old, value in replace.items():
-            astring = astring.replace(old, value)
-
         # Return it
-        return astring
+        return convert_formatting(astring)
 
     def stringOneLine(self, name: str, numcode: int, *args: Any) -> str | None:
         """
@@ -1462,3 +1443,31 @@ class ReggieTranslation:
 
         with open(path, 'w', encoding='utf-8') as f:
             f.write(header + raw_string + '\n')
+
+# TODO: This might belong in another file?
+@staticmethod
+def convert_formatting(text: str) -> str:
+    """
+    Performs automatic replacements on text strings.
+    Intended for XMLs where proper formatting can't be applied
+    """
+    replace = {
+        '[br]': '<br>',
+        '[b]': '<b>',
+        '[/b]': '</b>',
+        '[i]': '<i>',
+        '[/i]': '</i>',
+        '[a': '<a',
+        '"]': '">',  # Workaround
+        '[/a]': '</a>',
+        '\\n': '\n',
+        '//n': '\n',
+        '[tm]': '™',
+        '[small]': '<small>',
+        '[/small]': '</small>',
+    }
+
+    for old, new in replace.items():
+        text = text.replace(old, new)
+
+    return text

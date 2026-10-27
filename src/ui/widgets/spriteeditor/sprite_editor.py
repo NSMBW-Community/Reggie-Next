@@ -5,6 +5,7 @@ from data.level.dirty import SetDirty
 from data.level.items.sprite import SpriteItem
 from data.level.sprite_definition import SpriteDefinition
 from data.common.list_property import ListPropertyModel
+from data.common.reggie_translation import convert_formatting
 from data.sprite.spritefield.check_box import CheckBoxSpriteField
 from data.sprite.spritefield.dual_box import DualBoxSpriteField
 from data.sprite.spritefield.external import ExternalSpriteField
@@ -364,7 +365,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         self.com_dep.setVisible(False)
 
         if sprite.dependencynotes is not None:
-            self.dependencyNotes = sprite.dependencynotes
+            self.dependencyNotes = convert_formatting(sprite.dependencynotes)
 
             if sprite.notes is None:
                 self.com_more.setVisible(False)
