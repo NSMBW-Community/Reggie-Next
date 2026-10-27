@@ -1913,7 +1913,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         start_ent_id = globals_.Area.start_entrance
 
         for ent in globals_.Area.entrances:
-            if ent.entid == start_ent_id:
+            if areaNum == 1 and ent.entid == start_ent_id:
                 center_pos = ent.pos()
                 found_ent = True
                 break
