@@ -255,11 +255,7 @@ class LocationItem(LevelEditorItem):
             color = globals_.theme.color('location_lines_s')
             if color is not None:
                 painter.setPen(QtGui.QPen(color, 1, QtCore.Qt.PenStyle.DashLine))
-
-        if globals_.UseRoundedRectangles:
-            painter.drawRoundedRect(self.DrawRect, 4, 4)
-        else:
-            painter.drawRect(self.DrawRect)
+        painter.drawRect(self.DrawRect)
 
         # Draw the ID
         painter.setPen(QtGui.QPen(globals_.theme.color('location_text')))
