@@ -36,7 +36,7 @@ import random
 
 from PyQt6 import QtCore, QtGui
 
-import data.common.sprites as common
+import data.common.sprite_images as common
 import spritelib as SLib
 from data import globals_
 

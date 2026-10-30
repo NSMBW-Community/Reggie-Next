@@ -25,7 +25,7 @@ from data.common.loaders import (
     ReloadTilesets,
 )
 from data.common.settings import setSetting, setting
-from data.common.sprites import LoadBasics
+from data.common.sprite_images import LoadBasics
 from data.common.utils import get_reggiedata_folder
 
 

@@ -84,7 +84,7 @@ Qt = QtCore.Qt
 from data import globals_
 
 import spritelib as SLib
-from data.common.sprites import LoadBasics
+from data.common.sprite_images import LoadBasics
 
 from ui.theme.reggie_theme import SetAppStyle, LoadNumberFont, SetColorScheme, GetAppIcon
 from data.common.loaders import LoadToolbarActionsLists, LoadTheme, LoadDefaultKeybinds

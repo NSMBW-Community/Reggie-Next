@@ -61,7 +61,7 @@ def update_sprites_module(filename: str) -> None:
         new_data = re.sub(pattern, replace, new_data)
 
     # Fix old sprites_common imports
-    new_data = new_data.replace("import sprites_common", "import data.common.sprites")
+    new_data = new_data.replace("import sprites_common", "import data.common.sprite_images")
 
     # Fix (very rarely used) references to the sprite ID
     new_data = new_data.replace("parent.type", "parent.sprite_num")
