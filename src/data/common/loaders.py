@@ -245,7 +245,7 @@ def LoadObjDescriptions(reload_: bool = False) -> None:
             continue
 
         tree = ElementTree.parse(path)
-        
+
         for node in tree.getroot():
             if node.tag.lower() == 'object':
                 object_id = node.attrib['id']
@@ -260,7 +260,7 @@ def LoadBgFiles(reload_: bool = False) -> None:
     """
     if globals_.BgAFiles and globals_.BgBFiles and not reload_:
         return
-    
+
     globals_.BgAFiles = []
     globals_.BgBFiles = []
 
@@ -329,7 +329,7 @@ def LoadZoneThemes(reload_: bool = False) -> None:
             continue
 
         tree = ElementTree.parse(path)
-        
+
         for node in tree.getroot():
             if node.tag.lower() == 'theme':
                 attribs = node.attrib
@@ -729,7 +729,7 @@ def LoadMusicInfo(reload_: bool = False) -> None:
 
     globals_.MusicInfo = songs.items()
 
-def LoadMenuActions(mw: ReggieWindow) -> None:
+def LoadMenuActions(mw: "ReggieWindow") -> None:
     # TODO: Maybe make a proper Protocol type that has all methods from ReggieWindow which are referenced here
     # Define the global list of menu items, and their associated data
     # Some menu items are tied to docks or have special behavior, and thus are not defined here
