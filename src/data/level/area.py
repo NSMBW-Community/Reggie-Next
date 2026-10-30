@@ -279,6 +279,28 @@ class Area:
 
         return (self.course, self.L0, self.L1, self.L2, self.meta)
 
+    def reset(self):
+        """
+        Resets the palette and initialises the scene from the currently loaded Area.
+        """
+        if globals_.mainWindow is None:
+            return
+
+        # Reset the palette
+        globals_.mainWindow.palette_dock.reset()
+
+        pos_change = ObjectItem.position_changed
+        for layer in reversed(self.layers):
+            for obj in layer:
+                obj.positionChanged = pos_change
+                globals_.mainWindow.scene.addItem(obj)
+
+        for zone in self.zones:
+            globals_.mainWindow.scene.addItem(zone)
+
+        for path in self.paths:
+            path.add_to_scene()
+
     def RemoveFromLayer(self, obj: ObjectItem) -> None:
         """
         Removes a specific object from the level and updates Z-indices accordingly

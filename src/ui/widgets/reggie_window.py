@@ -1820,7 +1820,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             else:
                 # Auto-saved level. Check if there's a path associated with it:
-
                 if globals_.AutoSavePath == 'None':
                     self.fileSavePath = None
                     self.fileTitle = globals_.trans.string('WindowTitle', 0)
@@ -1871,6 +1870,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Also enable things that use 'True' by default
         globals_.SpritesShown = True
+        globals_.SpriteImagesShown = True
         globals_.LocationsShown = True
         globals_.EntrancesShown = True
         globals_.PathsShown = True
@@ -1890,7 +1890,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             # optionally decompress the level file. Hence, we can just relay
             # this to the level.
             globals_.Level.changeArea(areaNum)
-            self.reset_area()
+            globals_.Area.reset()
 
         # Fill up the area list
         self.area_combo_box.clear()
@@ -1938,6 +1938,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.action_list['showlay1'].setChecked(True)
         self.action_list['showlay2'].setChecked(True)
         self.action_list['showsprites'].setChecked(True)
+        self.action_list['showspriteimages'].setChecked(True)
         self.action_list['showentrances'].setChecked(True)
         self.action_list['showlocations'].setChecked(True)
         self.action_list['showpaths'].setChecked(True)
@@ -1965,7 +1966,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         if new:
             SetDirty()
-
         elif not same:
             # Add the path to Recent Files
             self.RecentMenu.add_to_list(self.fileSavePath)
@@ -1973,10 +1973,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         return True
 
     def newLevel(self):
-        # Create the new level object
+        """
+        Creates a new level
+        """
         globals_.Level = NSMBWLevel()
-
-        # Load it
         globals_.Level.new()
 
         self.palette_dock.object_tab.reset(True)
@@ -2009,27 +2009,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
                 QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_UnknownSprite', 0), msg)
 
-        self.reset_area()
-
-    def reset_area(self):
-        """
-        Resets the palette and initialises the scene from the currently loaded
-        Area.
-        """
-        # Reset the palette
-        self.palette_dock.reset()
-
-        pos_change = ObjectItem.position_changed
-        for layer in reversed(globals_.Area.layers):
-            for obj in layer:
-                obj.positionChanged = pos_change
-                self.scene.addItem(obj)
-
-        for zone in globals_.Area.zones:
-            self.scene.addItem(zone)
-
-        for path in globals_.Area.paths:
-            path.add_to_scene()
+        globals_.Area.reset()
 
     def ChangeSelectionHandler(self):
         """
