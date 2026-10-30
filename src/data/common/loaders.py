@@ -4,6 +4,7 @@ import os
 import struct
 import sys
 from xml.etree import ElementTree
+from typing import TYPE_CHECKING
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
@@ -34,6 +35,9 @@ from ui.dialogs.diagnostic_tool import DiagnosticToolDialog
 from ui.dialogs.object_swap import ObjectTypeSwapDialog
 from ui.dialogs.sprite_switch import SpriteSwitchDialog
 from ui.theme.reggie_theme import GetAppIcon, GetIcon, ReggieTheme
+
+if TYPE_CHECKING:
+    from ui.widgets.reggie_window import ReggieWindow
 
 def getResourcePaths(res_name: str) -> list[str]:
     """
@@ -725,8 +729,7 @@ def LoadMusicInfo(reload_: bool = False) -> None:
 
     globals_.MusicInfo = songs.items()
 
-
-def LoadMenuActions(mw) -> None:
+def LoadMenuActions(mw: ReggieWindow) -> None:
     # TODO: Maybe make a proper Protocol type that has all methods from ReggieWindow which are referenced here
     # Define the global list of menu items, and their associated data
     # Some menu items are tied to docks or have special behavior, and thus are not defined here
