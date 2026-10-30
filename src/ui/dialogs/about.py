@@ -17,7 +17,7 @@ class AboutDialog(QtWidgets.QDialog):
         Creates and initializes the dialog
         """
         super().__init__()
-        self.setWindowTitle(globals_.trans.string('AboutDlg', 0))
+        self.setWindowTitle(globals_.trans_new.string("dialog.about.window_title"))
 
         # Open the readme file
         readme = ''
@@ -25,7 +25,7 @@ class AboutDialog(QtWidgets.QDialog):
             with open(os.path.join(get_root_path(), 'README.md'), 'r', encoding='utf-8') as f:
                 readme = f.read()
         except FileNotFoundError:
-            readme = globals_.trans.string('AboutDlg', 4)
+            readme = globals_.trans_new.string("error.readme_not_found")
 
         logo = QtGui.QPixmap(os.path.join(get_reggiedata_folder(), 'icon.png'))
         logo_label = QtWidgets.QLabel()
@@ -34,9 +34,9 @@ class AboutDialog(QtWidgets.QDialog):
 
         link = 'https://horizon.miraheze.org/wiki/Discord_Servers'
 
-        header = globals_.trans.string('AboutDlg', 1)
-        info = globals_.trans.string('AboutDlg', 2)
-        contact = globals_.trans.string('AboutDlg', 3, '[link]', link)
+        header = globals_.trans_new.string("dialog.about.header")
+        info = globals_.trans_new.string("dialog.about.info")
+        contact = globals_.trans_new.string("dialog.about.contact", ('[link]', link))
 
         description = (
             '<html><head><style type="text/CSS">'
@@ -63,10 +63,10 @@ class AboutDialog(QtWidgets.QDialog):
         readme_view.setReadOnly(True)
         readme_view.setOpenExternalLinks(True)
 
-        changelog_button = QtWidgets.QPushButton(globals_.trans.string('AboutDlg', 5))
+        changelog_button = QtWidgets.QPushButton(globals_.trans_new.string("dialog.about.changelog_button"))
         changelog_button.clicked.connect(lambda: ChangelogDialog().exec())
 
-        close_button = QtWidgets.QPushButton(globals_.trans.string('AboutDlg', 6))
+        close_button = QtWidgets.QPushButton(globals_.trans_new.string("common.close"))
 
         button_box = QtWidgets.QDialogButtonBox()
         button_box.addButton(changelog_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)

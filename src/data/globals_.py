@@ -8,6 +8,7 @@ from data.common.keybind import Keybind
 from data.common.menu_action import MenuAction
 from data.common.reggie_translation import ReggieTranslation
 from data.common.toolbar_action import ToolbarAction
+from data.common.translation_element import TranslationElement
 from data.level.abstract_level import AbstractLevel
 from data.level.area import Area as AreaType
 from data.level.background_file import BackgroundFileEntry
@@ -143,6 +144,7 @@ AllowSizeHacks: bool = False
 app: QtWidgets.QApplication | None = None
 firstLoad: bool = True
 trans: ReggieTranslation = ReggieTranslation(None)
+trans_new: TranslationElement = TranslationElement.init_as_english()
 gamedef: ReggieGameDefinition = ReggieGameDefinition()
 # uninitialized
 mainWindow: ReggieWindow

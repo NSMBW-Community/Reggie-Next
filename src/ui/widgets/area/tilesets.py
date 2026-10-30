@@ -46,14 +46,14 @@ class TilesetsTab(QtWidgets.QWidget):
 
             # Hardcoded initial width because the default width is too small
             tree.setColumnWidth(0, 192)
-            tree.setHeaderLabels([globals_.trans.string('AreaDlg', 28), globals_.trans.string('AreaDlg', 29)])  # ['Name', 'File']
+            tree.setHeaderLabels([globals_.trans_new.string('common.name'), globals_.trans_new.string('common.file')])
             tree.setIndentation(16)
             tree.itemSelectionChanged.connect((lambda slot: _tree_selected(slot))(slot))
             self.trees.append(tree)
 
             # Add "None" entry
             item = QtWidgets.QTreeWidgetItem()
-            item.setText(0, globals_.trans.string('AreaDlg', 15))  # 'None'
+            item.setText(0, globals_.trans_new.string('common.none'))  # 'None'
             tree.addTopLevelItem(item)
             self.none_items.append(item)
 
@@ -74,7 +74,7 @@ class TilesetsTab(QtWidgets.QWidget):
             line = QtWidgets.QLineEdit()
             line.textChanged.connect((lambda slot: _text_edited(slot))(slot))
             line.setCompleter(QtWidgets.QCompleter(tileset_list))
-            line.setPlaceholderText(globals_.trans.string('AreaDlg', 30))  # '(None)'
+            line.setPlaceholderText(globals_.trans_new.string('common.none_paren'))  # '(None)'
             self.line_edit.append(line)
             line.setText(globals_.Area.tilesets[slot])
 
@@ -83,7 +83,7 @@ class TilesetsTab(QtWidgets.QWidget):
             tab_layout.addWidget(tree, 0, 0, 1, 2)
             if globals_.ShowTilesetPreview:
                 tab_layout.addLayout(preview_grid, 0, 2)
-            tab_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('AreaDlg', 31, '[slot]', slot)), 1, 0)  # 'Tilesets (Pa[slot])'
+            tab_layout.addWidget(QtWidgets.QLabel(globals_.trans_new.string('dialog.area.tab.tilesets.slot_title', ('[slot]', slot))), 1, 0)  # 'Tilesets (Pa[slot])'
             tab_layout.addWidget(line, 1, 1)
             tab_layout.setRowStretch(0, 1)
 
@@ -101,10 +101,10 @@ class TilesetsTab(QtWidgets.QWidget):
             tabs.setTabPosition(tabs.TabPosition.West)
 
         tabs.setUsesScrollButtons(False)
-        tabs.addTab(self.widgets[0], globals_.trans.string('AreaDlg', 11))  # 'Standard Suite'
-        tabs.addTab(self.widgets[1], globals_.trans.string('AreaDlg', 12))  # 'Stage Suite'
-        tabs.addTab(self.widgets[2], globals_.trans.string('AreaDlg', 13))  # 'Background Suite'
-        tabs.addTab(self.widgets[3], globals_.trans.string('AreaDlg', 14))  # 'Interactive Suite'
+        tabs.addTab(self.widgets[0], globals_.trans_new.string('dialog.area.tab.tilesets.slot.0'))  # 'Standard Suite'
+        tabs.addTab(self.widgets[1], globals_.trans_new.string('dialog.area.tab.tilesets.slot.1'))  # 'Stage Suite'
+        tabs.addTab(self.widgets[2], globals_.trans_new.string('dialog.area.tab.tilesets.slot.2'))  # 'Background Suite'
+        tabs.addTab(self.widgets[3], globals_.trans_new.string('dialog.area.tab.tilesets.slot.3'))  # 'Interactive Suite'
 
         main_layout = QtWidgets.QVBoxLayout()
         main_layout.addWidget(tabs)
@@ -118,8 +118,8 @@ class TilesetsTab(QtWidgets.QWidget):
         for idx, name in enumerate(self.values()):
             if name in ('', None):
                 name = ''
-            elif name.startswith(str(globals_.trans.string('AreaDlg', 16))):
-                name = name[len(str(globals_.trans.string('AreaDlg', 17, '[name]', ''))):]
+            elif name.startswith(str(globals_.trans_new.string('dialog.area.tab.tilesets.custom'))):
+                name = name[len(str(globals_.trans_new.string('dialog.area.tab.tilesets.custom_with_name', ('[name]', '')))):]
 
             globals_.Area.tilesets[idx] = name
 

@@ -22,14 +22,14 @@ class LoadedSpritesTab(QtWidgets.QWidget):
             model.selectionChanged.connect(lambda: self.item_selected(True))
 
         self.sprite_input = QtWidgets.QLineEdit()
-        self.sprite_input.setPlaceholderText(globals_.trans.string('AreaDlg', 52))
+        self.sprite_input.setPlaceholderText(globals_.trans_new.string('dialog.area.tab.loaded_sprites.type_id'))
         self.sprite_input.textChanged.connect(self.input_changed)
 
-        self.add_button = QtWidgets.QPushButton(globals_.trans.string('AreaDlg', 47))
+        self.add_button = QtWidgets.QPushButton(globals_.trans_new.string('dialog.area.tab.loaded_sprites.add'))
         self.add_button.clicked.connect(self.add_sprite)
         self.add_button.setEnabled(False)
 
-        self.remove_button = QtWidgets.QPushButton(globals_.trans.string('AreaDlg', 48))
+        self.remove_button = QtWidgets.QPushButton(globals_.trans_new.string('dialog.area.tab.loaded_sprites.remove_selected'))
         self.remove_button.clicked.connect(self.remove_sprite)
         self.remove_button.setEnabled(False)
 
@@ -54,17 +54,17 @@ class LoadedSpritesTab(QtWidgets.QWidget):
         self.res_list = QtWidgets.QTextEdit()
         self.res_list.setReadOnly(True)
         self.res_list.setMaximumHeight(84)
-        self.res_list.setText(globals_.trans.string('AreaDlg', 56))
+        self.res_list.setText(globals_.trans_new.string('dialog.area.tab.loaded_sprites.resources.select_to_view'))
 
         sprites_layout = QtWidgets.QGridLayout()
-        sprites_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('AreaDlg', 49)), 0, 0)
-        sprites_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('AreaDlg', 50)), 0, 1)
+        sprites_layout.addWidget(QtWidgets.QLabel(globals_.trans_new.string('dialog.area.tab.loaded_sprites.present')), 0, 0)
+        sprites_layout.addWidget(QtWidgets.QLabel(globals_.trans_new.string('dialog.area.tab.loaded_sprites.custom')), 0, 1)
         sprites_layout.addWidget(self.auto_list, 1, 0)
         sprites_layout.addLayout(custom_layout, 1, 1)
         sprites_layout.addWidget(self.res_label, 2, 0)
         sprites_layout.addWidget(self.res_list, 3, 0, 1, 2)
 
-        info_text = QtWidgets.QLabel(globals_.trans.string('AreaDlg', 51))
+        info_text = QtWidgets.QLabel(globals_.trans_new.string('dialog.area.tab.loaded_sprites.info'))
         info_text.setWordWrap(True)
 
         main_layout = QtWidgets.QVBoxLayout()
@@ -116,7 +116,7 @@ class LoadedSpritesTab(QtWidgets.QWidget):
             if 0 <= x < globals_.NumSprites:
                 name = globals_.Sprites[x].name
             else:
-                name = globals_.trans.string('AreaDlg', 53)
+                name = globals_.trans_new.string('common.unknown_upper')
 
             sprites.append(f"[{x}] {name}")
 
@@ -142,7 +142,7 @@ class LoadedSpritesTab(QtWidgets.QWidget):
         if 0 <= sprite_id < globals_.NumSprites:
             name = globals_.Sprites[sprite_id].name
         else:
-            name = globals_.trans.string('AreaDlg', 53)
+            name = globals_.trans_new.string('common.unknown_upper')
 
         self.custom_model.setData(index, f"[{sprite_id}] {name}")
 
@@ -178,11 +178,11 @@ class LoadedSpritesTab(QtWidgets.QWidget):
         # Check if anything is selected, set the placeholder strings if not
         selected = model.selectedIndexes()
         if len(selected) < 1:
-            self.res_list.setText(globals_.trans.string('AreaDlg', 56))
+            self.res_list.setText(globals_.trans_new.string('dialog.area.tab.loaded_sprites.resources.select_to_view'))
             self.res_label.setText(None)
             return
 
-        resources = globals_.trans.string('AreaDlg', 55) # 'No resources found.'
+        resources = globals_.trans_new.string('dialog.area.tab.loaded_sprites.resources.none_found') # 'No resources found.'
 
         # Get the sprite ID from the name string
         sprite_id = int(selected[0].data().split(']')[0][1:])
@@ -194,5 +194,5 @@ class LoadedSpritesTab(QtWidgets.QWidget):
                 resources = sprite_res.removeprefix('<b>This sprite loads:</b><br>')
 
         # Update the display
-        self.res_label.setText(globals_.trans.string('AreaDlg', 54, '[num]', sprite_id))
+        self.res_label.setText(globals_.trans_new.string('dialog.area.tab.loaded_sprites.resources.loaded_by_id', ('[num]', sprite_id)))
         self.res_list.setText(resources)

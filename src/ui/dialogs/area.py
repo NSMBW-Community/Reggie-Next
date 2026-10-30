@@ -8,6 +8,7 @@ from ui.widgets.area.tilesets import TilesetsTab
 from ui.widgets.area.settings import SettingsTab
 from ui.widgets.area.loaded_sprites import LoadedSpritesTab
 
+
 class AreaOptionsDialog(QtWidgets.QDialog):
     """
     Dialog which lets you choose among various area options from tabs
@@ -18,7 +19,7 @@ class AreaOptionsDialog(QtWidgets.QDialog):
         Creates and initializes the tab dialog
         """
         QtWidgets.QDialog.__init__(self)
-        self.setWindowTitle(globals_.trans.string('AreaDlg', 0))
+        self.setWindowTitle(globals_.trans_new.string('dialog.area.title'))
         self.setWindowIcon(GetIcon('wooden-box'))
 
         self.tilesets_tab = TilesetsTab()
@@ -26,9 +27,9 @@ class AreaOptionsDialog(QtWidgets.QDialog):
         self.loaded_sprites_tab = LoadedSpritesTab()
 
         self.tab_widget = QtWidgets.QTabWidget()
-        self.tab_widget.addTab(self.tilesets_tab, GetIcon('document-block'), globals_.trans.string('AreaDlg', 1))
-        self.tab_widget.addTab(self.settings_tab, GetIcon('gear'), globals_.trans.string('AreaDlg', 2))
-        self.tab_widget.addTab(self.loaded_sprites_tab, GetIcon('rocket-exclamation-red'), globals_.trans.string('AreaDlg', 46))
+        self.tab_widget.addTab(self.tilesets_tab, GetIcon('document-block'), globals_.trans_new.string('dialog.area.tab.tilesets.title'))
+        self.tab_widget.addTab(self.settings_tab, GetIcon('gear'), globals_.trans_new.string('dialog.area.tab.settings.title'))
+        self.tab_widget.addTab(self.loaded_sprites_tab, GetIcon('rocket-exclamation-red'), globals_.trans_new.string('dialog.area.tab.loaded_sprites.title'))
 
         button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
         button_box.accepted.connect(self.accept)
