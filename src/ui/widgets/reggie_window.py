@@ -162,6 +162,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.GameDefMenu = GameDefMenu()
         self.setup_menu_bar()
 
+        # Get the zoom level
+        self.ZoomLevel = setting('ZoomLevel', 100.0)
+
         # Set up the status bar
         self.setup_status_bar()
 
@@ -225,9 +228,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if state is not None:
                 self.restoreState(state, 0)
 
-        # Restore zoom level
-        zoom = setting('ZoomLevel', 100.0)
-        self.ZoomTo(zoom, towardsCursor=False)
+        # Restore zoom level now that everything is setup
+        self.ZoomTo(self.ZoomLevel, towardsCursor=False)
 
         # Set initial state for diagnostic widget
         # Calling this while the auto-diag is initing
@@ -1945,7 +1947,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.action_list['deletearea'].setEnabled(len(globals_.Level.areas) > 1)
         self.action_list['backgrounds'].setEnabled(len(globals_.Area.zones) > 0)
 
-        self.ZoomTo(100.0)
+        if not globals_.Initializing:
+            self.ZoomTo(100.0)
 
         # Turn snapping back on
         globals_.OverrideSnapping = False
@@ -1967,7 +1970,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             # Add the path to Recent Files
             self.RecentMenu.add_to_list(self.fileSavePath)
 
-        # If we got this far, everything worked! Return True.
         return True
 
     def newLevel(self):

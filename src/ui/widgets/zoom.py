@@ -33,9 +33,7 @@ class ZoomWidget(QtWidgets.QWidget):
         self.slider.setPageStep(1)
         self.slider.setTracking(True)
 
-        pos = self.find_level_index(100)
-        if pos is not None:
-            self.slider.setSliderPosition(pos)
+        self.set_zoom_level(globals_.mainWindow.ZoomLevel)
         self.slider.valueChanged.connect(self.handle_slider_moved)
 
         self.min_label.setIcon(GetIcon('magnifier-zoom-minimum'))
