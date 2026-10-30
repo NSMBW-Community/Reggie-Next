@@ -598,8 +598,8 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         self.AutoFlag = False
         self.UpdateFlag = False
 
-        # minimise height
-        if globals_.mainWindow is not None and globals_.mainWindow.spriteEditorDock.isFloating():
+        # Minimise height
+        if globals_.mainWindow.spriteEditorDock.isFloating():
             window = self.window()
             if window is not None:
                 window.resize(self.width(), 0)
@@ -736,7 +736,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         self.DataUpdate.emit(new_data)
 
         # Fix window not shrinking after fields are hidden
-        if globals_.mainWindow is not None and globals_.mainWindow.spriteEditorDock.isFloating():
+        if globals_.mainWindow.spriteEditorDock.isFloating():
             window = self.window()
             if window is not None:
                 window.resize(self.width(), 0)
@@ -774,7 +774,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
             x_ = mw.selObj.objx + 16 if mw.selObj.objx is not None else 16
             y_ = mw.selObj.objy if mw.selObj.objy is not None else 0
-            SpriteItem.CreateSprite(x_, y_, id_, data=bytes(10))
+            SpriteItem.create(x_, y_, id_, data=bytes(10))
 
             # remove this dependency, because it is now fulfilled.
             # get row of button

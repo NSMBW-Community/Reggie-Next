@@ -64,9 +64,6 @@ class StampTab(QtWidgets.QWidget):
         """
         Handles the "Add Stamp" btn being clicked
         """
-        if globals_.mainWindow is None:
-            return
-
         sel_items = globals_.mainWindow.scene.selectedItems()
         if not sel_items:
             return
@@ -88,9 +85,6 @@ class StampTab(QtWidgets.QWidget):
         """
         Handles the "Copy Selected to Clipboard" btn being clicked
         """
-        if globals_.mainWindow is None:
-            return
-
         stamp = self.stamp_picker.currentlySelectedStamp()
         if stamp is None or globals_.mainWindow.systemClipboard is None:
             return

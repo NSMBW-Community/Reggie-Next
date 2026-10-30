@@ -114,9 +114,6 @@ class TilesetsTab(QtWidgets.QWidget):
         """
         Saves the tileset data
         """
-        if globals_.mainWindow is None:
-            return
-
         tileset_num = 0
         for idx, name in enumerate(self.values()):
             if name in ('', None):

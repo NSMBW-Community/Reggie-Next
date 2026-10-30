@@ -84,9 +84,6 @@ class ScreenshotDialog(QtWidgets.QDialog):
         """
         Takes the screenshot
         """
-        if globals_.mainWindow is None:
-            return
-
         target = self.target_combo.currentIndex()
         grid_type = self.grid_type.currentIndex()
         hide_background = self.hide_background.isChecked()

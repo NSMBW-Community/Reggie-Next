@@ -50,7 +50,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         """
         Overrides mouse pressing events if needed
         """
-        if globals_.mainWindow is None or event is None:
+        if event is None:
             return
 
         if event.button() == QtCore.Qt.MouseButton.BackButton:
@@ -77,7 +77,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 clickedx = int(clicked.x() / 24)
                 clickedy = int(clicked.y() / 24)
 
-                obj = ObjectItem.CreateObject(
+                obj = ObjectItem.create(
                     globals_.CurrentPaintType, globals_.CurrentObject, globals_.CurrentLayer,
                     clickedx, clickedy
                 )
@@ -92,7 +92,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 clickedx = int((clicked.x() - 12) / 12) * 8
                 clickedy = int((clicked.y() - 12) / 12) * 8
 
-                spr = SpriteItem.CreateSprite(clickedx, clickedy, globals_.CurrentSprite)
+                spr = SpriteItem.create(clickedx, clickedy, globals_.CurrentSprite)
                 if spr is not None:
                     spr.UpdateDynamicSizing()
 
@@ -110,7 +110,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 clickedx = int((clicked.x() - 12) / 1.5)
                 clickedy = int((clicked.y() - 12) / 1.5)
 
-                ent = EntranceItem.CreateEntrance(clickedx, clickedy)
+                ent = EntranceItem.create(clickedx, clickedy)
 
                 self.dragstamp = False
                 self.currentobj = ent
@@ -187,7 +187,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 clickedx = int(clicked.x() / 1.5)
                 clickedy = int(clicked.y() / 1.5)
 
-                loc = LocationItem.CreateLocation(clickedx, clickedy)
+                loc = LocationItem.create(clickedx, clickedy)
 
                 self.dragstamp = False
                 self.currentobj = loc
@@ -223,7 +223,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 clickedx = int((clicked.x() - 12) / 1.5)
                 clickedy = int((clicked.y() - 12) / 1.5)
 
-                com = CommentItem.CreateComment(clickedx, clickedy, '')
+                com = CommentItem.create(clickedx, clickedy, '')
 
                 self.dragstamp = False
                 self.currentobj = com
@@ -320,9 +320,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
         pos = self.mapToScene(self.mapFromGlobal(QtGui.QCursor.pos()))
         obj = self.currentobj
-
-        if globals_.mainWindow is None:
-            return
 
         if not self.dragstamp:
             # possibly a small optimization

@@ -97,8 +97,7 @@ class ObjectTab(QtWidgets.QTabWidget):
                 self.object_picker.ShowTileset(new_tab)
                 self.slot_tabs[new_tab].setLayout(self.tab_layout)
 
-            if globals_.mainWindow is not None:
-                globals_.mainWindow.defaultPropDock.setVisible(False)
+            globals_.mainWindow.defaultPropDock.setVisible(False)
 
         globals_.CurrentPaintType = new_tab
 

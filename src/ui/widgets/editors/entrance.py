@@ -274,8 +274,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.ent.TypeChange()
         self.ent.update()
         self.ent.UpdateTooltip()
-        if globals_.mainWindow is not None:
-            globals_.mainWindow.scene.update()
+        globals_.mainWindow.scene.update()
         self.ent.UpdateListItem()
 
     def handle_dest_area_changed(self, i):

@@ -79,9 +79,6 @@ class PaletteDock(QtWidgets.QDockWidget):
         """
         Resets data for all child tabs
         """
-        if globals_.mainWindow is None:
-            return
-
         self.object_tab.reset(False)
         if all(tileset == '' for tileset in globals_.Area.tilesets):
             globals_.mainWindow.action_list['swapobjectstypes'].setEnabled(False)

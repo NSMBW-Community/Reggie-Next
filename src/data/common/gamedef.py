@@ -465,7 +465,7 @@ def LoadGameDef(name: str | None = None):
         if pressed_button == QtWidgets.QMessageBox.StandardButton.Cancel:
             return False
 
-        if globals_.mainWindow is None:
+        if not hasattr(globals_, 'mainWindow'):
             # This check avoids an error because globals_.mainWindow is None
             # when first loading the editor. Returning False here avoids a
             # loop where the user cannot open the editor because the program
@@ -498,7 +498,6 @@ def LoadGameDef(name: str | None = None):
     if globals_.Area.areanum != -1:
         globals_.Area.InitialiseIdTypes()
 
-    if globals_.mainWindow is not None:
         globals_.mainWindow.palette_dock.sprite_tab.view_picker.clear()
 
         for cat in globals_.SpriteCategories:
@@ -577,7 +576,7 @@ def LoadGameDef(name: str | None = None):
     LoadEntranceNames(True)
 
     # Reload current entrance since the config can change entrance settings
-    if globals_.mainWindow is not None:
+    if hasattr(globals_, 'mainWindow'):
         entrance = globals_.mainWindow.entrance_editor.ent
         if entrance is not None:
             globals_.mainWindow.entrance_editor.set_entrance(entrance, True)

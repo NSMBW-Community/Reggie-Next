@@ -28,11 +28,10 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         slots = ('Pa0', 'Pa1', 'Pa2', 'Pa3')
 
         # Only offer slots that have a tileset
-        if globals_.mainWindow is not None:
-            for i in range(4):
-                if globals_.mainWindow.palette_dock.object_tab.isTabEnabled(i):
-                    self.curr_tileset.addItem(slots[i])
-                    self.new_tileset.addItem(slots[i])
+        for i in range(4):
+            if globals_.mainWindow.palette_dock.object_tab.isTabEnabled(i):
+                self.curr_tileset.addItem(slots[i])
+                self.new_tileset.addItem(slots[i])
 
         self.curr_tileset.currentIndexChanged.connect(self.set_object_counts)
         self.new_tileset.currentIndexChanged.connect(self.set_object_counts)
@@ -106,9 +105,6 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         """
         Returns the number of objects in a tileset
         """
-        if globals_.mainWindow is None:
-            return 0
-
         return len(globals_.mainWindow.palette_dock.object_tab.object_picker.models[index].ritems) - 1
 
     def set_object_counts(self) -> None:

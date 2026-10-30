@@ -6,7 +6,10 @@ from data import globals_
 from data.common.utils import get_reggiedata_folder
 
 
-def checkContent(data: bytes) -> bool:
+def check_content(data: bytes) -> bool:
+    """
+    Checks the contents of the file to validate it as a NSMBW level
+    """
     if not data.startswith(b'U\xAA8-'):
         return False
 
@@ -18,11 +21,12 @@ def checkContent(data: bytes) -> bool:
     return True
 
 
-def IsNSMBLevel(filename: str) -> bool:
+def IsValidLevel(filename: str) -> bool:
     """
-    Does some basic checks to confirm a file is a NSMB level
+    Does some basic checks to confirm a file is a NSMBW level
     """
-    if not os.path.isfile(filename): return False
+    if not os.path.isfile(filename):
+        return False
 
     with open(filename, 'rb') as f:
         data = f.read()
@@ -30,7 +34,7 @@ def IsNSMBLevel(filename: str) -> bool:
     if (data[0] & 0xF0) == 0x40 or not data.startswith(b"U\xAA8-"):  # If LH-compressed or LZ-compressed
         return True
 
-    return checkContent(data)
+    return check_content(data)
 
 
 def FilesAreMissing() -> bool:

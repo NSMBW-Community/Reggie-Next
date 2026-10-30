@@ -3,6 +3,7 @@ from PyQt6 import QtWidgets
 from data import globals_
 import spritelib as SLib
 from data.level.dirty import SetDirty
+from data.level.items.sprite import SpriteItem
 from ui.theme.reggie_theme import GetIcon
 
 
@@ -15,7 +16,7 @@ class SpriteSwitchDialog(QtWidgets.QDialog):
     Dialog to switch the types of selected sprites
     """
 
-    def __init__(self, selected: int) -> None:
+    def __init__(self) -> None:
         """
         Creates and initializes the dialog
         """
@@ -30,7 +31,22 @@ class SpriteSwitchDialog(QtWidgets.QDialog):
         self.new_type.setRange(0, 65535)
 
         # Set a default ID, if applicable
-        self.curr_type.setValue(selected)
+        default_id = 0
+        
+        items = globals_.mainWindow.scene.selectedItems()
+        if items:
+            id_list = []
+
+            # Get all the sprite IDs
+            for item in items:
+                if isinstance(item, SpriteItem):
+                    id_list.append(item.sprite_num)
+
+            # If we only have one sprite ID, use that
+            if len(set(id_list)) == 1:
+                default_id = id_list[0]
+
+        self.curr_type.setValue(default_id)
 
         swap_layout = QtWidgets.QGridLayout()
 

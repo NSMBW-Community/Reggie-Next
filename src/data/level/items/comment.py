@@ -61,9 +61,6 @@ class CommentItem(LevelEditorItem):
         self.setZValue(zval + 1)
         self.UpdateTooltip()
 
-        if globals_.mainWindow is None:
-            return
-
         self.TextEdit = QtWidgets.QPlainTextEdit()
         self.TextEditProxy = globals_.mainWindow.scene.addWidget(self.TextEdit)
         if self.TextEditProxy is not None:
@@ -78,14 +75,11 @@ class CommentItem(LevelEditorItem):
         self.reposTextEdit()
 
     @staticmethod
-    def CreateComment(x: int, y: int, text: str = '', add_to_scene: bool = True) -> 'CommentItem | None':
+    def create(x: int, y: int, text: str = '', add_to_scene: bool = True) -> 'CommentItem | None':
         """
         Creates and returns a new comment and makes sure it's added to the
         right lists, unless 'add_to_scene' is set to False.
         """
-        if globals_.mainWindow is None:
-            return None
-
         com = CommentItem(x, y, text)
         com.positionChanged = CommentItem.position_changed
         com.textChanged = CommentItem.text_changed
@@ -122,9 +116,6 @@ class CommentItem(LevelEditorItem):
         """
         Handle the comment's text being changed
         """
-        if globals_.mainWindow is None:
-            return
-
         self.UpdateListItem()
         self.UpdateTooltip()
         globals_.Area.SaveComments()
@@ -289,9 +280,6 @@ class CommentItem(LevelEditorItem):
         """
         Delete the comment from the level
         """
-        if globals_.mainWindow is None:
-            return
-
         comment_list = globals_.mainWindow.palette_dock.comment_tab.comment_list
 
         globals_.mainWindow.UpdateFlag = True

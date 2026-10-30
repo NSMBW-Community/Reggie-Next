@@ -209,3 +209,15 @@ class MetaInfoDialog(QtWidgets.QDialog):
             self.group_field.setReadOnly(False)
             self.website_field.setReadOnly(False)
             self.edit_password_button.setDisabled(False)
+
+    def save_info(self) -> None:
+        """
+        Saves the info back to the metadata system
+        """
+        metadata = cast(NSMBWLevel, globals_.Level).metadata
+        metadata.set_meta_data('creator', f'Reggie! Next {globals_.ReggieVersionShort}')
+        metadata.set_meta_data('title', self.name_field.text())
+        metadata.set_meta_data('author', self.author_field.text())
+        metadata.set_meta_data('group', self.group_field.text())
+        metadata.set_meta_data('website', self.website_field.text())
+        SetDirty()

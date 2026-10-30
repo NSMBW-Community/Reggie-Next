@@ -24,3 +24,35 @@ class AreaDeleteDialog(QtWidgets.QDialog):
         main_layout = QtWidgets.QVBoxLayout(self)
         main_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('DeleteArea', 0)))
         main_layout.addWidget(button_box)
+
+    def delete_area(self) -> None:
+        """
+        Deletes the current area
+        """
+        mw = globals_.mainWindow
+
+        # Save the current area in case something goes wrong.
+        if not mw.save():
+            return
+
+        area_to_delete = globals_.Area.areanum
+        new_area_one = 1 if area_to_delete != 1 else 2
+
+        # Load the new area 1 before deleting the old area to avoid glitches
+        # when the old area was area 1.
+        mw.load_level(mw.fileSavePath, True, new_area_one)
+
+        # Actually delete the area
+        globals_.Level.deleteArea(area_to_delete)
+
+        mw.action_list['deletearea'].setEnabled(len(globals_.Level.areas) > 1)
+
+        # Update the area selection combobox
+        mw.area_combo_box.clear()
+        for area in globals_.Level.areas:
+            mw.area_combo_box.addItem(globals_.trans.string('AreaCombobox', 0, '[num]', area.areanum))
+
+        mw.area_combo_box.setCurrentIndex(0)
+
+        # Save the level without the area as promised
+        mw.save()

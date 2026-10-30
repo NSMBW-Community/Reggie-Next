@@ -284,7 +284,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         y = selObj.objy if selObj.objy is not None else 0
         special_event_id = globals_.SpecialEventSpriteID
 
-        if SpriteItem.CreateSprite(x, y, special_event_id, data) is not None:
+        if SpriteItem.create(x, y, special_event_id, data) is not None:
             mainWindow.scene.update()
 
     def getGlobalScale(self) -> int | None:

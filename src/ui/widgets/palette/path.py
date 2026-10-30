@@ -31,9 +31,6 @@ class PathTab(QtWidgets.QWidget):
         """
         Deselects selected path nodes in the list
         """
-        if globals_.mainWindow is None:
-            return
-
         for selecteditem in self.path_list.selectedItems():
             selecteditem.setSelected(False)
 
@@ -46,9 +43,6 @@ class PathTab(QtWidgets.QWidget):
         """
         Handle a path node being selected
         """
-        if globals_.mainWindow is None:
-            return
-
         path_item: PathItem = item.reference
         path_item.ensureVisible(xMargin=192, yMargin=192)
         globals_.mainWindow.scene.clearSelection()

@@ -113,11 +113,8 @@ class RecentFilesMenu(QtWidgets.QMenu):
         """
         Open a recently opened level picked from the main menu
         """
-        if globals_.mainWindow is None:
-            return
-
         if CheckDirty():
             return
 
-        if not globals_.mainWindow.LoadLevel(self.file_list[number], True, 1):
+        if not globals_.mainWindow.load_level(self.file_list[number], True, 1):
             self.remove_from_list(number)

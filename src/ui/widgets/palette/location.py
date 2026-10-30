@@ -28,8 +28,6 @@ class LocationTab(QtWidgets.QWidget):
         """
         Handle a location being selected from the list
         """
-        if globals_.mainWindow is None:
-            return
         if globals_.mainWindow.UpdateFlag:
             return
 

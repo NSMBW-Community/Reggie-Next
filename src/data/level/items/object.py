@@ -107,15 +107,12 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
         self.UpdateTooltip()
 
     @staticmethod
-    def CreateObject(tileset: int, object_num: int, layer: int, x: int, y: int,
-                     width: int = 0, height: int = 0, add_to_scene: bool = True) -> "ObjectItem":
+    def create(tileset: int, object_num: int, layer: int, x: int, y: int,
+                width: int = 0, height: int = 0, add_to_scene: bool = True) -> "ObjectItem":
         """
         Creates and returns a new object and makes sure it's added to
         the right lists.
         """
-        if globals_.mainWindow is None:
-            return ObjectItem(-1, -1, -1, -1, -1, -1, -1, -1)
-
         if width == 0 or height == 0:
             if globals_.PlaceObjectsAtFullSize:
                 try:
@@ -151,8 +148,6 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
         Changes the layer of the selected objects to the new layer
         """
         assert new_layer_id in (0, 1, 2)
-        if globals_.mainWindow is None:
-            return
 
         items = globals_.mainWindow.scene.selectedItems()
         area = globals_.Area
@@ -200,8 +195,6 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
         """
         Handles a new object being chosen to replace the selected objects
         """
-        if globals_.mainWindow is None:
-            return
         items = globals_.mainWindow.scene.selectedItems()
         tileset = globals_.CurrentPaintType
         changed = False
@@ -219,9 +212,6 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
         """
         Handle the object being dragged
         """
-        if globals_.mainWindow is None:
-            return
-
         if self == globals_.mainWindow.selObj:
             if oldx == x and oldy == y:
                 return
@@ -614,7 +604,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
             return
 
         if event.button() == QtCore.Qt.MouseButton.LeftButton and QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.KeyboardModifier.ControlModifier:
-            new_item = self.CreateObject(
+            new_item = self.create(
                 self.tileset, self.object_num, self.layer, self.objx,
                 self.objy, self.width, self.height
             )

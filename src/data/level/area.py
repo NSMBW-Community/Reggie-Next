@@ -6,6 +6,7 @@ from PyQt6 import QtWidgets
 import spritelib as SLib
 from data import globals_
 from data.common.loaders import CreateTilesets, LoadTileset
+from data.common.settings import setSetting
 from data.level.items.comment import CommentItem
 from data.level.items.entrance import EntranceItem
 from data.level.items.location import LocationItem
@@ -235,8 +236,7 @@ class Area:
         self.SavePaths()  # blocks 13 and 14
 
         # Save metadata stuff
-        if globals_.mainWindow is not None:
-            globals_.mainWindow.palette_dock.event_tab.save_event_notes()
+        globals_.mainWindow.palette_dock.event_tab.save_event_notes()
         self.SaveComments()
 
         rdata = bytearray(self.legacy_metadata.save())
@@ -283,9 +283,6 @@ class Area:
         """
         Resets the palette and initialises the scene from the currently loaded Area.
         """
-        if globals_.mainWindow is None:
-            return
-
         # Reset the palette
         globals_.mainWindow.palette_dock.reset()
 
@@ -663,7 +660,7 @@ class Area:
         comments = []
 
         # Get all of the comment data
-        for comment in globals_.Area.comments:
+        for comment in self.comments:
             data = {}
             data['pos_x'] = comment.objx
             data['pos_y'] = comment.objy
@@ -671,7 +668,7 @@ class Area:
 
             comments.append(data)
 
-        globals_.Area.metadata.set_meta_data('comments', comments)
+        self.metadata.set_meta_data('comments', comments)
 
     def SaveTilesetNames(self) -> None:
         """
@@ -1019,6 +1016,224 @@ class Area:
                 del counter[value]
             else:
                 counter[value] -= 1
+
+    def freeze_objects(self, freeze: bool) -> None:
+        """
+        Handle toggling of objects being frozen
+        """
+        globals_.ObjectsFrozen = freeze
+        setSetting('FreezeObjects', globals_.ObjectsFrozen)
+
+        if self.areanum == -1:
+            return
+
+        flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
+        flag2 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable
+        unfrozen = not freeze
+
+        for layer in self.layers:
+            for obj in layer:
+                obj.setFlag(flag1, unfrozen)
+                obj.setFlag(flag2, unfrozen)
+
+    def freeze_sprites(self, freeze: bool) -> None:
+        """
+        Handle toggling of sprites being frozen
+        """
+        globals_.SpritesFrozen = freeze
+        setSetting('FreezeSprites', globals_.SpritesFrozen)
+
+        if self.areanum == -1:
+            return
+
+        flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
+        flag2 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable
+        unfrozen = not freeze
+
+        for spr in self.sprites:
+            spr.setFlag(flag1, unfrozen)
+            spr.setFlag(flag2, unfrozen)
+
+    def freeze_entrances(self, freeze: bool) -> None:
+        """
+        Handle toggling of entrances being frozen
+        """
+        globals_.EntrancesFrozen = freeze
+        setSetting('FreezeEntrances', globals_.EntrancesFrozen)
+
+        if self.areanum == -1:
+            return
+
+        flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
+        flag2 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable
+        unfrozen = not freeze
+
+        for ent in self.entrances:
+            ent.setFlag(flag1, unfrozen)
+            ent.setFlag(flag2, unfrozen)
+
+    def freeze_locations(self, freeze: bool) -> None:
+        """
+        Handle toggling of locations being frozen
+        """
+        globals_.LocationsFrozen = freeze
+        setSetting('FreezeLocations', globals_.LocationsFrozen)
+
+        if self.areanum == -1:
+            return
+
+        flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
+        flag2 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable
+        unfrozen = not freeze
+
+        for loc in self.locations:
+            loc.setFlag(flag1, unfrozen)
+            loc.setFlag(flag2, unfrozen)
+
+    def freeze_path_nodes(self, freeze: bool) -> None:
+        """
+        Handle toggling of path nodes being frozen
+        """
+        globals_.PathsFrozen = freeze
+        setSetting('FreezePaths', globals_.PathsFrozen)
+
+        if self.areanum == -1:
+            return
+
+        for path in self.paths:
+            path.set_freeze(freeze)
+
+    def freeze_comments(self, freeze: bool) -> None:
+        """
+        Handle toggling of comments being frozen
+        """
+        globals_.CommentsFrozen = freeze
+        setSetting('FreezeComments', globals_.CommentsFrozen)
+
+        if self.areanum == -1:
+            return
+
+        flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
+        flag2 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable
+        unfrozen = not freeze
+
+        for com in self.comments:
+            com.setFlag(flag1, unfrozen)
+            com.setFlag(flag2, unfrozen)
+
+    def show_layer(self, layer: int, show: bool) -> None:
+        """
+        Toggles visibility of the specified layer
+        """
+        if layer == 0:
+            globals_.Layer0Shown = show
+        elif layer == 1:
+            globals_.Layer1Shown = show
+        else:
+            globals_.Layer2Shown = show
+
+        if self.areanum == -1:
+            return
+
+        for obj in self.layers[layer]:
+            obj.setVisible(show)
+
+        globals_.mainWindow.scene.update()
+
+    def show_sprites(self, show: bool) -> None:
+        """
+        Handle toggling of sprite visibility
+        """
+        globals_.SpritesShown = show
+        setSetting('ShowSprites', globals_.SpritesShown)
+
+        if self.areanum == -1:
+            return
+
+        for spr in self.sprites:
+            spr.setVisible(show)
+
+    def show_sprite_images(self, show: bool) -> None:
+        """
+        Handle toggling of sprite images
+        """
+        globals_.SpriteImagesShown = show
+        setSetting('ShowSpriteImages', globals_.SpriteImagesShown)
+
+        if self.areanum == -1:
+            return
+
+        globals_.DirtyOverride += 1
+        for spr in self.sprites:
+            spr.UpdateRects()
+            if globals_.Initializing:
+                continue
+
+            # Prevents snapping the sprite to the grid
+            spr.ChangingPos = True
+
+            if show:
+                spr.setPos((spr.objx + spr.ImageObj.xOffset) * 1.5, (spr.objy + spr.ImageObj.yOffset) * 1.5)
+            else:
+                spr.setPos(spr.objx * 1.5, spr.objy * 1.5)
+
+            spr.ChangingPos = False
+            spr.update()
+
+        globals_.DirtyOverride -= 1
+        globals_.mainWindow.level_overview.update()
+
+    def show_entrances(self, show: bool) -> None:
+        """
+        Handle toggling of entrance visibility
+        """
+        globals_.EntrancesShown = show
+        setSetting('ShowEntrances', globals_.EntrancesShown)
+
+        if self.areanum == -1:
+            return
+
+        for ent in self.entrances:
+            ent.setVisible(show)
+
+    def show_locations(self, show: bool) -> None:
+        """
+        Handle toggling of location visibility
+        """
+        globals_.LocationsShown = show
+        setSetting('ShowLocations', globals_.LocationsShown)
+
+        if self.areanum == -1:
+            return
+
+        for loc in self.locations:
+            loc.setVisible(show)
+
+    def show_path_nodes(self, show: bool) -> None:
+        """
+        Handle toggling of path visibility
+        """
+        globals_.PathsShown = show
+        setSetting('ShowPaths', globals_.PathsShown)
+
+        if self.areanum == -1:
+            return
+
+        for path in self.paths:
+            path.setVisible(show)
+
+    def show_comments(self, show: bool) -> None:
+        """
+        Handle toggling of comment visibility
+        """
+        globals_.CommentsShown = show
+        setSetting('ShowComments', globals_.CommentsShown)
+
+        if self.areanum == -1:
+            return
+
+        for com in self.comments:
+            com.setVisible(show)
 
     @classmethod
     def DummyArea(cls) -> "Area":

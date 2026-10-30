@@ -169,11 +169,10 @@ class ZoneItem(LevelEditorItem):
 
         if add_to_scene:
             globals_.Area.zones.append(zone)
-            if globals_.mainWindow is not None:
-                globals_.mainWindow.scene.addItem(zone)
+            globals_.mainWindow.scene.addItem(zone)
 
-                globals_.mainWindow.scene.update()
-                globals_.mainWindow.level_overview.update()
+            globals_.mainWindow.scene.update()
+            globals_.mainWindow.level_overview.update()
 
             SetDirty()
 
@@ -189,9 +188,6 @@ class ZoneItem(LevelEditorItem):
         """
         Updates the zone's bounding rectangle
         """
-        if globals_.mainWindow is None:
-            return
-
         if hasattr(globals_.mainWindow, 'ZoomLevel'):
             size = 480 / globals_.mainWindow.ZoomLevel
             size = max(size, 4.8)

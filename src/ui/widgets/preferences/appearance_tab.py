@@ -185,11 +185,6 @@ class AppearanceTab(PreferenceTabWidget):
         """
         Returns a preview pixmap for the given theme
         """
-        if globals_.mainWindow is None:
-            pixmap = QtGui.QPixmap(32 * 16, 17 * 16)
-            pixmap.fill(theme.color('bg'))
-            return pixmap
-
         scene = QtWidgets.QGraphicsScene(0, 0, 32 * 16, 17 * 16, self)
         old_theme, old_real_view, old_round_rect, old_grid = globals_.theme, globals_.RealViewEnabled, globals_.UseRoundedRectangles, globals_.GridType
         globals_.theme = theme
@@ -202,19 +197,19 @@ class AppearanceTab(PreferenceTabWidget):
         globals_.GridType = types[grid_type]
 
         # Sprite [38] at (11, 4)
-        sprite = SpriteItem.CreateSprite(11 * 16, 4 * 16, 38, data=bytes(10), add_to_scene=False)
+        sprite = SpriteItem.create(11 * 16, 4 * 16, 38, data=bytes(10), add_to_scene=False)
         scene.addItem(sprite)
 
         # Sprite [53] at (1, 6)
-        sprite = SpriteItem.CreateSprite(1 * 16, 6 * 16, 53, data=bytes(10), add_to_scene=False)
+        sprite = SpriteItem.create(1 * 16, 6 * 16, 53, data=bytes(10), add_to_scene=False)
         scene.addItem(sprite)
 
         # Entrance [0] at (13, 8)
-        ent = EntranceItem.CreateEntrance(13 * 16, 8 * 16, 0, add_to_scene=False)
+        ent = EntranceItem.create(13 * 16, 8 * 16, 0, add_to_scene=False)
         scene.addItem(ent)
 
         # Location [1] at (1, 9) size (6, 2)
-        loc = LocationItem.CreateLocation(1 * 16, 9 * 16, 6 * 16, 2 * 16, 1, add_to_scene=False)
+        loc = LocationItem.create(1 * 16, 9 * 16, 6 * 16, 2 * 16, 1, add_to_scene=False)
         scene.addItem(loc)
 
         # Zone [1] at (8.5, 3.25) size (16, 7.5)
@@ -297,7 +292,7 @@ class AppearanceTab(PreferenceTabWidget):
         # We have to restart since this must be applied before the QApplication
         # is created... no way to do that while the editor is running
         globals_.IgnoreWinScale = self.ignore_win_scale.isChecked()
-        if setting('IgnoreWinScale') != globals_.IgnoreWinScale:
+        if setting('IgnoreWinScale', False) != globals_.IgnoreWinScale:
             show_restart_warning = True
 
         setSetting('IgnoreWinScale', globals_.IgnoreWinScale)
@@ -305,13 +300,12 @@ class AppearanceTab(PreferenceTabWidget):
         # Switch light/dark mode
         SetColorScheme()
 
-        if globals_.mainWindow is not None:
-            # Update window title
-            globals_.mainWindow.UpdateTitle()
+        # Update window title
+        globals_.mainWindow.set_window_title()
 
-            # Toggle hover events for scene items
-            for item in globals_.mainWindow.scene.items():
-                if not isinstance(item, ZoneItem):
-                    item.setAcceptHoverEvents(globals_.CursorMode != 0)
+        # Toggle hover events for scene items
+        for item in globals_.mainWindow.scene.items():
+            if not isinstance(item, ZoneItem):
+                item.setAcceptHoverEvents(globals_.CursorMode != 0)
 
         return show_restart_warning

@@ -27,9 +27,6 @@ class CommentTab(QtWidgets.QWidget):
         """
         Handle a comment being selected
         """
-        if globals_.mainWindow is None:
-            return
-
         comment: CommentItem
         for comment in globals_.Area.comments:
             if comment.listitem == item:

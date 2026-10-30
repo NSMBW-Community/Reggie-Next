@@ -150,7 +150,9 @@ class GeneralTab(PreferenceTabWidget):
 
         # Get the translation's folder name
         name = self.translations[self.trans_combo.currentIndex()][0]
-        if setting('Translation') != name:
+        if setting('Translation', 'English') not in ('None', name):
+            print(setting('Translation', 'English'))
+            print(name)
             show_restart_warning = True
         setSetting('Translation', name)
 
@@ -181,9 +183,6 @@ class GeneralTab(PreferenceTabWidget):
         globals_.ShowUnknownSpriteWarning = self.show_unk_sprite_msg.isChecked()
         setSetting('ShowUnknownSpriteWarning', globals_.ShowUnknownSpriteWarning)
 
-        if globals_.mainWindow is None:
-            return show_restart_warning
-
         # Update diagnostic widget
         globals_.mainWindow.diagnostic.update_widget()
 
@@ -198,8 +197,7 @@ class GeneralTab(PreferenceTabWidget):
         if ans != QtWidgets.QMessageBox.StandardButton.Yes:
             return
 
-        if globals_.mainWindow is not None:
-            globals_.mainWindow.RecentMenu.clear_all()
+        globals_.mainWindow.RecentMenu.clear_all()
 
     @property
     def get_translations(self):

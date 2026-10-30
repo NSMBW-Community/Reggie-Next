@@ -136,7 +136,6 @@ class ToolbarTab(PreferenceTabWidget):
         setSetting('ToolbarActs', toolbar_actions)
 
         # Remake the toolbar
-        if globals_.mainWindow is not None:
-            globals_.mainWindow.setup_toolbar()
+        globals_.mainWindow.setup_toolbar()
 
         return False

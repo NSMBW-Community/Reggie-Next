@@ -2788,11 +2788,8 @@ class SpriteImage_Sunlight(SLib.SpriteImage):  # 110
         horizontalScrollBar.valueChanged.connect(slot)
         verticalScrollBar.valueChanged.connect(slot)
 
-        # zooming
-        mainWindow = scene.getMainWindow()
-        if mainWindow is None:
-            return
-        mainWindow.ZoomWidget.slider.valueChanged.connect(slot)
+        # Zooming
+        globals_.mainWindow.ZoomWidget.slider.valueChanged.connect(slot)
 
     @staticmethod
     def loadImages():

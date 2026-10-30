@@ -66,7 +66,7 @@ class LocationItem(LevelEditorItem):
         self.setZValue(24000)
 
     @staticmethod
-    def CreateLocation(x: int, y: int, width: int = 16, height: int = 16, id_: int | None = None, add_to_scene: bool = True) -> 'LocationItem | None':
+    def create(x: int, y: int, width: int = 16, height: int = 16, id_: int | None = None, add_to_scene: bool = True) -> 'LocationItem | None':
         """
         Creates and returns a new location and makes sure it's added to the
         right lists, unless 'add_to_scene' is set to False. If 'id' is None, the
@@ -74,9 +74,6 @@ class LocationItem(LevelEditorItem):
         This function returns None if there is no free location id available, and
         the created location otherwise.
         """
-        if globals_.mainWindow is None:
-            return None
-
         if id_ is None:
             # This can be done more efficiently, but 255 is not that big, so it
             # does not really matter.
@@ -114,9 +111,6 @@ class LocationItem(LevelEditorItem):
         """
         Merges selected locations into a single one
         """
-        if globals_.mainWindow is None:
-            return
-
         items = globals_.mainWindow.scene.selectedItems()
         if not items:
             return
@@ -140,7 +134,7 @@ class LocationItem(LevelEditorItem):
             return
 
         loc_rect = new_rect.getRect()
-        loc = LocationItem.CreateLocation(loc_rect[0], loc_rect[1], int(loc_rect[2] or 0), int(loc_rect[3] or 0))
+        loc = LocationItem.create(loc_rect[0], loc_rect[1], int(loc_rect[2] or 0), int(loc_rect[3] or 0))
         if loc is not None:
             loc.setSelected(True)
 
@@ -148,9 +142,6 @@ class LocationItem(LevelEditorItem):
         """
         Handle the location being dragged
         """
-        if globals_.mainWindow is None:
-            return
-
         if self == globals_.mainWindow.selObj:
             if oldx == x and oldy == y:
                 return
@@ -164,9 +155,6 @@ class LocationItem(LevelEditorItem):
         """
         Handle the location being resized
         """
-        if globals_.mainWindow is None:
-            return
-
         if self == globals_.mainWindow.selObj:
             globals_.mainWindow.location_editor.set_location(self)
             SetDirty()
@@ -280,7 +268,7 @@ class LocationItem(LevelEditorItem):
             return
 
         if event.button() == QtCore.Qt.MouseButton.LeftButton and QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.KeyboardModifier.ControlModifier:
-            new_item = self.CreateLocation(
+            new_item = self.create(
                 self.objx, self.objy, self.width, self.height, self.id
             )
 
@@ -394,9 +382,6 @@ class LocationItem(LevelEditorItem):
         """
         Delete the location from the level
         """
-        if globals_.mainWindow is None:
-            return
-
         loclist = globals_.mainWindow.palette_dock.location_tab.location_list
         globals_.mainWindow.UpdateFlag = True
         loclist.takeItem(loclist.row(self.listitem))

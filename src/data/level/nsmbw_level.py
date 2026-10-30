@@ -178,16 +178,24 @@ class NSMBWLevel(AbstractLevel):
         Changes the current area to the specified area in the loaded level
         archive. Note that number is 1-based, not 0-based.
         """
-        current_num = globals_.Area.areanum
+        curr_area = globals_.Area.areanum - 1
+        new_area = number - 1
 
-        # self.areas[current_num - 1] should be unloaded.
-        self.areas[current_num - 1].unload()
+        # Unload the current area
+        self.areas[curr_area].unload()
+
+        # This fixes an issue where creating a new area then switching out
+        # and back into it without first saving will break Reggie due to
+        # the internal area file being empty.
+        if self.areas[new_area].course is None:
+            self.areas[new_area] = Area(number)
+            self.areas[new_area].set_data(None, None, None, None, None)
 
         # Set the globals properly
-        globals_.Area = self.areas[number - 1]
-        SLib.Area = self.areas[number - 1]
+        globals_.Area = self.areas[new_area]
+        SLib.Area = self.areas[new_area]
 
-        # self.areas[number - 1] should be loaded.
-        self.areas[number - 1].load()
+        # Load the new area
+        self.areas[new_area].load()
 
         return True

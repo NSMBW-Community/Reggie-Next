@@ -158,9 +158,6 @@ class Path:
         Adds a node to the path at the specified position. If no index is given,
         the node is appended to the end of the path.
         """
-        if globals_.mainWindow is None:
-            return PathItem(-1, -1, -1, -1, self)
-
         if index is None:
             index = len(self._nodes)
 
@@ -195,8 +192,6 @@ class Path:
         this node has been removed.
         """
         node = self._nodes[index]
-        if globals_.mainWindow is None:
-            return False
 
         # Hacky stuff
         plist = globals_.mainWindow.palette_dock.path_tab.path_list

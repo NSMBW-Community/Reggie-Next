@@ -9,14 +9,13 @@ Qt = QtCore.Qt
 
 from data import globals_
 
-from data.common import archive
 import spritelib as SLib
 
 from libs import lh, lib_versions, lz77
 from ui.theme.reggie_theme import GetIcon, GetAppIcon
-from data.common.loaders import LoadMenuActions, LoadLevelNames, LoadZoneThemes, GetKeybind
-from data.common.utils import clamp, SetGamePaths, get_reggiedata_folder
-from data.common.validators import IsNSMBLevel, areValidGamePaths
+from data.common.loaders import LoadMenuActions, LoadLevelNames, LoadZoneThemes, GetKeybind, DecompressLevel
+from data.common.utils import SetGamePaths, get_reggiedata_folder
+from data.common.validators import IsValidLevel, areValidGamePaths
 from ui.widgets.level_scene import LevelScene
 from ui.widgets.level_view import LevelViewWidget
 from data.level.dirty import SetDirty, CheckDirty
@@ -29,7 +28,6 @@ from data.level.items.path import PathItem
 from data.level.items.path_editor_line import PathEditorLineItem
 from data.level.items.sprite import SpriteItem
 from data.level.items.zone import ZoneItem
-from data.common.loaders import UnloadTileset, LoadTileset
 from data.level.nsmbw_level import NSMBWLevel
 from ui.widgets.spriteeditor.sprite_editor import SpriteEditorWidget
 from ui.actions.undo.undo_stack import UndoStack
@@ -42,10 +40,9 @@ from ui.dialogs.camera_profile import CameraProfilesDialog
 from ui.dialogs.choose_level_name import ChooseLevelNameDialog
 from ui.dialogs.item_shift import ItemShiftDialog
 from ui.dialogs.meta_info import MetaInfoDialog
-from ui.dialogs.obj_tileset_swap import ObjectTilesetSwapDialog
+from ui.dialogs.tileset_swap import TilesetSwapDialog
 from ui.dialogs.preference import PreferencesDialog
 from ui.dialogs.screenshot import ScreenshotDialog
-from ui.dialogs.sprite_switch import SpriteSwitchDialog
 from ui.dialogs.zone import ZonesDialog
 
 from ui.menus.game_def_menu import GameDefMenu
@@ -74,7 +71,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
     """
     action_list: dict[str, QtGui.QAction] = {}
 
-    def CreateDockWidget(self, title, obj_name, widget, features, area, allowed_areas, visible, floating, is_palette = False, is_editor = False):
+    def create_dock_widget(self, title: str | None, obj_name: str, widget: QtWidgets.QWidget, features: QtWidgets.QDockWidget.DockWidgetFeature,
+                           area: QtCore.Qt.DockWidgetArea, allowed_areas: QtCore.Qt.DockWidgetArea | None, visible: bool, floating: bool,
+                           is_palette: bool = False, is_editor: bool = False) -> PaletteDock | ItemEditorDockWidget | QtWidgets.QDockWidget:
         """
         Helper function to create docks
         """
@@ -103,7 +102,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.addDockWidget(area, dock)
         return dock
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Editor window constructor
         """
@@ -136,9 +135,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.view = LevelViewWidget(self.scene, self)
         self.view.centerOn(0, 0) # This scrolls to the top left
         self.view.PositionHover.connect(self.PositionHovered)
-        self.view.XScrollBar.valueChanged.connect(self.XScrollChange)
-        self.view.YScrollBar.valueChanged.connect(self.YScrollChange)
-        self.view.FrameSize.connect(self.HandleWindowSizeChange)
 
         # Done creating the window!
         self.setCentralWidget(self.view)
@@ -147,14 +143,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.clipboard = None
         self.systemClipboard = QtWidgets.QApplication.clipboard()
         if self.systemClipboard is not None:
-            self.systemClipboard.dataChanged.connect(self.TrackClipboardUpdates)
+            self.systemClipboard.dataChanged.connect(self.track_clipboard_updates)
 
-    def __init2__(self):
+    def __init2__(self) -> None:
         """
         Finishes initialization. (fixes bugs with some widgets calling globals_.mainWindow.something before it's init'ed)
         """
         self.auto_save_timer = QtCore.QTimer()
-        self.auto_save_timer.timeout.connect(self.Autosave)
+        self.auto_save_timer.timeout.connect(self.auto_save_level)
         self.auto_save_timer.start(20000) # 20 seconds
 
         # Set up actions and menus
@@ -189,27 +185,27 @@ class ReggieWindow(QtWidgets.QMainWindow):
         loaded = False
         self.fileSavePath = None
 
-        if len(sys.argv) > 1 and IsNSMBLevel(sys.argv[1]):
+        if len(sys.argv) > 1 and IsValidLevel(sys.argv[1]):
             # There's a level in the args, load that
-            loaded = self.LoadLevel(sys.argv[1], True, 1)
+            loaded = self.load_level(sys.argv[1], True, 1)
         else:
             # Try the last level loaded with this game patch
             last_level = globals_.gamedef.GetLastLevel()
             if last_level is not None:
-                loaded = self.LoadLevel(last_level, True, 1)
+                loaded = self.load_level(last_level, True, 1)
 
         # Fall back to the first level in the current patch's Stage folder
         if not loaded:
-            self.LoadLevel(globals_.FirstStageFilename, True, 1)
+            self.load_level(globals_.FirstStageFilename, True, 1)
 
         # Call toggle-button handlers to set each feature correctly upon startup
         toggle_handlers = {
-            self.HandleSpritesVisibility: globals_.SpritesShown,
-            self.HandleSpriteImages: globals_.SpriteImagesShown,
-            self.HandleEntrancesVisibility: globals_.EntrancesShown,
-            self.HandleLocationsVisibility: globals_.LocationsShown,
-            self.HandleCommentsVisibility: globals_.CommentsShown,
-            self.HandlePathsVisibility: globals_.PathsShown,
+            globals_.Area.show_sprites: globals_.SpritesShown,
+            globals_.Area.show_sprite_images: globals_.SpriteImagesShown,
+            globals_.Area.show_entrances: globals_.EntrancesShown,
+            globals_.Area.show_locations: globals_.LocationsShown,
+            globals_.Area.show_comments: globals_.CommentsShown,
+            globals_.Area.show_path_nodes: globals_.PathsShown,
         }
 
         for handler in toggle_handlers:
@@ -229,7 +225,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 self.restoreState(state, 0)
 
         # Restore zoom level now that everything is setup
-        self.ZoomTo(self.ZoomLevel, towardsCursor=False)
+        self.set_zoom(self.ZoomLevel)
 
         # Set initial state for diagnostic widget
         # Calling this while the auto-diag is initing
@@ -239,7 +235,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         globals_.Initializing = False
 
-    def setup_status_bar(self):
+    def setup_status_bar(self) -> None:
         """
         Sets up the status bar
         """
@@ -271,7 +267,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         status_bar.addPermanentWidget(self.ZoomWidget)
         status_bar.addPermanentWidget(self.ZoomStatusWidget)
 
-    def setup_menu_bar(self):
+    def setup_menu_bar(self) -> None:
         """
         Sets up actions, a menubar and a toolbar
         """
@@ -409,11 +405,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Create a toolbar
         self.area_combo_box = QtWidgets.QComboBox()
-        self.area_combo_box.activated.connect(self.HandleSwitchArea)
+        self.area_combo_box.activated.connect(self.switch_area)
 
         self.setup_toolbar()
 
-    def setup_help_menu(self, menu=None):
+    def setup_help_menu(self, menu: QtWidgets.QMenu | None = None) -> QtWidgets.QMenu:
         """
         Creates the help menu
         """
@@ -453,7 +449,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         return menu
 
-    def setup_toolbar(self):
+    def setup_toolbar(self) -> None:
         """
         Reads from the Preferences file and adds the appropriate options to the toolbar
         """
@@ -584,18 +580,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             self.area_combo_action = self.toolbar.addWidget(self.area_combo_box)
 
-    def setup_docks(self):
+    def setup_docks(self) -> None:
         """
         Sets up the dock widgets and panels
         """
         # Level Overview
         self.level_overview = LevelOverviewWidget()
-        self.level_overview.moved.connect(self.HandleOverviewClick)
         features = QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable   | \
                    QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable | \
                    QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable
 
-        overview_dock = self.CreateDockWidget(globals_.trans.string('MenuItems', 94), 'leveloverview', self.level_overview,
+        overview_dock = self.create_dock_widget(globals_.trans.string('MenuItems', 94), 'leveloverview', self.level_overview,
                                               features, Qt.DockWidgetArea.RightDockWidgetArea, None, True, False)
         self.level_overview_dock = overview_dock
 
@@ -606,33 +601,33 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Sprite Editor
         self.spriteDataEditor = SpriteEditorWidget()
         self.spriteDataEditor.DataUpdate.connect(self.SpriteDataUpdated)
-        sprite_dock = self.CreateDockWidget(globals_.trans.string('SpriteDataEditor', 0), 'spriteeditor', self.spriteDataEditor,
+        sprite_dock = self.create_dock_widget(globals_.trans.string('SpriteDataEditor', 0), 'spriteeditor', self.spriteDataEditor,
                                             features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True, is_editor=True)
         self.spriteEditorDock = cast(ItemEditorDockWidget, sprite_dock)
 
         # Default Sprite Editor
         self.defaultDataEditor = SpriteEditorWidget(True)
         self.defaultDataEditor.setVisible(False)
-        def_sprite_dock = self.CreateDockWidget(globals_.trans.string('Palette', 7), 'defaultprops', self.defaultDataEditor,
+        def_sprite_dock = self.create_dock_widget(globals_.trans.string('Palette', 7), 'defaultprops', self.defaultDataEditor,
                                                 features | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable,
                                                 Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True)
         self.defaultPropDock = def_sprite_dock
 
         # Entrance Editor
         self.entrance_editor = EntranceEditorWidget()
-        entrance_dock = self.CreateDockWidget(globals_.trans.string('EntranceDataEditor', 24), 'entranceeditor', self.entrance_editor,
+        entrance_dock = self.create_dock_widget(globals_.trans.string('EntranceDataEditor', 24), 'entranceeditor', self.entrance_editor,
                                               features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True, is_editor=True)
         self.entrance_editor_dock = cast(ItemEditorDockWidget, entrance_dock)
 
         # Location Editor
         self.location_editor = LocationEditorWidget()
-        location_dock = self.CreateDockWidget(globals_.trans.string('LocationDataEditor', 12), 'locationeditor', self.location_editor,
+        location_dock = self.create_dock_widget(globals_.trans.string('LocationDataEditor', 12), 'locationeditor', self.location_editor,
                                               features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True, is_editor=True)
         self.location_editor_dock = cast(ItemEditorDockWidget, location_dock)
 
         # Path (Node) Editor
         self.path_editor = PathNodeEditorWidget()
-        path_dock = self.CreateDockWidget(globals_.trans.string('PathDataEditor', 10), 'pathnodeeditor', self.path_editor,
+        path_dock = self.create_dock_widget(globals_.trans.string('PathDataEditor', 10), 'pathnodeeditor', self.path_editor,
                                             features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True, is_editor=True)
         self.path_editor_dock = cast(ItemEditorDockWidget, path_dock)
 
@@ -641,7 +636,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                    QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable | \
                    QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable
 
-        palette_dock = self.CreateDockWidget(globals_.trans.string('MenuItems', 96), 'palette', None, features,
+        palette_dock = self.create_dock_widget(globals_.trans.string('MenuItems', 96), 'palette', None, features,
                                              Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, True, False, True)
         self.palette_dock = cast(PaletteDock, palette_dock)
 
@@ -671,7 +666,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             self.action_list['leveloverview'] = act
 
-    def Autosave(self):
+    def auto_save_level(self) -> None:
         """
         Auto saves the level
         """
@@ -683,7 +678,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('AutoSaveFileData', QtCore.QByteArray(data))
         globals_.AutoSaveDirty = False
 
-    def TrackClipboardUpdates(self):
+    def track_clipboard_updates(self) -> None:
         """
         Catches systemwide clipboard updates
         """
@@ -706,26 +701,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 self.clipboard = None
                 self.action_list['paste'].setEnabled(False)
 
-    def XScrollChange(self, pos):
-        """
-        Moves the Overview current position box based on X scroll bar value
-        """
-        self.level_overview.pos_x_locator = pos
-        self.level_overview.update()
-
-    def YScrollChange(self, pos):
-        """
-        Moves the Overview current position box based on Y scroll bar value
-        """
-        self.level_overview.pos_y_locator = pos
-        self.level_overview.update()
-
-    def HandleWindowSizeChange(self, w, h):
-        self.level_overview.height_locator = h
-        self.level_overview.width_locator = w
-        self.level_overview.update()
-
-    def UpdateTitle(self):
+    def set_window_title(self) -> None:
         """
         Sets the window title accordingly
         """
@@ -737,43 +713,36 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         dirty_text = ''
         if globals_.Dirty:
-            dirty_text = f' {globals_.trans.string('MainWindow', 0)}' # '[unsaved]'
+            dirty_text = f' {globals_.trans.string('WindowTitle', 1)}' # '[unsaved]'
 
         # ' - Reggie Next' is added automatically by Qt (see QApplication.setApplicationDisplayName())
         self.setWindowTitle(f'{self.fileTitle}{dirty_text}')
 
-    def HandleInfo(self):
+    def exec_meta_info(self) -> None:
         """
         Records the Level Meta Information
         """
         dlg = MetaInfoDialog()
-        if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
-            metadata = cast(NSMBWLevel, globals_.Level).metadata
-            metadata.set_meta_data('creator', f'Reggie! Next {globals_.ReggieVersionShort}')
-            metadata.set_meta_data('title', dlg.name_field.text())
-            metadata.set_meta_data('author', dlg.author_field.text())
-            metadata.set_meta_data('group', dlg.group_field.text())
-            metadata.set_meta_data('website', dlg.website_field.text())
+        if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
+            return
 
-            SetDirty()
+        dlg.save_info()
 
-    def HelpBox(self):
+    def open_help_contents(self) -> None:
         """
-        Shows the help box
+        Shows the help contents webpage
         """
         file_path = os.path.join(get_reggiedata_folder(), 'help', 'index.html')
-
         QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(file_path))
 
-    def TipBox(self):
+    def open_tips(self):
         """
-        Reggie Next Tips and Commands
+        Shows the tips and tricks page (redirect)
         """
         file_path = os.path.join(get_reggiedata_folder(), 'help', 'tips.html')
-
         QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(file_path))
 
-    def SelectAll(self):
+    def select_all(self) -> None:
         """
         Select all objects in the current area, or selects all text in the focused widget
         """
@@ -793,7 +762,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         paintRect.addRect(0, 0, 1024 * 24, 512 * 24)
         self.scene.setSelectionArea(paintRect)
 
-    def Deselect(self):
+    def deselect(self):
         """
         Deselect all currently selected items
         """
@@ -801,12 +770,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for obj in items:
             obj.setSelected(False)
 
-    def CopyOrCut(self, cutAction):
+    def copy_(self, is_cut_action: bool) -> None:
         """
         Copies or cuts the selected items
         """
         selitems = self.scene.selectedItems()
-        if cutAction:
+        if is_cut_action:
             self.SelectionUpdateFlag = True
             self.scene.clearSelection()
 
@@ -817,7 +786,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if self.systemClipboard is not None:
                 self.systemClipboard.setText(self.clipboard)
 
-            if cutAction:
+            if is_cut_action:
                 # Delete everything
                 for obj in selitems:
                     obj.delete()
@@ -827,18 +796,18 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 SetDirty()
                 self.action_list['cut'].setEnabled(False)
 
-        if cutAction:
+        if is_cut_action:
             self.level_overview.update()
             self.SelectionUpdateFlag = False
             self.ChangeSelectionHandler()
 
-    def Cut(self):
+    def cut(self) -> None:
         """
         Cuts the selected items
         """
-        self.CopyOrCut(True)
+        self.copy_(True)
 
-    def Copy(self):
+    def copy(self) -> None:
         """
         Copies the selected items or text
         """
@@ -861,118 +830,36 @@ class ReggieWindow(QtWidgets.QMainWindow):
             return
 
         # Main window is focused, copy selected items
-        self.CopyOrCut(False)
+        self.copy_(False)
 
-    def Paste(self):
+    def paste(self) -> None:
         """
         Paste the selected items
         """
         if self.clipboard is not None:
             ReggieClip.paste_reggie_clip(self.clipboard)
 
-    def ShiftItems(self):
+    def exec_item_shift(self) -> None:
         """
-        Shifts the selected object(s)
+        Shifts the selected level item(s)
         """
-        items = self.scene.selectedItems()
-        if not items:
-            return
-
         dlg = ItemShiftDialog()
         if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
 
-        offs_x = dlg.offset_x.value()
-        offs_y = dlg.offset_y.value()
+        dlg.shift_items()
 
-        # Do we need to do anything?
-        if offs_x == 0 and offs_y == 0:
-            return
-
-        if ((offs_x % 16) != 0) or ((offs_y % 16) != 0):
-            # Warn if any objects exist
-            objectsExist = False
-            type_obj = ObjectItem
-
-            for obj in items:
-                if isinstance(obj, type_obj):
-                    objectsExist = True
-                    break
-
-            if objectsExist:
-                # Objects are selected and the offset is not a multiple of 16.
-                # We should warn the user that we will round the offset to the
-                # nearest multiple of 16, because objects can only be placed on
-                # the grid.
-                result = QtWidgets.QMessageBox.warning(None, globals_.trans.string('ShftItmDlg', 5),
-                                                            globals_.trans.string('ShftItmDlg', 6), QtWidgets.QMessageBox.StandardButton.Yes,
-                                                            QtWidgets.QMessageBox.StandardButton.No)
-
-                if result == QtWidgets.QMessageBox.StandardButton.No:
-                    return
-
-                # Round the offset to the nearest multiple of 16
-                offs_x = 16 * round(offs_x / 16)
-                offs_y = 16 * round(offs_y / 16)
-
-        pos_offs_x = offs_x * 1.5
-        pos_offs_y = offs_y * 1.5
-
-        globals_.OverrideSnapping = True
-
-        for obj in items:
-            obj.setPos(obj.x() + pos_offs_x, obj.y() + pos_offs_y)
-
-        globals_.OverrideSnapping = False
-
-        SetDirty()
-
-    def SwapObjectsTilesets(self):
+    def exec_tileset_swap(self) -> None:
         """
-        Swaps objects' tilesets
+        Swaps tilesets
         """
-        dlg = ObjectTilesetSwapDialog()
+        dlg = TilesetSwapDialog()
         if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
 
-        from_tileset = dlg.curr_tileset.currentIndex()
-        to_tileset = dlg.new_tileset.currentIndex()
-        do_exchange = dlg.exchange_tiles.isChecked()
+        dlg.swap_tilesets()
 
-        if from_tileset == to_tileset:
-            return
-
-        for layer in globals_.Area.layers:
-            for nsmbobj in layer:
-                if nsmbobj.tileset == from_tileset:
-                    nsmbobj.SetType(to_tileset, nsmbobj.object_num)
-                    SetDirty()
-                elif do_exchange and nsmbobj.tileset == to_tileset:
-                    nsmbobj.SetType(from_tileset, nsmbobj.object_num)
-                    SetDirty()
-
-    def SwitchSprites(self):
-        """
-        Switches sprites of one ID to another
-        """
-        initial_id = 0
-
-        items = self.scene.selectedItems()
-        if items:
-            id_list = []
-
-            # Get all the sprite IDs
-            for item in items:
-                if isinstance(item, SpriteItem):
-                    id_list.append(item.sprite_num)
-
-            # If we only have one unique item, pass that as an ID
-            if len(set(id_list)) == 1:
-                initial_id = id_list[0]
-
-        SpriteSwitchDialog(initial_id).exec()
-
-    def HandleAddNewArea(self):
+    def add_new_area(self) -> None:
         """
         Adds a new area to the level
         """
@@ -988,18 +875,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         newID = len(globals_.Level.areas) + 1
         globals_.Level.appendArea(None, None, None, None, None)
 
-        if not self.HandleSave():
-            globals_.Level.deleteArea(newID)
-            return
+        self.load_level(self.fileSavePath, True, newID)
 
-        self.LoadLevel(self.fileSavePath, True, newID)
-
-        # Force the new area to be saved to the archive
-        # This fixes issues when switching back and forth without saving first,
-        # as the area tries load from data that doesn't exist in the archive
-        globals_.Level.areas[newID - 1].save()
-
-    def HandleImportArea(self):
+    def exec_area_import(self) -> None:
         """
         Imports an area from another level
         """
@@ -1015,49 +893,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if dlg.exec() == QtWidgets.QDialog.DialogCode.Rejected:
             return
 
-        area = dlg.area_combo.currentIndex() + 1
+        dlg.import_area()
 
-        # Get the required files
-        reqcourse = f'course{area}.bin'
-        reqL0 = f'course{area}_bgdatL0.bin'
-        reqL1 = f'course{area}_bgdatL1.bin'
-        reqL2 = f'course{area}_bgdatL2.bin'
-        req_meta = f'course{area}_metadata.json'
-
-        course = None
-        L0 = None
-        L1 = None
-        L2 = None
-        meta = None
-
-        for item, val in dlg.archive.files:
-            if val is not None:
-                fname = item.split('/')[-1]
-                if fname == reqcourse:
-                    course = val
-                elif fname == reqL0:
-                    L0 = val
-                elif fname == reqL1:
-                    L1 = val
-                elif fname == reqL2:
-                    L2 = val
-                elif fname == req_meta:
-                    meta = val
-
-        # Add the area to our level
-        globals_.Level.appendArea(course, L0, L1, L2, meta)
-        new_id = globals_.Level.areas[-1].areanum
-
-        if not self.HandleSave():
-            globals_.Level.deleteArea(new_id)
-            return
-
-        if dlg.stay_in_area.isChecked():
-            new_id = globals_.Area.areanum
-
-        self.LoadLevel(self.fileSavePath, True, new_id)
-
-    def HandleDeleteArea(self):
+    def exec_area_delete(self) -> None:
         """
         Deletes the current area
         """
@@ -1065,34 +903,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if dlg.exec() == QtWidgets.QDialog.DialogCode.Rejected:
             return
 
-        # Save the current area in case something goes wrong.
-        if not self.HandleSave():
-            return
+        dlg.delete_area()
 
-        area_to_delete = globals_.Area.areanum
-        new_area_one = 1 if area_to_delete != 1 else 2
-
-        # Load the new area 1 before deleting the old area to avoid glitches
-        # when the old area was area 1.
-        self.LoadLevel(self.fileSavePath, True, new_area_one)
-
-        # Actually delete the area
-        globals_.Level.deleteArea(area_to_delete)
-
-        self.action_list['deletearea'].setEnabled(len(globals_.Level.areas) > 1)
-
-        # Update the area selection combobox
-        self.area_combo_box.clear()
-
-        for area in globals_.Level.areas:
-            self.area_combo_box.addItem(globals_.trans.string('AreaCombobox', 0, '[num]', area.areanum))
-
-        self.area_combo_box.setCurrentIndex(0)
-
-        # Save the level without the area as promised
-        self.HandleSave()
-
-    def HandleChangeGamePath(self, auto=False):
+    def change_game_path(self, auto: bool = False) -> None:
         """
         Change the game path used by the current game definition
         """
@@ -1131,13 +944,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         if not auto:
             # Try loading the first detected file in our Stage folder. If that fails, load up an empty canvas.
-            ok = self.LoadLevel(globals_.FirstStageFilename, True, 1)
+            ok = self.load_level(globals_.FirstStageFilename, True, 1)
             if not ok:
-                self.LoadLevel(None, False, 1)
+                self.load_level(None, False, 1)
 
         return True
 
-    def HandlePreferences(self):
+    def exec_preferences(self) -> None:
         """
         Edit Reggie Next preferences
         """
@@ -1148,16 +961,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         dlg.save_preferences()
 
-    def HandleNewLevel(self):
+    def new_level(self) -> None:
         """
         Create a new level
         """
         if CheckDirty():
             return
 
-        self.LoadLevel(None, False, 1)
+        self.load_level(None, False, 1)
 
-    def HandleOpenFromName(self):
+    def open_from_name(self) -> None:
         """
         Open a level using the level picker
         """
@@ -1167,9 +980,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         LoadLevelNames()
         dlg = ChooseLevelNameDialog()
         if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
-            self.LoadLevel(dlg.current_level, False, 1)
+            self.load_level(dlg.current_level, False, 1)
 
-    def HandleOpenFromFile(self):
+    def open_from_file(self) -> None:
         """
         Open a level using the filename
         """
@@ -1182,33 +995,29 @@ class ReggieWindow(QtWidgets.QMainWindow):
         else:
             open_dir = ''
 
-        filetypes = ''
-        filetypes += globals_.trans.string('FileDlgs', 9) + ' (*.arc *.arc.LH *.arc.LZ);;'   # *.arc, *arc.LH, *.arc.LZ
-        filetypes += globals_.trans.string('FileDlgs', 1) + ' (*.arc);;'            # *.arc
-        filetypes += globals_.trans.string('FileDlgs', 5) + ' (*.arc.LH);;'         # *.arc.LH
-        filetypes += globals_.trans.string('FileDlgs', 10) + ' (*.arc.LZ);;'         # *.arc.LZ
-        filetypes += globals_.trans.string('FileDlgs', 2) + ' (*)'                  # *
-        fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('FileDlgs', 0), open_dir, filetypes)[0]
+        filter = (
+            f'{globals_.trans.string('FileDlgs', 9)} (*.arc *.arc.LH *.arc.LZ);;'
+            f'{globals_.trans.string('FileDlgs', 1)} (*.arc);;'
+            f'{globals_.trans.string('FileDlgs', 5)} (*.arc.LH);;'
+            f'{globals_.trans.string('FileDlgs', 10)} (*.arc.LZ);;'
+            f'{globals_.trans.string('FileDlgs', 2)} (*)'
+        )
+        fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('FileDlgs', 0), open_dir, filter)[0]
         if fn == '':
             return
 
-        self.LoadLevel(str(fn), True, 1)
+        self.load_level(str(fn), True, 1)
 
-    def HandleSave(self):
+    def save_(self, name: str) -> bytearray | bytes | None:
         """
         Save a level back to the archive. Returns whether saving was successful.
         """
-        if not self.fileSavePath or self.fileSavePath.endswith('.arc.LH'):
-            # Delegate save to HandleSaveAs function
-            return self.HandleSaveAs()
-
         data = globals_.Level.save()
         is_lz_compression = False
 
         # maybe need to compress the data
-        if self.fileSavePath.endswith(".arc.LZ"):
+        if name.endswith(".arc.LZ"):
             compressed = lz77.CompressLZ77(data)
-
             if compressed is None:
                 # Error during compression
                 QtWidgets.QMessageBox.warning(None,
@@ -1216,62 +1025,79 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     globals_.trans.string('Err_Save', 3, '[file-size]', len(data))
                 )
 
-                # Delegate to HandleSaveAs
-                return self.HandleSaveAs()
+                return None
 
             is_lz_compression = True
             data = compressed
 
-        # maybe pad with null bytes
+        # Pad file if needed
+        # NOTE: We don't pad LZ-compressed files as
+        # the game crashes trying to decompress them.
         if globals_.EnablePadding and not is_lz_compression:
             pad_length = globals_.PaddingLength - len(data)
 
             if pad_length < 0:
-                # err: orig data is longer than padding data
-                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Save', 0), globals_.trans.string('Err_Save', 2, '[orig-len]', len(data), '[pad-len]', globals_.PaddingLength))
-                return False
+                # Original data is longer than padding data
+                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Save', 0),
+                                                globals_.trans.string('Err_Save', 2, '[orig-len]', len(data), '[pad-len]', globals_.PaddingLength))
+                return None
 
             data += bytes(pad_length)
+
+        return data
+
+    def save(self) -> bool:
+        """
+        Save a level back to the archive. Returns whether saving was successful.
+        """
+        if not self.fileSavePath or self.fileSavePath.endswith('.arc.LH'):
+            # Delegate to save_as()
+            return self.save_as()
+
+        data = self.save_(self.fileSavePath)
+        if data is None:
+            return False
 
         try:
             with open(self.fileSavePath, 'wb') as f:
                 f.write(data)
         except IOError as e:
             QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Save', 0),
-                                          globals_.trans.string('Err_Save', 1, '[err1]', e.args[0], '[err2]', e.args[1]))
+                                            globals_.trans.string('Err_Save', 1, '[err1]', e.args[0], '[err2]', e.args[1]))
             return False
 
         globals_.Dirty = False
         globals_.AutoSaveDirty = False
-        self.UpdateTitle()
+        self.set_window_title()
 
         setSetting('AutoSaveFilePath', self.fileSavePath)
         setSetting('AutoSaveFileData', 'x')
         return True
 
-    def HandleSaveAs(self, copy = False):
+    def save_as(self, is_copy: bool = False) -> bool:
         """
         Save a level back to the archive, with a new filename. Returns whether
         saving was successful.
         """
+        caption = globals_.trans.string('FileDlgs', 8 if is_copy else 3)
+
         # Use the currently open level's directory, if applicable
         if self.fileSavePath is not None:
             save_dir = os.path.dirname(self.fileSavePath)
         else:
             save_dir = ''
 
-        fn = QtWidgets.QFileDialog.getSaveFileName(self,
-            globals_.trans.string('FileDlgs', 8 if copy else 3),
-            save_dir,
-            globals_.trans.string('FileDlgs', 1) + ' (*' + '.arc' + ');;' +
-            globals_.trans.string('FileDlgs', 10) + ' (*' + '.arc.LZ'+ ');;' +
-            globals_.trans.string('FileDlgs', 2) + ' (*)'
-        )[0]
+        filter = (
+            f'{globals_.trans.string('FileDlgs', 1)} (*.arc);;'
+            f'{globals_.trans.string('FileDlgs', 10)} (*.arc.LZ);;'
+            f'{globals_.trans.string('FileDlgs', 2)} (*)'
+        )
 
+        fn = QtWidgets.QFileDialog.getSaveFileName(self, caption, save_dir, filter)[0]
         if fn == '':  # No filename given - abort
             return False
 
-        if not copy:
+        if not is_copy:
             globals_.AutoSaveDirty = False
             globals_.Dirty = False
 
@@ -1281,49 +1107,23 @@ class ReggieWindow(QtWidgets.QMainWindow):
             else:
                 self.fileTitle = os.path.basename(fn)
 
-        data = globals_.Level.save()
-        is_lz_compression = False
-
-        # maybe need to compress the data
-        if fn.endswith(".arc.LZ"):
-            compressed = lz77.CompressLZ77(data)
-
-            if compressed is None:
-                # Error during compression
-                QtWidgets.QMessageBox.warning(None,
-                    globals_.trans.string('Err_Save', 0),
-                    globals_.trans.string('Err_Save', 3, '[file-size]', len(data))
-                )
-
-                return False
-
-            is_lz_compression = True
-            data = compressed
-
-        # maybe pad with null bytes
-        if globals_.EnablePadding and not is_lz_compression:
-            pad_length = globals_.PaddingLength - len(data)
-
-            if pad_length < 0:
-                # err: orig data is longer than padding data
-                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Save', 0), globals_.trans.string('Err_Save', 2, '[orig-len]', len(data), '[pad-len]', globals_.PaddingLength))
-                return False
-
-            data += bytes(pad_length)
+        data = self.save_(fn)
+        if data is None:
+            return False
 
         with open(fn, 'wb') as f:
             f.write(data)
 
-        if not copy:
+        if not is_copy:
             setSetting('AutoSaveFilePath', fn)
             setSetting('AutoSaveFileData', 'x')
 
-            self.UpdateTitle()
+            self.set_window_title()
             self.RecentMenu.add_to_list(self.fileSavePath)
 
         return True
 
-    def HandleSwitchArea(self, idx):
+    def switch_area(self, idx: int) -> None:
         """
         Handle activated signals for area_combo_box
         """
@@ -1335,369 +1135,76 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.area_combo_box.setCurrentIndex(old_idx)
             return
 
-        ok = self.LoadLevel(self.fileSavePath, True, idx + 1)
-
+        ok = self.load_level(self.fileSavePath, True, idx + 1)
         if not ok:
-            # loading the new area failed, so reset the combobox
+            # Loading the new area failed, so reset the combobox
             self.area_combo_box.setCurrentIndex(old_idx)
 
-    def HandleUpdateLayer0(self, checked):
-        """
-        Handle toggling of layer 0 being shown
-        """
-        globals_.Layer0Shown = checked
-
-        if globals_.Area.areanum == -1:
-            return
-
-        for obj in globals_.Area.layers[0]:
-            obj.setVisible(checked)
-
-        self.scene.update()
-
-    def HandleUpdateLayer1(self, checked):
-        """
-        Handle toggling of layer 1 being shown
-        """
-        globals_.Layer1Shown = checked
-
-        if globals_.Area.areanum == -1:
-            return
-
-        for obj in globals_.Area.layers[1]:
-            obj.setVisible(checked)
-
-        self.scene.update()
-
-    def HandleUpdateLayer2(self, checked):
-        """
-        Handle toggling of layer 2 being shown
-        """
-        globals_.Layer2Shown = checked
-
-        if globals_.Area.areanum == -1:
-            return
-
-        for obj in globals_.Area.layers[2]:
-            obj.setVisible(checked)
-
-        self.scene.update()
-
-    def HandleTilesetAnimToggle(self, checked):
-        """
-        Handle toggling of tileset animations
-        """
-        globals_.TilesetsAnimating = checked
-
-        for tile in globals_.Tiles:
-            if tile is not None:
-                tile.resetAnimation()
-
-        self.scene.update()
-
-    def HandleCollisionsToggle(self, checked):
-        """
-        Handle toggling of tileset collisions viewing
-        """
-        globals_.CollisionsShown = checked
-
-        setSetting('ShowCollisions', globals_.CollisionsShown)
-        self.scene.update()
-
-    def HandleRealViewToggle(self, checked):
-        """
-        Handle toggling of Real View
-        """
-        globals_.RealViewEnabled = checked
-        SLib.RealViewEnabled = globals_.RealViewEnabled
-
-        setSetting('RealViewEnabled', globals_.RealViewEnabled)
-        self.scene.update()
-
-    def HandleSpritesVisibility(self, checked):
-        """
-        Handle toggling of sprite visibility
-        """
-        globals_.SpritesShown = checked
-        setSetting('ShowSprites', globals_.SpritesShown)
-
-        if globals_.Area.areanum == -1:
-            return
-
-        for spr in globals_.Area.sprites:
-            spr.setVisible(checked)
-
-    def HandleSpriteImages(self, checked):
-        """
-        Handle toggling of sprite images
-        """
-        globals_.SpriteImagesShown = checked
-
-        setSetting('ShowSpriteImages', globals_.SpriteImagesShown)
-
-        if globals_.Area.areanum == -1:
-            return
-
-        globals_.DirtyOverride += 1
-        for spr in globals_.Area.sprites:
-            spr.UpdateRects()
-
-            if globals_.Initializing:
-                continue
-
-            # Prevents snapping the sprite to the grid
-            spr.ChangingPos = True
-
-            if checked:
-                spr.setPos(
-                    (spr.objx + spr.ImageObj.xOffset) * 1.5,
-                    (spr.objy + spr.ImageObj.yOffset) * 1.5,
-                )
-            else:
-                spr.setPos(
-                    spr.objx * 1.5,
-                    spr.objy * 1.5,
-                )
-
-            spr.ChangingPos = False
-            spr.update()
-
-        globals_.DirtyOverride -= 1
-
-        self.level_overview.update()
-
-    def HandleEntrancesVisibility(self, checked):
-        """
-        Handle toggling of entrance visibility
-        """
-        globals_.EntrancesShown = checked
-        setSetting('ShowEntrances', globals_.EntrancesShown)
-
-        if globals_.Area.areanum == -1:
-            return
-
-        for ent in globals_.Area.entrances:
-            ent.setVisible(checked)
-
-    def HandleLocationsVisibility(self, checked):
-        """
-        Handle toggling of location visibility
-        """
-        globals_.LocationsShown = checked
-        setSetting('ShowLocations', globals_.LocationsShown)
-
-        if globals_.Area.areanum == -1:
-            return
-
-        for loc in globals_.Area.locations:
-            loc.setVisible(checked)
-
-    def HandleCommentsVisibility(self, checked):
-        """
-        Handle toggling of comment visibility
-        """
-        globals_.CommentsShown = checked
-        setSetting('ShowComments', globals_.CommentsShown)
-
-        if globals_.Area.areanum == -1:
-            return
-
-        for com in globals_.Area.comments:
-            com.setVisible(checked)
-
-    def HandlePathsVisibility(self, checked):
-        """
-        Handle toggling of path visibility
-        """
-        globals_.PathsShown = checked
-        setSetting('ShowPaths', globals_.PathsShown)
-
-        if globals_.Area.areanum == -1:
-            return
-
-        for path in globals_.Area.paths:
-            path.setVisible(checked)
-
-    def HandleObjectsFreeze(self, checked):
-        """
-        Handle toggling of objects being frozen
-        """
-        globals_.ObjectsFrozen = checked
-        setSetting('FreezeObjects', globals_.ObjectsFrozen)
-
-        if globals_.Area.areanum == -1:
-            return
-
-        flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
-        flag2 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable
-        unfrozen = not checked
-
-        for layer in globals_.Area.layers:
-            for obj in layer:
-                obj.setFlag(flag1, unfrozen)
-                obj.setFlag(flag2, unfrozen)
-
-    def HandleSpritesFreeze(self, checked):
-        """
-        Handle toggling of sprites being frozen
-        """
-        globals_.SpritesFrozen = checked
-        setSetting('FreezeSprites', globals_.SpritesFrozen)
-
-        if globals_.Area.areanum == -1:
-            return
-
-        flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
-        flag2 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable
-        unfrozen = not checked
-
-        for spr in globals_.Area.sprites:
-            spr.setFlag(flag1, unfrozen)
-            spr.setFlag(flag2, unfrozen)
-
-    def HandleEntrancesFreeze(self, checked):
-        """
-        Handle toggling of entrances being frozen
-        """
-        globals_.EntrancesFrozen = checked
-        setSetting('FreezeEntrances', globals_.EntrancesFrozen)
-
-        if globals_.Area.areanum == -1:
-            return
-
-        flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
-        flag2 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable
-        unfrozen = not checked
-
-        for ent in globals_.Area.entrances:
-            ent.setFlag(flag1, unfrozen)
-            ent.setFlag(flag2, unfrozen)
-
-    def HandleLocationsFreeze(self, checked):
-        """
-        Handle toggling of locations being frozen
-        """
-        globals_.LocationsFrozen = checked
-        setSetting('FreezeLocations', globals_.LocationsFrozen)
-
-        if globals_.Area.areanum == -1:
-            return
-
-        flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
-        flag2 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable
-        unfrozen = not checked
-
-        for loc in globals_.Area.locations:
-            loc.setFlag(flag1, unfrozen)
-            loc.setFlag(flag2, unfrozen)
-
-    def HandlePathsFreeze(self, checked):
-        """
-        Handle toggling of path nodes being frozen
-        """
-        globals_.PathsFrozen = checked
-        setSetting('FreezePaths', globals_.PathsFrozen)
-
-        if globals_.Area.areanum == -1:
-            return
-
-        for path in globals_.Area.paths:
-            path.set_freeze(checked)
-
-    def HandleCommentsFreeze(self, checked):
-        """
-        Handle toggling of comments being frozen
-        """
-        globals_.CommentsFrozen = checked
-        setSetting('FreezeComments', globals_.CommentsFrozen)
-
-        if globals_.Area.areanum == -1:
-            return
-
-        flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
-        flag2 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable
-        unfrozen = not checked
-
-        for com in globals_.Area.comments:
-            com.setFlag(flag1, unfrozen)
-            com.setFlag(flag2, unfrozen)
-
-    def HandleSwitchGrid(self):
-        """
-        Handle switching of the grid view
-        """
-        if globals_.GridType is None:
-            globals_.GridType = 'grid'
-        elif globals_.GridType == 'grid':
-            globals_.GridType = 'checker'
-        else:
-            globals_.GridType = None
-
-        setSetting('GridType', globals_.GridType)
-        self.scene.update()
-
-    def HandleZoomIn(self, *, towardsCursor=False):
+    def zoom_in(self, towards_cursor: bool = False) -> None:
         """
         Handle zooming in
         """
         z = self.ZoomLevel
         zi = self.ZoomLevels.index(z) + 1
         if zi < len(self.ZoomLevels):
-            self.ZoomTo(self.ZoomLevels[zi], towardsCursor=towardsCursor)
+            self.set_zoom(self.ZoomLevels[zi], towards_cursor)
 
-    def HandleZoomOut(self, *, towardsCursor=False):
+    def zoom_out(self, towards_cursor: bool = False) -> None:
         """
         Handle zooming out
         """
         z = self.ZoomLevel
         zi = self.ZoomLevels.index(z) - 1
         if zi >= 0:
-            self.ZoomTo(self.ZoomLevels[zi], towardsCursor=towardsCursor)
+            self.set_zoom(self.ZoomLevels[zi], towards_cursor)
 
-    def HandleZoomActual(self):
+    def zoom_default(self) -> None:
         """
-        Handle zooming to the actual size
+        Handle zooming to the default size
         """
-        self.ZoomTo(100.0)
+        self.set_zoom(100.0)
 
-    def HandleZoomMin(self):
+    def zoom_min(self) -> None:
         """
         Handle zooming to the minimum size
         """
-        self.ZoomTo(self.ZoomLevels[0])
+        self.set_zoom(self.ZoomLevels[0])
 
-    def HandleZoomMax(self):
+    def zoom_max(self) -> None:
         """
         Handle zooming to the maximum size
         """
-        self.ZoomTo(self.ZoomLevels[-1])
+        self.set_zoom(self.ZoomLevels[-1])
 
-    def ZoomTo(self, z, *, towardsCursor=False):
+    def set_zoom(self, value: float | None, towards_cursor: bool = False) -> None:
         """
         Zoom to a specific level
         """
-        if towardsCursor:
+        if value is None:
+            return
+
+        if towards_cursor:
             self.view.setTransformationAnchor(QtWidgets.QGraphicsView.ViewportAnchor.AnchorUnderMouse)
 
         tr = QtGui.QTransform()
-        tr.scale(z / 100.0, z / 100.0)
-        self.ZoomLevel = z
+        tr.scale(value / 100.0, value / 100.0)
+        self.ZoomLevel = value
         self.view.setTransform(tr)
-        self.level_overview.main_window_scale = z / 100.0
+        self.level_overview.main_window_scale = value / 100.0
 
-        if towardsCursor:
-            # (reset back to original transformation anchor)
+        if towards_cursor:
+            # Reset back to original transformation anchor
             self.view.setTransformationAnchor(QtWidgets.QGraphicsView.ViewportAnchor.AnchorViewCenter)
 
-        zi = self.ZoomLevels.index(z)
+        zi = self.ZoomLevels.index(value)
         self.action_list['zoommax'].setEnabled(zi < len(self.ZoomLevels) - 1)
         self.action_list['zoomin'].setEnabled(zi < len(self.ZoomLevels) - 1)
-        self.action_list['zoomactual'].setEnabled(z != 100.0)
+        self.action_list['zoomactual'].setEnabled(value != 100.0)
         self.action_list['zoomout'].setEnabled(zi > 0)
         self.action_list['zoommin'].setEnabled(zi > 0)
 
-        self.ZoomWidget.set_zoom_level(z)
-        self.ZoomStatusWidget.set_zoom_level(z)
+        self.ZoomWidget.set_zoom_level(value)
+        self.ZoomStatusWidget.set_zoom_level(value)
 
         # Update the zone grabber rects, to resize for the new zoom level
         for z in globals_.Area.zones:
@@ -1705,14 +1212,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.scene.update()
 
-    def HandleOverviewClick(self, x, y):
-        """
-        Handle position changes from the level overview
-        """
-        self.view.centerOn(x, y)
-        self.level_overview.update()
-
-    def closeEvent(self, a0):
+    def closeEvent(self, a0: QtGui.QCloseEvent | None) -> None:
         """
         Handler for the main window close event
         """
@@ -1745,53 +1245,55 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         a0.accept()
 
-    def LoadLevel(self, name: str | None, isFullPath: bool, areaNum: int):
+    def load_level(self, name: str | None, is_full_path: bool, area_num: int) -> bool:
         """
         Load a level from NSMBW into the editor.
         """
         new = name is None
         same = False
 
-        if not new:
-            checknames = []
-            if isFullPath:
-                checknames = [name]
-            else:
-                for ext in globals_.FileExtentions:
-                    checknames.append(os.path.join(globals_.gamedef.GetStageGamePath(), name + ext))
+        level_data = bytes()
 
-            for checkname in checknames:
-                if os.path.isfile(checkname):
+        if not new:
+            check_names = []
+            if is_full_path:
+                check_names = [name]
+            else:
+                # Get this name with all possible archive extensions
+                for ext in globals_.FileExtentions:
+                    check_names.append(os.path.join(str(globals_.gamedef.GetStageGamePath()), name + ext))
+
+            for check_name in check_names:
+                if os.path.isfile(check_name):
                     break
             else:
+                base_name = f'{os.path.splitext(check_names[0])[0]}.arc'
                 QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_CantFindLevel', 1),
-                                              globals_.trans.string('Err_CantFindLevel', 0, '[name]', checkname),
+                                              globals_.trans.string('Err_CantFindLevel', 0, '[name]', base_name),
                                               QtWidgets.QMessageBox.StandardButton.Ok)
                 return False
 
-            if not IsNSMBLevel(checkname):
+            if not IsValidLevel(check_name):
                 QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_InvalidLevel', 1), globals_.trans.string('Err_InvalidLevel', 0),
                                               QtWidgets.QMessageBox.StandardButton.Ok)
                 return False
 
-            name = checkname
+            name = check_name
             same = name == self.fileSavePath  # Just an area change
 
         # Get the file path, if possible
         if new:
             # Set the filepath variables
             self.fileSavePath = None
-            self.fileTitle = 'untitled'
+            self.fileTitle = str(globals_.trans.string('WindowTitle', 0))
 
         elif not same:
-
             # Get the data
             if not globals_.RestoredFromAutoSave:
-
                 # Set the filepath variables
                 self.fileSavePath = name
                 if self.fileSavePath is None:
-                    return
+                    return False
 
                 if globals_.UseFullFilepath:
                     self.fileTitle = self.fileSavePath
@@ -1800,24 +1302,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
                 # Open the file
                 with open(self.fileSavePath, 'rb') as fileobj:
-                    levelData = fileobj.read()
+                    level_data = fileobj.read()
 
-                # Decompress, if needed
-                if (levelData[0] & 0xF0) == 0x40:  # If LH-compressed
-                    try:
-                        levelData = lh.UncompressLH(levelData)
-                    except IndexError:
-                        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
-                                                      globals_.trans.string('Err_Decompress', 1, '[file]', name))
-                        return False
-                elif not levelData.startswith(b"U\xAA8-"):  # If LZ-compressed
-                    try:
-                        levelData = lz77.UncompressLZ77(levelData)
-                    except IndexError:
-                        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
-                                                      globals_.trans.string('Err_Decompress', 2, '[file]', name))
-                        return False
-
+                # Do we need to decompress it?
+                level_data = DecompressLevel(level_data, str(name))
+                if level_data is None:
+                    return False
             else:
                 # Auto-saved level. Check if there's a path associated with it:
                 if globals_.AutoSavePath == 'None':
@@ -1832,7 +1322,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                         self.fileTitle = os.path.basename(name)
 
                 # Get the level data
-                levelData = globals_.AutoSaveData
+                level_data = globals_.AutoSaveData
                 SetDirty(noautosave=True)
 
                 # Turn off the autosave flag
@@ -1881,15 +1371,15 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Load the actual level
         if new:
-            self.newLevel()
+            self.create_level_()
         elif not same:
-            self.LoadNSMBWLevel(levelData, areaNum)
+            self.load_level_(level_data, area_num)
         else:
             # We have already loaded this area's data - it's stored as
             # AbstractAreas in the Level. This means we do not have to open and
             # optionally decompress the level file. Hence, we can just relay
             # this to the level.
-            globals_.Level.changeArea(areaNum)
+            globals_.Level.changeArea(area_num)
             globals_.Area.reset()
 
         # Fill up the area list
@@ -1898,7 +1388,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for area in globals_.Level.areas:
             self.area_combo_box.addItem(globals_.trans.string('AreaCombobox', 0, '[num]', area.areanum))
 
-        self.area_combo_box.setCurrentIndex(areaNum - 1)
+        self.area_combo_box.setCurrentIndex(area_num - 1)
 
         # Refresh object layouts
         for layer in globals_.Area.layers:
@@ -1915,7 +1405,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         start_ent_id = globals_.Area.start_entrance
 
         for ent in globals_.Area.entrances:
-            if areaNum == 1 and ent.entid == start_ent_id:
+            if area_num == 1 and ent.entid == start_ent_id:
                 center_pos = ent.pos()
                 found_ent = True
                 break
@@ -1949,14 +1439,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.action_list['backgrounds'].setEnabled(len(globals_.Area.zones) > 0)
 
         if not globals_.Initializing:
-            self.ZoomTo(100.0)
+            self.set_zoom(100.0)
 
         # Turn snapping back on
         globals_.OverrideSnapping = False
 
         # Turn the dirty flag off
         globals_.DirtyOverride -= 1
-        self.UpdateTitle()
+        self.set_window_title()
 
         # Update UI things
         self.scene.update()
@@ -1972,9 +1462,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         return True
 
-    def newLevel(self):
+    def create_level_(self) -> None:
         """
-        Creates a new level
+        Creates a new level, do not call this directly
         """
         globals_.Level = NSMBWLevel()
         globals_.Level.new()
@@ -1984,16 +1474,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.action_list['swapobjectstypes'].setEnabled(True)
         self.action_list['swapobjectstilesets'].setEnabled(True)
 
-    def LoadNSMBWLevel(self, levelData, areaNum):
+    def load_level_(self, level_data: bytes, area_num: int) -> None:
         """
         Performs all level-loading tasks specific to New Super Mario Bros. Wii levels.
-        Do not call this directly - use LoadLevel instead!
+        Do not call this directly - use load_level instead!
         """
         # Create the new level object
         globals_.Level = NSMBWLevel()
 
         # Load it
-        if not globals_.Level.load(levelData, areaNum):
+        if not globals_.Level.load(level_data, area_num):
             raise Exception
 
         # https://github.com/Zement/Reggie/blob/master/reggie.py#L3630-L3637
@@ -2011,7 +1501,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         globals_.Area.reset()
 
-    def ChangeSelectionHandler(self):
+    def ChangeSelectionHandler(self) -> None:
         """
         Update the visible panels whenever the selection changes
         """
@@ -2026,11 +1516,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
             return
 
         # do this to avoid flicker
-        showSpritePanel = False
-        showEntrancePanel = False
-        showLocationPanel = False
-        showPathPanel = False
-        updateModeInfo = False
+        show_sprite_dock = False
+        show_entrance_dock = False
+        show_location_dock = False
+        show_path_dock = False
+        update_mode_info = False
 
         # clear our variables
         self.selObj = None
@@ -2071,43 +1561,43 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if func_ii(item, type_obj):
                 allowStamp = True
             elif func_ii(item, type_spr):
-                showSpritePanel = True
-                updateModeInfo = True
+                show_sprite_dock = True
+                update_mode_info = True
                 allowStamp = True
             elif func_ii(item, type_ent):
                 self.palette_dock.set_tab(2)
                 self.UpdateFlag = True
                 self.palette_dock.entrance_tab.entrance_list.setCurrentItem(item.listitem)
                 self.UpdateFlag = False
-                showEntrancePanel = True
-                updateModeInfo = True
+                show_location_dock = True
+                update_mode_info = True
                 allowStamp = False
             elif func_ii(item, type_loc):
                 self.palette_dock.set_tab(3)
                 self.UpdateFlag = True
                 self.palette_dock.location_tab.location_list.setCurrentItem(item.listitem)
                 self.UpdateFlag = False
-                showLocationPanel = True
-                updateModeInfo = True
+                show_location_dock = True
+                update_mode_info = True
                 allowStamp = False
             elif func_ii(item, type_path):
                 self.palette_dock.set_tab(4)
                 self.UpdateFlag = True
                 self.palette_dock.path_tab.path_list.setCurrentItem(item.listitem)
                 self.UpdateFlag = False
-                showPathPanel = True
-                updateModeInfo = True
+                show_path_dock = True
+                update_mode_info = True
                 allowStamp = False
             elif func_ii(item, type_com):
                 self.palette_dock.set_tab(7)
                 self.UpdateFlag = True
                 self.palette_dock.comment_tab.comment_list.setCurrentItem(item.listitem)
                 self.UpdateFlag = False
-                updateModeInfo = True
+                update_mode_info = True
                 allowStamp = False
 
         else:
-            updateModeInfo = True
+            update_mode_info = True
 
             for item in selitems:
                 if not func_ii(item, (type_obj, type_spr)):
@@ -2199,14 +1689,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 thing.dragoffsetx = (((thing.objx // 16) * 16) - thing.objx) * 1.5
                 thing.dragoffsety = (((thing.objy // 16) * 16) - thing.objy) * 1.5
 
-        self.spriteEditorDock.set_active(showSpritePanel)
-        self.entrance_editor_dock.set_active(showEntrancePanel)
-        self.location_editor_dock.set_active(showLocationPanel)
-        self.path_editor_dock.set_active(showPathPanel)
+        self.spriteEditorDock.set_active(show_sprite_dock)
+        self.entrance_editor_dock.set_active(show_entrance_dock)
+        self.location_editor_dock.set_active(show_location_dock)
+        self.path_editor_dock.set_active(show_path_dock)
 
         self.action_list['deselect'].setEnabled(bool(selitems))
 
-        if updateModeInfo:
+        if update_mode_info:
             globals_.DirtyOverride += 1
             self.UpdateModeInfo()
             globals_.DirtyOverride -= 1

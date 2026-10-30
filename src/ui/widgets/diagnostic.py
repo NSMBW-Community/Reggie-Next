@@ -21,8 +21,7 @@ class DiagnosticWidget(QtWidgets.QWidget):
         self.status_button = QtWidgets.QToolButton()
         self.status_button.setAutoRaise(True)
         self.status_button.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
-        if globals_.mainWindow is not None:
-            self.status_button.clicked.connect(lambda: DiagnosticToolDialog().exec())
+        self.status_button.clicked.connect(lambda: DiagnosticToolDialog().exec())
 
         self.manual_check_button = QtWidgets.QToolButton()
         self.manual_check_button.setAutoRaise(True)
@@ -107,9 +106,6 @@ class DiagnosticWidget(QtWidgets.QWidget):
         """
         Updates the widget after (possibly) being modifed in the Preferences
         """
-        if globals_.mainWindow is None:
-            return
-
         # Update diagnostic widget
         self.set_timer()
         if globals_.AutoDiagEnabled:

@@ -219,7 +219,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         del fix_progress
 
         # Update the widget
-        if globals_.mainWindow is not None and globals_.AutoDiagEnabled:
+        if globals_.AutoDiagEnabled:
             globals_.mainWindow.diagnostic.update_status()
             globals_.mainWindow.diagnostic.set_timer()
 
@@ -246,13 +246,12 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         if not has_problem:
             return False
 
-        if globals_.mainWindow is not None:
-            for obj in deletions:
-                obj.delete()
-                obj.setSelected(False)
-                globals_.mainWindow.scene.removeItem(obj)
+        for obj in deletions:
+            obj.delete()
+            obj.setSelected(False)
+            globals_.mainWindow.scene.removeItem(obj)
 
-            globals_.mainWindow.level_overview.update()
+        globals_.mainWindow.level_overview.update()
 
     def check_crash_sprite(self, mode):
         """
@@ -273,9 +272,9 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             for sprite in crash_sprites:
                 sprite.delete()
                 sprite.setSelected(False)
-                if globals_.mainWindow is not None:
-                    globals_.mainWindow.scene.removeItem(sprite)
-                    globals_.mainWindow.level_overview.update()
+
+                globals_.mainWindow.scene.removeItem(sprite)
+                globals_.mainWindow.level_overview.update()
 
     # TODO: Split 'missing resource' checks into their own function (153 needs it too)
     def check_sprite_param(self, mode):
@@ -389,11 +388,10 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
                     add_sprites.append((419, sprite.objx - 128, sprite.objy - 128))
 
-            if globals_.mainWindow is not None:
-                for id_, x, y in add_sprites:
-                    SpriteItem.CreateSprite(x, y, id_, bytes(10))
+            for id_, x, y in add_sprites:
+                SpriteItem.create(x, y, id_, bytes(10))
 
-                globals_.mainWindow.scene.update()
+            globals_.mainWindow.scene.update()
 
     def check_sprite_max(self, mode):
         """
@@ -409,16 +407,15 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         if not problem:
             return None
 
-        if globals_.mainWindow is not None:
-            sprite: SpriteItem
-            for sprite in globals_.Area.sprites[max_sprite_num:]:
-                sprite.delete()
-                sprite.setSelected(False)
-                globals_.mainWindow.scene.removeItem(sprite)
+        sprite: SpriteItem
+        for sprite in globals_.Area.sprites[max_sprite_num:]:
+            sprite.delete()
+            sprite.setSelected(False)
+            globals_.mainWindow.scene.removeItem(sprite)
 
-            globals_.Area.sprites = globals_.Area.sprites[:max_sprite_num]
-            globals_.mainWindow.scene.update()
-            globals_.mainWindow.level_overview.update()
+        globals_.Area.sprites = globals_.Area.sprites[:max_sprite_num]
+        globals_.mainWindow.scene.update()
+        globals_.mainWindow.level_overview.update()
 
     def check_duplicate_entrance(self, mode: str) -> bool | None:
         """
@@ -468,7 +465,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             return problem
         elif problem and globals_.mainWindow is not None:
             # TODO: Maybe place it 6 blocks right, 3 blocks up from Zone 1's bottom-left corner?
-            EntranceItem.CreateEntrance(1024, 512, globals_.Area.start_entrance)
+            EntranceItem.create(1024, 512, globals_.Area.start_entrance)
 
     def check_entrance_near_edge(self, mode: str) -> bool | None:
         """
@@ -558,8 +555,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                 ent.objy = newy
                 ent.setPos(int(newx * 1.5), int(newy * 1.5))
 
-                if globals_.mainWindow is not None:
-                    globals_.mainWindow.scene.update()
+                globals_.mainWindow.scene.update()
 
         return False
 
@@ -575,9 +571,8 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         elif problem:
             globals_.Area.zones = globals_.Area.zones[:6]
 
-            if globals_.mainWindow is not None:
-                globals_.mainWindow.scene.update()
-                globals_.mainWindow.level_overview.update()
+            globals_.mainWindow.scene.update()
+            globals_.mainWindow.level_overview.update()
 
     def check_no_zone_exist(self, mode: str) -> bool | None:
         """
@@ -637,39 +632,38 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                                 axes = [None, 'h']
 
                         # Make the actual adjustments
-                        if globals_.mainWindow is not None:
-                            checkzone = check.ZoneRect
-                            oldCoords = checkzone.getCoords()
-                            while checkzone.intersects(against_rect):
-                                if axes[0] is None:
-                                    pass
-                                elif axes[0] == 'x':
-                                    check.objx += 1
-                                else:
-                                    check.objy += 1
+                        checkzone = check.ZoneRect
+                        oldCoords = checkzone.getCoords()
+                        while checkzone.intersects(against_rect):
+                            if axes[0] is None:
+                                pass
+                            elif axes[0] == 'x':
+                                check.objx += 1
+                            else:
+                                check.objy += 1
 
-                                if axes[1] == 'both':
-                                    check.objx += 1
-                                    check.objy += 1
-                                elif axes[1] == 'w':
-                                    check.width -= 1
-                                else:
-                                    check.height -= 1
+                            if axes[1] == 'both':
+                                check.objx += 1
+                                check.objy += 1
+                            elif axes[1] == 'w':
+                                check.width -= 1
+                            else:
+                                check.height -= 1
 
-                                check.width = max(check.width, 204)
-                                check.height = max(check.height, 112)
+                            check.width = max(check.width, 204)
+                            check.height = max(check.height, 112)
 
-                                check.UpdateRects()
-                                check.setPos(int(check.objx * 1.5), int(check.objy * 1.5))
-                                globals_.mainWindow.scene.update()
-                                checkzone = check.ZoneRect
-
-                                if oldCoords == checkzone.getCoords():
-                                    break
-
-                                oldCoords = checkzone.getCoords()
-
+                            check.UpdateRects()
+                            check.setPos(int(check.objx * 1.5), int(check.objy * 1.5))
                             globals_.mainWindow.scene.update()
+                            checkzone = check.ZoneRect
+
+                            if oldCoords == checkzone.getCoords():
+                                break
+
+                            oldCoords = checkzone.getCoords()
+
+                        globals_.mainWindow.scene.update()
 
         return False
 
@@ -696,8 +690,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                         zone.height = area_height - zone.objy - 16
                     zone.UpdateRects()
 
-                    if globals_.mainWindow is not None:
-                        globals_.mainWindow.scene.update()
+                    globals_.mainWindow.scene.update()
 
         return False
 
@@ -752,7 +745,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                         zone.height = int(256 * max_area / zone.width)
                     zone.UpdateRects()
 
-                    if globals_.mainWindow is not None:
-                        globals_.mainWindow.scene.update()
+                    globals_.mainWindow.scene.update()
 
         return False

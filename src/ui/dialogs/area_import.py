@@ -4,6 +4,7 @@ from PyQt6 import QtWidgets
 
 from data import globals_
 from data.common import archive
+from data.common.loaders import DecompressLevel
 from libs import lh, lz77
 from ui.theme.reggie_theme import GetIcon
 
@@ -57,13 +58,15 @@ class AreaImportDialog(QtWidgets.QDialog):
         """
         Loads the source level and returns the number of areas.
         """
-        filetypes = ''
-        filetypes += globals_.trans.string('FileDlgs', 1) + ' (*' + '.arc' + ');;'  # *.arc
-        filetypes += globals_.trans.string('FileDlgs', 5) + ' (*' + '.arc' + '.LH);;'  # *.arc.LH
-        filetypes += globals_.trans.string('FileDlgs', 10) + ' (*' + '.arc' + '.LZ);;'  # *.arc.LZ
-        filetypes += globals_.trans.string('FileDlgs', 2) + ' (*)'  # *
+        filter = (
+            f'{globals_.trans.string('FileDlgs', 9)} (*.arc *.arc.LH *.arc.LZ);;'
+            f'{globals_.trans.string('FileDlgs', 1)} (*.arc);;'
+            f'{globals_.trans.string('FileDlgs', 5)} (*.arc.LH);;'
+            f'{globals_.trans.string('FileDlgs', 10)} (*.arc.LZ);;'
+            f'{globals_.trans.string('FileDlgs', 2)} (*)'
+        )
 
-        fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('FileDlgs', 0), '', filetypes)[0]
+        fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('FileDlgs', 0), '', filter)[0]
         if fn == '':
             return 0
 
@@ -72,20 +75,9 @@ class AreaImportDialog(QtWidgets.QDialog):
         with open(str(fn), 'rb') as fileobj:
             arcdata = fileobj.read()
 
-        if (arcdata[0] & 0xF0) == 0x40:  # If LH-compressed
-            try:
-                arcdata = lh.UncompressLH(arcdata)
-            except IndexError:
-                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
-                                                globals_.trans.string('Err_Decompress', 1, '[file]', str(fn)))
-                return 0
-        elif not arcdata.startswith(b"U\xAA8-"):  # If LZ-compressed
-            try:
-                arcdata = lz77.UncompressLZ77(arcdata)
-            except IndexError:
-                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
-                                                globals_.trans.string('Err_Decompress', 2, '[file]', str(fn)))
-                return 0
+        arcdata = DecompressLevel(arcdata, str(fn))
+        if arcdata is None:
+            return 0
 
         self.archive = archive.U8.load(arcdata)
 
@@ -119,3 +111,46 @@ class AreaImportDialog(QtWidgets.QDialog):
         self.level_button.setText(self.file_name)
         for i in range(area_count):
             self.area_combo.addItem(globals_.trans.string('AreaImportDlg', 1, '[num]', i + 1))
+
+    def import_area(self) -> None:
+        """
+        Handles importing the area into the level
+        """
+        area = self.area_combo.currentIndex() + 1
+
+        # Get the required files
+        reqcourse = f'course{area}.bin'
+        reqL0 = f'course{area}_bgdatL0.bin'
+        reqL1 = f'course{area}_bgdatL1.bin'
+        reqL2 = f'course{area}_bgdatL2.bin'
+        req_meta = f'course{area}_metadata.json'
+
+        course = None
+        L0 = None
+        L1 = None
+        L2 = None
+        meta = None
+
+        for item, val in self.archive.files:
+            if val is not None:
+                fname = item.split('/')[-1]
+                if fname == reqcourse:
+                    course = val
+                elif fname == reqL0:
+                    L0 = val
+                elif fname == reqL1:
+                    L1 = val
+                elif fname == reqL2:
+                    L2 = val
+                elif fname == req_meta:
+                    meta = val
+
+        # Add the area to our level
+        globals_.Level.appendArea(course, L0, L1, L2, meta)
+        new_id = globals_.Level.areas[-1].areanum
+
+        if self.stay_in_area.isChecked():
+            new_id = globals_.Area.areanum
+
+        path = globals_.mainWindow.fileSavePath
+        globals_.mainWindow.load_level(path, True, new_id)

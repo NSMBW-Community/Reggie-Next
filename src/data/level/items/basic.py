@@ -304,13 +304,10 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
 
         self.listitem.setText(self.ListString())
 
-    def renderInLevelIcon(self) -> QtGui.QImage | None:
+    def renderInLevelIcon(self) -> QtGui.QImage:
         """
         Renders an icon of this item as it appears in the level
         """
-        if globals_.mainWindow is None:
-            return
-
         # Constants:
         # Maximum size of the preview (it will be shrunk if it exceeds this)
         max_size = QtCore.QSize(256, 256)

@@ -10,13 +10,10 @@ class ZoomStatusWidget(QtWidgets.QWidget):
         """
         Creates and initializes the widget
         """
-        if globals_.mainWindow is None:
-            return
-
         super().__init__()
         self.label = QtWidgets.QPushButton()
         self.label.setFlat(True)
-        self.label.clicked.connect(globals_.mainWindow.HandleZoomActual)
+        self.label.clicked.connect(globals_.mainWindow.zoom_default)
 
         self.main_layout = QtWidgets.QHBoxLayout()
         self.main_layout.addWidget(self.label)

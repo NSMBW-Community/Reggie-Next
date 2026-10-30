@@ -33,6 +33,13 @@ class LevelOverviewWidget(QtWidgets.QWidget):
         self.width_locator = 80
         self.main_window_scale = 1
 
+        self.moved.connect(self.position_moved)
+
+        # Set some signals for the LevelView
+        globals_.mainWindow.view.XScrollBar.valueChanged.connect(self.scroll_x_change)
+        globals_.mainWindow.view.YScrollBar.valueChanged.connect(self.scroll_y_change)
+        globals_.mainWindow.view.FrameSize.connect(self.size_change)
+
     def reset(self):
         """
         Resets the max and scale variables
@@ -182,3 +189,32 @@ class LevelOverviewWidget(QtWidgets.QWidget):
 
         self.scale = max(0.002, min(x_scale, y_scale))
         self.pos_mult = 24 / self.scale
+
+    def position_moved(self, x: float, y: float) -> None:
+        """
+        Update the view position when the widget is clicked
+        """
+        globals_.mainWindow.view.centerOn(x, y)
+        self.update()
+
+    def scroll_x_change(self, pos_x: float) -> None:
+        """
+        Updates the X position of the current position indicator
+        """
+        self.pos_x_locator = pos_x
+        self.update()
+
+    def scroll_y_change(self, pos_y: float) -> None:
+        """
+        Updates the Y position of the current position indicator
+        """
+        self.pos_y_locator = pos_y
+        self.update()
+
+    def size_change(self, width: int, height: int) -> None:
+        """
+        Updates the size of the current position indicator
+        """
+        self.width_locator = width
+        self.height_locator = height
+        self.update()

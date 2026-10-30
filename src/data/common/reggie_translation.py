@@ -473,7 +473,7 @@ class ReggieTranslation:
                 2: '[id]: [width]x[height] at [x], [y]',
             },
             'MainWindow': {
-                0: '[unsaved]',
+                0: None,  # REMOVED: '[unsaved]'
                 1: 'You\'re trying to paste over 300 items at once.[br]This may take a while (depending on your computer speed), are you sure you want to continue?',
                 2: 'Entrance Limit Reached',
                 3: 'You cannot have more than 256 entrances in an area.',
@@ -1031,6 +1031,7 @@ class ReggieTranslation:
             },
             'WindowTitle': {
                 0: 'Untitled',
+                1: '[unsaved]',
             },
             'ZonesDlg': {
                 0: 'Zones',

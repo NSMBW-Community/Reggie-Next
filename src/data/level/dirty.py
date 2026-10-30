@@ -13,8 +13,7 @@ def SetDirty(noautosave: bool = False) -> None:
         return
 
     globals_.Dirty = True
-    if globals_.mainWindow is not None:
-        globals_.mainWindow.UpdateTitle()
+    globals_.mainWindow.set_window_title()
 
 def CheckDirty() -> bool:
     """
@@ -22,8 +21,6 @@ def CheckDirty() -> bool:
     Returns whether the level still contains unsaved changes.
     """
     if not globals_.Dirty:
-        return False
-    if globals_.mainWindow is None:
         return False
 
     msg = QtWidgets.QMessageBox()

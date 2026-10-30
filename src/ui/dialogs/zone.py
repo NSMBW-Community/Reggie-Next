@@ -61,9 +61,6 @@ class ZonesDialog(QtWidgets.QDialog):
         """
         Saves the Zone settings
         """
-        if globals_.mainWindow is None:
-            return
-
         SetDirty()
 
         # Resync the zones
@@ -142,9 +139,6 @@ class ZonesDialog(QtWidgets.QDialog):
             if result == QtWidgets.QMessageBox.StandardButton.No:
                 return
 
-        if globals_.mainWindow is None:
-            return
-
         zone = ZoneItem.CreateZone(256, 256)
         name = globals_.trans.string('ZonesDlg', 3, '[num]', zone.id + 1)
 
@@ -165,9 +159,6 @@ class ZonesDialog(QtWidgets.QDialog):
                                                    QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
             if result == QtWidgets.QMessageBox.StandardButton.No:
                 return
-
-        if globals_.mainWindow is None:
-            return
 
         zone = ZoneItem.CreateZone(256, 256)
         widget = cast(ZoneTab, self.tab_widget.widget(self.tab_widget.currentIndex()))

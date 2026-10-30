@@ -13,9 +13,6 @@ class ZoomWidget(QtWidgets.QWidget):
         Creates and initializes the widget
         """
         super().__init__()
-        if globals_.mainWindow is None:
-            return
-
         max_width = 512 - 128
         max_height = 20
 
@@ -38,19 +35,19 @@ class ZoomWidget(QtWidgets.QWidget):
 
         self.min_label.setIcon(GetIcon('magnifier-zoom-minimum'))
         self.min_label.setFlat(True)
-        self.min_label.clicked.connect(globals_.mainWindow.HandleZoomMin)
+        self.min_label.clicked.connect(globals_.mainWindow.zoom_min)
 
         self.dec_label.setIcon(GetIcon('magnifier-zoom-out'))
         self.dec_label.setFlat(True)
-        self.dec_label.clicked.connect(globals_.mainWindow.HandleZoomOut)
+        self.dec_label.clicked.connect(globals_.mainWindow.zoom_out)
 
         self.inc_label.setIcon(GetIcon('magnifier-zoom-in'))
         self.inc_label.setFlat(True)
-        self.inc_label.clicked.connect(globals_.mainWindow.HandleZoomIn)
+        self.inc_label.clicked.connect(globals_.mainWindow.zoom_in)
 
         self.max_label.setIcon(GetIcon('magnifier-zoom-maximum'))
         self.max_label.setFlat(True)
-        self.max_label.clicked.connect(globals_.mainWindow.HandleZoomMax)
+        self.max_label.clicked.connect(globals_.mainWindow.zoom_max)
 
         self.main_layout = QtWidgets.QGridLayout()
         self.main_layout.addWidget(self.min_label, 0, 0)
@@ -71,8 +68,7 @@ class ZoomWidget(QtWidgets.QWidget):
         """
         Handle the slider being moved
         """
-        if globals_.mainWindow is not None:
-            globals_.mainWindow.ZoomTo(globals_.mainWindow.ZoomLevels[self.slider.value()])
+        globals_.mainWindow.set_zoom(globals_.mainWindow.ZoomLevels[self.slider.value()])
 
     def set_zoom_level(self, new_level):
         """
@@ -86,7 +82,6 @@ class ZoomWidget(QtWidgets.QWidget):
         """
         Converts the Zoom level (float) to an index for the slider
         """
-        if globals_.mainWindow is not None:
-            for i, main_level in enumerate(globals_.mainWindow.ZoomLevels):
-                if float(main_level) == float(level):
-                    return i
+        for i, main_level in enumerate(globals_.mainWindow.ZoomLevels):
+            if float(main_level) == float(level):
+                return i

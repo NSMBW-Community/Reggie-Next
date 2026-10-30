@@ -107,9 +107,6 @@ class SpriteTab(QtWidgets.QTabWidget):
         """
         Handles a new sprite being chosen
         """
-        if globals_.mainWindow is None:
-            return
-
         globals_.CurrentSprite = sprite_num
 
         if sprite_num != 1000 and sprite_num >= 0:
@@ -124,9 +121,6 @@ class SpriteTab(QtWidgets.QTabWidget):
         """
         Handles a new sprite type being chosen to replace the selected sprites
         """
-        if globals_.mainWindow is None:
-            return
-
         items = globals_.mainWindow.scene.selectedItems()
         changed = False
 
@@ -185,8 +179,7 @@ class SpriteTab(QtWidgets.QTabWidget):
         """
         Handles the Show Default Properties button being clicked
         """
-        if globals_.mainWindow is not None:
-            globals_.mainWindow.defaultPropDock.setVisible(True)
+        globals_.mainWindow.defaultPropDock.setVisible(True)
 
     def prepare_batch_add(self):
         """

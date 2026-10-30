@@ -48,5 +48,4 @@ class PathEditorLineItem(QtWidgets.QGraphicsPathItem):
 
         # Bug in Qt? The old rect of the path is not updated, so artifacts
         # remain on the scene if we do not update the scene manually...
-        if globals_.mainWindow is not None:
-            globals_.mainWindow.scene.update(old_rect)
+        globals_.mainWindow.scene.update(old_rect)

@@ -1,7 +1,9 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data import globals_
+from data.common.settings import setSetting
 from ui.graphics.grid import draw_foreground_grid
+import spritelib
 
 class LevelScene(QtWidgets.QGraphicsScene):
     """
@@ -20,12 +22,15 @@ class LevelScene(QtWidgets.QGraphicsScene):
         if self.is_screenshot:
             draw_foreground_grid(painter, rect, True)
 
-    def drawBackground(self, painter, rect):
+    def drawBackground(self, painter: QtGui.QPainter | None, rect: QtCore.QRectF) -> None:
         """
         Draws all visible tiles
         """
         QtWidgets.QGraphicsScene.drawBackground(self, painter, rect)
         if not hasattr(globals_.Area, 'layers'):
+            return
+
+        if painter is None:
             return
 
         drawrect = QtCore.QRectF(rect.x() / 24, rect.y() / 24, rect.width() / 24 + 1, rect.height() / 24 + 1)
@@ -112,5 +117,47 @@ class LevelScene(QtWidgets.QGraphicsScene):
 
             painter.restore()
 
-    def getMainWindow(self):
-        return globals_.mainWindow
+    def play_tile_anim(self, checked):
+        """
+        Toggles tileset animations
+        """
+        globals_.TilesetsAnimating = checked
+
+        for tile in globals_.Tiles:
+            if tile is not None:
+                tile.resetAnimation()
+
+        self.update()
+
+    def show_tile_collision(self, checked):
+        """
+        Toggles tileset collision previews
+        """
+        globals_.CollisionsShown = checked
+
+        setSetting('ShowCollisions', globals_.CollisionsShown)
+        self.update()
+
+    def show_real_view(self, checked):
+        """
+        Toggles Real View mode
+        """
+        globals_.RealViewEnabled = checked
+        spritelib.RealViewEnabled = globals_.RealViewEnabled
+
+        setSetting('RealViewEnabled', globals_.RealViewEnabled)
+        self.update()
+
+    def switch_grid(self):
+        """
+        Switches the current grid type
+        """
+        if globals_.GridType is None:
+            globals_.GridType = 'grid'
+        elif globals_.GridType == 'grid':
+            globals_.GridType = 'checker'
+        else:
+            globals_.GridType = None
+
+        setSetting('GridType', globals_.GridType)
+        self.update()

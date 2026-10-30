@@ -197,15 +197,12 @@ class EntranceItem(LevelEditorItem):
         self.UpdateRects()
 
     @staticmethod
-    def CreateEntrance(x: int, y: int, id_: int | None = None, add_to_scene: bool = True, allow_dupe_id: bool = False) -> 'EntranceItem | None':
+    def create(x: int, y: int, id_: int | None = None, add_to_scene: bool = True, allow_dupe_id: bool = False) -> 'EntranceItem | None':
         """
         Creates and returns a new entrance and makes sure it's added to the
         right lists. This function returns None if this entrance could not be
         created.
         """
-        if globals_.mainWindow is None:
-            return None
-
         all_ids = {ent.entid for ent in globals_.Area.entrances}
         if id_ is None:
             id_ = find_first_available_id({id for id in all_ids if id is not None}, 256)
@@ -216,7 +213,7 @@ class EntranceItem(LevelEditorItem):
             if result == QtWidgets.QMessageBox.StandardButton.Ok:
                 return None
         elif id_ in all_ids and add_to_scene and not allow_dupe_id:
-            print(f"EntranceItem#CreateEntrance: Given entrance id ({id_}) already in use")
+            print(f"EntranceItem#create: Given entrance id ({id_}) already in use")
             return None
 
         ent = EntranceItem(x, y, id_, 0, 0, 0, 0, 0, 0, 0x80, 0, 0)
@@ -321,9 +318,8 @@ class EntranceItem(LevelEditorItem):
         self.UpdateRects()
 
         # Update the scene and level overview
-        if globals_.mainWindow is not None:
-            globals_.mainWindow.scene.update(old_rect.united(self.getFullRect()))
-            globals_.mainWindow.level_overview.update()
+        globals_.mainWindow.scene.update(old_rect.united(self.getFullRect()))
+        globals_.mainWindow.level_overview.update()
 
     def paint(self, painter: QtGui.QPainter | None, option: QtWidgets.QStyleOptionGraphicsItem | None, widget: QtWidgets.QWidget | None = None) -> None:
         """
@@ -389,9 +385,6 @@ class EntranceItem(LevelEditorItem):
         """
         Delete the entrance from the level
         """
-        if globals_.mainWindow is None:
-            return
-
         elist = globals_.mainWindow.palette_dock.entrance_tab.entrance_list
         globals_.mainWindow.UpdateFlag = True
         elist.takeItem(elist.row(self.listitem))

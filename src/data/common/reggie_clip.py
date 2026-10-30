@@ -22,9 +22,6 @@ class ReggieClip:
         """
         Generates a ReggieClip from a list of items and returns it
         """
-        if globals_.mainWindow is None:
-            return ''
-
         objects = []
         sprites = []
         entrances = []
@@ -121,9 +118,6 @@ class ReggieClip:
         """
         Decode and place a set of items
         """
-        if globals_.mainWindow is None:
-            return []
-
         globals_.mainWindow.SelectionUpdateFlag = True
         globals_.mainWindow.scene.clearSelection()
         added: list[LevelEditorItem] = []
@@ -261,9 +255,6 @@ class ReggieClip:
         path_nodes = []
         comments = []
 
-        if globals_.mainWindow is None:
-            return layers, sprites, entrances, locations, paths, path_nodes, comments
-
         if not (reggie_clip.startswith('ReggieClip|') and reggie_clip.endswith('|%')):
             return layers, sprites, entrances, locations, paths, path_nodes, comments
 
@@ -307,7 +298,7 @@ class ReggieClip:
                     if height < 1 or height > 511:
                         continue
 
-                    newitem = ObjectItem.CreateObject(tileset, type, layer, objx, objy, width, height, add_to_scene)
+                    newitem = ObjectItem.create(tileset, type, layer, objx, objy, width, height, add_to_scene)
                     layers[layer].append(newitem)
 
                 # Sprite
@@ -329,7 +320,7 @@ class ReggieClip:
                     type = int(split[1])
                     data = bytes(map(int, [split[4], split[5], split[6], split[7], split[8], split[9], '0', split[10], pad_1, pad_2]))
 
-                    newitem = SpriteItem.CreateSprite(objx, objy, type, data, add_to_scene)
+                    newitem = SpriteItem.create(objx, objy, type, data, add_to_scene)
                     sprites.append(newitem)
 
                 # Entrance
@@ -364,7 +355,7 @@ class ReggieClip:
                     if cPipeDir < 0 or cPipeDir > 3:
                         continue
 
-                    newitem = EntranceItem.CreateEntrance(objx, objy, entID, add_to_scene, True)
+                    newitem = EntranceItem.create(objx, objy, entID, add_to_scene, True)
                     if newitem is None:
                         continue
 
@@ -397,7 +388,7 @@ class ReggieClip:
                     width = int(split[4])
                     height = int(split[5])
 
-                    newitem = LocationItem.CreateLocation(objx, objy, width, height, locID, add_to_scene)
+                    newitem = LocationItem.create(objx, objy, width, height, locID, add_to_scene)
                     locations.append(newitem)
 
                 # Path
@@ -408,10 +399,9 @@ class ReggieClip:
                     pathID = int(split[1])
                     loops = int(split[2]) == 1
 
-                    if globals_.mainWindow is not None:
-                        path = Path(pathID, globals_.mainWindow.scene, loops)
-                        globals_.Area.paths.append(path)
-                        paths.append(path)
+                    path = Path(pathID, globals_.mainWindow.scene, loops)
+                    globals_.Area.paths.append(path)
+                    paths.append(path)
 
                 # Path Node
                 elif split[0] == '5':
@@ -446,7 +436,7 @@ class ReggieClip:
                     raw_text = str(split[3])
                     text = bytes.fromhex(raw_text).decode()
 
-                    new_item = CommentItem.CreateComment(objx, objy, text, add_to_scene)
+                    new_item = CommentItem.create(objx, objy, text, add_to_scene)
                     comments.append(new_item)
 
             except ValueError:

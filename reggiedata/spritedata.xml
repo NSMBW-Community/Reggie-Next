@@ -539,13 +539,13 @@
     <dualbox nybble="8.4" title1="Counter-Clockwise" title2="Clockwise" comment="This determines which way the platform will rotate."/>
   </sprite> <!-- #52: Auto-Rotating 4-Platform -->
 
-  <sprite id="53" name="Effect - Quicksand" notes="This will draw the animated quicksand effect over a specific Location ID. The actual quicksand sinking effect is only obtained through a specific tileset object. See Dependency Notes for examples. The quicksand animation is always placed behind Layer 0 objects.&lt;br&gt;&lt;br&gt;Location Quicksand: If you assign a Location ID, you can cause sand to appear only within the chosen Location instead of across the entire stage.&lt;br&gt;&lt;br&gt;Quicksand Crest's Maximum Length: The crest of Quicksand will stop drawing past 8800 pixels (550 blocks). You can avoid this by making multiple instances of Location Quicksand. Make sure that the widths of the locations are no greater than 8800, and that they are multiples of 16." files="obj_quicksand.arc;obj_magma.arc;obj_magmawave.arc">
-    <dependency notes="Pa1_sabaku (Desert): Object 24&lt;br&gt;&lt;br&gt;Pa1_sabaku_chika (Desert Cave): Object 26&lt;br&gt;&lt;br&gt;Pa1_toride_sabaku (Desert Tower): Object 107"/>
-    <checkbox nybble="10.1" title="Flat Top" comment="When enabled, this removes the animated crest effect on the top portion of the quicksand. This will cause a 'square' look." comment2="This should be used when the quicksand connects with a ceiling or other Layer 1 terrain."/>
-    <value nybble="11.2-12.4" title="Location ID" comment="This determines the Location where the quicksand animation will be created." idtype="Location"/>
+  <sprite id="53" name="Effect - Quicksand" notes="This sprite will draw quicksand across the entire Zone or within a Location, however the actual collision requires a specific tileset object to be placed (see the Dependency Notes). Additionally, quicksand always appears below Layer 0 objects." advancednotes="The quicksand surface will abruptly stop rendering after 8800 units (550 tiles) from the left edge of the Zone/Location." nolayer="True" files="obj_quicksand.arc;obj_magma.arc;obj_magmawave.arc">
+    <dependency notes="Tilesets with quicksand collision objects:[br]Pa1_sabaku (Desert): Object 24[br]Pa1_sabaku_chika (Underground Desert): Object 26[br]Pa1_toride_sabaku (Desert Tower): Object 107"/>
+    <checkbox nybble="10.1" title="No Crest" comment="When enabled, the surface crest of the quicksand will not be rendered." comment2="This should be used when the quicksand connects with a ceiling or other Layer 1 terrain."/>
+    <value nybble="11.2-12.4" title="Location ID" comment="This determines the Location where the quicksand will be created." idtype="Location"/>
   </sprite> <!-- #53: Effect - Quicksand -->
 
-   <sprite id="54" name="Lakitu" notes="A standalone Lakitu, more useful for small rooms than entire levels. Lakitu will throw Spinies (or coins) at the player and will follow the player until killed." files="jugem.arc;togezo.arc;paipo.arc">
+  <sprite id="54" name="Lakitu" notes="A standalone Lakitu, more useful for small rooms than entire levels. Lakitu will throw Spinies (or coins) at the player and will follow the player until killed." files="jugem.arc;togezo.arc;paipo.arc">
     <dependency notes="The standalone Lakitu will spawn at exactly the height that it is placed and will remain at that height as it follows the player. Additionally, as it does not respawn after killed unless re-entering the zone, utilizing it for its cloud riding is not recommended for mandatory progress."/>
     <dualbox nybble="10.4" title1="Spawn from the Side" title2="Spawn from the Background" comment="This will determine which animation state is used by the Lakitu when it is first loaded." comment2="Spawning from the Background means that the Lakitu will fly in from the background, facing the camera."/>
     <list nybble="12.3-12.4" title="Thrown Item" comment="This determines what the Lakitu will throw." comment2="A value of 1 throws a Spiny that can be killed if hit from below on a block, but only while balled up.">
@@ -688,6 +688,7 @@
   </sprite> <!-- #63: Spiked Ball -->
 
   <sprite id="64" name="Effect - Thick Fog" notes="This adds a thick rolling fog effect to the level that can be used with or without a Location ID.&lt;br&gt;The fog will make Non-location Lava/Poisoned Water function just like Water if it is added into the level after the liquids. You can avoid this by adding the fog and then re-adding the Lava/Poisoned Water, or by placing the liquids in their own separate locations." files="obj_envfog.arc">
+    <!-- NOTE: This sprite supports some, or all(?) of the movement properties of Water, Lava, etc. Once those are better documented, they should be ported to this sprite -->
     <value nybble="11.2-12.4" title="Location ID" comment="This determines the location in which the Thick Fog will spawn." idtype="Location"/>
   </sprite> <!-- #64: Effect - Thick Fog -->
 
@@ -1514,64 +1515,28 @@
     <checkbox nybble="8.2" title="Silent" comment="When enabled, the Skewer will not create any sound effects." comment2="When having two Skewers 'collide', it's recommended that one of them has this setting enabled."/>
   </sprite> <!-- #137: Skewer - Down -->
 
-  <!-- Moving Water - Delay at Starting Point: Comment, accuracy when involving events. -->
-  <!-- title1="Rising Forever while On" title="Falling Forever while On" - True or False? What happens when using a Triggering Event on a permanently rising or permanently falling Moving Water? What happens when before the event activates? What happens when it activates? What happens when it is deactivated? What happens when it's activated again? -->
-  <!-- title1="Rising and Falling while On, Returns when Off" - True or False? Does it very quickly return or will it instantly (glitchy looking) return to its starting position? -->
-  <!-- Dear Dog that took around two hours to sort that mess out piece by piece. It's wonderful what these new display settings can actually accomplish for making this type of information actually usable! -->
-  <sprite id="138" name="Water" noyoshi="True" notes="Place this in the level to generate water. There are many different ways to use this type of Water.&lt;br&gt;&lt;br&gt;Underwater Zone: If you just want to create an underwater zone, check Flat Top and leave everything else blank. Then place the Water about 6 blocks above your upper Zone boundary.
- &lt;br&gt;&lt;br&gt;Moving Water: You can also create water that rises and/or falls. This gets a little complicated, so be sure to read the related settings.
- &lt;br&gt;&lt;br&gt;Water Crest's Maximum Length: The crest of Water will stop drawing past 8800 pixels (550 blocks). You can avoid this by making multiple instances of Water in Locations. Make sure that the widths of the locations are no greater than 8800, and that they are multiples of 16." files="obj_waterhalf.arc;obj_waterfull.arc">
-    <dependency notes="When using Moving Water, the Water becomes loaded across the entire Area instead of just the active Zone. Please build your levels with this in mind. Additionally, do not use more than one Moving Water in the same Area as only the top (highest Y-Axis) one will take effect. If you need Moving Water in multiple Zones within the same area, use [285] Rising and Falling Water instead. Also, be sure to reset your Sprite Settings if you switch between different setting groups of Moving Water or Location Water to prevent unusual bugs and behavior.">
-      <suggested sprite="317"/> <!-- Lets bubbles exist -->
-    </dependency>
-   <!-- The different displays of the Speed option -->
-    <list nybble="5.2-5.4" title="Moving Water - Rising Speed" comment="This determines the speed at which the Water will rise, or rise and fall." requirednybble="5.1" requiredval="0">
+  <sprite id="138" name="Water" noyoshi="True" notes="" advancednotes="The water surface will abruptly stop rendering after 8800 units (550 tiles) from the left edge of the Zone/Location." nolayer="True" files="obj_waterhalf.arc;obj_waterfull.arc">
+    <list nybble="5.2-5.4" title="Movement Speed" comment="This determines how fast the water will move. Retail levels always use a speed of 0.75 for Moving Water.">
       <entry value="0">No Movement</entry>
-      <entry value="5">Very Slow</entry>
-      <entry value="6">Slow (Standard)</entry>
-      <entry value="7">Medium</entry>
-      <entry value="4">Fast</entry>
-      <entry value="1">Very Fast</entry>
-      <entry value="2">Very Fast</entry>
-      <entry value="3">Very Fast</entry>
-    </list> <!-- This version of the list shows when Rising Water is set, regardless of Distance, Delay, or Triggering Event ID -->
-    <list nybble="5.2-5.4" title="Moving Water - Falling Speed" comment="This determines the speed at which the Water will fall." requirednybble="5.1,8-9" requiredval="1, 0">
-      <entry value="0">No Movement</entry>
-      <entry value="5">Very Slow</entry>
-      <entry value="6">Slow (Standard)</entry>
-      <entry value="7">Medium</entry>
-      <entry value="4">Fast</entry>
-      <entry value="1">Very Fast</entry>
-      <entry value="2">Very Fast</entry>
-      <entry value="3">Very Fast</entry>
-    </list> <!-- This version of the list shows when Falling Water is set, and Distance is not set. You're okay... for now. -->
-    <list nybble="5.2-5.4" title="I really wouldn't do that if I were you..." comment="Falling Water works in a peculiar way. When the appropriate event has not been activated, or there is no corresponding event, [Never ON] then the water surface will appear [Distance] blocks higher. The water will then sink this many blocks, respecting any delays. After waiting for the delay at the bottom, the water surface will not rise again. Not exactly. Instead, it will 'skip' the rising part and 'jump' to immediately to the top. Additionally, using this with events will cause the water to rise, instead of falling. [ON] But the starting point is the same higher distance. The difference is that the water rises continuously as long as the event is enabled. [Endless Rising] If it is disabled, [OFF after ON] the water surface will 'jump' back to where it started and remain there until the event is re-enabled. [Why bother?] Additionally, 1-5 on Movement Speed values have some additional odd glitchiness. Supposedly. So please, stop trying to combine settings like this. Or your level will suck." requirednybble="5.1,8-9" requiredval="1, 1-255">
-      <entry value="0">Reset Sprite Settings!</entry>
-      <entry value="5">Really Not Recommended</entry>
-      <entry value="6">Slow (Standard) (Not Recommended)</entry>
-      <entry value="7">Medium (Not Recommended)</entry>
-      <entry value="4">Really Not Recommended</entry>
-      <entry value="1">Really Not Recommended</entry>
-      <entry value="2">Really Not Recommended</entry>
-      <entry value="3">Really Not Recommended</entry>
-    </list> <!-- This version of the list shows when Falling Water is set, and Distance is also is set. You bad bad boy... -->
-   <!-- Rising vs Falling Options -->
-    <dualbox nybble="5.1" title1="Rising Forever" title2="Falling Forever" comment="This determines which direction the Water will move." requirednybble="5.2-5.4,8-9,6-7,1-2" requiredval="1-7, 0, 0, 0"/> <!-- Appears when Speed is set and Distance, Delays, and Triggering Event ID are NOT set -->
-    <dualbox nybble="5.1" title1="Rising Forever while On" title2="Falling Forever while On" comment="This determines which direction the Water will move while the Triggering Event is activated." requirednybble="5.2-5.4,8-9,6-7,1-2" requiredval="1-7, 0, 0, 1-255"/> <!-- Appears when Speed and Triggering Event ID are set and Distance is NOT set -->
-    <dualbox nybble="5.1" title1="Automatically Rising and Falling" title2="[Extremely Buggy]" comment="The Water will automatically rise and fall in accordance with the set delays." requirednybble="5.2-5.4,8-9,1-2" requiredval="1-7, 1-255, 0"/> <!-- Appears when Speed and Distance are set, and Triggering Event ID is not set. -->
-    <dualbox nybble="5.1" title1="Rises Distance while On, Falls when Off" title2="[Extremely Buggy]" comment="The Water will rise the Distance value once activated, and stay at the top until the Triggering Event is deactivated. If the Triggering Event is deactivated before it rises the full distance, it will finish rising, then immediately start to fall." comment2="This option only applies if Delay values are both set to 0, Distance is set, and Triggering ID is set. Do not use [Extremely Buggy]. No really, don't. It won't help you any." requirednybble="5.2-5.4,8-9,6-7,1-2" requiredval="1-7, 1-255, 0, 1-255"/> <!-- Appears when Speed and Distance and Triggering Event ID are set, AND when Delays are NOT set. -->
-    <dualbox nybble="5.1" title1="Rising and Falling while On, Glitch-Returns when Off" title2="[Extremely Buggy]" comment="The Water will rise and fall in accordance with the set delays while the Triggering Event is activated." comment2="When the Triggering Event is deactivated, the Water will immediately return to its starting position in a glitchy manner. It is highly recommended to not cause this to happen in your level design. Use Event Chainers with Delays or the Event Looper to get this type of timing instead." requirednybble="5.2-5.4,8-9,6-7,1-2" requiredval="1-7, 1-255, 1-255, 1-255"/> <!-- Appears when Speed, Distance, Delays, AND Triggering Event are all set. -->
-   <!-- Things that change the Rising vs Falling options -->
-    <value nybble="8-9" title="Moving Water - Distance" comment="This determines how many blocks the Water will move." comment2="Setting this will drastically change the function of Moving Water. Please keep this in mind." requirednybble="5.2-5.4,5.1" requiredval="1-7, 0"/> <!-- Appears when Speed is set, disappears if Falling is set. -->
-    <value nybble="8-9" title="I wouldn't do that if I were you..." comment="This determines how many blocks the Water will move. Normally. But you are a bad person and are trying to set combinations of options that are known not to work. So stop right there and either change this back to zero, or select the option to the left of where it says [Extremely Buggy]." requirednybble="5.2-5.4,5.1" requiredval="1-7, 1"/> <!-- Appears when you've been a very bad boy and Falling is enabled with Distance set. -->
-    <value nybble="6" title="Moving Water - Delay at Top" comment="This determines the delay when the Water has finished rising." requirednybble="5.2-5.4,8-9" requiredval="1-7, 1-255"/> <!-- Appears when Speed and Distance are set -->
-    <value nybble="7" title="Moving Water - Delay at Bottom" comment="This determines the delay when the Water has returned to its starting position." comment2="The initial delay only can be set by using event-controlled Water. Utilize Event Chainers to fake the delay settings if you need to set an initial delay." requirednybble="5.2-5.4,8-9" requiredval="1-7, 1-255"/> <!-- Appears when Speed and Distance are set -->
-    <value nybble="1.2-2.4" title="Moving Water - Triggering Event ID" comment="The Moving Water mode will be triggered when this Event is activated." requirednybble="5.2-5.4" idtype="Triggering Event"/> <!-- Appears when Speed is set --> <!-- Needs modified to allow for 256 events. -->
-    <value nybble="11.2-12.4" title="Location ID" comment="Match with a Location ID to set a specific area in which to display Water. Note that some sprites only work correctly in Non-Location Water." idtype="Location"/>
-    <checkbox nybble="10.1" title="Higher Transparency and Flat Top" comment="When enabled, the animated crest effect on the top portion of the Water is removed, and the Non-Location Water becomes almost transparent." requirednybble="11.2-12.4" requiredval="0"/> <!--Appears when a Location ID is not set. -->
-    <checkbox nybble="10.1" title="Flat Top" requirednybble="11.2-12.4"/> <!-- Appears when a Location ID is set. -->
-    <checkbox nybble="10.2" title="Place Behind Layer 0" comment="For this to work, 'Layer 0 Spotlight' must be turned off in the zone's settings." requirednybble="11.2-12.4"/> <!-- Appears when a Location ID is set. -->
-    <checkbox nybble="11.1" title="Unknown Flag 11.1" comment="This flag makes the Water function differently to some degree. It is known to move up and down 1 tile on a cycle when this setting is used with a few others."/>
+      <entry value="5">0.125</entry>
+      <entry value="6">0.25</entry>
+      <entry value="7">0.5</entry>
+      <entry value="4">0.75</entry>
+      <entry value="1">1.0</entry>
+      <entry value="2">1.0</entry>
+      <entry value="3">1.0</entry>
+    </list>
+    <dualbox nybble="5.1" title1="Rises First" title2="Falls First" comment="This determines the initial direction of the water." requirednybble="5.2-5.4"/>
+    <checkbox nybble="11.1" title="Falls Faster" comment="When enabled, the water will take less time to begin falling." comment2="The exact speed difference is 0.125 checked, 0.03125 unchecked." requirednybble="5.2-5.4"/>
+    <value nybble="6" increment="60" title="Delay at Top" comment="This determines the movement delay at the top of the water's movement cycle." requirednybble="5.2-5.4"/>
+    <value nybble="7" increment="60" title="Delay at Bottom" comment="This determines the movement delay at the bottom of the water's movement cycle." requirednybble="5.2-5.4"/>
+    <value nybble="8-9" title="Movement Distance" comment="This determines how far the water will move before stopping." requirednybble="5.2-5.4"/>
+    <value nybble="1.2-2.4" title="Triggering Event ID (Special)" comment="If this Event field is used, then the water will bob up and down roughly half a tile when not moving, and rise/fall in increments determined by the Delay values." requirednybble="3.2-4.4,5.2-5.4" requiredval="0,1-7" idtype="Triggering Event"/>
+    <value nybble="3.2-4.4" title="Triggering Event ID" comment="The water will begin to move when this Event is activated." requirednybble="1.2-2.4,5.2-5.4" requiredval="0,1-7" idtype="Triggering Event"/>
+    <checkbox nybble="10.1" title="No Crest" comment="When enabled, the surface crest of the water will not be rendered." requirednybble="11.2-12.4"/>
+    <checkbox nybble="10.1" title="No Crest + Higher Transparency" comment="If enabled, the water will be significantly more transparent, while also lacking a surface crest. This is intended for Zones that are fully submerged underwater." requirednybble="11.2-12.4" requiredval="0"/>
+    <checkbox nybble="2.4-6.4" mask="65537" title="Enable Bobbing Behavior" comment="This combination of settings will cause the water to bob up and down by roughly half a tile." requirednybble="5.2-5.4" requiredval="0"/>
+    <value nybble="11.2-12.4" title="Location ID" comment="This determines which Location the water will occupy." idtype="Location"/>
   </sprite> <!-- #138: Water -->
 
   <!-- Mode Cheat Sheet
@@ -3512,24 +3477,23 @@
     </list>
   </sprite> <!-- #284: Physics Coin Controller -->
 
-  <sprite id="285" name="Rising/Falling Water" notes="Unlike normal [138] Water, Rising/Falling Water contains many functions of Moving Water in a standalone form. Similar compatibility issues still exist, and in particular it should be noted that this functions by moving a fixed depth 'block' of water up and down." files="obj_waterfull.arc;obj_waterhalf.arc">
-    <dependency notes="The bottom edge of the water can be exposed if the Depth value is not large enough. Additionally, the player can fall out from the bottom edge of the water unless there is approximately 4 blocks of water under the bottom edge of the screen. Outside of that restriction, all setting combinations with this sprite function just fine."/>
-    <value nybble="3-4" title="Triggering Event ID" comment="When set, the Water will only move when the Triggering Event is activated. Otherwise, the Water will move automatically." idtype="Triggering Event"/>
-    <dualbox nybble="8.1" title1="Rises First" title2="Falls First" comment="This determines which direction the Water will move first when activated."/>
-    <list nybble="8.2-8.4" title="Speed" comment="This determines how quickly the water moves up and down.">
-      <entry value="0">Slow</entry>
-      <entry value="1">Normal</entry>
-      <entry value="2">Fast</entry>
-      <entry value="3">Very Fast</entry>
-      <entry value="4">Very Fast+</entry>
-      <entry value="5">Very Fast++</entry>
-      <entry value="6">Very Fast+++</entry>
-      <entry value="7">Fastest</entry>
+  <sprite id="285" name="(Unused) Rising/Falling Water" notes="This sprite contains the functions of Moving Water in a standalone form." advancednotes="The water surface will abruptly stop rendering after 8800 units (550 tiles) from the left edge of the Zone/Location, however the rest of the water continues to render." nolayer="True" noyoshi="True" files="obj_waterfull.arc;obj_waterhalf.arc">
+    <value nybble="3-4" title="Triggering Event ID" comment="When set, the water will only move when the Triggering Event is activated. Otherwise, the water will move automatically." idtype="Triggering Event"/>
+    <dualbox nybble="8.1" title1="Rises First" title2="Falls First" comment="This determines the initial direction of the water upon being activated."/>
+    <list nybble="8.2-8.4" title="Movement Speed" comment="This determines how quickly the water moves up and down.">
+      <entry value="0">0.25</entry>
+      <entry value="1">0.5</entry>
+      <entry value="2">0.75</entry>
+      <entry value="3">1.0</entry>
+      <entry value="4">1.25</entry>
+      <entry value="5">1.5</entry>
+      <entry value="6">1.75</entry>
+      <entry value="7">2.0</entry>
     </list>
-    <value nybble="9" title="Delay at Top" comment="This determines the delay when the Water has finished rising."/>
-    <value nybble="10" title="Delay at Bottom" comment="This determines the delay when the Water has finished falling."/>
-    <value nybble="11" start="2" increment="2" title="Movement Distance" comment="This determines how many blocks the Water will move."/>
-    <value nybble="12" start="2" increment="2" title="Depth of Water" comment="This determines how deep the Water is, counting the wavy crest on the top." comment2="If the water is not set deep enough, the players will be able to see 'air' at the bottom, or they can potentially fall out of the Water completely."/>
+    <value nybble="9" increment="30" title="Delay at Top" comment="This determines the delay when the water has finished rising."/>
+    <value nybble="10" increment="30" title="Delay at Bottom" comment="This determines the delay when the water has finished falling."/>
+    <value nybble="11" start="2" increment="2" title="Movement Distance" comment="This determines how many tiles the water will move."/>
+    <value nybble="12" start="2" increment="2" title="Depth of Water" comment="This determines how deep the water is, counting the wavy crest on the top." advancedcomment="The water is not infinite, and instead a fixed depth specified by this setting. The bottom edge of the water can be exposed if the depth value is not high enough, and the player can fall out from the bottom edge unless there is approximately 4 tiles of water below the Zone edge."/>
   </sprite> <!-- #285: Rising/Falling Water -->
 
   <sprite id="286" name="Rotating Wooden Airship Wheel" notes="A circular wheel matching the standard airship decor that rotates, making it hard to stand on." files="obj_Hgear.arc">
@@ -4556,9 +4520,9 @@
     </dependency>
   </sprite> <!-- #372: Iggy Koopa - Castle Boss -->
 
-  <sprite id="373" name="Flashlight Raft Water" notes="This is the Water that is used with the Flashlight Raft. It will rise and fall along the Path indicated by the Flashlight Raft." files="obj_waterfull.arc;obj_waterhalf.arc">
-    <dependency notes="The water will move alongside [368] Flashlight Raft if it is included in the Zone. Do not include more than one.">
-      <suggested sprite="368"/>
+  <sprite id="373" name="Flashlight Raft Water" notes="This water sprite has the special function of rising and falling alongside [368] Flashlight Raft, however it does not support the Location or movement capabilities of normal water." advancednotes="The water surface will abruptly stop rendering after 8800 units (550 tiles) from the left edge of the Zone/Location, however the rest of the water continues to render." nolayer="True" noyoshi="True" files="obj_waterfull.arc;obj_waterhalf.arc">
+    <dependency notes="In addition to rising/falling with it, the raft is required for the water to have any collision.">
+      <required sprite="368"/>
     </dependency>
   </sprite> <!-- #373: Flashlight Raft Water -->
 
@@ -5283,7 +5247,7 @@
   </sprite> <!-- #433: Floating ? Block -->
 
   <sprite id="434" name="Warp Cannon" notes="A large cannon that will flag a level for completion. The cannon will only send the player to a different world if placed in an XX-36 level slot." files="warp_cannon.arc">
-    <list nybble="12.3-12.4" title="Inscription" comment="This determines which number is printed on the side of the cannon." comment2="A fourth texture can be used by setting nybble 12 to 3 and adding another texture to the animation in the model." advancedcomment="The world that the cannon actually travels to is hardcoded based on this level's world ID. Changing this setting will not change the destination.">
+    <list nybble="12.3-12.4" title="Inscription" comment="This determines which number is printed on the side of the cannon. A fourth texture can be used by setting this to 3 and adding another texture to the PAT animation." advancedcomment="The world that the cannon actually travels to is hardcoded based on this level's world ID. Changing this setting will not change the destination.">
       <entry value="0">World 5</entry>
       <entry value="1">World 6</entry>
       <entry value="2">World 8</entry>
@@ -5291,18 +5255,18 @@
   </sprite> <!-- #434: Warp Cannon -->
 
   <sprite id="435" name="Effect - Ghost Fog" notes="This adds a thin wispy fog effect to the level that can be used with or without a Location ID.&lt;br&gt;The fog will make non-location Lava/Poisoned Water function just like Water if it is added into the level after the liquids. You can avoid this by adding the fog and then re-adding the Lava/Poisoned Water, or by placing the liquids in their own separate locations." files="obj_envfog.arc">
+    <!-- NOTE: This sprite supports some, or all(?) of the movement properties of Water, Lava, etc. Once those are better documented, they should be ported to this sprite -->
     <value nybble="11.2-12.4" title="Location ID" comment="This determines the location in which the Ghost Fog will spawn." idtype="Location"/>
     <checkbox nybble="10.2" title="Unknown Flag 10 (4)" advancedcomment="This sprite may support the Water property of being able to be placed behind the main layer by enabling this. It is not tested, however, and may not function."/>
   </sprite> <!-- #435: Effect - Ghost Fog -->
 
-  <sprite id="436" name="Background Parallax Center Point" notes="This will center the scrolling of the Zone's backgrounds at the placement of the sprite.">
-    <dependency notes="This sprite will affect the background's parallax settings by setting the center point at the placement of the sprite. Do not use more than one [436] per Zone."/>
-    <list nybble="12" title="Boss Related: Alignment" comment="This will slightly adjust the Y-Axis alignment, and should be set appropriately when creating a boss room. ">
+  <sprite id="436" name="Background Center Point" notes="This will horizontally center the scrolling of the Zone's backgrounds at the placement of the sprite.">
+    <list nybble="12" title="Alignment Mode" comment="This controls the background will be centered.">
       <entry value="0">Centered</entry>
-      <entry value="1">Align as Boss Fight</entry>
-      <entry value="2">Align as Bowser Fight</entry>
+      <entry value="1">Boss Room</entry>
+      <entry value="2">Final Boss</entry>
     </list>
-  </sprite> <!-- #436: Background Parallax Center Point -->
+  </sprite> <!-- #436: Background Center Point -->
 
   <sprite id="437" name="Climbable Striped Pole" noyoshi="True" notes="A stationary purple striped pole that can be climbed up. This does not count as a climbing animation for the IF Event Controller. It counts as being in the air." files="noboribou_obake.arc">
     <dependency notes="This sprite must be placed evenly on the grid in order to function properly."/>

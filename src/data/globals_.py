@@ -144,7 +144,7 @@ app: QtWidgets.QApplication | None = None
 firstLoad: bool = True
 trans: ReggieTranslation = ReggieTranslation(None)
 gamedef: ReggieGameDefinition = ReggieGameDefinition()
-mainWindow: ReggieWindow | None = None
 # uninitialized
+mainWindow: ReggieWindow
 settings: QtCore.QSettings
 theme: ReggieTheme

@@ -87,7 +87,7 @@ class SpriteItem(LevelEditorItem):
         globals_.DirtyOverride -= 1
 
     @staticmethod
-    def CreateSprite(x: float, y: float, id_: int | None = None, data: bytes | None = None, add_to_scene: bool = True) -> 'SpriteItem':
+    def create(x: float, y: float, id_: int | None = None, data: bytes | None = None, add_to_scene: bool = True) -> 'SpriteItem':
         """
         Creates and returns a new sprite and makes sure it's added to the right
         lists if 'add_to_scene' is set.
@@ -98,8 +98,6 @@ class SpriteItem(LevelEditorItem):
         be raised.
         """
         dummy = SpriteItem(-1, -1, -1, b'')
-        if globals_.mainWindow is None:
-            return dummy
 
         if id_ is None:
             id_ = globals_.CurrentSprite
@@ -160,9 +158,6 @@ class SpriteItem(LevelEditorItem):
         """
         Handle the sprite being dragged
         """
-        if globals_.mainWindow is None:
-            return
-
         if self == globals_.mainWindow.selObj:
             if oldx == x and oldy == y:
                 return
@@ -522,7 +517,7 @@ class SpriteItem(LevelEditorItem):
 
             return
 
-        self.CreateSprite(self.objx, self.objy, self.sprite_num, self.spritedata)
+        self.create(self.objx, self.objy, self.sprite_num, self.spritedata)
         globals_.mainWindow.scene.clearSelection()
         self.setSelected(True)
 
@@ -630,16 +625,12 @@ class SpriteItem(LevelEditorItem):
         """
         Solves a small bug
         """
-        if globals_.mainWindow is not None:
-            return globals_.mainWindow.scene
+        return globals_.mainWindow.scene
 
     def delete(self) -> None:
         """
         Delete the sprite from the level
         """
-        if globals_.mainWindow is None:
-            return
-
         self.ImageObj.remove()
         globals_.mainWindow.UpdateFlag = True
         globals_.mainWindow.palette_dock.sprite_tab.sprite_list.takeSprite(self)

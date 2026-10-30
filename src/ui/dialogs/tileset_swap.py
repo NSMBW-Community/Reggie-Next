@@ -1,10 +1,11 @@
 from PyQt6 import QtWidgets
 
 from data import globals_
+from data.level.dirty import SetDirty
 from ui.theme.reggie_theme import GetIcon
 
 
-class ObjectTilesetSwapDialog(QtWidgets.QDialog):
+class TilesetSwapDialog(QtWidgets.QDialog):
     """
     Dialog to swap all objects of one tileset to another
     """
@@ -24,11 +25,10 @@ class ObjectTilesetSwapDialog(QtWidgets.QDialog):
         slots = ('Pa0', 'Pa1', 'Pa2', 'Pa3')
 
         # Only offer slots that have a tileset
-        if globals_.mainWindow is not None:
-            for i in range(4):
-                if globals_.mainWindow.palette_dock.object_tab.isTabEnabled(i):
-                    self.curr_tileset.addItem(slots[i])
-                    self.new_tileset.addItem(slots[i])
+        for i in range(4):
+            if globals_.mainWindow.palette_dock.object_tab.isTabEnabled(i):
+                self.curr_tileset.addItem(slots[i])
+                self.new_tileset.addItem(slots[i])
 
         swap_layout = QtWidgets.QFormLayout()
         swap_layout.addRow(globals_.trans.string('SwapObjTilesDlg', 1), self.curr_tileset)
@@ -48,3 +48,23 @@ class ObjectTilesetSwapDialog(QtWidgets.QDialog):
         main_layout.addWidget(self.exchange_tiles)
         main_layout.addWidget(button_box)
         self.setLayout(main_layout)
+
+    def swap_tilesets(self) -> None:
+        """
+        Swaps all tileset objects
+        """
+        from_tileset = self.curr_tileset.currentIndex()
+        to_tileset = self.new_tileset.currentIndex()
+        do_exchange = self.exchange_tiles.isChecked()
+
+        if from_tileset == to_tileset:
+            return
+
+        for layer in globals_.Area.layers:
+            for nsmbobj in layer:
+                if nsmbobj.tileset == from_tileset:
+                    nsmbobj.SetType(to_tileset, nsmbobj.object_num)
+                    SetDirty()
+                elif do_exchange and nsmbobj.tileset == to_tileset:
+                    nsmbobj.SetType(from_tileset, nsmbobj.object_num)
+                    SetDirty()

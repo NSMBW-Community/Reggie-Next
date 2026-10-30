@@ -139,9 +139,6 @@ class KeybindTab(PreferenceTabWidget):
         globals_.MoveItemsWithArrowKeys = self.arrow_move_items.isChecked()
         setSetting('MoveItemsWithArrowKeys', globals_.MoveItemsWithArrowKeys)
 
-        if globals_.mainWindow is None:
-            return False
-
         for i, act in enumerate(globals_.mainWindow.RecentMenu.actions()):
             if not globals_.UseRecentFileKeys:
                 act.setShortcut(QtGui.QKeySequence())
