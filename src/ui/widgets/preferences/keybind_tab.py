@@ -107,16 +107,16 @@ class KeybindTab(PreferenceTabWidget):
 
             for keybind, id in conflicts.items():
                 out_string += f'* {keybind.toString()}: '
+                names: list[str] = []
 
                 # We have the shortname identifier, but we need
                 # to show the translation string instead
-                for i, name in enumerate(id):
+                for name in id:
                     for g in groups:
                         if g.id == name:
-                            # Formatting, italicize and separate entries
-                            out_string += f'<i>{g.name}</i>'
-                            if i != len(id) - 1:
-                                out_string += ', '
+                            names.append(f'<i>{g.name}</i>')
+
+                out_string += ', '.join(names)
                 out_string += '<br>'
 
             QtWidgets.QMessageBox.warning(None, globals_.trans.string('PrefsDlg', 63),

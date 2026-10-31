@@ -14,7 +14,7 @@ class AreaDeleteDialog(QtWidgets.QDialog):
         Creates and initializes the dialog
         """
         super().__init__()
-        self.setWindowTitle(globals_.trans.string('DeleteArea', 1))
+        self.setWindowTitle(globals_.trans_new.string('dialog.delete_area.title'))
         self.setWindowIcon(GetIcon('wooden-box--minus'))
 
         button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Yes | QtWidgets.QDialogButtonBox.StandardButton.No)
@@ -22,7 +22,7 @@ class AreaDeleteDialog(QtWidgets.QDialog):
         button_box.rejected.connect(self.reject)
 
         main_layout = QtWidgets.QVBoxLayout(self)
-        main_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('DeleteArea', 0)))
+        main_layout.addWidget(QtWidgets.QLabel(globals_.trans_new.string('dialog.delete_area.info')))
         main_layout.addWidget(button_box)
 
     def delete_area(self) -> None:
@@ -50,7 +50,7 @@ class AreaDeleteDialog(QtWidgets.QDialog):
         # Update the area selection combobox
         mw.area_combo_box.clear()
         for area in globals_.Level.areas:
-            mw.area_combo_box.addItem(globals_.trans.string('AreaCombobox', 0, '[num]', area.areanum))
+            mw.area_combo_box.addItem(globals_.trans_new.string('common.area_num', ('[num]', area.areanum)))
 
         mw.area_combo_box.setCurrentIndex(0)
 

@@ -864,7 +864,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Adds a new area to the level
         """
         if len(globals_.Level.areas) >= 4:
-            QtWidgets.QMessageBox.warning(self, globals_.trans.string('MenuItems', 78), globals_.trans.string('AreaImportDlg', 2))
+            QtWidgets.QMessageBox.warning(self, globals_.trans.string('MenuItems', 78), globals_.trans_new.string('common.max_area'))
             return
 
         # This is an unsaved new level if self.fileSavePath is None
@@ -882,7 +882,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Imports an area from another level
         """
         if len(globals_.Level.areas) >= 4:
-            QtWidgets.QMessageBox.warning(self, globals_.trans.string('AreaImportDlg', 0), globals_.trans.string('AreaImportDlg', 2))
+            QtWidgets.QMessageBox.warning(self, globals_.trans_new.string('dialog.import_area.title'), globals_.trans_new.string('common.max_area'))
             return
 
         if CheckDirty():
@@ -996,13 +996,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
             open_dir = ''
 
         filter = (
-            f'{globals_.trans.string('FileDlgs', 9)} (*.arc *.arc.LH *.arc.LZ);;'
-            f'{globals_.trans.string('FileDlgs', 1)} (*.arc);;'
-            f'{globals_.trans.string('FileDlgs', 5)} (*.arc.LH);;'
-            f'{globals_.trans.string('FileDlgs', 10)} (*.arc.LZ);;'
-            f'{globals_.trans.string('FileDlgs', 2)} (*)'
+            f'{globals_.trans_new.string('dialog.file_prompt.filter.arc_all')} (*.arc *.arc.LH *.arc.LZ);;'
+            f'{globals_.trans_new.string('dialog.file_prompt.filter.arc')} (*.arc);;'
+            f'{globals_.trans_new.string('dialog.file_prompt.filter.arc_lh')} (*.arc.LH);;'
+            f'{globals_.trans_new.string('dialog.file_prompt.filter.arc_lz')} (*.arc.LZ);;'
+            f'{globals_.trans_new.string('dialog.file_prompt.filter.all')} (*)'
         )
-        fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('FileDlgs', 0), open_dir, filter)[0]
+        fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans_new.string('dialog.file_prompt.open_archive'), open_dir, filter)[0]
         if fn == '':
             return
 
@@ -1079,7 +1079,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Save a level back to the archive, with a new filename. Returns whether
         saving was successful.
         """
-        caption = globals_.trans.string('FileDlgs', 8 if is_copy else 3)
+        caption = globals_.trans_new.string(f'dialog.file_prompt.save_{'copy' if is_copy else 'as'}')
 
         # Use the currently open level's directory, if applicable
         if self.fileSavePath is not None:
@@ -1088,9 +1088,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
             save_dir = ''
 
         filter = (
-            f'{globals_.trans.string('FileDlgs', 1)} (*.arc);;'
-            f'{globals_.trans.string('FileDlgs', 10)} (*.arc.LZ);;'
-            f'{globals_.trans.string('FileDlgs', 2)} (*)'
+            f'{globals_.trans_new.string('dialog.file_prompt.filter.arc')} (*.arc);;'
+            f'{globals_.trans_new.string('dialog.file_prompt.filter.arc_lz')} (*.arc.LZ);;'
+            f'{globals_.trans_new.string('dialog.file_prompt.filter.all')} (*)'
         )
 
         fn = QtWidgets.QFileDialog.getSaveFileName(self, caption, save_dir, filter)[0]
@@ -1386,7 +1386,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.area_combo_box.clear()
 
         for area in globals_.Level.areas:
-            self.area_combo_box.addItem(globals_.trans.string('AreaCombobox', 0, '[num]', area.areanum))
+            self.area_combo_box.addItem(globals_.trans_new.string('common.area_num', ('[num]', area.areanum)))
 
         self.area_combo_box.setCurrentIndex(area_num - 1)
 

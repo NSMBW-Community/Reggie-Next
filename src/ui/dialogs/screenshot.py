@@ -97,9 +97,9 @@ class ScreenshotDialog(QtWidgets.QDialog):
 
         file_name = ''
         if save_to_file:
-            filt = f'{globals_.trans.string('FileDlgs', 4)} (*.png)'
+            filt = f'{globals_.trans_new.string('dialog.file_prompt.filter.png')} (*.png)'
 
-            file_name = QtWidgets.QFileDialog.getSaveFileName(self, globals_.trans.string('FileDlgs', 3), None, filt)[0]
+            file_name = QtWidgets.QFileDialog.getSaveFileName(self, globals_.trans_new.string('dialot.file_prompt.save_as'), None, filt)[0]
             if file_name == '':
                 return
 

@@ -54,9 +54,6 @@ class ReggieTranslation:
                 5: 'View Changelog',
                 6: 'Close'
             },
-            'AreaCombobox': {
-                0: 'Area [num]',
-            },
             'AreaDlg': {
                 0: 'Area Options',
                 1: 'Tilesets',
@@ -121,29 +118,12 @@ class ReggieTranslation:
                 55: '[i]No resources found.[/i]',
                 56: '[i]Select any sprite to view the resources it loads.[/i]'
             },
-            'AreaImportDlg': {
-                0: 'Import Area from Level',
-                1: 'Area [num]',
-                2: 'You have reached the maximum amount of areas in this level.[br]Due to the game\'s limitations, Reggie Next only allows you to add up to 4 areas to a level.',
-                3: 'Area to Import:',
-                4: 'The selected area will be imported into this level as Area [num].',
-                5: 'Selected Level:',
-                6: 'None',
-                7: 'Stay in Current Area:',
-                8: 'Import',
-            },
             'AutoDiag': {
                 0: '[num] error found.',
                 1: '[num] errors found.',
                 2: 'No errors found.',
                 3: 'Checking Disabled',
                 4: 'Manually check for errors.',
-            },
-            'AutoSaveDlg': {
-                0: 'Auto-saved backup found',
-                1: 'Reggie Next has found some level data which wasn\'t saved - possibly due to a crash within the editor or by your computer. Do you want to restore this level?[br][br]If you pick No, the autosaved level data will be deleted and will no longer be accessible.[br][br]Original file path: [path]',
-                2: 'The level has unsaved changes in it.',
-                3: 'Do you want to save them?',
             },
             'BGDlg': {
                 0: 'Backgrounds',
@@ -238,20 +218,12 @@ class ReggieTranslation:
                 3: 'This folder doesn\'t seem to have the required files. In order to use the [game] game patch, you need the Stage folder, including the Texture folder and the level files contained within it.',
                 4: 'Choose the Texture folder from [game]',
             },
-            'ChangelogDlg': {
-                0: 'Changelog Viewer',
-                1: 'File "CHANGELOG.md" not found!\\nPlease go to https://github.com/NSMBW-Community/Reggie-Next to find it.',
-            },
             'Comments': {
                 0: '[x], [y]: [text]',
                 1: '[b]Comment[/b][br]at [x], [y]',
                 2: ' - ',
                 3: '(empty)',
                 4: '...',
-            },
-            'DeleteArea': {
-                0: 'Are you [b]sure[/b] you want to delete this area?[br][br]The level will automatically save afterwards - there is no way[br]you can undo the deletion or get it back afterwards!',
-                1: 'Delete Area',
             },
             'Diag': {
                 0: 'Level Diagnostics Tool',
@@ -398,19 +370,6 @@ class ReggieTranslation:
                 3: 'View Notes...',
                 4: 'Notes Viewer'
             },
-            'FileDlgs': {
-                0: 'Choose a level archive',
-                1: 'Level Archives',
-                2: 'All Files',
-                3: 'Save As: Choose a new filename',
-                4: 'Portable Network Graphics',
-                5: 'LH-Compressed Level Archives',
-                6: 'Choose a stamp archive',
-                7: 'Stamps File',
-                8: 'Save Copy: Choose a new filename',
-                9: 'All Supported Level Archives',
-                10: 'LZ-Compressed Level Archives',
-            },
             'Gamedefs': {
                 0: 'This game has custom sprite images',
                 1: None,  # REMOVED: 'Loading patch...'
@@ -432,24 +391,6 @@ class ReggieTranslation:
                 17: 'Error',
                 18: 'An error occurred while attempting to load this game patch. It will now be unloaded. Here\'s the specific error:[br][error]',
                 19: 'Refresh List',
-            },
-            'InfoDlg': {
-                0: 'Level Information',
-                1: 'Add/Change Password',
-                2: 'This level\'s information is locked.[br]Please enter the password below in order to modify it.',
-                3: 'Password:',
-                4: 'Title:',
-                5: 'Author:',
-                6: 'Group:',
-                7: 'Website:',
-                8: 'Information last modified using [name]',
-                9: 'Change Password',
-                10: 'New Password:',
-                11: 'Verify Password:',
-                12: 'Level Information',
-                13: 'Password may be composed of any ASCII character,[br]and up to 64 characters long.[br]',
-                14: None,  # REMOVED: 'Sorry![br][br]You can only view or edit Level Information in Area 1.'
-                15: '(unknown version)',
             },
             'LocationDataEditor': {
                 0: 'ID:',
@@ -641,9 +582,6 @@ class ReggieTranslation:
                 2: 'Object [id][br][i]This object is animated[/i]',
                 3: '[b]Object [id]:[/b][br][desc]',
                 4: '[b]Object [id]:[/b][br][desc][br][i]This object is animated[/i]',
-            },
-            'OpenFromNameDlg': {
-                0: 'Choose Level',
             },
             'Palette': {
                 0: 'Paint on Layer:',
@@ -852,15 +790,6 @@ class ReggieTranslation:
                 10: 'Margins:',
                 11: '[b]Margins:[/b][br]This determines how many pixels of space will be visible past the zone edge in all directions.'
             },
-            'ShftItmDlg': {
-                0: 'Shift Items',
-                1: 'Move objects by:',
-                2: 'Enter an offset in pixels - each block is 16 pixels wide/high. Note that normal objects can only be placed on 16x16 boundaries, so if the offset you enter isn\'t a multiple of 16, they won\'t be moved correctly.',
-                3: 'X:',
-                4: 'Y:',
-                5: 'Warning',
-                6: 'You are trying to move object(s) by an offset which isn\'t a multiple of 16. The offset will be rounded to the nearest multiple of 16. Are you sure you want to do this?',
-            },
             'SpriteDataEditor': {
                 0: 'Modify Selected Sprite Properties',
                 1: '[b][name][/b]: [note]',
@@ -996,31 +925,6 @@ class ReggieTranslation:
                 31: '1 comment',
                 32: '[x] comments',
                 33: '- Comment under mouse: [xpos], [ypos]; "[text]"',
-            },
-            'SwapObjDlg': {
-                0: 'Swap Objects',
-                1: 'Object:',
-                2: 'From Tileset Slot:',
-                3: 'To Object:',
-                4: 'In Tileset Slot:',
-                5: 'Exchange (perform 2-way conversion)',
-                6: 'Swap',
-                7: 'Close',
-            },
-            'SwapObjTilesDlg': {
-                0: 'Swap Tilesets',
-                1: 'From Tileset Slot:',
-                2: 'To Tileset Slot:',
-                3: 'Exchange (perform 2-way conversion)',
-                4: 'Swap',
-                5: 'Close',
-            },
-            'SwitchSpriteDlg': {
-                0: 'Switch Sprite IDs',
-                1: 'From Sprite:',
-                2: 'To Sprite:',
-                3: 'Swap',
-                4: 'Close',
             },
             'Themes': {
                 0: 'Classic',

@@ -2,12 +2,17 @@
 <translation>
     <section id="common">
         <string id="area_num">Area [num]</string>
+        <string id="swap">Swap</string>
         <string id="close">Close</string>
         <string id="none">None</string>
         <string id="none_paren">(None)</string>
         <string id="name">Name</string>
         <string id="file">File</string>
         <string id="unknown_upper">UNKNOWN</string>
+        <string id="max_area">You have reached the maximum amount of areas in this level.[br]Due to the game's limitations, Reggie Next only allows you to add up to 4 areas to a level.</string>
+        <string id="x_colon">X:</string>
+        <string id="y_colon">Y:</string>
+        <string id="warning">Warning</string>
     </section>
     <section id="dialog">
         <section id="about">
@@ -94,10 +99,110 @@
                 </section>
             </section>
         </section>
+        <section id="auto_save">
+            <string id="title">Auto-saved backup found</string>
+            <string id="info">Reggie Next has found some level data which wasn't saved - possibly due to a crash within the editor or by your computer. Do you want to restore this level?[br][br]If you pick No, the autosaved level data will be deleted and will no longer be accessible.[br][br]Original file path: [path]</string>
+        </section>
+        <section id="changelog">
+            <string id="title">Changelog Viewer</string>
+        </section>
+        <section id="open_by_name">
+            <string id="title">Open Level by Name</string>
+        </section>
+        <section id="delete_area">
+            <string id="title">Delete Area</string>
+            <string id="info">Are you [b]sure[/b] you want to delete this area?[br][br]The level will automatically save afterwards - there is no way[br]you can undo the deletion or get it back afterwards!</string>
+        </section>
+        <section id="dirty">
+            <string id="info">The level has unsaved changes in it.</string>
+            <string id="info_2">Do you want to save them?</string>
+        </section>
+        <section id="file_prompt">
+            <string id="open_archive">Choose a level archive</string>
+            <string id="open_stamps">Choose a stamp archive</string>
+            <string id="save_as">Save As: Choose a new filename</string>
+            <string id="save_copy">Save Copy: Choose a new filename</string>
+            <section id="filter">
+                <string id="all">All Files</string>
+                <string id="arc">Level Archives</string>
+                <string id="arc_lh">LH-Compressed Level Archives</string>
+                <string id="arc_lz">LZ-Compressed Level Archives</string>
+                <string id="arc_all">All Supported Level Archives</string>
+                <string id="png">Portable Network Graphics</string>
+                <string id="stamps">Stamps File</string>
+            </section>
+        </section>
+        <section id="import_area">
+            <string id="title">Import Area from Level</string>
+            <string id="selected_level">Selected Level:</string>
+            <string id="area_to_import">Area to Import:</string>
+            <string id="info">The selected area will be imported into this level as Area [num].</string>
+            <string id="stay_in_area">Stay in Current Area:</string>
+            <string id="import">Import</string>
+        </section>
+        <section id="meta_info">
+            <string id="title">Level Information</string>
+            <string id="version">Information last modified using [name]</string>
+            <string id="password_info">This level's information is locked.[br]Please enter the password below in order to modify it.</string>
+            <string id="add_change_password">Add/Change Password</string>
+            <string id="unknown_version">(unknown version)</string>
+            <section id="field">
+                <string id="title">Title:</string>
+                <string id="author">Author:</string>
+                <string id="group">Group:</string>
+                <string id="website">Website:</string>
+                <string id="password">Password:</string>
+            </section>
+            <section id="change_password">
+                <string id="title">Change Password</string>
+                <string id="info">Password may be composed of any ASCII character,[br]and up to 64 characters long.[br]</string>
+                <string id="new_password">New Password:</string>
+                <string id="verify_password">Verify Password:</string>
+            </section>
+        </section>
+        <section id="object_swap">
+            <string id="title">Swap Objects</string>
+            <string id="object">Object:</string>
+            <string id="from_slot">From Tileset Slot:</string>
+            <string id="to_object">To Object:</string>
+            <string id="in_slot">In Tileset Slot:</string>
+            <string id="exchange">Exchange (perform 2-way conversion)</string>
+        </section>
+        <section id="shift_item">
+            <string id="title">Shift Items</string>
+            <string id="info">Enter an offset in pixels - each block is 16 pixels wide/high. Note that normal objects can only be placed on 16x16 boundaries, so if the offset you enter isn't a multiple of 16, they won't be moved correctly.</string>
+            <string id="move_by">Move objects by:</string>
+            <string id="object_warn">You are trying to move object(s) by an offset which isn't a multiple of 16. The offset will be rounded to the nearest multiple of 16. Are you sure you want to do this?</string>
+        </section>
+        <section id="sprite_switch">
+            <string id="title">Switch Sprite IDs</string>
+            <string id="from_sprite">From Sprite:</string>
+            <string id="to_sprite">To Sprite:</string>
+        </section>
+        <section id="tileset_swap">
+            <string id="title">Swap Tilesets</string>
+            <string id="from_slot">From Tileset Slot:</string>
+            <string id="to_slot">To Tileset Slot:</string>
+            <string id="exchange">Exchange (perform 2-way conversion)</string>
+        </section>
+        <section id="">
+            <string id="title"></string>
+            <string id=""></string>
+        </section>
+        <section id="">
+            <string id="title"></string>
+            <string id=""></string>
+        </section>
+        <section id="">
+            <string id="title"></string>
+            <string id=""></string>
+        </section>
     </section>
     <section id="error">
-        <string id="readme_not_found">File "README.md" not found!\nPlease go to https://github.com/NSMBW-Community/Reggie-Next to find it.</string>
+        <string id="readme_not_found">File "README.md" not found![br]Please go to https://github.com/NSMBW-Community/Reggie-Next to find it.</string>
+        <string id="changelog_not_found">File "CHANGELOG.md" not found![br]Please go to https://github.com/NSMBW-Community/Reggie-Next to find it.</string>
     </section>
+    
 </translation>
 <!--<strings>
     <section id="AreaImportDlg">

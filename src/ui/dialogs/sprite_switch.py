@@ -21,7 +21,7 @@ class SpriteSwitchDialog(QtWidgets.QDialog):
         Creates and initializes the dialog
         """
         QtWidgets.QDialog.__init__(self)
-        self.setWindowTitle(globals_.trans.string('SwitchSpriteDlg', 0))
+        self.setWindowTitle(globals_.trans_new.string('dialog.sprite_switch.title'))
         self.setWindowIcon(GetIcon('arrow-curve'))
 
         self.curr_type = QtWidgets.QSpinBox()
@@ -50,15 +50,15 @@ class SpriteSwitchDialog(QtWidgets.QDialog):
 
         swap_layout = QtWidgets.QGridLayout()
 
-        swap_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwitchSpriteDlg', 1)), 0, 0)
+        swap_layout.addWidget(QtWidgets.QLabel(globals_.trans_new.string('dialog.sprite_switch.from_sprite')), 0, 0)
         swap_layout.addWidget(self.curr_type, 0, 1)
 
-        swap_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwitchSpriteDlg', 2)), 1, 0)
+        swap_layout.addWidget(QtWidgets.QLabel(globals_.trans_new.string('dialog.sprite_switch.to_sprite')), 1, 0)
         swap_layout.addWidget(self.new_type, 1, 1)
 
         self.button_box = QtWidgets.QDialogButtonBox()
-        self.button_box.addButton(globals_.trans.string('SwitchSpriteDlg', 3), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
-        self.button_box.addButton(globals_.trans.string('SwitchSpriteDlg', 4), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
+        self.button_box.addButton(globals_.trans_new.string('common.swap'), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
+        self.button_box.addButton(globals_.trans_new.string('common.close'), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
         self.button_box.clicked.connect(self.button_clicked)
 
         main_layout = QtWidgets.QVBoxLayout()

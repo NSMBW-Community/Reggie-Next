@@ -15,30 +15,28 @@ class TilesetSwapDialog(QtWidgets.QDialog):
         Creates and initializes the dialog
         """
         super().__init__()
-        self.setWindowTitle(globals_.trans.string('SwapObjTilesDlg', 0))
+        self.setWindowTitle(globals_.trans_new.string('dialog.tileset_swap.title'))
         self.setWindowIcon(GetIcon('arrow-switch-block'))
 
         # Create widgets
         self.curr_tileset = QtWidgets.QComboBox()
         self.new_tileset = QtWidgets.QComboBox()
 
-        slots = ('Pa0', 'Pa1', 'Pa2', 'Pa3')
-
         # Only offer slots that have a tileset
         for i in range(4):
             if globals_.mainWindow.palette_dock.object_tab.isTabEnabled(i):
-                self.curr_tileset.addItem(slots[i])
-                self.new_tileset.addItem(slots[i])
+                self.curr_tileset.addItem(f'Pa{i}')
+                self.new_tileset.addItem(f'Pa{i}')
 
         swap_layout = QtWidgets.QFormLayout()
-        swap_layout.addRow(globals_.trans.string('SwapObjTilesDlg', 1), self.curr_tileset)
-        swap_layout.addRow(globals_.trans.string('SwapObjTilesDlg', 2), self.new_tileset)
+        swap_layout.addRow(globals_.trans_new.string('dialog.tileset_swap.from_slot'), self.curr_tileset)
+        swap_layout.addRow(globals_.trans_new.string('dialog.tileset_swap.to_slot'), self.new_tileset)
 
-        self.exchange_tiles = QtWidgets.QCheckBox(globals_.trans.string('SwapObjTilesDlg', 3))
+        self.exchange_tiles = QtWidgets.QCheckBox(globals_.trans_new.string('dialog.tileset_swap.exchange'))
 
         button_box = QtWidgets.QDialogButtonBox()
-        button_box.addButton(globals_.trans.string('SwapObjTilesDlg', 4), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
-        button_box.addButton(globals_.trans.string('SwapObjTilesDlg', 5), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
+        button_box.addButton(globals_.trans_new.string('common.swap'), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
+        button_box.addButton(globals_.trans_new.string('common.close'), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
 
         button_box.accepted.connect(self.accept)
         button_box.rejected.connect(self.reject)

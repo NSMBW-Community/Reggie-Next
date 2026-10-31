@@ -19,14 +19,14 @@ class AreaImportDialog(QtWidgets.QDialog):
         Creates and initializes the dialog
         """
         super().__init__()
-        self.setWindowTitle(globals_.trans.string('AreaImportDlg', 0))
+        self.setWindowTitle(globals_.trans_new.string('dialog.import_area.title'))
         self.setWindowIcon(GetIcon('wooden-box--arrow'))
 
         curr_area_count = len(globals_.Level.areas) + 1
         info = QtWidgets.QLabel()
-        info.setText(globals_.trans.string('AreaImportDlg', 4, '[num]', curr_area_count))
+        info.setText(globals_.trans_new.string('dialog.import_area.info', ('[num]', curr_area_count)))
 
-        self.level_button = QtWidgets.QPushButton(globals_.trans.string('AreaImportDlg', 6))
+        self.level_button = QtWidgets.QPushButton(globals_.trans_new.string('common.none'))
         self.level_button.clicked.connect(self.level_selected)
 
         self.area_combo = QtWidgets.QComboBox()
@@ -35,12 +35,12 @@ class AreaImportDialog(QtWidgets.QDialog):
         self.stay_in_area = QtWidgets.QCheckBox()
 
         form_lyt = QtWidgets.QFormLayout()
-        form_lyt.addRow(globals_.trans.string('AreaImportDlg', 5), self.level_button)
-        form_lyt.addRow(globals_.trans.string('AreaImportDlg', 3), self.area_combo)
-        form_lyt.addRow(globals_.trans.string('AreaImportDlg', 7), self.stay_in_area)
+        form_lyt.addRow(globals_.trans_new.string('dialog.import_area.selected_level'), self.level_button)
+        form_lyt.addRow(globals_.trans_new.string('dialog.import_area.area_to_import'), self.area_combo)
+        form_lyt.addRow(globals_.trans_new.string('dialog.import_area.stay_in_area'), self.stay_in_area)
 
         self.ok_button = QtWidgets.QPushButton()
-        self.ok_button.setText(globals_.trans.string('AreaImportDlg', 8))
+        self.ok_button.setText(globals_.trans_new.string('dialog.import_area.import'))
         self.ok_button.setEnabled(False)
 
         button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
@@ -59,14 +59,14 @@ class AreaImportDialog(QtWidgets.QDialog):
         Loads the source level and returns the number of areas.
         """
         filter = (
-            f'{globals_.trans.string('FileDlgs', 9)} (*.arc *.arc.LH *.arc.LZ);;'
-            f'{globals_.trans.string('FileDlgs', 1)} (*.arc);;'
-            f'{globals_.trans.string('FileDlgs', 5)} (*.arc.LH);;'
-            f'{globals_.trans.string('FileDlgs', 10)} (*.arc.LZ);;'
-            f'{globals_.trans.string('FileDlgs', 2)} (*)'
+            f'{globals_.trans_new.string('dialog.file_prompt.filter.arc_all')} (*.arc *.arc.LH *.arc.LZ);;'
+            f'{globals_.trans_new.string('dialog.file_prompt.filter.arc')} (*.arc);;'
+            f'{globals_.trans_new.string('dialog.file_prompt.filter.arc_lh')} (*.arc.LH);;'
+            f'{globals_.trans_new.string('dialog.file_prompt.filter.arc_lz')} (*.arc.LZ);;'
+            f'{globals_.trans_new.string('dialog.file_prompt.filter.all')} (*)'
         )
 
-        fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('FileDlgs', 0), '', filter)[0]
+        fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans_new.string('dialog.file_prompt.open_archive'), '', filter)[0]
         if fn == '':
             return 0
 
@@ -110,7 +110,7 @@ class AreaImportDialog(QtWidgets.QDialog):
 
         self.level_button.setText(self.file_name)
         for i in range(area_count):
-            self.area_combo.addItem(globals_.trans.string('AreaImportDlg', 1, '[num]', i + 1))
+            self.area_combo.addItem(globals_.trans_new.string('common.area_num', ('[num]', i + 1)))
 
     def import_area(self) -> None:
         """

@@ -95,9 +95,12 @@ class StampTab(QtWidgets.QWidget):
         """
         Handles the "Open Set..." btn being clicked
         """
-        filetypes = f'{globals_.trans.string('FileDlgs', 7)}  (*.stamps);; {globals_.trans.string('FileDlgs', 2)} (*)'
+        filter = (
+            f'{globals_.trans_new.string('dialog.file_prompt.filter.stamps')}  (*.stamps);;'
+            f'{globals_.trans_new.string('dialog.file_prompt.filter.all')} (*)'
+        )
 
-        fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('FileDlgs', 6), '', filetypes)[0]
+        fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans_new.string('dialog.file_prompt.open_stamps'), '', filter)[0]
         if fn == '':
             return
 
@@ -122,9 +125,12 @@ class StampTab(QtWidgets.QWidget):
         """
         Handles the "Save Set As..." btn being clicked
         """
-        filetypes = f'{globals_.trans.string('FileDlgs', 7)}  (*.stamps);; {globals_.trans.string('FileDlgs', 2)} (*)'
+        filter = (
+            f'{globals_.trans_new.string('dialog.file_prompt.filter.stamps')}  (*.stamps);;'
+            f'{globals_.trans_new.string('dialog.file_prompt.filter.all')} (*)'
+        )
 
-        fn = QtWidgets.QFileDialog.getSaveFileName(self, globals_.trans.string('FileDlgs', 3), '', filetypes)[0]
+        fn = QtWidgets.QFileDialog.getSaveFileName(self, globals_.trans_new.string('dialog.file_prompt.save_as'), '', filter)[0]
         if fn == '':
             return
 
