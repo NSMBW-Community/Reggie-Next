@@ -507,9 +507,9 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         """
         if event.modifiers() & QtCore.Qt.KeyboardModifier.ControlModifier:
             if event.angleDelta().y() > 0:
-                globals_.mainWindow.HandleZoomIn(towardsCursor=True)
+                globals_.mainWindow.zoom_in(towards_cursor=True)
             else:
-                globals_.mainWindow.HandleZoomOut(towardsCursor=True)
+                globals_.mainWindow.zoom_out(towards_cursor=True)
 
         else:
             super().wheelEvent(event)
