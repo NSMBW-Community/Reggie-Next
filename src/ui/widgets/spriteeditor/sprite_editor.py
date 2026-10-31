@@ -1,4 +1,5 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
+from typing import cast
 
 from data import globals_
 from data.level.dirty import SetDirty
@@ -33,6 +34,7 @@ from ui.widgets.spriteeditor.propertydecoders.sprite_tex import (
 )
 from ui.widgets.spriteeditor.propertydecoders.value import ValuePropertyDecoder
 from ui.theme.reggie_theme import GetIcon
+from ui.widgets.item_editor_dock import ItemEditorDockWidget
 
 
 class SpriteEditorWidget(AbstractSpriteEditorWidget):
@@ -44,6 +46,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
     def __init__(self, defaultmode=False):
         super().__init__(defaultmode)
         self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred))
+        self.DataUpdate.connect(self.data_updated)
 
         # create the raw editor
         font = QtGui.QFont()
@@ -836,3 +839,18 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         # only contine if the user pressed "OK"
         if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
+
+    def data_updated(self, data: bytes) -> None:
+        """
+        Handle the current sprite's data being updated
+        """
+        dock = cast(ItemEditorDockWidget, self.parent())
+        if dock.is_active():
+            obj = globals_.mainWindow.selObj
+            if isinstance(obj, SpriteItem):
+                obj.spritedata = data
+                obj.UpdateListItem()
+                SetDirty()
+
+                obj.UpdateDynamicSizing()
+                globals_.mainWindow.palette_dock.sprite_tab.sprite_list.updateSprite(obj)

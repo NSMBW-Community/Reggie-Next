@@ -438,7 +438,7 @@
         <string id="2">[id]: [width]x[height] at [x], [y]</string>
     </section>
     <section id="MainWindow">
-        <string id="0">[unsaved]</string>
+        <string id="0" />
         <string id="1">You're trying to paste over 300 items at once.[br]This may take a while (depending on your computer speed), are you sure you want to continue?</string>
         <string id="2">Entrance Limit Reached</string>
         <string id="3">You cannot have more than 256 entrances in an area.</string>
@@ -996,6 +996,7 @@
     </section>
     <section id="WindowTitle">
         <string id="0">Untitled</string>
+        <string id="1">[unsaved]</string>
     </section>
     <section id="Zones">
         <string id="0">Zone [num]</string>

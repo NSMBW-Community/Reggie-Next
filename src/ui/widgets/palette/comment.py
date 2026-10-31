@@ -44,3 +44,14 @@ class CommentTab(QtWidgets.QWidget):
             if comment.listitem == item:
                 comment.UpdateListItem(True)
                 break
+
+    def set_item(self, item: CommentItem) -> None:
+        """
+        Set the selected item
+        """
+        main_window = globals_.mainWindow
+        main_window.palette_dock.set_tab(7)
+
+        main_window.UpdateFlag = True
+        self.comment_list.setCurrentItem(item.listitem)
+        main_window.UpdateFlag = False

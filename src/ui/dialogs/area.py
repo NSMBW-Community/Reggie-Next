@@ -50,4 +50,6 @@ class AreaOptionsDialog(QtWidgets.QDialog):
         self.tilesets_tab.save()
         self.settings_tab.save()
         self.loaded_sprites_tab.save()
+
+        globals_.mainWindow.scene.update()
         SetDirty()

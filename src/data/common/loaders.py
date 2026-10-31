@@ -772,7 +772,7 @@ def LoadMenuActions(mw: "ReggieWindow") -> None:
             globals_.trans.stringOneLine('MenuItems', 99), None
         ),
         MenuAction(
-            'screenshot', mw.HandleScreenshot, GetIcon('camera'), globals_.trans.stringOneLine('MenuItems', 14),
+            'screenshot', mw.exec_screenshots, GetIcon('camera'), globals_.trans.stringOneLine('MenuItems', 14),
             globals_.trans.stringOneLine('MenuItems', 15), GetKeybind('screenshot')
         ),
         MenuAction(
@@ -936,19 +936,19 @@ def LoadMenuActions(mw: "ReggieWindow") -> None:
             globals_.trans.stringOneLine('MenuItems', 71), GetKeybind('zoommin')
         ),
         MenuAction(
-            'areaoptions', mw.HandleAreaOptions, GetIcon('wooden-box'), globals_.trans.stringOneLine('MenuItems', 72),
+            'areaoptions', mw.exec_area_options, GetIcon('wooden-box'), globals_.trans.stringOneLine('MenuItems', 72),
             globals_.trans.stringOneLine('MenuItems', 73), GetKeybind('areaoptions')
         ),
         MenuAction(
-            'zones', mw.HandleZones, GetIcon('zone'), globals_.trans.stringOneLine('MenuItems', 74),
+            'zones', mw.exec_zones, GetIcon('zone'), globals_.trans.stringOneLine('MenuItems', 74),
             globals_.trans.stringOneLine('MenuItems', 75), GetKeybind('zones')
         ),
         MenuAction(
-            'backgrounds', mw.HandleBG, GetIcon('pictures'), globals_.trans.stringOneLine('MenuItems', 76),
+            'backgrounds', mw.exec_backgrounds, GetIcon('pictures'), globals_.trans.stringOneLine('MenuItems', 76),
             globals_.trans.stringOneLine('MenuItems', 77), GetKeybind('backgrounds')
         ),
         MenuAction(
-            'camprofiles', mw.HandleCameraProfiles, GetIcon('surveillance-camera'), globals_.trans.stringOneLine('MenuItems', 140),
+            'camprofiles', mw.exec_camera_profiles, GetIcon('surveillance-camera'), globals_.trans.stringOneLine('MenuItems', 140),
             globals_.trans.stringOneLine('MenuItems', 141), GetKeybind('camprofiles')
         ),
         MenuAction(

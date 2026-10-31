@@ -20,6 +20,7 @@ from ui.widgets.level_scene import LevelScene
 from ui.widgets.level_view import LevelViewWidget
 from data.level.dirty import SetDirty, CheckDirty
 from data.common.settings import setting, setSetting
+from data.level.items.basic import LevelEditorItem
 from data.level.items.comment import CommentItem
 from data.level.items.entrance import EntranceItem
 from data.level.items.location import LocationItem
@@ -117,7 +118,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Required variables
         self.UpdateFlag = False
         self.SelectionUpdateFlag = False
-        self.selObj = None
+        self.selObj: LevelEditorItem | None = None
         self.CurrentSelection = []
 
         # Set up the window
@@ -130,11 +131,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Create the level view
         self.scene = LevelScene(0, 0, 1024 * 24, 512 * 24, self)
         self.scene.setItemIndexMethod(QtWidgets.QGraphicsScene.ItemIndexMethod.NoIndex)
-        self.scene.selectionChanged.connect(self.ChangeSelectionHandler)
 
         self.view = LevelViewWidget(self.scene, self)
         self.view.centerOn(0, 0) # This scrolls to the top left
-        self.view.PositionHover.connect(self.PositionHovered)
 
         # Done creating the window!
         self.setCentralWidget(self.view)
@@ -600,7 +599,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Sprite Editor
         self.spriteDataEditor = SpriteEditorWidget()
-        self.spriteDataEditor.DataUpdate.connect(self.SpriteDataUpdated)
         sprite_dock = self.create_dock_widget(globals_.trans.string('SpriteDataEditor', 0), 'spriteeditor', self.spriteDataEditor,
                                             features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True, is_editor=True)
         self.spriteEditorDock = cast(ItemEditorDockWidget, sprite_dock)
@@ -723,10 +721,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Records the Level Meta Information
         """
         dlg = MetaInfoDialog()
-        if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
-            return
-
-        dlg.save_info()
+        if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+            dlg.save_info()
 
     def open_help_contents(self) -> None:
         """
@@ -799,7 +795,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if is_cut_action:
             self.level_overview.update()
             self.SelectionUpdateFlag = False
-            self.ChangeSelectionHandler()
+            self.scene.change_selection()
 
     def cut(self) -> None:
         """
@@ -844,20 +840,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Shifts the selected level item(s)
         """
         dlg = ItemShiftDialog()
-        if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
-            return
-
-        dlg.shift_items()
+        if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+            dlg.shift_items()
 
     def exec_tileset_swap(self) -> None:
         """
         Swaps tilesets
         """
         dlg = TilesetSwapDialog()
-        if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
-            return
-
-        dlg.swap_tilesets()
+        if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+            dlg.swap_tilesets()
 
     def add_new_area(self) -> None:
         """
@@ -890,20 +882,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Choose the area
         dlg = AreaImportDialog()
-        if dlg.exec() == QtWidgets.QDialog.DialogCode.Rejected:
-            return
-
-        dlg.import_area()
+        if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+            dlg.import_area()
 
     def exec_area_delete(self) -> None:
         """
         Deletes the current area
         """
         dlg = AreaDeleteDialog()
-        if dlg.exec() == QtWidgets.QDialog.DialogCode.Rejected:
-            return
-
-        dlg.delete_area()
+        if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+            dlg.delete_area()
 
     def change_game_path(self, auto: bool = False) -> None:
         """
@@ -956,10 +944,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         # Show the dialog
         dlg = PreferencesDialog()
-        if dlg.exec() == QtWidgets.QDialog.DialogCode.Rejected:
-            return
-
-        dlg.save_preferences()
+        if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+            dlg.save_preferences()
 
     def new_level(self) -> None:
         """
@@ -1501,221 +1487,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         globals_.Area.reset()
 
-    def ChangeSelectionHandler(self) -> None:
-        """
-        Update the visible panels whenever the selection changes
-        """
-        if self.SelectionUpdateFlag:
-            return
-
-        try:
-            selitems = self.scene.selectedItems()
-        except RuntimeError:
-            # must catch this error: if you close the app while something is selected,
-            # you get a RuntimeError about the 'underlying C++ object being deleted'
-            return
-
-        # do this to avoid flicker
-        show_sprite_dock = False
-        show_entrance_dock = False
-        show_location_dock = False
-        show_path_dock = False
-        update_mode_info = False
-
-        # clear our variables
-        self.selObj = None
-        self.selObjs = None
-
-        self.palette_dock.entrance_tab.entrance_list.setCurrentItem(None)
-        self.palette_dock.location_tab.location_list.setCurrentItem(None)
-        self.palette_dock.path_tab.path_list.setCurrentItem(None)
-        self.palette_dock.comment_tab.comment_list.setCurrentItem(None)
-
-        # possibly a small optimization
-        func_ii = isinstance
-        type_obj = ObjectItem
-        type_spr = SpriteItem
-        type_ent = EntranceItem
-        type_loc = LocationItem
-        type_path = PathItem
-        type_com = CommentItem
-
-        allowStamp = True
-
-        if not selitems:
-            # nothing is selected
-            self.action_list['cut'].setEnabled(False)
-            self.action_list['copy'].setEnabled(False)
-            self.action_list['shiftitems'].setEnabled(False)
-            self.action_list['mergelocations'].setEnabled(False)
-
-        elif len(selitems) == 1:
-            # only one item, check the type
-            self.action_list['cut'].setEnabled(True)
-            self.action_list['copy'].setEnabled(True)
-            self.action_list['shiftitems'].setEnabled(True)
-            self.action_list['mergelocations'].setEnabled(False)
-
-            item = selitems[0]
-            self.selObj = item
-            if func_ii(item, type_obj):
-                allowStamp = True
-            elif func_ii(item, type_spr):
-                show_sprite_dock = True
-                update_mode_info = True
-                allowStamp = True
-            elif func_ii(item, type_ent):
-                self.palette_dock.set_tab(2)
-                self.UpdateFlag = True
-                self.palette_dock.entrance_tab.entrance_list.setCurrentItem(item.listitem)
-                self.UpdateFlag = False
-                show_location_dock = True
-                update_mode_info = True
-                allowStamp = False
-            elif func_ii(item, type_loc):
-                self.palette_dock.set_tab(3)
-                self.UpdateFlag = True
-                self.palette_dock.location_tab.location_list.setCurrentItem(item.listitem)
-                self.UpdateFlag = False
-                show_location_dock = True
-                update_mode_info = True
-                allowStamp = False
-            elif func_ii(item, type_path):
-                self.palette_dock.set_tab(4)
-                self.UpdateFlag = True
-                self.palette_dock.path_tab.path_list.setCurrentItem(item.listitem)
-                self.UpdateFlag = False
-                show_path_dock = True
-                update_mode_info = True
-                allowStamp = False
-            elif func_ii(item, type_com):
-                self.palette_dock.set_tab(7)
-                self.UpdateFlag = True
-                self.palette_dock.comment_tab.comment_list.setCurrentItem(item.listitem)
-                self.UpdateFlag = False
-                update_mode_info = True
-                allowStamp = False
-
-        else:
-            update_mode_info = True
-
-            for item in selitems:
-                if not func_ii(item, (type_obj, type_spr)):
-                    allowStamp = False
-
-            # more than one item
-            self.action_list['cut'].setEnabled(True)
-            self.action_list['copy'].setEnabled(True)
-            self.action_list['shiftitems'].setEnabled(True)
-
-        # turn on the Stamp Add btn if applicable
-        self.palette_dock.stamp_tab.add_button.setEnabled(bool(selitems) and allowStamp)
-
-        # count the # of each type, for the statusbar label
-        spr = 0
-        ent = 0
-        obj = 0
-        loc = 0
-        path = 0
-        com = 0
-        for item in selitems:
-            if func_ii(item, type_spr): spr += 1
-            if func_ii(item, type_ent): ent += 1
-            if func_ii(item, type_obj): obj += 1
-            if func_ii(item, type_loc): loc += 1
-            if func_ii(item, type_path): path += 1
-            if func_ii(item, type_com): com += 1
-
-        self.action_list['mergelocations'].setEnabled(loc >= 2)
-        self.palette_dock.object_tab.layer_change_button.setEnabled(obj != 0)
-
-        # write the statusbar label text
-        text = ''
-        if selitems:
-            singleitem = len(selitems) == 1
-            if singleitem:
-                if obj:
-                    text = globals_.trans.string('Statusbar', 0)  # 1 object selected
-                elif spr:
-                    text = globals_.trans.string('Statusbar', 1)  # 1 sprite selected
-                elif ent:
-                    text = globals_.trans.string('Statusbar', 2)  # 1 entrance selected
-                elif loc:
-                    text = globals_.trans.string('Statusbar', 3)  # 1 location selected
-                elif path:
-                    text = globals_.trans.string('Statusbar', 4)  # 1 path node selected
-                else:
-                    text = globals_.trans.string('Statusbar', 29)  # 1 comment selected
-            else:  # multiple things selected; see if they're all the same type
-                if not any((spr, ent, loc, path, com)):
-                    text = globals_.trans.string('Statusbar', 5, '[x]', obj)  # x objects selected
-                elif not any((obj, ent, loc, path, com)):
-                    text = globals_.trans.string('Statusbar', 6, '[x]', spr)  # x sprites selected
-                elif not any((obj, spr, loc, path, com)):
-                    text = globals_.trans.string('Statusbar', 7, '[x]', ent)  # x entrances selected
-                elif not any((obj, spr, ent, path, com)):
-                    text = globals_.trans.string('Statusbar', 8, '[x]', loc)  # x locations selected
-                elif not any((obj, spr, ent, loc, com)):
-                    text = globals_.trans.string('Statusbar', 9, '[x]', path)  # x path nodes selected
-                elif not any((obj, spr, ent, path, loc)):
-                    text = globals_.trans.string('Statusbar', 30, '[x]', com)  # x comments selected
-                else:  # different types
-                    text = globals_.trans.string('Statusbar', 10, '[x]', len(selitems))  # x items selected
-                    types = (
-                        (obj, 12, 13),  # variable, translation string ID if var == 1, translation string ID if var > 1
-                        (spr, 14, 15),
-                        (ent, 16, 17),
-                        (loc, 18, 19),
-                        (path, 20, 21),
-                        (com, 31, 32),
-                    )
-                    first = True
-                    for var, singleCode, multiCode in types:
-                        if var > 0:
-                            if not first: text += globals_.trans.string('Statusbar', 11)
-                            first = False
-                            text += globals_.trans.string('Statusbar', (singleCode if var == 1 else multiCode), '[x]', var)
-                            # above: '[x]', var) can't hurt if var == 1
-
-                    text += globals_.trans.string('Statusbar', 22)  # ')'
-
-        self.selectionLabel.setText(text)
-
-        self.CurrentSelection = selitems
-
-        for thing in selitems:
-            # This helps sync non-objects with objects while dragging
-            if not isinstance(thing, ObjectItem):
-                thing.dragoffsetx = (((thing.objx // 16) * 16) - thing.objx) * 1.5
-                thing.dragoffsety = (((thing.objy // 16) * 16) - thing.objy) * 1.5
-
-        self.spriteEditorDock.set_active(show_sprite_dock)
-        self.entrance_editor_dock.set_active(show_entrance_dock)
-        self.location_editor_dock.set_active(show_location_dock)
-        self.path_editor_dock.set_active(show_path_dock)
-
-        self.action_list['deselect'].setEnabled(bool(selitems))
-
-        if update_mode_info:
-            globals_.DirtyOverride += 1
-            self.UpdateModeInfo()
-            globals_.DirtyOverride -= 1
-
-    def SpriteDataUpdated(self, data):
-        """
-        Handle the current sprite's data being updated
-        """
-        if self.spriteEditorDock.is_active():
-            obj = self.selObj
-            if isinstance(obj, SpriteItem):
-                obj.spritedata = data
-                obj.UpdateListItem()
-                SetDirty()
-
-                obj.UpdateDynamicSizing()
-                self.palette_dock.sprite_tab.sprite_list.updateSprite(obj)
-
-    def UpdateModeInfo(self):
+    def update_dock(self) -> None:
         """
         Change the info in the currently visible panel
         """
@@ -1733,51 +1505,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.UpdateFlag = False
 
-    def PositionHovered(self, x, y):
-        """
-        Handle a position being hovered in the view
-        """
-        info = ''
-        hovereditems = self.scene.items(QtCore.QPointF(x, y))
-        hovered = None
-        type_zone = ZoneItem
-        type_peline = PathEditorLineItem
-        for item in hovereditems:
-            hover = item.hover if hasattr(item, 'hover') else True
-            if (not isinstance(item, (type_zone, type_peline))) and hover:
-                hovered = item
-                break
-
-        if hovered is not None:
-            if isinstance(hovered, ObjectItem):  # Object
-                info = globals_.trans.string('Statusbar', 23, '[width]', hovered.width, '[height]', hovered.height, '[xpos]',
-                                    hovered.objx, '[ypos]', hovered.objy, '[layer]', hovered.layer, '[type]',
-                                    hovered.object_num, '[tileset]', hovered.tileset + 1)
-            elif isinstance(hovered, SpriteItem):  # Sprite
-                info = globals_.trans.string('Statusbar', 24, '[name]', hovered.name, '[xpos]', hovered.objx, '[ypos]',
-                                    hovered.objy)
-            elif isinstance(hovered, SLib.AuxiliaryItem):  # Sprite (auxiliary thing) (treat it like the actual sprite)
-                info = globals_.trans.string('Statusbar', 24, '[name]', hovered.parentItem().name, '[xpos]',
-                                    hovered.parentItem().objx, '[ypos]', hovered.parentItem().objy)
-            elif isinstance(hovered, EntranceItem):  # Entrance
-                info = globals_.trans.string('Statusbar', 25, '[name]', hovered.name, '[xpos]', hovered.objx, '[ypos]',
-                                    hovered.objy, '[dest]', hovered.destination)
-            elif isinstance(hovered, LocationItem):  # Location
-                info = globals_.trans.string('Statusbar', 26, '[id]', int(hovered.id), '[xpos]', int(hovered.objx), '[ypos]',
-                                    int(hovered.objy), '[width]', int(hovered.width), '[height]', int(hovered.height))
-            elif isinstance(hovered, PathItem):  # Path
-                info = globals_.trans.string('Statusbar', 27, '[path]', hovered.pathid, '[node]', hovered.nodeid, '[xpos]',
-                                    hovered.objx, '[ypos]', hovered.objy)
-            elif isinstance(hovered, CommentItem):  # Comment
-                info = globals_.trans.string('Statusbar', 33, '[xpos]', hovered.objx, '[ypos]', hovered.objy, '[text]',
-                                    hovered.OneLineText())
-
-        self.posLabel.setText(
-            globals_.trans.string('Statusbar', 28, '[objx]', int(x / 24), '[objy]', int(y / 24), '[sprx]', int(x / 1.5),
-                         '[spry]', int(y / 1.5)))
-        self.hoverLabel.setText(info)
-
-    def keyPressEvent(self, a0):
+    def keyPressEvent(self, a0) -> None:
         """
         Handles key press events for the main window if needed
         """
@@ -1785,7 +1513,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             return
 
         if a0.key() == Qt.Key.Key_Delete or a0.key() == Qt.Key.Key_Backspace:
-            sel = self.scene.selectedItems()
+            sel = cast(list[LevelEditorItem], self.scene.selectedItems())
             if sel:
                 self.SelectionUpdateFlag = True
 
@@ -1798,63 +1526,51 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 a0.accept()
                 self.level_overview.update()
                 self.SelectionUpdateFlag = False
-                self.ChangeSelectionHandler()
+                self.scene.change_selection()
                 return
 
         self.level_overview.update()
 
         QtWidgets.QMainWindow.keyPressEvent(self, a0)
 
-    def HandleAreaOptions(self):
+    def exec_area_options(self) -> None:
         """
         Pops up the options for Area Dialogue
         """
         dlg = AreaOptionsDialog()
-        if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
-            return
+        if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+            dlg.save()
 
-        dlg.save()
-        self.scene.update()
-
-    def HandleZones(self):
+    def exec_zones(self) -> None:
         """
         Pops up the options for Zone dialog
         """
         LoadZoneThemes()
 
         dlg = ZonesDialog()
-        if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
-            self.level_overview.update()
-            return
+        if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+            dlg.save()
 
-        dlg.save()
-
-    def HandleBG(self):
+    def exec_backgrounds(self) -> None:
         """
         Pops up the Background settings Dialog
         """
         dlg = BackgroundDialog()
-        if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
-            return
+        if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+            dlg.save()
 
-        dlg.save()
-
-    def HandleScreenshot(self):
+    def exec_screenshots(self) -> None:
         """
         Takes a screenshot of the entire level and saves it
         """
         dlg = ScreenshotDialog()
-        if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
-            return
+        if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+            dlg.create_screenshot()
 
-        dlg.create_screenshot()
-
-    def HandleCameraProfiles(self):
+    def exec_camera_profiles(self) -> None:
         """
         Pops up the options for camera profiles
         """
         dlg = CameraProfilesDialog()
-        if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
-            return
-
-        dlg.save()
+        if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+            dlg.save()

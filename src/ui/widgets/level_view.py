@@ -1,15 +1,20 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
+from typing import cast
 
 from data import globals_
 from data.level.dirty import SetDirty
+from data.level.items.basic import LevelEditorItem
 from data.level.items.comment import CommentItem
 from data.level.items.entrance import EntranceItem
 from data.level.items.location import LocationItem
 from data.level.items.object import ObjectItem
 from data.level.items.path import PathItem
+from data.level.items.path_editor_line import PathEditorLineItem
 from data.level.items.sprite import SpriteItem
+from data.level.items.zone import ZoneItem
 from data.common.reggie_clip import ReggieClip
 from ui.graphics.grid import draw_foreground_grid
+import spritelib
 
 
 class LevelViewWidget(QtWidgets.QGraphicsView):
@@ -45,6 +50,8 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         self.currentobj = None
         self.lastCursorPosForMidButtonScroll = None
         self.cursorEdgeScrollTimer = None
+
+        self.PositionHover.connect(self.position_hovered)
 
     def mousePressEvent(self, event):
         """
@@ -567,3 +574,47 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         Returns a translated copy of the rect
         """
         return rect.translated(x * 16, y * 16)
+
+    def position_hovered(self, x: float, y: float) -> None:
+        """
+        Handle a position being hovered in the view
+        """
+        info = ''
+        hovereditems = cast(list[LevelEditorItem], globals_.mainWindow.scene.items(QtCore.QPointF(x, y)))
+        hovered = None
+        type_zone = ZoneItem
+        type_peline = PathEditorLineItem
+        for item in hovereditems:
+            hover = item.hover if hasattr(item, 'hover') else True
+            if (not isinstance(item, (type_zone, type_peline))) and hover:
+                hovered = item
+                break
+
+        if hovered is not None:
+            if isinstance(hovered, ObjectItem):  # Object
+                info = globals_.trans.string('Statusbar', 23, '[width]', hovered.width, '[height]', hovered.height, '[xpos]',
+                                    hovered.objx, '[ypos]', hovered.objy, '[layer]', hovered.layer, '[type]',
+                                    hovered.object_num, '[tileset]', hovered.tileset + 1)
+            elif isinstance(hovered, SpriteItem):  # Sprite
+                info = globals_.trans.string('Statusbar', 24, '[name]', hovered.name, '[xpos]', hovered.objx, '[ypos]',
+                                    hovered.objy)
+            elif isinstance(hovered, spritelib.AuxiliaryItem):  # Sprite (auxiliary thing) (treat it like the actual sprite)
+                parent = cast(SpriteItem, hovered.parentItem())
+                info = globals_.trans.string('Statusbar', 24, '[name]', parent.name, '[xpos]', parent.objx, '[ypos]', parent.objy)
+            elif isinstance(hovered, EntranceItem):  # Entrance
+                info = globals_.trans.string('Statusbar', 25, '[name]', hovered.name, '[xpos]', hovered.objx, '[ypos]',
+                                    hovered.objy, '[dest]', hovered.destination)
+            elif isinstance(hovered, LocationItem):  # Location
+                info = globals_.trans.string('Statusbar', 26, '[id]', int(hovered.id), '[xpos]', int(hovered.objx), '[ypos]',
+                                    int(hovered.objy), '[width]', int(hovered.width), '[height]', int(hovered.height))
+            elif isinstance(hovered, PathItem):  # Path
+                info = globals_.trans.string('Statusbar', 27, '[path]', hovered.pathid, '[node]', hovered.nodeid, '[xpos]',
+                                    hovered.objx, '[ypos]', hovered.objy)
+            elif isinstance(hovered, CommentItem):  # Comment
+                info = globals_.trans.string('Statusbar', 33, '[xpos]', hovered.objx, '[ypos]', hovered.objy, '[text]',
+                                    hovered.OneLineText())
+
+        globals_.mainWindow.posLabel.setText(
+            globals_.trans.string('Statusbar', 28, '[objx]', int(x / 24), '[objy]', int(y / 24), '[sprx]', int(x / 1.5),
+                            '[spry]', int(y / 1.5)))
+        globals_.mainWindow.hoverLabel.setText(info)
