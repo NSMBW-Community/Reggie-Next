@@ -202,32 +202,15 @@
         <string id="readme_not_found">File "README.md" not found![br]Please go to https://github.com/NSMBW-Community/Reggie-Next to find it.</string>
         <string id="changelog_not_found">File "CHANGELOG.md" not found![br]Please go to https://github.com/NSMBW-Community/Reggie-Next to find it.</string>
     </section>
-    
+
 </translation>
 <!--<strings>
-    <section id="AreaImportDlg">
-        <string id="0">Import Area from Level</string>
-        <string id="1">Area [num]</string>
-        <string id="2">You have reached the maximum amount of areas in this level.[br]Due to the game's limitations, Reggie Next only allows you to add up to 4 areas to a level.</string>
-        <string id="3">Area to Import:</string>
-        <string id="4">The selected area will be imported into this level as Area [num].</string>
-        <string id="5">Selected Level:</string>
-        <string id="6">None</string>
-        <string id="7">Stay in Current Area:</string>
-        <string id="8">Import</string>
-    </section>
     <section id="AutoDiag">
         <string id="0">[num] error found.</string>
         <string id="1">[num] errors found.</string>
         <string id="2">No errors found.</string>
         <string id="3">Checking Disabled</string>
         <string id="4">Manually check for errors.</string>
-    </section>
-    <section id="AutoSaveDlg">
-        <string id="0">Auto-saved backup found</string>
-        <string id="1">Reggie Next has found some level data which wasn't saved - possibly due to a crash within the editor or by your computer. Do you want to restore this level?[br][br]If you pick No, the autosaved level data will be deleted and will no longer be accessible.[br][br]Original file path: [path]</string>
-        <string id="2">The level has unsaved changes in it.</string>
-        <string id="3">Do you want to save them?</string>
     </section>
     <section id="BGDlg">
         <string id="0">Backgrounds</string>
@@ -322,20 +305,12 @@
         <string id="3">This folder doesn't seem to have the required files. In order to use the [game] game patch, you need the Stage folder, including the Texture folder and the level files contained within it.</string>
         <string id="4">Choose the Texture folder from [game]</string>
     </section>
-    <section id="ChangelogDlg">
-        <string id="0">Changelog Viewer</string>
-        <string id="1">File "CHANGELOG.md" not found!\nPlease go to https://github.com/NSMBW-Community/Reggie-Next to find it.</string>
-    </section>
     <section id="Comments">
         <string id="0">[x], [y]: [text]</string>
         <string id="1">[b]Comment[/b][br]at [x], [y]</string>
         <string id="2"> - </string>
         <string id="3">(empty)</string>
         <string id="4">...</string>
-    </section>
-    <section id="DeleteArea">
-        <string id="0">Are you [b]sure[/b] you want to delete this area?[br][br]The level will automatically save afterwards - there is no way[br]you can undo the deletion or get it back afterwards!</string>
-        <string id="1">Delete Area</string>
     </section>
     <section id="Diag">
         <string id="0">Level Diagnostics Tool</string>
@@ -482,19 +457,6 @@
         <string id="3">View Notes...</string>
         <string id="4">Notes Viewer</string>
     </section>
-    <section id="FileDlgs">
-        <string id="0">Choose a level archive</string>
-        <string id="1">Level Archives</string>
-        <string id="2">All Files</string>
-        <string id="3">Save As: Choose a new filename</string>
-        <string id="4">Portable Network Graphics</string>
-        <string id="5">LH-Compressed Level Archives</string>
-        <string id="6">Choose a stamp archive</string>
-        <string id="7">Stamps File</string>
-        <string id="8">Save Copy: Choose a new filename</string>
-        <string id="9">All Supported Level Archives</string>
-        <string id="10">LZ-Compressed Level Archives</string>
-    </section>
     <section id="Gamedefs">
         <string id="0">This game has custom sprite images</string>
         <string id="1" />
@@ -516,24 +478,6 @@
         <string id="17">Error</string>
         <string id="18">An error occurred while attempting to load this game patch. It will now be unloaded. Here's the specific error:[br][error]</string>
         <string id="19">Refresh List</string>
-    </section>
-    <section id="InfoDlg">
-        <string id="0">Level Information</string>
-        <string id="1">Add/Change Password</string>
-        <string id="2">This level's information is locked.[br]Please enter the password below in order to modify it.</string>
-        <string id="3">Password:</string>
-        <string id="4">Title:</string>
-        <string id="5">Author:</string>
-        <string id="6">Group:</string>
-        <string id="7">Website:</string>
-        <string id="8">Information last modified using [name]</string>
-        <string id="9">Change Password</string>
-        <string id="10">New Password:</string>
-        <string id="11">Verify Password:</string>
-        <string id="12">Level Information</string>
-        <string id="13">Password may be composed of any ASCII character,[br]and up to 64 characters long.[br]</string>
-        <string id="14" />
-        <string id="15">(unknown version)</string>
     </section>
     <section id="LocationDataEditor">
         <string id="0">ID:</string>
@@ -725,9 +669,6 @@
         <string id="2">Object [id][br][i]This object is animated[/i]</string>
         <string id="3">[b]Object [id]:[/b][br][desc]</string>
         <string id="4">[b]Object [id]:[/b][br][desc][br][i]This object is animated[/i]</string>
-    </section>
-    <section id="OpenFromNameDlg">
-        <string id="0">Choose Level</string>
     </section>
     <section id="Palette">
         <string id="0">Paint on Layer:</string>
@@ -936,15 +877,6 @@
         <string id="10">Margins:</string>
         <string id="11">[b]Margins:[/b][br]This determines how many pixels of space will be visible past the zone edge in all directions.</string>
     </section>
-    <section id="ShftItmDlg">
-        <string id="0">Shift Items</string>
-        <string id="1">Move objects by:</string>
-        <string id="2">Enter an offset in pixels - each block is 16 pixels wide/high. Note that normal objects can only be placed on 16x16 boundaries, so if the offset you enter isn't a multiple of 16, they won't be moved correctly.</string>
-        <string id="3">X:</string>
-        <string id="4">Y:</string>
-        <string id="5">Warning</string>
-        <string id="6">You are trying to move object(s) by an offset which isn't a multiple of 16. The offset will be rounded to the nearest multiple of 16. Are you sure you want to do this?</string>
-    </section>
     <section id="SpriteDataEditor">
         <string id="0">Modify Selected Sprite Properties</string>
         <string id="1">[b][name][/b]: [note]</string>
@@ -1080,31 +1012,6 @@
         <string id="31">1 comment</string>
         <string id="32">[x] comments</string>
         <string id="33">- Comment under mouse: [xpos], [ypos]; "[text]"</string>
-    </section>
-    <section id="SwapObjDlg">
-        <string id="0">Swap Objects</string>
-        <string id="1">Object:</string>
-        <string id="2">From Tileset Slot:</string>
-        <string id="3">To Object:</string>
-        <string id="4">In Tileset Slot:</string>
-        <string id="5">Exchange (perform 2-way conversion)</string>
-        <string id="6">Swap</string>
-        <string id="7">Close</string>
-    </section>
-    <section id="SwapObjTilesDlg">
-        <string id="0">Swap Tilesets</string>
-        <string id="1">From Tileset Slot:</string>
-        <string id="2">To Tileset Slot:</string>
-        <string id="3">Exchange (perform 2-way conversion)</string>
-        <string id="4">Swap</string>
-        <string id="5">Close</string>
-    </section>
-    <section id="SwitchSpriteDlg">
-        <string id="0">Switch Sprite IDs</string>
-        <string id="1">From Sprite:</string>
-        <string id="2">To Sprite:</string>
-        <string id="3">Swap</string>
-        <string id="4">Close</string>
     </section>
     <section id="Themes">
         <string id="0">Classic</string>
