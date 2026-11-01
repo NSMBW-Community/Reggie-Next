@@ -26,9 +26,8 @@ class ExternalDatabaseDialog(QtWidgets.QDialog):
         self.search_results = set()
 
         # Set initial window info (title may be overridden later)
-        self.setWindowTitle(globals_.trans.string('ExternalDatabaseDlg', 0))
+        self.setWindowTitle(globals_.trans_new.string('dialog.external_database.title'))
         self.setWindowIcon(GetIcon('database'))
-        #self.setMinimumSize(752, 648)
 
         self.read_xml_database()
 
@@ -37,7 +36,7 @@ class ExternalDatabaseDialog(QtWidgets.QDialog):
         search_bar.textEdited.connect(self.search)
 
         search_layout = QtWidgets.QHBoxLayout()
-        search_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('ExternalDatabaseDlg', 1)))
+        search_layout.addWidget(QtWidgets.QLabel(globals_.trans_new.string('dialog.external_database.search')))
         search_layout.addWidget(search_bar)
 
         # Setup the table
@@ -72,7 +71,7 @@ class ExternalDatabaseDialog(QtWidgets.QDialog):
         if not os.path.isfile(filename):
             raise FileNotFoundError
 
-        id_header = str(globals_.trans.string('ExternalDatabaseDlg', 2))
+        id_header = str(globals_.trans_new.string('common.id'))
         self.headers: list[str] = [id_header]
         self.entries: dict[int, dict[int, str]] = {}
         self.notes: list[ExternalNote] = []
@@ -169,7 +168,7 @@ class ExternalDatabaseDialog(QtWidgets.QDialog):
 
                 note = self.get_note(entry_id, column)
                 if note is not None:
-                    button = ExternalPushButtonWidget(globals_.trans.string('ExternalDatabaseDlg', 3), None, note)
+                    button = ExternalPushButtonWidget(globals_.trans_new.string('dialog.external_database.view_notes'), None, note)
                     button.clicked.connect(lambda: self.note_button_clicked(button))
                     self.table.setCellWidget(curr_row, column + 1, button)
                 else:

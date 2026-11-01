@@ -16,6 +16,7 @@
         <string id="warning">Warning</string>
         <string id="add">Add</string>
         <string id="remove">Remove</string>
+        <string id="id">ID</string>
     </section>
     <section id="dialog">
         <section id="about">
@@ -129,6 +130,14 @@
         <section id="dirty">
             <string id="info">The level has unsaved changes in it.</string>
             <string id="info_2">Do you want to save them?</string>
+        </section>
+        <section id="external_database">
+            <string id="title">External Database Viewer</string>
+            <string id="search">Search:</string>
+            <string id="view_notes">View Notes...</string>
+        </section>
+        <section id="external_notes">
+            <string id="title">Notes Viewer</string>
         </section>
         <section id="file_prompt">
             <string id="open_archive">Choose a level archive</string>
@@ -515,13 +524,6 @@
         <string id="0">Warning</string>
         <string id="1">This level contains sprite ID [id], which is not defined in the current game patch. The sprite will be displayed as "UNKNOWN" but can still be edited and saved.</string>
         <string id="2">This level contains sprite IDs ([ids]) which are not defined in the current game patch. These sprites will be displayed as "UNKNOWN" but can still be edited and saved.</string>
-    </section>
-    <section id="ExternalDatabaseDlg">
-        <string id="0">External Database Viewer</string>
-        <string id="1">Search:</string>
-        <string id="2">ID</string>
-        <string id="3">View Notes...</string>
-        <string id="4">Notes Viewer</string>
     </section>
     <section id="Gamedefs">
         <string id="0">This game has custom sprite images</string>

@@ -260,13 +260,6 @@ class ReggieTranslation:
                 1: 'This level contains sprite ID [id], which is not defined in the current game patch. The sprite will be displayed as "UNKNOWN" but can still be edited and saved.',
                 2: 'This level contains sprite IDs ([ids]) which are not defined in the current game patch. These sprites will be displayed as "UNKNOWN" but can still be edited and saved.',
             },
-            'ExternalDatabaseDlg': {
-                0: 'External Database Viewer',
-                1: 'Search:',
-                2: 'ID',
-                3: 'View Notes...',
-                4: 'Notes Viewer'
-            },
             'Gamedefs': {
                 0: 'This game has custom sprite images',
                 1: None,  # REMOVED: 'Loading patch...'
