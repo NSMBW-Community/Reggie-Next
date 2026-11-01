@@ -144,14 +144,14 @@ class CommentItem(LevelEditorItem):
         """
         For compatibility, just in case
         """
-        self.setToolTip(globals_.trans_new.string('levelitem.comment.pos',('[x]', self.objx), ('[y]', self.objy)))
+        self.setToolTip(globals_.trans_new.string('levelitem.comment.tooltip',('[x]', self.objx), ('[y]', self.objy)))
 
     def ListString(self) -> str | None:
         """
         Returns a string that can be used to describe the comment in a list
         """
         t = self.OneLineText()
-        return globals_.trans_new.string('levelitem.comment.data', ('[x]', self.objx), ('[y]', self.objy), ('[text]', t))
+        return globals_.trans_new.string('levelitem.comment.palette_info', ('[x]', self.objx), ('[y]', self.objy), ('[text]', t))
 
     def OneLineText(self) -> str | None:
         """

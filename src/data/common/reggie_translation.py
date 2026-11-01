@@ -425,10 +425,6 @@ class ReggieTranslation:
                 14: '[b]Placement Mode:[/b][br]This determines how new nodes will be added onto the path.[br][b]Appending[/b] will add each node to the end of the path.[br][b]Inserting[/b] will add a new node after the [i]selected[/i] node.',
                 15: '[i]No Node Selected[/i]'
             },
-            'Paths': {
-                0: '[b]Path [path][/b][br]Node [node]',
-                1: 'Path [path], Node [node]',
-            },
             'SpriteDataEditor': {
                 0: 'Modify Selected Sprite Properties',
                 1: '[b][name][/b]: [note]',

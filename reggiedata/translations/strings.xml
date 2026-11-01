@@ -280,7 +280,6 @@
                     <string id="reset_keybinds">Reset Keybinds</string>
                     <string id="warning_reset">Are you sure you want to reset all keybinds to their default values?[br]This cannot be undone.</string>
                     <string id="check_for_conflicts">Check for Conflicts</string>
-                    <string id="no_keybind">No keybind set</string>
                     <section id="conflict_found">
                         <string id="title">Conflicts Found</string>
                         <string id="info">The following options were found to have conflicting keybinds:[br][conflicts][br]Reusing keybinds can cause issues, so ensure all keybinds are unique!</string>
@@ -698,8 +697,12 @@
     </section>
     <section id="levelitem">
         <section id="comment">
-            <string id="data">[x], [y]: [text]</string>
-            <string id="pos">[b]Comment[/b][br]at [x], [y]</string>
+            <string id="palette_info">[x], [y]: [text]</string>
+            <string id="tooltip">[b]Comment[/b][br]at [x], [y]</string>
+        </section>
+        <section id="path">
+            <string id="palette_info">Path [path], Node [node]</string>
+            <string id="tooltip">[b]Path [path][/b][br]Node [node]</string>
         </section>
     </section>
     <section id="menu_bar">
@@ -719,6 +722,9 @@
                 <string id="error_many">[num] errors found.</string>
                 <string id="error_none">No errors found.</string>
             </section>
+        </section>
+        <section id="keybind_line_edit">
+            <string id="no_keybind">No keybind set</string>
         </section>
     </section>
 </translation>
@@ -1102,10 +1108,6 @@
         <string id="13">Insert After Selected Node</string>
         <string id="14">[b]Placement Mode:[/b][br]This determines how new nodes will be added onto the path.[br][b]Appending[/b] will add each node to the end of the path.[br][b]Inserting[/b] will add a new node after the [i]selected[/i] node.</string>
         <string id="15">[i]No Node Selected[/i]</string>
-    </section>
-    <section id="Paths">
-        <string id="0">[b]Path [path][/b][br]Node [node]</string>
-        <string id="1">Path [path], Node [node]</string>
     </section>
     <section id="SpriteDataEditor">
         <string id="0">Modify Selected Sprite Properties</string>
