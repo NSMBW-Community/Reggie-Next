@@ -25,7 +25,7 @@ class ChangelogDialog(QtWidgets.QDialog):
             with open(os.path.join(get_root_path(), 'CHANGELOG.md'), 'r', encoding='utf-8') as f:
                 changelog = f.read()
         except FileNotFoundError:
-            changelog = globals_.trans_new.string('error.changelog_not_found')
+            changelog = globals_.trans_new.string('error.file_not_found.changelog')
 
         changelog_view = QtWidgets.QTextBrowser()
         changelog_view.setMarkdown(changelog)

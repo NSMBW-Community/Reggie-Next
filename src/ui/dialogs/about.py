@@ -25,7 +25,7 @@ class AboutDialog(QtWidgets.QDialog):
             with open(os.path.join(get_root_path(), 'README.md'), 'r', encoding='utf-8') as f:
                 readme = f.read()
         except FileNotFoundError:
-            readme = globals_.trans_new.string("error.readme_not_found")
+            readme = globals_.trans_new.string("error.file_not_found.readme")
 
         logo = QtGui.QPixmap(os.path.join(get_reggiedata_folder(), 'icon.png'))
         logo_label = QtWidgets.QLabel()

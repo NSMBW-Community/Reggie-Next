@@ -116,7 +116,7 @@
             <string id="info">Camera Profiles can only be used with the "Event-Controlled" camera mode in the Zones dialog.[br]Transitions between zoom levels are instant, but can be hidden through careful use of zoom sprites (206).</string>
             <section id="event_id">
                 <string id="text">Triggering Event ID:</string>
-                <string id="tooltip">[b]Triggering Event ID:[/b][br]Sets the event ID that will trigger the camera profile. If switching away from a different profile, the previous profile's event ID will be automatically deactivated (so the game doesn't instantly switch back to it).</string> 
+                <string id="tooltip">[b]Triggering Event ID:[/b][br]Sets the event ID that will trigger the camera profile. If switching away from a different profile, the previous profile's event ID will be automatically deactivated (so the game doesn't instantly switch back to it).</string>
             </section>
             <string id="profile_name">Camera Profile on Event [id]</string>
         </section>
@@ -423,8 +423,10 @@
         </section>
     </section>
     <section id="error">
-        <string id="readme_not_found">File "README.md" not found![br]Please go to https://github.com/NSMBW-Community/Reggie-Next to find it.</string>
-        <string id="changelog_not_found">File "CHANGELOG.md" not found![br]Please go to https://github.com/NSMBW-Community/Reggie-Next to find it.</string>
+        <section id="file_not_found">
+            <string id="readme">File "README.md" not found![br]Please go to https://github.com/NSMBW-Community/Reggie-Next to find it.</string>
+            <string id="changelog">File "CHANGELOG.md" not found![br]Please go to https://github.com/NSMBW-Community/Reggie-Next to find it.</string>
+        </section>
     </section>
     <section id="layout">
         <section id="background">
