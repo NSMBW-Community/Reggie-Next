@@ -208,6 +208,28 @@
             <string id="move_by">Move objects by:</string>
             <string id="object_warn">You are trying to move object(s) by an offset which isn't a multiple of 16. The offset will be rounded to the nearest multiple of 16. Are you sure you want to do this?</string>
         </section>
+        <section id="sprite_resize">
+            <string id="title">Sprite Resizer</string>
+            <string id="info">Let's resize your sprite. In order to do this, choose one of the two modes, based on the below information. Note that some choices can overlap with other settings, leading to undesired effects.</string>
+            <string id="global_scale">Global Resizer Scale:</string>
+            <string id="create">Create Resizer</string>
+            <string id="update">Update Resizer</string>
+            <string id="exists">Please note that there already is a resizer sprite that affects this sprite. All changes made here will apply to the entire zone/area so be careful.</string>
+            <string id="not_available">This feature is not available for the current game patch.</string>
+            <section id="selective">
+                <string id="title">Selective Resizer</string>
+                <string id="info">The Selective Resizer will resize individual sprites based on its Nybble 5 or 7 value, allowing control over which sprites are resized,[br]as well as the scale of each sprite. Choose whichever nybble is not occupied by an existing setting on this sprite.</string>
+                <string id="nybble_5">Nybble 5</string>
+                <string id="nybble_7">Nybble 7</string>
+                <string id="warning_one">Warning: This sprite has one or more settings that overlap Nybble [id].</string>
+                <string id="warning_both">Warning: This sprite has one or more settings that overlap both Nybbles 5 and 7.</string>
+            </section>
+            <section id="global">
+                <string id="title">Global Resizer</string>
+                <string id="info">The Global Resizer will change the size of [i]every[/i] sprite that supports this feature.[br]</string>
+                <string id="global_button">Global</string>
+            </section>
+        </section>
         <section id="sprite_switch">
             <string id="title">Switch Sprite IDs</string>
             <string id="from_sprite">From Sprite:</string>
@@ -880,28 +902,6 @@
         <string id="80">[b]Ignore Windows Scale[/b][br]This will force the program to ignore the app scaling applied by Windows, which may help in some cases.</string>
         <string id="81">Show tileset preview in Area Options</string>
         <string id="82">[small]Note: Due to in-game limitations, Reggie Next will not pad LZ-compressed level archives.[/small]</string>
-    </section>
-    <section id="ResizeChoiceDlg">
-        <string id="0">Let's resize your sprite. In order to do this, choose one of the two modes, based on the below information. Note that some choices can overlap with other settings, leading to undesired effects.</string>
-        <string id="1" />
-        <string id="2">Please note that there already is a resizer sprite that affects this sprite. All changes made here will apply to the entire zone/area so be careful.</string>
-        <string id="3">Choose from either the Selective or Global Resizer modes:</string>
-        <string id="4">Create Resizer</string>
-        <string id="5">Update Resizer</string>
-        <string id="6" />
-        <string id="7">Nybble 5</string>
-        <string id="8">Nybble 7</string>
-        <string id="9">Global</string>
-        <string id="10" />
-        <string id="11">Sprite Resizer</string>
-        <string id="12">This feature is not available for the current game patch.</string>
-        <string id="13">The Selective Resizer will resize individual sprites based on its Nybble 5 or 7 value, allowing control over which sprites are resized,[br]as well as the scale of each sprite. Choose whichever nybble is not occupied by an existing setting on this sprite.</string>
-        <string id="14">The Global Resizer will change the size of [i]every[/i] sprite that supports this feature.[br]</string>
-        <string id="15">Selective Resizer</string>
-        <string id="16">Global Resizer</string>
-        <string id="17">Global Resizer Scale:</string>
-        <string id="18">Warning: This sprite has one or more settings that overlap Nybble [id].</string>
-        <string id="19">Warning: This sprite has one or more settings that overlap both Nybbles 5 and 7.</string>
     </section>
     <section id="SpriteDataEditor">
         <string id="0">Modify Selected Sprite Properties</string>
