@@ -576,9 +576,6 @@ class ReggieTranslation:
                 0: 'Untitled',
                 1: '[unsaved]',
             },
-            'Zones': {
-                0: 'Zone [num]',
-            },
         }
 
     def InitFromXML(self, name: str | None) -> bool:
