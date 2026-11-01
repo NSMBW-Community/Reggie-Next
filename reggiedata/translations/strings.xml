@@ -236,6 +236,46 @@
         <string id="readme_not_found">File "README.md" not found![br]Please go to https://github.com/NSMBW-Community/Reggie-Next to find it.</string>
         <string id="changelog_not_found">File "CHANGELOG.md" not found![br]Please go to https://github.com/NSMBW-Community/Reggie-Next to find it.</string>
     </section>
+    <section id="layout">
+        <section id="camera_settings">
+            <section id="normal">
+                <string id="text">Normal</string>
+                <string id="tooltip">The standard camera mode, appropriate for most situations.</string>
+            </section>
+            <section id="static">
+                <string id="text">Static Zoom</string>
+                <string id="tooltip">In this mode, the camera will not zoom out during multiplayer.</string>
+            </section>
+            <section id="static_y">
+                <string id="text">Static Zoom, Y Tracking Only</string>
+                <string id="tooltip">In this mode, the camera will not zoom out during multiplayer, and will be centered horizontally in the zone.</string>
+            </section>
+            <section id="static_event">
+                <string id="text">Static Zoom, Event-Controlled</string>
+                <string id="tooltip">In this mode, the camera will not zoom out during multiplayer, and will use event-controlled camera settings from the Camera Profiles dialog.</string>
+            </section>
+            <section id="track_x">
+                <string id="text">X Tracking Only</string>
+                <string id="tooltip">In this mode, the camera will only move horizontally. It will be aligned to the bottom edge of the zone.</string>
+            </section>
+            <section id="expand_x">
+                <string id="text">X Expanding Only</string>
+                <string id="tooltip">In this mode, the camera will only zoom out during multiplayer if the players are far apart horizontally.</string>
+            </section>
+            <section id="track_y">
+                <string id="text">Y Tracking Only</string>
+                <string id="tooltip">In this mode, the camera will only move vertically. It will be centered horizontally in the zone.</string>
+            </section>
+            <section id="expand_y">
+                <string id="text">Y Expanding Only</string>
+                <string id="tooltip">In this mode, the camera will zoom out during multiplayer if the players are far apart vertically. The largest screen size will only be used if a player is flying with a Propeller Suit or Block.</string>
+            </section>
+            <section id="screen_height">
+                <string id="text">Screen Heights:</string>
+                <string id="tooltip">[b]Screen Heights:[/b][br]Selects screen heights (in blocks) the camera can use during multiplayer. The camera will zoom out if the players are too far apart, and zoom back in when they get closer together. Values represent screen heights, measured in tiles.[br][br]In single-player, only the smallest height will be used.[br][br]Options marked with * or ** are glitchy if zone bounds are set to 0; see the Upper/Lower Bounds tooltips for more info.[br]Options marked with ** are also unplayably glitchy in multiplayer.</string>
+            </section>
+        </section>
+    </section>
 
 </translation>
 <!--<strings>
@@ -301,26 +341,6 @@
         <string id="22">Slot [i]:</string>
         <string id="23">This mode will not render any backgrounds.</string>
         <string id="24">This mode crashes the game, so consider changing your background configuation.</string>
-    </section>
-    <section id="CameraSettings">
-        <string id="0">Normal</string>
-        <string id="1">The standard camera mode, appropriate for most situations.</string>
-        <string id="2">Static Zoom</string>
-        <string id="3">In this mode, the camera will not zoom out during multiplayer.</string>
-        <string id="4">Static Zoom, Y Tracking Only</string>
-        <string id="5">In this mode, the camera will not zoom out during multiplayer, and will be centered horizontally in the zone.</string>
-        <string id="6">Static Zoom, Event-Controlled</string>
-        <string id="7">In this mode, the camera will not zoom out during multiplayer, and will use event-controlled camera settings from the Camera Profiles dialog.</string>
-        <string id="8">X Tracking Only</string>
-        <string id="9">In this mode, the camera will only move horizontally. It will be aligned to the bottom edge of the zone.</string>
-        <string id="10">X Expanding Only</string>
-        <string id="11">In this mode, the camera will only zoom out during multiplayer if the players are far apart horizontally.</string>
-        <string id="12">Y Tracking Only</string>
-        <string id="13">In this mode, the camera will only move vertically. It will be centered horizontally in the zone.</string>
-        <string id="14">Y Expanding Only</string>
-        <string id="15">In this mode, the camera will zoom out during multiplayer if the players are far apart vertically. The largest screen size will only be used if a player is flying with a Propeller Suit or Block.</string>
-        <string id="16">Screen Heights:</string>
-        <string id="17">[b]Screen Heights:[/b][br]Selects screen heights (in blocks) the camera can use during multiplayer. The camera will zoom out if the players are too far apart, and zoom back in when they get closer together. Values represent screen heights, measured in tiles.[br][br]In single-player, only the smallest height will be used.[br][br]Options marked with * or ** are glitchy if zone bounds are set to 0; see the Upper/Lower Bounds tooltips for more info.[br]Options marked with ** are also unplayably glitchy in multiplayer.</string>
     </section>
     <section id="ChangeGamePath">
         <string id="0">Choose the Stage folder from [game]</string>
