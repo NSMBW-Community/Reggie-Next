@@ -46,11 +46,11 @@ class ToolbarTab(PreferenceTabWidget):
         settings_lyt = QtWidgets.QVBoxLayout()
         help_lyt = QtWidgets.QVBoxLayout()
 
-        file_box = QtWidgets.QGroupBox(globals_.trans.string('Menubar', 0))
-        edit_box = QtWidgets.QGroupBox(globals_.trans.string('Menubar', 1))
-        view_box = QtWidgets.QGroupBox(globals_.trans.string('Menubar', 2))
-        settings_box = QtWidgets.QGroupBox(globals_.trans.string('Menubar', 3))
-        help_box = QtWidgets.QGroupBox(globals_.trans.string('Menubar', 4))
+        file_box = QtWidgets.QGroupBox(globals_.trans_new.string('menu_bar.file'))
+        edit_box = QtWidgets.QGroupBox(globals_.trans_new.string('menu_bar.edit'))
+        view_box = QtWidgets.QGroupBox(globals_.trans_new.string('menu_bar.view'))
+        settings_box = QtWidgets.QGroupBox(globals_.trans_new.string('menu_bar.settings'))
+        help_box = QtWidgets.QGroupBox(globals_.trans_new.string('menu_bar.help'))
 
         # Arrange this data so it can be iterated over
         menu_items = (
@@ -81,7 +81,7 @@ class ToolbarTab(PreferenceTabWidget):
             group.setLayout(layout)
 
         # Create the Reset button
-        reset = QtWidgets.QPushButton(globals_.trans.string('PrefsDlg', 20))
+        reset = QtWidgets.QPushButton(globals_.trans_new.string('dialog.preferences.tab.toolbar.reset_toolbar'))
         reset.clicked.connect(self.reset)
 
         # Create the main layout
@@ -98,7 +98,8 @@ class ToolbarTab(PreferenceTabWidget):
         """
         This is called when the Reset button is clicked
         """
-        dlg = QtWidgets.QMessageBox.warning(None, globals_.trans.string('PrefsDlg', 77), globals_.trans.string('PrefsDlg', 78),
+        dlg = QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('dialog.preferences.tab.toolbar.reset_toolbar'),
+                                            globals_.trans_new.string('dialog.preferences.tab.toolbar.warning_reset'),
                                             QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
         if dlg != QtWidgets.QMessageBox.StandardButton.Yes:
             return

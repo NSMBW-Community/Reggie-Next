@@ -1256,7 +1256,7 @@ def LoadDefaultKeybinds() -> None:
         Keybind("zoommin", globals_.trans.string("MenuItems", 70), "Ctrl+PgUp"),
         Keybind("leveloverview", globals_.trans.string("MenuItems", 94), "Ctrl+M"),
         Keybind("palette", globals_.trans.string("MenuItems", 96), "Ctrl+P"),
-        Keybind("toolbar", globals_.trans.string("Menubar", 5), "Ctrl+T"),
+        Keybind("toolbar", globals_.trans_new.string("menu_bar.editor_toolbar"), "Ctrl+T"),
     ]
     globals_.SettingsKeybinds = [
         Keybind("areaoptions", globals_.trans.string("MenuItems", 72), "Ctrl+Alt+A"),

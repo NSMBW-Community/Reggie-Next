@@ -225,6 +225,122 @@
                 <string id="verify_password">Verify Password:</string>
             </section>
         </section>
+        <section id="preferences">
+            <string id="title">Reggie Next Preferences</string>
+            <string id="warning_restart">You will need to restart Reggie Next for certain changes to take effect.</string>
+            <section id="tab">
+                <section id="general">
+                    <string id="title">General</string>
+                    <string id="info">[b]Reggie Preferences[/b][br]Customize Reggie Next by changing these settings.[br]Use the tabs below to view even more settings.</string>
+                    <string id="language">Language:</string>
+                    <string id="clear_recent_files">Clear Recent Files</string>
+                    <string id="warning_clear_files">Are you sure you want to clear all recent files? This cannot be undone.</string>
+                    <string id="display_entrance_lines">Display lines indicating the left- and rightmost x-position where entrances can be safely placed in zones</string>
+                    <string id="reset_hidden_sprite_fields">Reset sprite data when hiding sprite fields</string>
+                    <string id="place_objects_at_full_size">Place objects at their full size</string>
+                    <string id="display_zone_bounds">Display rectangles indicating the zone bounds</string>
+                    <string id="show_unknown_sprite_warning">Display warnings when unknown sprites are present in the level</string>
+                    <section id="translation_info">
+                        <string id="title">Translation Info</string>
+                        <string id="info">[b][name][/b] - Version [version][br]Translators: [translator]</string>
+                        <string id="info_default">[b][name][/b][br]Default language for Reggie Next.</string>
+                    </section>
+                    <section id="pad_setting">
+                        <string id="title">Pad level with null bytes</string>
+                        <string id="fixed_level_size">Fixed level size (bytes):</string>
+                        <string id="note">[small]Note: Due to in-game limitations, Reggie Next will not pad LZ-compressed level archives.[/small]</string>
+                    </section>
+                    <section id="auto_diagnostic">
+                        <string id="title">Auto-Diagnostic Tool</string>
+                        <string id="enable">Enable Auto-Diagnostic Tool</string>
+                        <section id="error_check_frequency">
+                            <string id="text">Error Checking Frequency:</string>
+                            <string id="tooltip">[b]Error Checking Frequency:[/b][br]This determines how often the Auto-Diagnostic Tool will check for errors.</string>
+                            <section id="options">
+                                <string id="never">Never</string>
+                                <string id="5_sec">Every 5 seconds</string>
+                                <string id="10_sec">Every 10 seconds</string>
+                                <string id="15_sec">Every 15 seconds</string>
+                            </section>
+                        </section>
+                    </section>
+                </section>
+                <section id="toolbar">
+                    <string id="title">Toolbar</string>
+                    <string id="info">[b]Toolbar Preferences[/b][br]Choose menu items you would like to appear on the toolbar.[br]</string>
+                    <string id="reset_toolbar">Reset Toolbar</string>
+                    <string id="warning_reset">Are you sure you want to reset the toolbar to its default configuration?[br]This cannot be undone.</string>
+                </section>
+                <section id="keybinds">
+                    <string id="title">Keybinds</string>
+                    <string id="info">[b]Configure Keybinds[/b][br]Customize the keybinds used for drop-down actions.[br]Press Backspace/Delete to clear a keybind, or hit the X button.</string>
+                    <string id="reset_keybinds">Reset Keybinds</string>
+                    <string id="warning_reset">Are you sure you want to reset all keybinds to their default values?[br]This cannot be undone.</string>
+                    <string id="check_for_conflicts">Check for Conflicts</string>
+                    <string id="no_keybind">No keybind set</string>
+                    <section id="conflict_found">
+                        <string id="title">Conflicts Found</string>
+                        <string id="info">The following options were found to have conflicting keybinds:[br][conflicts][br]Reusing keybinds can cause issues, so ensure all keybinds are unique!</string>
+                    </section>
+                    <string id="no_conflict">No conflicts found.</string>
+                    <string id="enable_recent_file_shortcuts">Enable shortcuts in Recent Files menu</string>
+                    <string id="move_level_items">Move selected level items when pressing the arrow keys</string>
+                </section>
+                <section id="appearance">
+                    <string id="title">Appearance</string>
+                    <string id="info">[b]Reggie Appearance[/b][br]Customize the appearance of Reggie Next by changing these settings.[br]Certain window styles may not work correctly with Dark Mode or themes.</string>
+                    <string id="available_themes">Available Themes</string>
+                    <string id="style">Style</string>
+                    <string id="preview">Preview</string>
+                    <string id="theme">Theme:</string>
+                    <string id="theme_info">[b][name][/b] - Version [version][br]By [creator][br][description]</string>
+                    <string id="display_full_path">Display full file path of opened level</string>
+                    <string id="show_tileset_preview">Show tileset preview in Area Options</string>
+                    <section id="window_style">
+                        <string id="text">Window Style:</string>
+                        <string id="tooltip">[b]Window Style[/b][br]This changes what style Reggie's UI uses. Note that this may cause issues with certain themes.</string>
+                    </section>
+                    <section id="dark_mode">
+                        <string id="text">Dark Mode</string>
+                        <string id="tooltip">[b]Dark Mode:[/b][br]This determines the overall color style Reggie uses, independent from the current theme.[br][br]Note that this may cause issues with certain themes.</string>
+                    </section>
+                    <section id="rounded_rectangles">
+                        <string id="text">Use Rounded Rectangles</string>
+                        <string id="tooltip">[b]Use Rounded Rectangles:[/b][br]This makes the corners of sprites, entrances, path nodes, and comments appear rounded instead of sharp.</string>
+                    </section>
+                    <section id="tileset_tabs">
+                        <string id="text">Tileset Tabs Position:</string>
+                        <string id="tooltip">[b]Tileset Tabs Position:[/b][br]This determines the position of the tileset tabs in the Area Options dialog.</string>
+                        <section id="options">
+                            <string id="top">On Top</string>
+                            <string id="left">Left Side</string>
+                        </section>
+                    </section>
+                    <section id="cursor_mode">
+                        <string id="text">Change Item Cursors:</string>
+                        <string id="tooltip">[b]Change Item Cursors:[/b][br]This determines the appearance of the cursor when moving or resizing level items.</string>
+                        <section id="options">
+                            <string id="never">Never</string>
+                            <string id="selected">Only while selected</string>
+                            <string id="always">Always</string>
+                        </section>
+                    </section>
+                    <section id="ignore_windows_scale">
+                        <string id="text">Ignore Windows Scale</string>
+                        <string id="tooltip">[b]Ignore Windows Scale[/b][br]This will force the program to ignore the app scaling applied by Windows, which may help in some cases.</string>
+                    </section>
+                    <string id="show_item_select">Show Items as Selected</string>
+                    <section id="grid_type">
+                        <string id="text">Grid Type:</string>
+                        <section id="types">
+                            <string id="none">None</string>
+                            <string id="standard">Standard</string>
+                            <string id="checker">Checker</string>
+                        </section>
+                    </section>
+                </section>
+            </section>
+        </section>
         <section id="object_swap">
             <string id="title">Swap Objects</string>
             <string id="object">Object:</string>
@@ -407,6 +523,14 @@
                 <string id="tooltip">[b]Screen Heights:[/b][br]Selects screen heights (in blocks) the camera can use during multiplayer. The camera will zoom out if the players are too far apart, and zoom back in when they get closer together. Values represent screen heights, measured in tiles.[br][br]In single-player, only the smallest height will be used.[br][br]Options marked with * or ** are glitchy if zone bounds are set to 0; see the Upper/Lower Bounds tooltips for more info.[br]Options marked with ** are also unplayably glitchy in multiplayer.</string>
             </section>
         </section>
+    </section>
+    <section id="menu_bar">
+        <string id="file">&amp;File</string>
+        <string id="edit">&amp;Edit</string>
+        <string id="view">&amp;View</string>
+        <string id="settings">&amp;Settings</string>
+        <string id="help">&amp;Help</string>
+        <string id="editor_toolbar">Editor Toolbar</string>
     </section>
     <section id="widget">
         <section id="auto_diagnostic">
@@ -740,14 +864,6 @@
         <string id="146">Generate Strings XML</string>
         <string id="147">Generates a new strings.xml and saves it to /reggiedata/translations</string>
     </section>
-    <section id="Menubar">
-        <string id="0">&amp;File</string>
-        <string id="1">&amp;Edit</string>
-        <string id="2">&amp;View</string>
-        <string id="3">&amp;Settings</string>
-        <string id="4">&amp;Help</string>
-        <string id="5">Editor Toolbar</string>
-    </section>
     <section id="Objects">
         <string id="0">[b]Tileset [tileset], object [obj]:[/b][br][width]x[height] on layer [layer]</string>
         <string id="1">Object [id]</string>
@@ -820,107 +936,6 @@
     <section id="Paths">
         <string id="0">[b]Path [path][/b][br]Node [node]</string>
         <string id="1">Path [path], Node [node]</string>
-    </section>
-    <section id="PrefsDlg">
-        <string id="0">Reggie Next Preferences</string>
-        <string id="1">General</string>
-        <string id="2">Toolbar</string>
-        <string id="3">Appearance</string>
-        <string id="4">[b]Reggie Preferences[/b][br]Customize Reggie Next by changing these settings.[br]Use the tabs below to view even more settings.</string>
-        <string id="5">[b]Toolbar Preferences[/b][br]Choose menu items you would like to appear on the toolbar.[br]</string>
-        <string id="6">[b]Reggie Appearance[/b][br]Customize the appearance of Reggie Next by changing these settings.[br]Certain window styles may not work correctly with Dark Mode or themes.</string>
-        <string id="7" />
-        <string id="8" />
-        <string id="9" />
-        <string id="10" />
-        <string id="11">Menu format:</string>
-        <string id="12" />
-        <string id="13">Use the menubar</string>
-        <string id="14">Language:</string>
-        <string id="15">Recent Files data:</string>
-        <string id="16">Clear Recent Files</string>
-        <string id="17" />
-        <string id="18">Are you sure you want to clear all recent files? This cannot be undone.</string>
-        <string id="19" />
-        <string id="20">Reset</string>
-        <string id="21">Available Themes</string>
-        <string id="22">Preview</string>
-        <string id="23" />
-        <string id="24">[b]Window Style[/b][br]This changes what style Reggie's UI uses. Note that this may cause issues with certain themes.</string>
-        <string id="25">Window Style:</string>
-        <string id="26">[b][name][/b] - Version [version][br]By [creator][br][description]</string>
-        <string id="27" />
-        <string id="28" />
-        <string id="29" />
-        <string id="30">You will need to restart Reggie Next for certain changes to take effect.</string>
-        <string id="31">Display lines indicating the left- and rightmost x-position where entrances can be safely placed in zones</string>
-        <string id="32" />
-        <string id="33">Reset sprite data when hiding sprite fields</string>
-        <string id="34">Hide Reset Spritedata button</string>
-        <string id="35">Pad level with null bytes</string>
-        <string id="36">Fixed level size (bytes):</string>
-        <string id="37">Place objects at their full size</string>
-        <string id="38">Display rectangles indicating the zone bounds</string>
-        <string id="39" />
-        <string id="40">Style</string>
-        <string id="41">Theme:</string>
-        <string id="42">Translation Info</string>
-        <string id="43">[b][name][/b][br]Default language for Reggie Next.</string>
-        <string id="44">[b][name][/b] - Version [version][br]Translators: [translator]</string>
-        <string id="45">Use Rounded Rectangles</string>
-        <string id="46">[b]Use Rounded Rectangles:[/b][br]This makes the corners of sprites, entrances, path nodes, and comments appear rounded instead of sharp.</string>
-        <string id="47">Dark Mode</string>
-        <string id="48">[b]Dark Mode:[/b][br]This determines the overall color style Reggie uses, independent from the current theme.[br][br]Note that this may cause issues with certain themes.</string>
-        <string id="49">Display full file path of opened level</string>
-        <string id="50">Show Items as Selected</string>
-        <string id="51">Grid Type:</string>
-        <stringlist id="52">
-            <entry>None</entry>
-            <entry>Standard</entry>
-            <entry>Checker</entry>
-        </stringlist>
-        <string id="53">Change Item Cursors:</string>
-        <string id="54">[b]Change Item Cursors:[/b][br]This determines the appearance of the cursor when moving or resizing level items.</string>
-        <stringlist id="55">
-            <entry>Never</entry>
-            <entry>Only while selected</entry>
-            <entry>Always</entry>
-        </stringlist>
-        <string id="56">Keybinds</string>
-        <string id="57">[b]Configure Keybinds[/b][br]Customize the keybinds used for drop-down actions.[br]Press Backspace/Delete to clear a keybind, or hit the X button.</string>
-        <string id="58">Reset All Keybinds</string>
-        <string id="59">Check for Conflicts</string>
-        <string id="60">No keybind set</string>
-        <string id="61">Reset Keybinds</string>
-        <string id="62">Are you sure you want to reset all keybinds to their default values?[br]This cannot be undone.</string>
-        <string id="63">Conflicts Found</string>
-        <string id="64">The following options were found to have conflicting keybinds:[br][conflicts][br]Reusing keybinds can cause issues, so ensure all keybinds are unique!</string>
-        <string id="65">No conflicts found.</string>
-        <string id="66">Tileset Tabs Position:</string>
-        <string id="67">[b]Tileset Tabs Position:[/b][br]This determines the position of the tileset tabs in the Area Options dialog.</string>
-        <stringlist id="68">
-            <entry>On Top</entry>
-            <entry>Left Side</entry>
-        </stringlist>
-        <string id="69">Enable shortcuts in Recent Files menu</string>
-        <string id="70">Auto-Diagnostic Tool</string>
-        <string id="71">Enable Auto-Diagnostic Tool</string>
-        <string id="72">Error Checking Frequency:</string>
-        <stringlist id="73">
-            <entry>Never</entry>
-            <entry>Every 5 seconds</entry>
-            <entry>Every 10 seconds</entry>
-            <entry>Every 15 seconds</entry>
-        </stringlist>
-        <string id="74">[b]Error Checking Frequency:[/b][br]This determines how often the Auto-Diagnostic Tool will check for errors.</string>
-        <string id="75">Display warnings when unknown sprites are present in the level</string>
-        <string id="76">Move selected level items when pressing the arrow keys</string>
-        <string id="77">Reset Toolbar</string>
-        <string id="78">Are you sure you want to reset the toolbar to its default configuration?[br]This cannot be undone.</string>
-        <string id="79">Ignore Windows Scale</string>
-        <string id="80">[b]Ignore Windows Scale[/b][br]This will force the program to ignore the app scaling applied by Windows, which may help in some cases.</string>
-        <string id="81">Show tileset preview in Area Options</string>
-        <string id="82">[small]Note: Due to in-game limitations, Reggie Next will not pad LZ-compressed level archives.[/small]</string>
     </section>
     <section id="SpriteDataEditor">
         <string id="0">Modify Selected Sprite Properties</string>

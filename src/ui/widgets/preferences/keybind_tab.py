@@ -23,26 +23,28 @@ class KeybindTab(PreferenceTabWidget):
         self.tab_widget = QtWidgets.QTabWidget()
         self.tabs = []
 
+        menu_bar_strings = globals_.trans_new.section('menu_bar').string_list()
+
         # Create tabs
         for i in range(5):
             tab = KeybindEditorTab(i)
             self.tabs.append(tab)
-            self.tab_widget.addTab(tab, globals_.trans.string('Menubar', i))
+            self.tab_widget.addTab(tab, menu_bar_strings[i])
 
         # Reset button
-        reset = QtWidgets.QPushButton(globals_.trans.string('PrefsDlg', 58))
+        reset = QtWidgets.QPushButton(globals_.trans_new.string('dialog.preferences.tab.keybinds.reset_keybinds'))
         reset.clicked.connect(self.reset)
 
         # Check for Conflicts button
-        self.check_conflict_button = QtWidgets.QPushButton(globals_.trans.string('PrefsDlg', 59))
+        self.check_conflict_button = QtWidgets.QPushButton(globals_.trans_new.string('dialog.preferences.tab.keybinds.check_for_conflicts'))
         self.check_conflict_button.clicked.connect(self.check_conflicts)
 
         # Toggle Recent Files keybinds
-        self.recent_file_keybind = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 69))
+        self.recent_file_keybind = QtWidgets.QCheckBox(globals_.trans_new.string('dialog.preferences.tab.keybinds.enable_recent_file_shortcuts'))
         self.recent_file_keybind.setChecked(globals_.UseRecentFileKeys)
 
         # Allow arrow keys to move selected level items
-        self.arrow_move_items = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 76))
+        self.arrow_move_items = QtWidgets.QCheckBox(globals_.trans_new.string('dialog.preferences.tab.keybinds.move_level_items'))
         self.arrow_move_items.setChecked(globals_.MoveItemsWithArrowKeys)
 
         # Create the main layout
@@ -58,7 +60,8 @@ class KeybindTab(PreferenceTabWidget):
         """
         Resets all keybinds to their original values
         """
-        result = QtWidgets.QMessageBox.warning(None, globals_.trans.string('PrefsDlg', 61), globals_.trans.string('PrefsDlg', 62),
+        result = QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('dialog.preferences.tab.keybinds.reset_keybinds'),
+                                               globals_.trans_new.string('dialog.preferences.tab.keybinds.warning_reset'),
                                                 QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
         if result == QtWidgets.QMessageBox.StandardButton.Yes:
             for tab in self.tabs:
@@ -100,7 +103,7 @@ class KeybindTab(PreferenceTabWidget):
         if not conflicts:
             # No conflicts, show a quick tooltip
             pos = self.check_conflict_button.mapToGlobal(self.check_conflict_button.rect().center())
-            QtWidgets.QToolTip.showText(pos, globals_.trans.string('PrefsDlg', 65), self.check_conflict_button)
+            QtWidgets.QToolTip.showText(pos, globals_.trans_new.string('dialog.preferences.tab.keybinds.no_conflict'), self.check_conflict_button)
         else:
             # Conflicts were detected, list them in a warning message
             out_string = ''
@@ -119,8 +122,8 @@ class KeybindTab(PreferenceTabWidget):
                 out_string += ', '.join(names)
                 out_string += '<br>'
 
-            QtWidgets.QMessageBox.warning(None, globals_.trans.string('PrefsDlg', 63),
-                                          globals_.trans.string('PrefsDlg', 64, '[conflicts]', out_string))
+            QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('dialog.preferences.tab.keybinds.conflict_found.title'),
+                                          globals_.trans_new.string('dialog.preferences.tab.keybinds.conflict_found.info', ('[conflicts]', out_string)))
 
     def save(self) -> bool:
         """
