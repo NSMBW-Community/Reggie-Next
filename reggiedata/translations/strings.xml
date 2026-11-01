@@ -17,6 +17,9 @@
         <string id="add">Add</string>
         <string id="remove">Remove</string>
         <string id="id">ID</string>
+        <string id="ellipses">...</string>
+        <string id="empty_paren">(empty)</string>
+        <string id="em_dash">-</string>
     </section>
     <section id="dialog">
         <section id="about">
@@ -526,6 +529,12 @@
             </section>
         </section>
     </section>
+    <section id="levelitem">
+        <section id="comment">
+            <string id="data">[x], [y]: [text]</string>
+            <string id="pos">[b]Comment[/b][br]at [x], [y]</string>
+        </section>
+    </section>
     <section id="menu_bar">
         <string id="file">&amp;File</string>
         <string id="edit">&amp;Edit</string>
@@ -545,7 +554,6 @@
             </section>
         </section>
     </section>
-
 </translation>
 <!--<strings>
     <section id="ChangeGamePath">
@@ -554,13 +562,6 @@
         <string id="2">This folder doesn't have all of the files from the extracted New Super Mario Bros. Wii Stage folder.</string>
         <string id="3">This folder doesn't seem to have the required files. In order to use the [game] game patch, you need the Stage folder, including the Texture folder and the level files contained within it.</string>
         <string id="4">Choose the Texture folder from [game]</string>
-    </section>
-    <section id="Comments">
-        <string id="0">[x], [y]: [text]</string>
-        <string id="1">[b]Comment[/b][br]at [x], [y]</string>
-        <string id="2"> - </string>
-        <string id="3">(empty)</string>
-        <string id="4">...</string>
     </section>
     <section id="EntranceDataEditor">
         <string id="0">ID:</string>

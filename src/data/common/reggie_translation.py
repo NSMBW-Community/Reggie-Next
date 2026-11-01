@@ -52,13 +52,6 @@ class ReggieTranslation:
                 3: 'This folder doesn\'t seem to have the required files. In order to use the [game] game patch, you need the Stage folder, including the Texture folder and the level files contained within it.',
                 4: 'Choose the Texture folder from [game]',
             },
-            'Comments': {
-                0: '[x], [y]: [text]',
-                1: '[b]Comment[/b][br]at [x], [y]',
-                2: ' - ',
-                3: '(empty)',
-                4: '...',
-            },
             'EntranceDataEditor': {
                 0: 'ID:',
                 1: '[b]ID:[/b][br]Must be different from all other IDs',
