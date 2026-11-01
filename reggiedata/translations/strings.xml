@@ -2,6 +2,7 @@
 <translation>
     <section id="common">
         <string id="area_num">Area [num]</string>
+        <string id="zone_num">Zone [num]</string>
         <string id="swap">Swap</string>
         <string id="close">Close</string>
         <string id="none">None</string>
@@ -179,6 +180,27 @@
             <string id="to_object">To Object:</string>
             <string id="in_slot">In Tileset Slot:</string>
             <string id="exchange">Exchange (perform 2-way conversion)</string>
+        </section>
+        <section id="screenshot">
+            <string id="title">Level Screenshot</string>
+            <section id="targets">
+                <string id="screen">Current Screen</string>
+                <string id="all_zone">All Zones</string>
+            </section>
+            <string id="target_label">Target:</string>
+            <string id="hide_background">Hide Background:</string>
+            <string id="save_image">Save Image to File</string>
+            <string id="copy_image">Copy Image to Clipboard</string>
+            <string id="grid_label">Grid Type:</string>
+            <section id="grid_types">
+                <string id="None"></string>
+                <string id="Standard"></string>
+                <string id="Checker"></string>
+            </section>
+            <section id="zone_margins">
+                <string id="text">Zone Margins:</string>
+                <string id="tooltip">[b]Zone Margins:[/b][br]This determines how many pixels of space will be visible past the zone edge in all directions.</string>
+            </section>
         </section>
         <section id="shift_item">
             <string id="title">Shift Items</string>
@@ -860,24 +882,6 @@
         <string id="17">Global Resizer Scale:</string>
         <string id="18">Warning: This sprite has one or more settings that overlap Nybble [id].</string>
         <string id="19">Warning: This sprite has one or more settings that overlap both Nybbles 5 and 7.</string>
-    </section>
-    <section id="ScrShtDlg">
-        <string id="0">Level Screenshot</string>
-        <string id="1">Current Screen</string>
-        <string id="2">All Zones</string>
-        <string id="3">Zone [zone]</string>
-        <string id="4">Target:</string>
-        <string id="5">Hide Background:</string>
-        <string id="6">Save Image to File</string>
-        <string id="7">Copy Image to Clipboard</string>
-        <string id="8">Grid Type:</string>
-        <stringlist id="9">
-            <entry>None</entry>
-            <entry>Standard</entry>
-            <entry>Checker</entry>
-        </stringlist>
-        <string id="10">Margins:</string>
-        <string id="11">[b]Margins:[/b][br]This determines how many pixels of space will be visible past the zone edge in all directions.</string>
     </section>
     <section id="SpriteDataEditor">
         <string id="0">Modify Selected Sprite Properties</string>

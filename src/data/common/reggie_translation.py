@@ -689,24 +689,6 @@ class ReggieTranslation:
                 18: 'Warning: This sprite has one or more settings that overlap Nybble [id].',
                 19: 'Warning: This sprite has one or more settings that overlap both Nybbles 5 and 7.',
             },
-            'ScrShtDlg': {
-                0: 'Level Screenshot',
-                1: 'Current Screen',
-                2: 'All Zones',
-                3: 'Zone [zone]',
-                4: 'Target:',
-                5: 'Hide Background:',
-                6: 'Save Image to File',
-                7: 'Copy Image to Clipboard',
-                8: 'Grid Type:',
-                9: (
-                    'None',
-                    'Standard',
-                    'Checker',
-                ),
-                10: 'Margins:',
-                11: '[b]Margins:[/b][br]This determines how many pixels of space will be visible past the zone edge in all directions.'
-            },
             'SpriteDataEditor': {
                 0: 'Modify Selected Sprite Properties',
                 1: '[b][name][/b]: [note]',
