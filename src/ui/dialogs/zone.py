@@ -20,7 +20,7 @@ class ZonesDialog(QtWidgets.QDialog):
         Creates and initializes the tab dialog
         """
         super().__init__()
-        self.setWindowTitle(globals_.trans.string('ZonesDlg', 0))
+        self.setWindowTitle(globals_.trans_new.string('dialog.zone.title'))
         self.setWindowIcon(GetIcon('zone'))
 
         self.tab_widget = QtWidgets.QTabWidget()
@@ -28,15 +28,15 @@ class ZonesDialog(QtWidgets.QDialog):
 
         # Make tabs
         for zone in globals_.Area.zones:
-            name = globals_.trans.string('ZonesDlg', 3, '[num]', zone.id + 1)
+            name = globals_.trans_new.string('common.zone_num', ('[num]', zone.id + 1))
 
             tab = ZoneTab(zone)
             self.zone_tabs.append(tab)
             self.tab_widget.addTab(tab, name)
 
-        self.new_button = QtWidgets.QPushButton(globals_.trans.string('ZonesDlg', 4))
-        self.copy_button = QtWidgets.QPushButton(globals_.trans.string('ZonesDlg', 107))
-        self.delete_button = QtWidgets.QPushButton(globals_.trans.string('ZonesDlg', 5))
+        self.new_button = QtWidgets.QPushButton(globals_.trans_new.string('dialog.zone.new'))
+        self.copy_button = QtWidgets.QPushButton(globals_.trans_new.string('dialog.zone.duplicate'))
+        self.delete_button = QtWidgets.QPushButton(globals_.trans_new.string('dialog.zone.delete'))
 
         button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
         button_box.addButton(self.new_button, button_box.ButtonRole.ActionRole)
@@ -134,13 +134,13 @@ class ZonesDialog(QtWidgets.QDialog):
         """
         # Show warning about the zone limit
         if len(self.zone_tabs) >= 6:
-            result = QtWidgets.QMessageBox.warning(self, globals_.trans.string('ZonesDlg', 6), globals_.trans.string('ZonesDlg', 7),
+            result = QtWidgets.QMessageBox.warning(self, globals_.trans_new.string('common.warning'), globals_.trans_new.string('dialog.zone.warning_max'),
                                                    QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
             if result == QtWidgets.QMessageBox.StandardButton.No:
                 return
 
         zone = ZoneItem.CreateZone(256, 256)
-        name = globals_.trans.string('ZonesDlg', 3, '[num]', zone.id + 1)
+        name = globals_.trans_new.string('common.zone_num', ('[num]', zone.id + 1))
 
         tab = ZoneTab(zone)
         self.zone_tabs.append(tab)
@@ -155,7 +155,7 @@ class ZonesDialog(QtWidgets.QDialog):
         Handles copying the current zone data to a new one
         """
         if len(self.zone_tabs) >= 6:
-            result = QtWidgets.QMessageBox.warning(self, globals_.trans.string('ZonesDlg', 6), globals_.trans.string('ZonesDlg', 7),
+            result = QtWidgets.QMessageBox.warning(self, globals_.trans_new.string('common.warning'), globals_.trans_new.string('dialog.zone.warning_max'),
                                                    QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
             if result == QtWidgets.QMessageBox.StandardButton.No:
                 return
@@ -164,7 +164,7 @@ class ZonesDialog(QtWidgets.QDialog):
         widget = cast(ZoneTab, self.tab_widget.widget(self.tab_widget.currentIndex()))
         widget.copy_zone_data(zone, self.tab_widget.currentIndex())
 
-        name = globals_.trans.string('ZonesDlg', 3, '[num]', zone.id + 1)
+        name = globals_.trans_new.string('common.zone_num', ('[num]', zone.id + 1))
 
         tab = ZoneTab(zone)
         self.zone_tabs.append(tab)

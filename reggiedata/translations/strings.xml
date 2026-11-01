@@ -412,17 +412,184 @@
             <string id="to_slot">To Tileset Slot:</string>
             <string id="exchange">Exchange (perform 2-way conversion)</string>
         </section>
-        <section id="">
-            <string id="title"></string>
-            <string id=""></string>
-        </section>
-        <section id="">
-            <string id="title"></string>
-            <string id=""></string>
-        </section>
-        <section id="">
-            <string id="title"></string>
-            <string id=""></string>
+        <section id="zone">
+            <string id="title">Zones</string>
+            <string id="new">New</string>
+            <string id="duplicate">Duplicate</string>
+            <string id="delete">Delete</string>
+            <string id="warning_max">You are trying to add more than 6 zones to a level - keep in mind that without the proper fix to the game, this will cause your level to [b]crash[/b] or have other strange issues![br][br]Are you sure you want to do this?</string>
+            <section id="dimensions">
+                <string id="title">Dimensions</string>
+                <string id="snap_8">Snap to 8x8 Grid</string>
+                <string id="snap_16">Snap to 16x16 Grid</string>
+                <section id="position_x">
+                    <string id="text">X position:</string>
+                    <string id="tooltip">[b]X position:[/b][br]Sets the X Position of the upper left corner</string>
+                </section>
+                <section id="position_y">
+                    <string id="text">Y position:</string>
+                    <string id="tooltip">[b]Y position:[/b][br]Sets the Y Position of the upper left corner</string>
+                </section>
+                <section id="size_x">
+                    <string id="text">X size:</string>
+                    <string id="tooltip">[b]X size:[/b][br]Sets the width of the zone</string>
+                </section>
+                <section id="size_y">
+                    <string id="text">Y size:</string>
+                    <string id="tooltip">[b]Y size:[/b][br]Sets the height of the zone</string>
+                </section>
+                <section id="preset">
+                    <string id="text">Preset:</string>
+                    <string id="tooltip">[b]Preset:[/b][br]Snaps the zone to common sizes.</string>
+                </section>
+            </section>
+            <section id="rendering">
+                <string id="title">Rendering</string>
+                <section id="zone_theme">
+                    <string id="text">Zone Theme:</string>
+                    <string id="tooltip">[b]Zone Theme:[/b][br]Changes the way models and parts of the background are rendered (for blurring, darkness, lava effects, and so on).</string>
+                    <string id="theme_info">[br][br][b]Current Theme:[/b][br][info]</string>
+                </section>
+                <section id="terrain_light">
+                    <string id="text">Terrain Lighting:</string>
+                    <string id="tooltip">[b]Terrain Lighting:[/b][br]Changes the way the terrain is rendered. It also affects the parts of the background which the normal theme doesn't change.</string>
+                    <section id="options">
+                        <string id="normal">Normal/Overworld</string>
+                        <string id="underground">Underground</string>
+                        <string id="underwater">Underwater</string>
+                        <string id="lava">Lava</string>
+                    </section>
+                </section>
+                <section id="visibility">
+                    <section id="normal">
+                        <string id="list_tooltip">[b]Visibility:[/b][br]Hidden - Mario is hidden when moving behind objects on Layer 0[br]On Top - Mario is displayed above Layer 0 at all times.[br][br]Note: Entities behind layer 0 other than Mario are never visible</string>
+                        <section id="options">
+                            <string id="hidden">Layer 0: Hidden</string>
+                            <string id="on_top">Layer 0: On Top</string>
+                        </section>
+                    </section>
+                    <section id="spotlight">
+                        <string id="text">Layer 0 Spotlight</string>
+                        <string id="tooltip">[b]Visibility - Layer 0 Spotlight:[/b][br]Sets the visibility mode to spotlight. In Spotlight mode, moving behind layer 0 objects enables a spotlight that follows Mario around.</string>
+                        <string id="list_tooltip">[b]Visibility:[/b][br]Small - A small, centered spotlight affords visibility through layer 0.[br]Large - A large, centered spotlight affords visibility through layer 0[br]Extremely Large - An extremely large, centered spotlight, which spans the whole screen at all but the largest zoom levels, affords visibility through layer 0</string>
+                        <section id="options">
+                            <string id="small">Spotlight: Small</string>
+                            <string id="large">Spotlight: Large</string>
+                            <string id="extra_large">Spotlight: Extremely Large</string>
+                        </section>
+                    </section>
+                    <section id="darkness">
+                        <string id="text">Full Darkness</string>
+                        <string id="tooltip">[b]Visibility - Full Darkness:[/b][br]Sets the visibility mode to full darkness. In full dark mode, the screen is completely black and visibility is only provided by the available spotlight effect. Stars and some sprites can enhance the default visibility.</string>
+                        <string id="list_tooltip">[b]Visibility:[/b][br]Large Foglight - A large, organic lightsource surrounds Mario[br]Lightbeam - Mario is able to aim a conical lightbeam through use of the Wiimote[br]Large Focus Light - A large spotlight which changes size based upon player movement[br]Small Foglight - A small, organic lightsource surrounds Mario[br]Small Focuslight - A small spotlight which changes size based on player movement[br]Absolute Black - Visibility is provided only by fireballs, stars, and certain sprites</string>
+                        <section id="options">
+                            <string id="fog_large">Darkness: Large Foglight</string>
+                            <string id="lightbeam">Darkness: Lightbeam</string>
+                            <string id="focus_large">Darkness: Large Focus Light</string>
+                            <string id="fog_small">Darkness: Small Foglight</string>
+                            <string id="focus_small">Darkness: Small Focus Light</string>
+                            <string id="black">Darkness: Absolute Black</string>
+                        </section>
+                    </section>
+                    <section id="spotlight_darkness">
+                        <string id="list_tooltip">[b]Visibility[/b][br]Small Spotlight and Small Focus Light - A small, centered spotlight affords visibility through layer 0, and a small spotlight which changes size based on player movement provides visibility through darkness</string>
+                        <section id="options">
+                            <string id="spotlight_focus">Small Spotlight and Small Focus Light</string>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section id="audio">
+                <string id="title">Audio</string>
+                <section id="background_music">
+                    <string id="text">Background Music:</string>
+                    <string id="tooltip">[b]Background Music:[/b][br]Changes the background music</string>
+                    
+                    <string id="undefined_track">Undefined Track [id]</string>
+                </section>
+                <section id="music_id">
+                    <string id="text">Background Music ID:</string>
+                    <string id="tooltip">[b]Background Music ID:[/b][br]This advanced option allows custom music tracks to be loaded if the proper ASM hacks are in place.</string>
+                </section>
+                <section id="sound_modulation">
+                    <string id="text">Sound Modulation:</string>
+                    <string id="tooltip">[b]Sound Modulation:[/b][br]Changes the sound effect modulation to fit the appropriate theme.[br][b]Note:[/b] The settings with an asterisk are identical to the setting with no asterisk. "Cavern Echo*" is used in Retail 02-03, whereas "None*" is unused.</string>
+                    <section id="options">
+                        <string id="none">None</string>
+                        <string id="cavern">Cavern Echo</string>
+                        <string id="cavern_2">Cavern Echo 2</string>
+                        <string id="underwater">Underwater Echo</string>
+                        <string id="boss">Boss Room Echo</string>
+                        <string id="tower">Tower Echo</string>
+                        <string id="castle">Castle Echo</string>
+                        <string id="ghost_house">Ghost House Indoor Echo</string>
+                        <string id="sewer">Sewer Echo</string>
+                        <string id="mountain">Mountain Echo</string>
+                        <string id="toad_house">Item House/Credits Echo</string>
+                        <string id="cavern_copy">Cavern Echo*</string>
+                        <string id="airship">Airship Indoor Echo</string>
+                        <string id="river_cavern">River Cavern Echo</string>
+                        <string id="lava_cavern">Lava Cavern Echo</string>
+                        <string id="none_copy">None*</string>
+                    </section>
+                </section>
+                <section id="boss_flag">
+                    <string id="text">Boss Flag:</string>
+                    <string id="tooltip">[b]Boss Flag:[/b][br]Set for bosses to allow proper music switching by sprites</string>
+                </section>
+            </section>
+            <section id="camera">
+                <string id="title">Camera</string>
+                <section id="zone_direction">
+                    <string id="text">Zone Direction:</string>
+                    <string id="tooltip">[b]Zone Direction:[/b][br]Sets the general direction of progression through this zone. This is mainly used in multiplayer mode to help the camera decide which player is "in front of" the others.[br][br]"Bias" sets the camera's preferred movement direction perpendicular to the main one. The default bias is downward or rightward. Upward bias causes more bottom-of-screen deaths and is not recommended.</string>
+                    <section id="options">
+                        <string id="right">Right</string>
+                        <string id="right_bias">Right (upward bias)</string>
+                        <string id="left">Left</string>
+                        <string id="left_bias">Left (upward bias)</string>
+                        <string id="down">Down</string>
+                        <string id="down_bias">Down (leftward bias)</string>
+                        <string id="up">Up</string>
+                        <string id="up_bias">Up (leftward bias)</string>
+                    </section>
+                </section>
+                <section id="scroll_up_if_flying">
+                    <string id="text">Only Scroll Upwards If Flying:</string>
+                    <string id="tooltip">[b]Only Scroll Upwards If Flying:[/b][br]Prevents the screen from scrolling upwards unless the player uses a Propeller Suit or Block.[br][br]This feature looks rather glitchy and is not recommended.</string>
+                </section>
+                <section id="multiplayer_screen_adjust">
+                    <string id="text">Multiplayer Screen Size Adjust:</string>
+                    <string id="tooltip">[b]Multiplayer Screen Size Adjust:[/b][br]Increases the height of the screen during multiplayer mode. Requires "Only Scroll Upwards If Flying" to be checked.[br][br]This causes very glitchy behavior if the zone is much taller than the adjusted screen height, if the screen becomes more than 28 tiles tall, or when the camera zooms in during the end-of-level celebration.</string>
+                </section>
+            </section>
+            <section id="bounds">
+                <string id="title">Bounds</string>
+                <section id="upper">
+                    <string id="text">Upper Bounds:</string>
+                    <string id="tooltip">[b]Upper Bounds:[/b][br] - Positive Values: Easier to scroll upwards (110 is centered)[br] - Negative Values: Harder to scroll upwards (30 is the top edge of the screen)[br][br]Values higher than 240 can cause instant death upon screen scrolling</string>
+                </section>
+                <section id="lower">
+                    <string id="text">Lower Bounds:</string>
+                    <string id="tooltip">[b]Lower Bounds:[/b][br] - Positive Values: Harder to scroll downwards (65 is the bottom edge of the screen)[br] - Negative Values: Easier to scroll downwards (95 is centered)[br][br]Values higher than 100 will prevent the screen from scrolling until Mario is offscreen</string>
+                </section>
+                <section id="upper_lakitu">
+                    <string id="text">Lakitu Upper Bounds:</string>
+                    <string id="tooltip">[b]Lakitu Upper Bounds:[/b][br]Used instead of Upper Bounds when at least one player is riding a Lakitu cloud.[br][br]The values are a little different from the regular Upper Bounds setting: value "0" represents 5.5 tiles away from the top edge of the screen, and the edge is at -88.</string>
+                </section>
+                <section id="lower_lakitu">
+                    <string id="text">Lakitu Lower Bounds:</string>
+                    <string id="tooltip">[b]Lakitu Lower Bounds:[/b][br]Used instead of Lower Bounds when at least one player is riding a Lakitu cloud.[br][br]The values are a little different from the regular Lower Bounds setting: value "0" represents 5.5 tiles away from the bottom edge of the screen, and the edge is at 88.</string>
+                </section>
+                <section id="upper_multiplayer">
+                    <string id="text">Multiplayer Upper Bounds Adjust:</string>
+                    <string id="tooltip">[b]Multiplayer Upper Bounds Adjust:[/b][br]Added to the upper bounds value (regular or Lakitu) during multiplayer mode, and during the transition back to normal camera behavior after an Auto-Scrolling Controller reaches the end of its path.</string>
+                </section>
+                <section id="lower_multiplayer">
+                    <string id="text">Multiplayer Lower Bounds Adjust:</string>
+                    <string id="tooltip">[b]Multiplayer Lower Bounds Adjust:[/b][br]Added to the lower bounds value (regular or Lakitu) during multiplayer mode, and during the transition back to normal camera behavior after an Auto-Scrolling Controller reaches the end of its path.</string>
+                </section>
+            </section>
         </section>
     </section>
     <section id="error">
@@ -1088,164 +1255,5 @@
     </section>
     <section id="Zones">
         <string id="0">Zone [num]</string>
-    </section>
-    <section id="ZonesDlg">
-        <string id="0">Zones</string>
-        <string id="1" />
-        <stringlist id="2">
-            <entry>Normal/Overworld</entry>
-            <entry>Underground</entry>
-            <entry>Underwater</entry>
-            <entry>Lava</entry>
-        </stringlist>
-        <string id="3">Zone [num]</string>
-        <string id="4">New</string>
-        <string id="5">Delete</string>
-        <string id="6">Warning</string>
-        <string id="7">You are trying to add more than 6 zones to a level - keep in mind that without the proper fix to the game, this will cause your level to [b]crash[/b] or have other strange issues![br][br]Are you sure you want to do this?</string>
-        <string id="8">Dimensions</string>
-        <string id="9">X position:</string>
-        <string id="10">[b]X position:[/b][br]Sets the X Position of the upper left corner</string>
-        <string id="11">Y position:</string>
-        <string id="12">[b]Y position:[/b][br]Sets the Y Position of the upper left corner</string>
-        <string id="13">X size:</string>
-        <string id="14">[b]X size:[/b][br]Sets the width of the zone</string>
-        <string id="15">Y size:</string>
-        <string id="16">[b]Y size:[/b][br]Sets the height of the zone</string>
-        <string id="17">Preset:</string>
-        <string id="18">[b]Preset:[/b][br]Snaps the zone to common sizes.</string>
-        <string id="19">Rendering and Camera</string>
-        <string id="20">Zone Theme:</string>
-        <string id="21">[b]Zone Theme:[/b][br]Changes the way models and parts of the background are rendered (for blurring, darkness, lava effects, and so on).</string>
-        <string id="22">Terrain Lighting:</string>
-        <string id="23">[b]Terrain Lighting:[/b][br]Changes the way the terrain is rendered. It also affects the parts of the background which the normal theme doesn't change.</string>
-        <string id="24">Normal</string>
-        <string id="25">[b]Visibility - Normal:[/b][br]Sets the visibility mode to normal.</string>
-        <string id="26">Layer 0 Spotlight</string>
-        <string id="27">[b]Visibility - Layer 0 Spotlight:[/b][br]Sets the visibility mode to spotlight. In Spotlight mode, moving behind layer 0 objects enables a spotlight that follows Mario around.</string>
-        <string id="28">Full Darkness</string>
-        <string id="29">[b]Visibility - Full Darkness:[/b][br]Sets the visibility mode to full darkness. In full dark mode, the screen is completely black and visibility is only provided by the available spotlight effect. Stars and some sprites can enhance the default visibility.</string>
-        <string id="30" />
-        <string id="31" />
-        <string id="32" />
-        <string id="33" />
-        <string id="34" />
-        <string id="35" />
-        <string id="36" />
-        <string id="37" />
-        <stringlist id="38">
-            <entry>Right</entry>
-            <entry>Right (upward bias)</entry>
-            <entry>Left</entry>
-            <entry>Left (upward bias)</entry>
-            <entry>Down</entry>
-            <entry>Down (leftward bias)</entry>
-            <entry>Up</entry>
-            <entry>Up (leftward bias)</entry>
-        </stringlist>
-        <string id="39">Zone Direction:</string>
-        <string id="40">[b]Zone Direction:[/b][br]Sets the general direction of progression through this zone. This is mainly used in multiplayer mode to help the camera decide which player is "in front of" the others.[br][br]"Bias" sets the camera's preferred movement direction perpendicular to the main one. The default bias is downward or rightward. Upward bias causes more bottom-of-screen deaths and is not recommended.</string>
-        <stringlist id="41">
-            <entry>Layer 0: Hidden</entry>
-            <entry>Layer 0: On Top</entry>
-        </stringlist>
-        <string id="42">[b]Visibility:[/b][br]Hidden - Mario is hidden when moving behind objects on Layer 0[br]On Top - Mario is displayed above Layer 0 at all times.[br][br]Note: Entities behind layer 0 other than Mario are never visible</string>
-        <stringlist id="43">
-            <entry>Spotlight: Small</entry>
-            <entry>Spotlight: Large</entry>
-            <entry>Spotlight: Extremely Large</entry>
-        </stringlist>
-        <string id="44">[b]Visibility:[/b][br]Small - A small, centered spotlight affords visibility through layer 0.[br]Large - A large, centered spotlight affords visibility through layer 0[br]Extremely Large - An extremely large, centered spotlight, which spans the whole screen at all but the largest zoom levels, affords visibility through layer 0</string>
-        <stringlist id="45">
-            <entry>Darkness: Large Foglight</entry>
-            <entry>Darkness: Lightbeam</entry>
-            <entry>Darkness: Large Focus Light</entry>
-            <entry>Darkness: Small Foglight</entry>
-            <entry>Darkness: Small Focus Light</entry>
-            <entry>Darkness: Absolute Black</entry>
-        </stringlist>
-        <string id="46">[b]Visibility:[/b][br]Large Foglight - A large, organic lightsource surrounds Mario[br]Lightbeam - Mario is able to aim a conical lightbeam through use of the Wiimote[br]Large Focus Light - A large spotlight which changes size based upon player movement[br]Small Foglight - A small, organic lightsource surrounds Mario[br]Small Focuslight - A small spotlight which changes size based on player movement[br]Absolute Black - Visibility is provided only by fireballs, stars, and certain sprites</string>
-        <string id="47">Bounds</string>
-        <string id="48">Upper Bounds:</string>
-        <string id="49">[b]Upper Bounds:[/b][br] - Positive Values: Easier to scroll upwards (110 is centered)[br] - Negative Values: Harder to scroll upwards (30 is the top edge of the screen)[br][br]Values higher than 240 can cause instant death upon screen scrolling</string>
-        <string id="50">Lower Bounds:</string>
-        <string id="51">[b]Lower Bounds:[/b][br] - Positive Values: Harder to scroll downwards (65 is the bottom edge of the screen)[br] - Negative Values: Easier to scroll downwards (95 is centered)[br][br]Values higher than 100 will prevent the screen from scrolling until Mario is offscreen</string>
-        <string id="52">Audio</string>
-        <string id="53">Background Music:</string>
-        <string id="54">[b]Background Music:[/b][br]Changes the background music</string>
-        <string id="55">Sound Modulation:</string>
-        <string id="56">[b]Sound Modulation:[/b][br]Changes the sound effect modulation to fit the appropriate theme.[br][b]Note:[/b] The settings with an asterisk are identical to the setting with no asterisk. "Cavern Echo*" is used in Retail 02-03, whereas "None*" is unused.</string>
-        <stringlist id="57">
-            <entry>None</entry>
-            <entry>Cavern Echo</entry>
-            <entry>Cavern Echo 2</entry>
-            <entry>Underwater Echo</entry>
-            <entry>Boss Room Echo</entry>
-            <entry>Tower Echo</entry>
-            <entry>Castle Echo</entry>
-            <entry>Ghost House Indoor Echo</entry>
-            <entry>Sewer Echo</entry>
-            <entry>Mountain Echo</entry>
-            <entry>Item House/Credits Echo</entry>
-            <entry>Cavern Echo*</entry>
-            <entry>Airship Indoor Echo</entry>
-            <entry>River Cavern Echo</entry>
-            <entry>Lava Cavern Echo</entry>
-            <entry>None*</entry>
-        </stringlist>
-        <string id="58">Boss Flag:</string>
-        <string id="59">[b]Boss Flag:[/b][br]Set for bosses to allow proper music switching by sprites</string>
-        <string id="60">(None)</string>
-        <string id="61">Error</string>
-        <string id="62" />
-        <string id="63" />
-        <string id="64" />
-        <string id="65" />
-        <string id="66" />
-        <string id="67" />
-        <string id="68">Background Music ID:</string>
-        <string id="69">[b]Background Music ID:[/b][br]This advanced option allows custom music tracks to be loaded if the proper ASM hacks are in place.</string>
-        <string id="70">Lakitu Upper Bounds:</string>
-        <string id="71">[b]Lakitu Upper Bounds:[/b][br]Used instead of Upper Bounds when at least one player is riding a Lakitu cloud.[br][br]The values are a little different from the regular Upper Bounds setting: value "0" represents 5.5 tiles away from the top edge of the screen, and the edge is at -88.</string>
-        <string id="72">Lakitu Lower Bounds:</string>
-        <string id="73">[b]Lakitu Lower Bounds:[/b][br]Used instead of Lower Bounds when at least one player is riding a Lakitu cloud.[br][br]The values are a little different from the regular Lower Bounds setting: value "0" represents 5.5 tiles away from the bottom edge of the screen, and the edge is at 88.</string>
-        <string id="74" />
-        <string id="75" />
-        <string id="76">Snap to 8x8 Grid</string>
-        <string id="77">Snap to 16x16 Grid</string>
-        <string id="78">[b]Only Scroll Upwards If Flying:[/b][br]Prevents the screen from scrolling upwards unless the player uses a Propeller Suit or Block.[br][br]This feature looks rather glitchy and is not recommended.</string>
-        <string id="79">[b]Multiplayer Screen Size Adjust:[/b][br]Increases the height of the screen during multiplayer mode. Requires "Only Scroll Upwards If Flying" to be checked.[br][br]This causes very glitchy behavior if the zone is much taller than the adjusted screen height, if the screen becomes more than 28 tiles tall, or when the camera zooms in during the end-of-level celebration.</string>
-        <string id="80">Only Scroll Upwards If Flying:</string>
-        <string id="81">Multiplayer Screen Size Adjust:</string>
-        <stringlist id="82">
-            <entry>Small Spotlight and Small Focus Light</entry>
-        </stringlist>
-        <string id="83">[b]Visibility[/b][br]Small Spotlight and Small Focus Light - A small, centered spotlight affords visibility through layer 0, and a small spotlight which changes size based on player movement provides visibility through darkness</string>
-        <string id="84">Rendering</string>
-        <string id="85" />
-        <string id="86" />
-        <string id="87" />
-        <string id="88" />
-        <string id="89" />
-        <string id="90" />
-        <string id="91" />
-        <string id="92" />
-        <string id="93" />
-        <string id="94" />
-        <string id="95" />
-        <string id="96" />
-        <string id="97" />
-        <string id="98" />
-        <string id="99" />
-        <string id="100" />
-        <string id="101" />
-        <string id="102" />
-        <string id="103">Multiplayer Upper Bounds Adjust:</string>
-        <string id="104">[b]Multiplayer Upper Bounds Adjust:[/b][br]Added to the upper bounds value (regular or Lakitu) during multiplayer mode, and during the transition back to normal camera behavior after an Auto-Scrolling Controller reaches the end of its path.</string>
-        <string id="105">Multiplayer Lower Bounds Adjust:</string>
-        <string id="106">[b]Multiplayer Lower Bounds Adjust:[/b][br]Added to the lower bounds value (regular or Lakitu) during multiplayer mode, and during the transition back to normal camera behavior after an Auto-Scrolling Controller reaches the end of its path.</string>
-        <string id="107">Duplicate</string>
-        <string id="108">Undefined Track [id]</string>
-        <string id="109">[br][br][b]Current Theme:[/b][br][info]</string>
     </section>
 </strings>-->
