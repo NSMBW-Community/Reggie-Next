@@ -128,16 +128,6 @@ class ReggieTranslation:
                 16: 'Screen Heights:',
                 17: '[b]Screen Heights:[/b][br]Selects screen heights (in blocks) the camera can use during multiplayer. The camera will zoom out if the players are too far apart, and zoom back in when they get closer together. Values represent screen heights, measured in tiles.[br][br]In single-player, only the smallest height will be used.[br][br]Options marked with * or ** are glitchy if zone bounds are set to 0; see the Upper/Lower Bounds tooltips for more info.[br]Options marked with ** are also unplayably glitchy in multiplayer.',
             },
-            'CamProfsDlg': {
-                0: 'Camera Profiles',
-                1: 'Add',
-                2: 'Remove',
-                3: 'Modify Selected Camera Profile Properties',
-                4: '[b]Modify Selected Camera Profile Properties:[/b][br]Camera Profiles can only be used with the "Event-Controlled" camera mode in the "Zones" dialog.[br][br]Transitions between zoom levels are instant, but can be hidden through careful use of zoom sprites (206).',
-                5: 'Triggering Event ID:',
-                6: '[b]Triggering Event ID:[/b][br]Sets the event ID that will trigger the camera profile. If switching away from a different profile, the previous profile\'s event ID will be automatically deactivated (so the game doesn\'t instantly switch back to it).',
-                7: 'Camera Profile on Event [id]',
-            },
             'ChangeGamePath': {
                 0: 'Choose the Stage folder from [game]',
                 1: 'Error',

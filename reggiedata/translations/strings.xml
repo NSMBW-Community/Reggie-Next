@@ -13,6 +13,8 @@
         <string id="x_colon">X:</string>
         <string id="y_colon">Y:</string>
         <string id="warning">Warning</string>
+        <string id="add">Add</string>
+        <string id="remove">Remove</string>
     </section>
     <section id="dialog">
         <section id="about">
@@ -102,6 +104,16 @@
         <section id="auto_save">
             <string id="title">Auto-saved backup found</string>
             <string id="info">Reggie Next has found some level data which wasn't saved - possibly due to a crash within the editor or by your computer. Do you want to restore this level?[br][br]If you pick No, the autosaved level data will be deleted and will no longer be accessible.[br][br]Original file path: [path]</string>
+        </section>
+        <section id="camera_profile">
+            <string id="title">Camera Profiles</string>
+            <string id="editor_title">Modify Selected Camera Profile Properties</string>
+            <string id="info">Camera Profiles can only be used with the "Event-Controlled" camera mode in the Zones dialog.[br]Transitions between zoom levels are instant, but can be hidden through careful use of zoom sprites (206).</string>
+            <section id="event_id">
+                <string id="text">Triggering Event ID:</string>
+                <string id="tooltip">[b]Triggering Event ID:[/b][br]Sets the event ID that will trigger the camera profile. If switching away from a different profile, the previous profile's event ID will be automatically deactivated (so the game doesn't instantly switch back to it).</string> 
+            </section>
+            <string id="profile_name">Camera Profile on Event [id]</string>
         </section>
         <section id="changelog">
             <string id="title">Changelog Viewer</string>
@@ -267,16 +279,6 @@
         <string id="22">Slot [i]:</string>
         <string id="23">This mode will not render any backgrounds.</string>
         <string id="24">This mode crashes the game, so consider changing your background configuation.</string>
-    </section>
-    <section id="CamProfsDlg">
-        <string id="0">Camera Profiles</string>
-        <string id="1">Add</string>
-        <string id="2">Remove</string>
-        <string id="3">Modify Selected Camera Profile Properties</string>
-        <string id="4">[b]Modify Selected Camera Profile Properties:[/b][br]Camera Profiles can only be used with the "Event-Controlled" camera mode in the "Zones" dialog.[br][br]Transitions between zoom levels are instant, but can be hidden through careful use of zoom sprites (206).</string>
-        <string id="5">Triggering Event ID:</string>
-        <string id="6">[b]Triggering Event ID:[/b][br]Sets the event ID that will trigger the camera profile. If switching away from a different profile, the previous profile's event ID will be automatically deactivated (so the game doesn't instantly switch back to it).</string>
-        <string id="7">Camera Profile on Event [id]</string>
     </section>
     <section id="CameraSettings">
         <string id="0">Normal</string>
