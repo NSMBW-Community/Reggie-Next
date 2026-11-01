@@ -16,7 +16,7 @@ class BackgroundDialog(QtWidgets.QDialog):
         """
         super().__init__()
 
-        self.setWindowTitle(globals_.trans.string('BGDlg', 0))
+        self.setWindowTitle(globals_.trans_new.string('dialog.background.title'))
         self.setWindowIcon(GetIcon('pictures'))
 
         self.tab_widget = QtWidgets.QTabWidget()
@@ -26,7 +26,7 @@ class BackgroundDialog(QtWidgets.QDialog):
             tab = BackgroundTab(zone)
             self.tabs.append(tab)
 
-            name = globals_.trans.string('BGDlg', 2, '[num]', i + 1)
+            name = globals_.trans_new.string('common.zone_num', ('[num]', i + 1))
             self.tab_widget.addTab(tab, name)
 
         button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
@@ -60,7 +60,6 @@ class BackgroundDialog(QtWidgets.QDialog):
 
             zone.ZoomA = scenery.zoom_box.currentIndex()
 
-            
             zone.bg1B = backdrop.hex_boxes[0].value()
             zone.bg2B = backdrop.hex_boxes[1].value()
             zone.bg3B = backdrop.hex_boxes[2].value()

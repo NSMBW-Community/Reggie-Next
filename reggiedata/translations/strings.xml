@@ -107,6 +107,9 @@
             <string id="title">Auto-saved backup found</string>
             <string id="info">Reggie Next has found some level data which wasn't saved - possibly due to a crash within the editor or by your computer. Do you want to restore this level?[br][br]If you pick No, the autosaved level data will be deleted and will no longer be accessible.[br][br]Original file path: [path]</string>
         </section>
+        <section id="background">
+            <string id="title">Backgrounds</string>
+        </section>
         <section id="camera_profile">
             <string id="title">Camera Profiles</string>
             <string id="editor_title">Modify Selected Camera Profile Properties</string>
@@ -268,6 +271,64 @@
         <string id="changelog_not_found">File "CHANGELOG.md" not found![br]Please go to https://github.com/NSMBW-Community/Reggie-Next to find it.</string>
     </section>
     <section id="layout">
+        <section id="background">
+            <section id="scroll_rates">
+                <string id="0_125x">0.125x</string>
+                <string id="0_25x">0.25x</string>
+                <string id="0_375x">0.375x</string>
+                <string id="0_5x">0.5x</string>
+                <string id="0_625x">0.625x</string>
+                <string id="0_75x">0.75x</string>
+                <string id="0_875x">0.875x</string>
+                <string id="1x">1x</string>
+                <string id="1_2x">1.2x</string>
+                <string id="1_5x">1.5x</string>
+                <string id="2x">2x</string>
+                <string id="4x">4x</string>
+            </section>
+            <string id="scenery">Scenery</string>
+            <string id="backdrop">Backdrop</string>
+            <string id="preview">Preview</string>
+            <section id="position">
+                <string id="title">Position:</string>
+                <string id="tooltip_x">[b]Position (X):[/b][br]Sets the horizontal offset of your background</string>
+                <string id="tooltip_y">[b]Position (Y):[/b][br]Sets the vertical offset of your background</string>
+            </section>
+            <section id="scroll_rate">
+                <string id="title">Scroll Rate:</string>
+                <string id="tooltip_x">[b]Scroll Rate (X):[/b][br]Changes the rate that the background moves in relation to Mario when he moves horizontally.[br]Values higher than 1x may be glitchy!</string>
+                <string id="tooltip_y">[b]Scroll Rate (Y):[/b][br]Changes the rate that the background moves in relation to Mario when he moves vertically.[br]Values higher than 1x may be glitchy!</string>
+            </section>
+            <section id="zoom">
+                <string id="title">Zoom:</string>
+                <string id="tooltip">[b]Zoom:[/b][br]Sets the zoom level of the background model</string>
+                <section id="zoom_levels">
+                    <string id="100">100%</string>
+                    <string id="125">125%</string>
+                    <string id="150">150%</string>
+                    <string id="200">200%</string>
+                </section>
+            </section>
+            <string id="combobox_item">[name] ([hex])</string>
+            <string id="custom">(Custom)</string>
+            <string id="background_types">Background Types:</string>
+            <string id="slot">Slot [i]:</string>
+            <section id="alignment">
+                <string id="info">Alignment Mode: This combination of backgrounds will result in "[mode]"</string>
+                <section id="alignment_modes">
+                    <string id="invalid">Invalid</string>
+                    <string id="file_3_bottom">Align Slot 3 to Bottom of Zone</string>
+                    <string id="file_1_top">Align Slot 1 to Top of Zone</string>
+                    <string id="crash_1">Crashes</string>
+                    <string id="crash_2">Crashes</string>
+                    <string id="screen_single">Align to Screen, Single Background</string>
+                    <string id="default">Default</string>
+                    <string id="screen_multi">Align to Screen, Multiple Backgrounds</string>
+                </section>
+                <string id="warning_no_render">This mode will not render any backgrounds.</string>
+                <string id="warning_crash">This mode crashes the game, so consider changing your background configuation.</string>
+            </section>
+        </section>
         <section id="camera_settings">
             <section id="normal">
                 <string id="text">Normal</string>
@@ -316,62 +377,6 @@
         <string id="2">No errors found.</string>
         <string id="3">Checking Disabled</string>
         <string id="4">Manually check for errors.</string>
-    </section>
-    <section id="BGDlg">
-        <string id="0">Backgrounds</string>
-        <stringlist id="1">
-            <entry>None</entry>
-            <entry>0.125x</entry>
-            <entry>0.25x</entry>
-            <entry>0.375x</entry>
-            <entry>0.5x</entry>
-            <entry>0.625x</entry>
-            <entry>0.75x</entry>
-            <entry>0.875x</entry>
-            <entry>1x</entry>
-            <entry>None</entry>
-            <entry>1.2x</entry>
-            <entry>1.5x</entry>
-            <entry>2x</entry>
-            <entry>4x</entry>
-        </stringlist>
-        <string id="2">Zone [num]</string>
-        <string id="3">Scenery</string>
-        <string id="4">Backdrop</string>
-        <string id="5">Position:</string>
-        <string id="6">X:</string>
-        <string id="7">[b]Position (X):[/b][br]Sets the horizontal offset of your background</string>
-        <string id="8">Y:</string>
-        <string id="9">[b]Position (Y):[/b][br]Sets the vertical offset of your background</string>
-        <string id="10">Scroll Rate:</string>
-        <string id="11">[b]Scroll Rate (X):[/b][br]Changes the rate that the background moves in relation to Mario when he moves horizontally.[br]Values higher than 1x may be glitchy!</string>
-        <string id="12">[b]Scroll Rate (Y):[/b][br]Changes the rate that the background moves in relation to Mario when he moves vertically.[br]Values higher than 1x may be glitchy!</string>
-        <string id="13">Zoom:</string>
-        <string id="14">[b]Zoom:[/b][br]Sets the zoom level of the background model</string>
-        <stringlist id="15">
-            <entry>100%</entry>
-            <entry>125%</entry>
-            <entry>150%</entry>
-            <entry>200%</entry>
-        </stringlist>
-        <string id="16">Preview</string>
-        <string id="17">[name] ([hex])</string>
-        <string id="18">(Custom)</string>
-        <string id="19">Background Types:</string>
-        <string id="20">Alignment Mode: This combination of backgrounds will result in "[mode]"</string>
-        <stringlist id="21">
-            <entry>Invalid</entry>
-            <entry>Align Slot 3 to Bottom of Zone</entry>
-            <entry>Align Slot 1 to Top of Zone</entry>
-            <entry>Crashes</entry>
-            <entry>Crashes</entry>
-            <entry>Align to Screen, Single Background</entry>
-            <entry>Default</entry>
-            <entry>Align to Screen, Multiple Backgrounds</entry>
-        </stringlist>
-        <string id="22">Slot [i]:</string>
-        <string id="23">This mode will not render any backgrounds.</string>
-        <string id="24">This mode crashes the game, so consider changing your background configuation.</string>
     </section>
     <section id="ChangeGamePath">
         <string id="0">Choose the Stage folder from [game]</string>
