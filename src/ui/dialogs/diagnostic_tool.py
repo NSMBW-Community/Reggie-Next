@@ -33,30 +33,30 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         Creates and initializes the dialog
         """
         super().__init__()
-        self.setWindowTitle(globals_.trans.string('Diag', 0))
+        self.setWindowTitle(globals_.trans_new.string('dialog.diagnostic_tool.title'))
         self.setWindowIcon(GetIcon('wrench-screwdriver'))
 
-        # check_functions: (icon, description, function, is_critical)
-        self.check_functions: tuple[tuple[str, str | None, Callable[[str], bool | None], bool], ...] = (
-            ('block',   globals_.trans.string('Diag', 2),  self.check_invalid_obj,        True),
-            ('sprites',   globals_.trans.string('Diag', 3),  self.check_crash_sprite,     False),
-            ('sprites',   globals_.trans.string('Diag', 4),  self.check_sprite_param,     True),
-            ('sprites',   globals_.trans.string('Diag', 5),  self.check_sprite_max,       False),
-            ('door', globals_.trans.string('Diag', 6),  self.check_duplicate_entrance,    True),
-            ('door', globals_.trans.string('Diag', 7),  self.check_start_entrance,        True),
-            ('door', globals_.trans.string('Diag', 8),  self.check_entrance_near_edge,    False),
-            ('door', globals_.trans.string('Diag', 9),  self.check_entrance_out_zone,     False),
-            ('zone',     globals_.trans.string('Diag', 10), self.check_zone_max,          True),
-            ('zone',     globals_.trans.string('Diag', 11), self.check_no_zone_exist,     True),
-            ('zone',     globals_.trans.string('Diag', 12), self.check_zone_proximity,    True),
-            ('zone',     globals_.trans.string('Diag', 13), self.check_zone_on_area_edge, True),
-            ('zone',     globals_.trans.string('Diag', 14), self.check_no_bias,           False),
-            ('zone',     globals_.trans.string('Diag', 15), self.check_zone_max_size,     True),
+        # check_functions: (icons, function, is_critical)
+        self.check_functions: tuple[tuple[str, Callable[[str], bool | None], bool], ...] = (
+            ('block',   self.check_invalid_obj,        True),
+            ('sprites', self.check_crash_sprite,       False),
+            ('sprites', self.check_sprite_param,       True),
+            ('sprites', self.check_sprite_max,         False),
+            ('door',    self.check_duplicate_entrance, True),
+            ('door',    self.check_start_entrance,     True),
+            ('door',    self.check_entrance_near_edge, False),
+            ('door',    self.check_entrance_out_zone,  False),
+            ('zone',    self.check_zone_max,           True),
+            ('zone',    self.check_no_zone_exist,      True),
+            ('zone',    self.check_zone_proximity,     True),
+            ('zone',    self.check_zone_on_area_edge,  True),
+            ('zone',    self.check_no_bias,            False),
+            ('zone',    self.check_zone_max_size,      True),
             # Possible things to implement checks for:
             # Non-location liquid in zone bigger than 8192 pixels (crest stops rendering)
         )
 
-        error_box = QtWidgets.QGroupBox(globals_.trans.string('Diag', 17))
+        error_box = QtWidgets.QGroupBox(globals_.trans_new.string('dialog.diagnostic_tool.problems_found'))
         self.error_layout = QtWidgets.QVBoxLayout()
         result, _numErrors = self.populate_list()
         error_box.setLayout(self.error_layout)
@@ -80,12 +80,12 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         Creates/updates the header
         """
         self.header = QtWidgets.QGridLayout()
-        self.header.addWidget(QtWidgets.QLabel(globals_.trans.string('Diag', 18)), 0, 0, 1, 3)
+        self.header.addWidget(QtWidgets.QLabel(globals_.trans_new.string('dialog.diagnostic_tool.header.this_level_is')), 0, 0, 1, 3)
 
         point_size = 14
         icon_names = ['tick_32x', 'exclamation_32x', 'cross_32x']
         widths = [64, 128, 72]
-        string_ids = [(19, 20), (21, 22), (23, 24)]
+        status_types = ['good', 'warning', 'broken']
         colors = [
             QtGui.QColor(0, 200, 0),
             QtGui.QColor(210, 210, 0),
@@ -107,7 +107,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         font.setPointSize(point_size)
         painter.setFont(font)
         painter.setPen(colors[result])
-        painter.drawText(0, point_size, globals_.trans.string('Diag', string_ids[result][0]))
+        painter.drawText(0, point_size, globals_.trans_new.string(f'dialog.diagnostic_tool.header.status_{status_types[result]}.title'))
 
         del painter
 
@@ -115,7 +115,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         pix_label.setPixmap(pixmap)
         self.header.addWidget(pix_label, 1, 1)
 
-        self.header.addWidget(QtWidgets.QLabel(globals_.trans.string('Diag', string_ids[result][1])), 1, 2)
+        self.header.addWidget(QtWidgets.QLabel(globals_.trans_new.string(f'dialog.diagnostic_tool.header.status_{status_types[result]}.info')), 1, 2)
 
         if not_first_run:
             widget = QtWidgets.QWidget()
@@ -139,14 +139,16 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         has_error = False
         is_critical = False
 
-        for icon, description, func, critical in self.check_functions:
+        description_list = globals_.trans_new.section('dialog.diagnostic_tool.problems').string_list()
+
+        for i, (icon, func, critical) in enumerate(self.check_functions):
             if func('c'):
                 has_error = True
                 if critical:
                     is_critical = True
 
                 item = DiagnosticListWidgetItem()
-                item.setText(description)
+                item.setText(description_list[i])
                 if critical:
                     item.setForeground(QtGui.QColor(255, 0, 0))
                 else:
@@ -156,8 +158,8 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
                 self.error_list.addItem(item)
 
-        self.fix_button = QtWidgets.QPushButton(globals_.trans.string('Diag', 25))
-        self.fix_button.setToolTip(globals_.trans.string('Diag', 26))
+        self.fix_button = QtWidgets.QPushButton(globals_.trans_new.string('dialog.diagnostic_tool.fix_selected.text'))
+        self.fix_button.setToolTip(globals_.trans_new.string('dialog.diagnostic_tool.fix_selected.tooltip'))
         self.fix_button.clicked.connect(self.fix_selected)
         if not has_error:
             self.fix_button.setEnabled(False)
@@ -185,23 +187,13 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         """
 
         # Ask the user to make sure
-        btn = QtWidgets.QMessageBox.warning(None, globals_.trans.string('Diag', 27), globals_.trans.string('Diag', 28),
+        btn = QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('common.warning'), globals_.trans_new.string('dialog.diagnostic_tool.warning_fix'),
                                             QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
         if btn != QtWidgets.QMessageBox.StandardButton.Yes:
             return
 
-        # Show the 'Fixing...' box while fixing
-        fix_progress = QtWidgets.QProgressDialog()
-        fix_progress.setLabelText(globals_.trans.string('Diag', 29))  # Fixing...
-        fix_progress.setMinimum(0)
-        fix_progress.setMaximum(100)
-        fix_progress.setAutoClose(True)
-        fix_progress.open()
-        fix_progress.show()
-        fix_progress.setValue(0)
-
         # Fix them
-        for index, item in enumerate(self.error_list.selectedIndexes()[:]):
+        for item in self.error_list.selectedIndexes()[:]:
             listItem = cast(DiagnosticListWidgetItem, self.error_list.itemFromIndex(item))
             try:
                 listItem.fix('f')
@@ -210,13 +202,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                 pass  # Fail silently
 
             self.error_list.takeItem(item.row())
-
-            total = len(self.error_list.selectedIndexes())
-            if total != 0: fix_progress.setValue(int(index / total * 100))
-
-        # Remove the 'Fixing...' box
-        fix_progress.setValue(100)
-        del fix_progress
 
         # Update the widget
         if globals_.AutoDiagEnabled:

@@ -130,6 +130,46 @@
             <string id="title">Delete Area</string>
             <string id="info">Are you [b]sure[/b] you want to delete this area?[br][br]The level will automatically save afterwards - there is no way[br]you can undo the deletion or get it back afterwards!</string>
         </section>
+        <section id="diagnostic_tool">
+            <string id="title">Level Diagnostics Tool</string>
+            <string id="problems_found">Problems found within this area:</string>
+            <section id="header">
+                <string id="this_level_is">This level is:</string>
+                <section id="status_good">
+                    <string id="title">Good</string>
+                    <string id="info">No problems were found in this area, and it should load[br]correctly in the game. If you're experiencing problems,[br]try running the diagnostic again in other areas.</string>
+                </section>
+                <section id="status_warning">
+                    <string id="title">Probably Good</string>
+                    <string id="info">There are some things in this area which may[br]cause the level to crash if you're not careful.[br]If you're experiencing problems, check[br]everything on this list, and try running this test[br]in other areas.</string>
+                </section>
+                <section id="status_broken">
+                    <string id="title">Broken</string>
+                    <string id="info">Problems have been found in this area which may cause[br]it to crash in-game. These problems are listed below.</string>
+                </section>
+            </section>
+            <section id="problems">
+                <string id="object_not_found">Some objects in the level are not found in the tileset files.</string>
+                <string id="crash_sprites">There are sprites in this area which are known to cause the game to crash.</string>
+                <string id="crash_spritedata">There are sprites in this area which have settings which are known to cause the game to crash.</string>
+                <string id="sprite_max">There are too many sprites in this area.</string>
+                <string id="entrance_duplicate">There are entrances with duplicate IDs.</string>
+                <string id="no_start_entrance">There is no start entrance in this area.</string>
+                <string id="start_entrance_left_edge">The start entrance is too close to the left edge of the zone.</string>
+                <string id="entrance_outside_zone">An entrance is outside of a zone.</string>
+                <string id="zone_max">There are more than 6 zones in this area.</string>
+                <string id="no_zones">There are no zones in this area.</string>
+                <string id="zones_too_close">Some zones are positioned too close together.</string>
+                <string id="zone_area_edge">A zone is positioned too close to the edges of this area.</string>
+                <string id="zone_no_bias">Some zones do not have bias enabled.</string>
+                <string id="zone_size_max">Some zones are too large.</string>
+            </section>
+            <section id="fix_selected">
+                <string id="text">Fix Selected Items...</string>
+                <string id="tooltip">You can select multiple items at once</string>
+            </section>
+            <string id="warning_fix">Are you sure you want fix these items? This [b]cannot[/b] be undone!</string>
+        </section>
         <section id="dirty">
             <string id="info">The level has unsaved changes in it.</string>
             <string id="info_2">Do you want to save them?</string>
@@ -368,16 +408,20 @@
             </section>
         </section>
     </section>
+    <section id="widget">
+        <section id="auto_diagnostic">
+            <string id="manual_check">Manually check for errors.</string>
+            <string id="checking_disabled">Checking Disabled</string>
+            <section id="errors">
+                <string id="error_one">[num] error found.</string>
+                <string id="error_many">[num] errors found.</string>
+                <string id="error_none">No errors found.</string>
+            </section>
+        </section>
+    </section>
 
 </translation>
 <!--<strings>
-    <section id="AutoDiag">
-        <string id="0">[num] error found.</string>
-        <string id="1">[num] errors found.</string>
-        <string id="2">No errors found.</string>
-        <string id="3">Checking Disabled</string>
-        <string id="4">Manually check for errors.</string>
-    </section>
     <section id="ChangeGamePath">
         <string id="0">Choose the Stage folder from [game]</string>
         <string id="1">Error</string>
@@ -391,38 +435,6 @@
         <string id="2"> - </string>
         <string id="3">(empty)</string>
         <string id="4">...</string>
-    </section>
-    <section id="Diag">
-        <string id="0">Level Diagnostics Tool</string>
-        <string id="1" />
-        <string id="2">Some objects in the level are not found in the tileset files.</string>
-        <string id="3">There are sprites in this area which are known to cause the game to crash.</string>
-        <string id="4">There are sprites in this area which have settings which are known to cause the game to crash.</string>
-        <string id="5">There are too many sprites in this area.</string>
-        <string id="6">There are entrances with duplicate IDs.</string>
-        <string id="7">There is no start entrance in this area.</string>
-        <string id="8">The start entrance is too close to the left edge of the zone.</string>
-        <string id="9">An entrance is outside of a zone.</string>
-        <string id="10">There are more than 6 zones in this area.</string>
-        <string id="11">There are no zones in this area.</string>
-        <string id="12">Some zones are positioned too close together.</string>
-        <string id="13">A zone is positioned too close to the edges of this area.</string>
-        <string id="14">Some zones do not have bias enabled.</string>
-        <string id="15">Some zones are too large.</string>
-        <string id="16" />
-        <string id="17">Problems found within this area:</string>
-        <string id="18">This level is:</string>
-        <string id="19">Good</string>
-        <string id="20">No problems were found in this area, and it should load[br]correctly in the game. If you're experiencing problems,[br]try running the diagnostic again in other areas.</string>
-        <string id="21">Probably Good</string>
-        <string id="22">There are some things in this area which may[br]cause the level to crash if you're not careful.[br]If you're experiencing problems, check[br]everything on this list, and try running this test[br]in other areas.</string>
-        <string id="23">Broken</string>
-        <string id="24">Problems have been found in this area which may cause[br]it to crash in-game. These problems are listed below.</string>
-        <string id="25">Fix Selected Items...</string>
-        <string id="26">You can select multiple items at once</string>
-        <string id="27">Are you sure?</string>
-        <string id="28">Are you sure you want fix these items? This [b]cannot[/b] be undone!</string>
-        <string id="29">Fixing issues...</string>
     </section>
     <section id="EntranceDataEditor">
         <string id="0">ID:</string>
