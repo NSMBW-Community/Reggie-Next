@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<translation>
+<translation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../src/resources/schemas/translation.xsd">
     <section id="common">
         <string id="area_num">Area [num]</string>
         <string id="zone_num">Zone [num]</string>
@@ -503,7 +503,6 @@
                 <section id="background_music">
                     <string id="text">Background Music:</string>
                     <string id="tooltip">[b]Background Music:[/b][br]Changes the background music</string>
-                    
                     <string id="undefined_track">Undefined Track [id]</string>
                 </section>
                 <section id="music_id">

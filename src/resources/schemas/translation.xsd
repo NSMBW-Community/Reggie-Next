@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="translation">
+        <xs:complexType>
+            <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element minOccurs="1" maxOccurs="unbounded" name="section" type="SectionType" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="SectionType">
+        <xs:complexContent>
+            <xs:extension base="IdType">
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="section" type="SectionType" />
+                    <xs:element minOccurs="0" maxOccurs="unbounded" ref="string" />
+                </xs:choice>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="string">
+        <xs:complexType>
+            <xs:complexContent mixed="true">
+                <xs:extension base="IdType" />
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="IdType">
+        <xs:attribute name="id" type="xs:normalizedString" use="required" />
+    </xs:complexType>
+</xs:schema>
