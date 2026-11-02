@@ -20,8 +20,8 @@ class TranslationSection:
 
     def section(self, id: str) -> "TranslationSection":
         """
-        Returns a section within this section or any sub-section that matches
-        the given id.
+        Returns a section within this section or any sub-section whose ID
+        matches the given id.
 
         :param id: The ID of the translation section to look for. Iterations
         deeper into this section can be achieved by separating the ID with
@@ -29,8 +29,8 @@ class TranslationSection:
 
         **Example**: Providing the ID `common.greetings` will return the
         section with the ID `greetings` found within the `common` section.
-        :return: A translation section that matches the structure of the given
-        ID. If no section with the given ID was found, a warning will be
+        :return: A translation section whose ID matches the structure of the
+        given ID. If no section with the given ID was found, a warning will be
         logged and an empty section will be returned instead.
         """
         result, stack_trace = self._fetch(id, "section")
@@ -42,8 +42,8 @@ class TranslationSection:
 
     def string(self, id: str, *templates: tuple[str, Any]) -> str:
         """
-        Returns a string within this section or any sub-section that matches
-        the given id.
+        Returns a string within this section or any sub-section whose ID
+        matches the given id.
 
         :param id: The ID of the translation string to look for. Iterations
         deeper into this section can be achieved by separating the ID with
@@ -52,9 +52,9 @@ class TranslationSection:
         **Example**: Providing the ID `common.hello_world` will return the
         translation string with the ID `hello_world` found within the `common`
         section.
-        :return: A translation string that matches the structure of the given
-        id. If no string with the given ID was found, a warning will be logged
-        and said ID will be returned instead.
+        :return: A translation string whose ID matches the structure of the
+        given id. If no string with the given ID was found, a warning will be
+        logged and said ID will be returned instead.
         """
         result, stack_trace = self._fetch(id, "string")
 
@@ -81,12 +81,12 @@ class TranslationSection:
         translation string with the ID `hello_world` found within the `common`
         section.
 
-        :return: A list of translation strings that matches the structures of
-        the given IDs. The length of the list is always equal to the amount of
-        IDs provided. If no IDs are provided, all strings from this section but
-        no sub-section will be returned instead. If a string with a given ID
-        could not be found, a warning will be logged and said ID will be added
-        to the list instead.
+        :return: A list of translation strings whose IDs matches the structures
+        of the given IDs. The length of the list is always equal to the amount
+        of IDs provided. If no IDs are provided, all strings from this section
+        but no sub-section will be returned instead. If a string with a given
+        ID could not be found, a warning will be logged and said ID will be
+        added to the list instead.
         """
         if len(ids) == 0:
             return [item for item in self._items.values() if isinstance(item, str)]
@@ -126,6 +126,26 @@ class TranslationSection:
 
         with open("log.txt", mode, encoding="utf-8") as f:
             f.write(message)
+
+    def __or__(self, other: "TranslationSection") -> "TranslationSection":
+        for key in self._items | other._items:
+            this_item = self._items.get(key)
+            other_item = other._items.get(key)
+
+            if this_item == other_item:
+                continue
+
+            if isinstance(this_item, TranslationSection) and isinstance(other_item, TranslationSection):
+                # both are sections; merge via OR
+                self._items[key] = this_item | other_item
+                continue
+
+            if (isinstance(this_item, str) and isinstance(other_item, str)) or (this_item is None and other_item is not None):
+                # both are strings or string does not exist; override original / add
+                self._items[key] = other_item
+                continue
+
+        return self
 
     @staticmethod
     def convert_formatting(text: str) -> str:
