@@ -81,7 +81,8 @@ class LocationItem(LevelEditorItem):
             id_ = find_first_available_id(all_ids, 256, 1)
 
             if id_ is None:
-                result = QtWidgets.QMessageBox.warning(None, globals_.trans.string('MainWindow', 4), globals_.trans.string('MainWindow', 5),
+                result = QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('levelitem.location.limit_warning.title'),
+                                                       globals_.trans_new.string('levelitem.location.limit_warning.text'),
                                                         QtWidgets.QMessageBox.StandardButton.Ok)
                 if result == QtWidgets.QMessageBox.StandardButton.Ok:
                     return None

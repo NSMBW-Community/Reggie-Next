@@ -700,8 +700,28 @@
             <string id="palette_info">[x], [y]: [text]</string>
             <string id="tooltip">[b]Comment[/b][br]at [x], [y]</string>
         </section>
+        <section id="entrance">
+            <string id="palette_info">[id]: [name] [info] at [x], [y]</string>
+            <string id="tooltip">[b]Entrance [ent]:[/b][br]Type: [type][br][i][dest][/i]</string>
+            <string id="unknown_type">Unknown Type [type]</string>
+            <section id="info">
+                <string id="goes_to_world_map">(goes to world map)</string>
+                <string id="cannot_enter">(cannot be entered)</string>
+                <string id="can_enter">(enterable)</string>
+            </section>
+            <string id="dest_id_this_area">(arrives at entrance [id] in this area)</string>
+            <string id="dest_id_other_area">(arrives at entrance [id] in area [area])</string>
+            <section id="limit_warning">
+                <string id="title">Entrance Limit Reached</string>
+                <string id="text">You cannot have more than 256 entrances in an area.</string>
+            </section>
+        </section>
         <section id="location">
             <string id="palette_info">[id]: [width]x[height] at [x], [y]</string>
+            <section id="limit_warning">
+                <string id="title">Max Location ID Reached</string>
+                <string id="text">You cannot have a location with an ID greater than 255. You can have multiple locations with the same ID.</string>
+            </section>
         </section>
         <section id="object">
             <string id="tooltip">[b]Tileset [tileset], object [obj]:[/b][br][width]x[height] on layer [layer]</string>
@@ -709,6 +729,10 @@
         <section id="path">
             <string id="palette_info">Path [path], Node [node]</string>
             <string id="tooltip">[b]Path [path][/b][br]Node [node]</string>
+            <section id="limit_warning">
+                <string id="title">Path Limit Reached</string>
+                <string id="text">You cannot have more than 256 paths in an area.</string>
+            </section>
         </section>
     </section>
     <section id="menu_bar">
@@ -794,16 +818,6 @@
         <string id="31">Spawn Half a Tile Left</string>
         <string id="32">[b]Spawn Half a Tile Left:[/b][br]If this is checked, the entrance will spawn Mario half a tile to the left.</string>
         <string id="33">[i]No Entrance Selected[/i]</string>
-    </section>
-    <section id="Entrances">
-        <string id="0">[b]Entrance [ent]:[/b][br]Type: [type][br][i][dest][/i]</string>
-        <string id="1">Unknown</string>
-        <string id="2">(cannot be entered)</string>
-        <string id="3">(arrives at entrance [id] in this area)</string>
-        <string id="4">(arrives at entrance [id] in area [area])</string>
-        <string id="5">[id]: [name] (cannot be entered) at [x], [y]</string>
-        <string id="6">[id]: [name] (enterable) at [x], [y]</string>
-        <string id="7">(goes to world map)</string>
     </section>
     <section id="Err_BrokenSpriteData">
         <string id="0">Warning</string>
@@ -897,12 +911,6 @@
     <section id="MainWindow">
         <string id="0">[unsaved]</string>
         <string id="1">You're trying to paste over 300 items at once.[br]This may take a while (depending on your computer speed), are you sure you want to continue?</string>
-        <string id="2">Entrance Limit Reached</string>
-        <string id="3">You cannot have more than 256 entrances in an area.</string>
-        <string id="4">Max Location ID Reached</string>
-        <string id="5">You cannot have a location with an ID greater than 255. You can have multiple locations with the same ID.</string>
-        <string id="6">Path Limit Reached</string>
-        <string id="7">You cannot have more than 256 paths in an area.</string>
         <string id="8">Warning</string>
     </section>
     <section id="MenuItems">

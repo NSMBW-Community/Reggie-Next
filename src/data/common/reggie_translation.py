@@ -97,16 +97,6 @@ class ReggieTranslation:
                 32: '[b]Spawn Half a Tile Left:[/b][br]If this is checked, the entrance will spawn Mario half a tile to the left.',
                 33: '[i]No Entrance Selected[/i]'
             },
-            'Entrances': {
-                0: '[b]Entrance [ent]:[/b][br]Type: [type][br][i][dest][/i]',
-                1: 'Unknown',
-                2: '(cannot be entered)',
-                3: '(arrives at entrance [id] in this area)',
-                4: '(arrives at entrance [id] in area [area])',
-                5: '[id]: [name] (cannot be entered) at [x], [y]',
-                6: '[id]: [name] (enterable) at [x], [y]',
-                7: '(goes to world map)',
-            },
             'Err_BrokenSpriteData': {
                 0: 'Warning',
                 1: 'The sprite data file didn\'t load correctly. The following sprites have incorrect and/or broken data in them, and may not be editable correctly in the editor: [sprites]',
@@ -199,12 +189,6 @@ class ReggieTranslation:
             'MainWindow': {
                 0: None,  # REMOVED: '[unsaved]'
                 1: 'You\'re trying to paste over 300 items at once.[br]This may take a while (depending on your computer speed), are you sure you want to continue?',
-                2: 'Entrance Limit Reached',
-                3: 'You cannot have more than 256 entrances in an area.',
-                4: 'Max Location ID Reached',
-                5: 'You cannot have a location with an ID greater than 255. You can have multiple locations with the same ID.',
-                6: 'Path Limit Reached',
-                7: 'You cannot have more than 256 paths in an area.',
                 8: 'Warning',
             },
             'MenuItems': {
