@@ -196,11 +196,6 @@ class ReggieTranslation:
                 12: 'Modify Selected Location Properties',
                 13: '[i]No Location Selected[/i]'
             },
-            'Locations': {
-                0: '[id]',
-                1: None,  # REMOVED: 'Paint New Location'
-                2: '[id]: [width]x[height] at [x], [y]',
-            },
             'MainWindow': {
                 0: None,  # REMOVED: '[unsaved]'
                 1: 'You\'re trying to paste over 300 items at once.[br]This may take a while (depending on your computer speed), are you sure you want to continue?',
@@ -355,13 +350,6 @@ class ReggieTranslation:
                 145: 'Toggle viewing of entrances',
                 146: 'Generate Strings XML',
                 147: 'Generates a new strings.xml and saves it to /reggiedata/translations'
-            },
-            'Objects': {
-                0: '[b]Tileset [tileset], object [obj]:[/b][br][width]x[height] on layer [layer]',
-                1: 'Object [id]',
-                2: 'Object [id][br][i]This object is animated[/i]',
-                3: '[b]Object [id]:[/b][br][desc]',
-                4: '[b]Object [id]:[/b][br][desc][br][i]This object is animated[/i]',
             },
             'Palette': {
                 0: 'Paint on Layer:',

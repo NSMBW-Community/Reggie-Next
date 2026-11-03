@@ -166,14 +166,14 @@ class LocationItem(LevelEditorItem):
         """
         Returns a string that can be used to describe the location in a list
         """
-        return globals_.trans.string('Locations', 2, '[id]', self.id, '[width]', int(self.width), '[height]', int(self.height),
-                            '[x]', int(self.objx), '[y]', int(self.objy))
+        return globals_.trans_new.string('levelitem.location.palette_info', ('[id]', self.id), ('[width]', int(self.width)),
+                                        ('[height]', int(self.height)), ('[x]', int(self.objx)), ('[y]', int(self.objy)))
 
     def UpdateTitle(self) -> None:
         """
         Updates the location's title
         """
-        self.title = globals_.trans.string('Locations', 0, '[id]', self.id)
+        self.title = globals_.trans_new.string('common.id_data', ('[id]', self.id))
 
         # Since font never changes, we can just define TitleRect here
         if self.font is not None:

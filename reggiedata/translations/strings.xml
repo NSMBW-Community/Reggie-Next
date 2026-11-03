@@ -20,6 +20,7 @@
         <string id="ellipses">...</string>
         <string id="empty_paren">(empty)</string>
         <string id="em_dash">-</string>
+        <string id="id_data">[id]</string>
     </section>
     <section id="dialog">
         <section id="about">
@@ -699,6 +700,9 @@
             <string id="palette_info">[x], [y]: [text]</string>
             <string id="tooltip">[b]Comment[/b][br]at [x], [y]</string>
         </section>
+        <section id="location">
+            <string id="palette_info">[id]: [width]x[height] at [x], [y]</string>
+        </section>
         <section id="object">
             <string id="tooltip">[b]Tileset [tileset], object [obj]:[/b][br][width]x[height] on layer [layer]</string>
         </section>
@@ -889,11 +893,6 @@
         <string id="11">[b]Location [id]:[/b]</string>
         <string id="12">Modify Selected Location Properties</string>
         <string id="13">[i]No Location Selected[/i]</string>
-    </section>
-    <section id="Locations">
-        <string id="0">[id]</string>
-        <string id="1" />
-        <string id="2">[id]: [width]x[height] at [x], [y]</string>
     </section>
     <section id="MainWindow">
         <string id="0">[unsaved]</string>
