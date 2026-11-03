@@ -102,10 +102,6 @@ class ReggieTranslation:
                 1: 'The sprite data file didn\'t load correctly. The following sprites have incorrect and/or broken data in them, and may not be editable correctly in the editor: [sprites]',
                 2: 'Errors',
             },
-            'Err_Common': {
-                0: 'An unhandled exception occurred. Please report the problem in the Horizon Discord server.\\nA log will be written to \"[log]\".\\n\\nError information:\\n',
-                1: 'Error',
-            },
             'Err_CorruptedTileset': {
                 0: 'Error',
                 1: 'An error occurred while trying to load [file]. Check your Texture folder to make sure it is complete and not corrupted. The editor may run in a broken state or crash after this.',

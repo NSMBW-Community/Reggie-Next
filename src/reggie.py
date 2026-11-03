@@ -107,7 +107,7 @@ def _excepthook(*exc_info):
     """
     separator = '-' * 80
     log_file = 'log.txt'
-    notice = globals_.trans.string('Err_Common', 0, '[log]', log_file)
+    notice = globals_.trans_new.string('error.common', ('[log]', log_file))
     if notice is None:
         notice = ''
 
@@ -126,6 +126,7 @@ def _excepthook(*exc_info):
         pass
 
     error_box = QtWidgets.QMessageBox()
+    error_box.setWindowTitle(globals_.trans_new.string('error.title.exception'))
     error_box.setText(notice + msg)
     error_box.exec()
 
