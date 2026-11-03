@@ -46,12 +46,12 @@ class SettingsTab(QtWidgets.QWidget):
 
         self.unused_val_1 = QtWidgets.QSpinBox()
         self.unused_val_1.setRange(0, 999)
-        self.unused_val_1.setToolTip(globals_.trans_new.string('dialog.area.tab.settings.useless3.text'))
+        self.unused_val_1.setToolTip(globals_.trans_new.string('dialog.area.tab.settings.useless3.tooltip'))
         self.unused_val_1.setValue(globals_.Area.unused_val_1)
 
         self.unused_val_2 = QtWidgets.QSpinBox()
         self.unused_val_2.setRange(0, 999)
-        self.unused_val_2.setToolTip(globals_.trans_new.string('dialog.area.tab.settings.useless4.text'))
+        self.unused_val_2.setToolTip(globals_.trans_new.string('dialog.area.tab.settings.useless4.tooltip'))
         self.unused_val_2.setValue(globals_.Area.unused_val_2)
 
         main_layout = QtWidgets.QFormLayout()
@@ -63,8 +63,8 @@ class SettingsTab(QtWidgets.QWidget):
         main_layout.addRow(self.face_left)
         main_layout.addRow(self.unused_flag_1)
         main_layout.addRow(self.unused_flag_2)
-        main_layout.addRow(globals_.trans_new.string('dialog.area.tab.settings.useless3.tooltip'), self.unused_val_1)
-        main_layout.addRow(globals_.trans_new.string('dialog.area.tab.settings.useless4.tooltip'), self.unused_val_2)
+        main_layout.addRow(globals_.trans_new.string('dialog.area.tab.settings.useless3.text'), self.unused_val_1)
+        main_layout.addRow(globals_.trans_new.string('dialog.area.tab.settings.useless4.text'), self.unused_val_2)
         self.setLayout(main_layout)
 
     def save(self) -> None:
