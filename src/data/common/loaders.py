@@ -1388,8 +1388,8 @@ def LoadTileset(idx: int, name: str, reload_: bool = False) -> None:
 
     # Warning if not found
     if not found:
-        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_MissingTileset', 0),
-                                      globals_.trans.string('Err_MissingTileset', 1, '[file]', name))
+        QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('error.title.error'),
+                                      globals_.trans_new.string('error.file_not_found.tileset', ('[file]', name)))
         return
 
     # If this file's already loaded, return

@@ -125,10 +125,6 @@ class ReggieTranslation:
                 1: 'Sorry, you seem to be missing the required data folder for Reggie Next to work. Please redownload your copy of the editor.',
                 2: 'Sorry, you seem to be missing some of the required data files for Reggie Next to work. Please redownload your copy of the editor.[br][br]These are the files you are missing:[br][files]',
             },
-            'Err_MissingTileset': {
-                0: 'Error',
-                1: 'Cannot find the required tileset file [file]. Check your Stage folder and make sure it exists.',
-            },
             'Err_Save': {
                 0: 'Error',
                 1: 'Error while Reggie was trying to save the level:[br](#[err1]) [err2][br][br](Your work has not been saved! Try saving it under a different filename or in a different folder.)',

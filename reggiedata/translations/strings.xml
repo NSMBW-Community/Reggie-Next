@@ -603,6 +603,7 @@
             <string id="readme">File "README.md" not found![br]Please go to https://github.com/NSMBW-Community/Reggie-Next to find it.</string>
             <string id="changelog">File "CHANGELOG.md" not found![br]Please go to https://github.com/NSMBW-Community/Reggie-Next to find it.</string>
             <string id="level">Could not find file:[br][name]</string>
+            <string id="tileset">Cannot find the required tileset file [file]. Check your Stage folder and make sure it exists.</string>
         </section>
     </section>
     <section id="layout">
@@ -961,10 +962,6 @@
         <string id="0">Error</string>
         <string id="1">Sorry, you seem to be missing the required data folder for Reggie Next to work. Please redownload your copy of the editor.</string>
         <string id="2">Sorry, you seem to be missing some of the required data files for Reggie Next to work. Please redownload your copy of the editor.[br][br]These are the files you are missing:[br][files]</string>
-    </section>
-    <section id="Err_MissingTileset">
-        <string id="0">Error</string>
-        <string id="1">Cannot find the required tileset file [file]. Check your Stage folder and make sure it exists.</string>
     </section>
     <section id="Err_Save">
         <string id="0">Error</string>
