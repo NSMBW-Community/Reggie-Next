@@ -734,6 +734,9 @@
                 <string id="text">You cannot have more than 256 paths in an area.</string>
             </section>
         </section>
+        <section id="sprite">
+            <string id="tooltip">[b]Sprite [type]:[/b][br][name]</string>
+        </section>
     </section>
     <section id="menu_bar">
         <string id="file">&amp;File</string>
@@ -1163,22 +1166,6 @@
         <string id="36">Unknown/Undefined</string>
     </section>
     <section id="Sprites">
-        <string id="0">[b]Sprite [type]:[/b][br][name]</string>
-        <string id="1" />
-        <string id="2" />
-        <string id="3" />
-        <string id="4" />
-        <string id="5" />
-        <string id="6" />
-        <string id="7" />
-        <string id="8" />
-        <string id="9" />
-        <string id="10" />
-        <string id="11" />
-        <string id="12" />
-        <string id="13" />
-        <string id="14" />
-        <string id="15" />
         <string id="16">Search Results</string>
         <string id="17">No sprites found</string>
         <string id="18">[id]: [name]</string>
@@ -1215,7 +1202,6 @@
             <entry>Path Node ID</entry>
             <entry>Limit ID</entry>
         </stringlist>
-        <string id="24">UNKNOWN</string>
         <string id="25">Move Up</string>
         <string id="26">Move Down</string>
     </section>
