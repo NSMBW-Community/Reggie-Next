@@ -594,9 +594,13 @@
         </section>
     </section>
     <section id="error">
+        <section id="title">
+            <string id="error">Error</string>
+        </section>
         <section id="file_not_found">
             <string id="readme">File "README.md" not found![br]Please go to https://github.com/NSMBW-Community/Reggie-Next to find it.</string>
             <string id="changelog">File "CHANGELOG.md" not found![br]Please go to https://github.com/NSMBW-Community/Reggie-Next to find it.</string>
+            <string id="level">Could not find file:[br][name]</string>
         </section>
     </section>
     <section id="layout">
@@ -932,10 +936,6 @@
         <string id="0">Warning</string>
         <string id="1">The sprite data file didn't load correctly. The following sprites have incorrect and/or broken data in them, and may not be editable correctly in the editor: [sprites]</string>
         <string id="2">Errors</string>
-    </section>
-    <section id="Err_CantFindLevel">
-        <string id="0">Could not find file:[br][name]</string>
-        <string id="1">Error</string>
     </section>
     <section id="Err_Common">
         <string id="0">An unhandled exception occurred. Please report the problem in the Horizon Discord server.\nA log will be written to "[log]".\n\nError information:\n</string>

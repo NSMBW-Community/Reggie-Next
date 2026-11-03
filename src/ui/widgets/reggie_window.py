@@ -1254,8 +1254,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     break
             else:
                 base_name = f'{os.path.splitext(check_names[0])[0]}.arc'
-                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_CantFindLevel', 1),
-                                              globals_.trans.string('Err_CantFindLevel', 0, '[name]', base_name),
+                QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('error.title.error'),
+                                              globals_.trans_new.string('error.file_not_found.level', ('[name]', base_name)),
                                               QtWidgets.QMessageBox.StandardButton.Ok)
                 return False
 
