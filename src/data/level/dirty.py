@@ -34,7 +34,7 @@ def CheckDirty() -> bool:
     if ret == QtWidgets.QMessageBox.StandardButton.Save:
         # If the save failed, the file is still dirty, so we need to negate
         # the return value.
-        return not globals_.mainWindow.HandleSave()
+        return not globals_.mainWindow.save()
 
     elif ret == QtWidgets.QMessageBox.StandardButton.Cancel:
         return True

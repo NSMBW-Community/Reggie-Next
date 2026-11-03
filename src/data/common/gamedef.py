@@ -472,7 +472,7 @@ def LoadGameDef(name: str | None = None):
             # closes after returning the error.
             return False
 
-        result = globals_.mainWindow.HandleChangeGamePath(True)
+        result = globals_.mainWindow.change_game_path(True)
 
         if result:
             msg_ids = (6, 7)

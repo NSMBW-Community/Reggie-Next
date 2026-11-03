@@ -1018,7 +1018,7 @@
         <string id="13">[i]No Location Selected[/i]</string>
     </section>
     <section id="MainWindow">
-        <string id="0">[unsaved]</string>
+        <string id="0" />
         <string id="1">You're trying to paste over 300 items at once.[br]This may take a while (depending on your computer speed), are you sure you want to continue?</string>
         <string id="8">Warning</string>
     </section>
@@ -1265,5 +1265,6 @@
     </section>
     <section id="WindowTitle">
         <string id="0">Untitled</string>
+        <string id="1">[unsaved]</string>
     </section>
 </strings>-->
