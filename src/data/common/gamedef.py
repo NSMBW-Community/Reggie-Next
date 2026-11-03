@@ -452,6 +452,8 @@ def LoadGameDef(name: str | None = None):
     globals_.gamedef = ReggieGameDefinition(name)
     globals_.gamedef.__init2__()
 
+    LoadConfig()
+
     if globals_.gamedef.custom and (not globals_.settings.contains(f'StageGamePath_{globals_.gamedef.name}')):
         # First-time usage of this globals_.gamedef. Have the
         # user pick a stage folder so we can load stages
@@ -512,7 +514,6 @@ def LoadGameDef(name: str | None = None):
 
     LoadZoneThemes(True)
     LoadMusicInfo(True)
-    LoadConfig()
 
     LoadObjDescriptions(True)
     ReloadTilesets(True)
