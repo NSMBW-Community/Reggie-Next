@@ -228,7 +228,7 @@ class ReggieClip:
         globals_.mainWindow.level_overview.update()
         SetDirty()
         globals_.mainWindow.SelectionUpdateFlag = False
-        globals_.mainWindow.ChangeSelectionHandler()
+        globals_.mainWindow.scene.change_selection()
 
         # Combine the sprites and layers
         added.extend(sprites)

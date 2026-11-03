@@ -144,7 +144,7 @@ class SpriteTab(QtWidgets.QTabWidget):
             globals_.Area.InitialiseIdTypes()
             SetDirty()
 
-        globals_.mainWindow.ChangeSelectionHandler()
+        globals_.mainWindow.scene.change_selection()
 
     def curr_view_changed(self, type):
         """
