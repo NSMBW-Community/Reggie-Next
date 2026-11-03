@@ -97,45 +97,6 @@ class ReggieTranslation:
                 32: '[b]Spawn Half a Tile Left:[/b][br]If this is checked, the entrance will spawn Mario half a tile to the left.',
                 33: '[i]No Entrance Selected[/i]'
             },
-            'Err_BrokenSpriteData': {
-                0: 'Warning',
-                1: 'The sprite data file didn\'t load correctly. The following sprites have incorrect and/or broken data in them, and may not be editable correctly in the editor: [sprites]',
-                2: 'Errors',
-            },
-            'Err_CorruptedTileset': {
-                0: 'Error',
-                1: 'An error occurred while trying to load [file]. Check your Texture folder to make sure it is complete and not corrupted. The editor may run in a broken state or crash after this.',
-            },
-            'Err_CorruptedTilesetData': {
-                0: 'Error',
-                1: 'Cannot find the required texture within the tileset file [file], so it will not be loaded. Keep in mind that the tileset file cannot be renamed without changing the names of the texture/object files within the archive as well!',
-                2: 'Failed to decompress the tileset file [file]!',
-            },
-            'Err_Decompress': {
-                0: 'Error',
-                1: 'Failed to decompress the LH-compressed file [file].',
-                2: 'Failed to decompress the LZ-compressed file [file].',
-            },
-            'Err_InvalidLevel': {
-                0: 'This file doesn\'t seem to be a valid level.',
-                1: 'Error',
-            },
-            'Err_MissingFiles': {
-                0: 'Error',
-                1: 'Sorry, you seem to be missing the required data folder for Reggie Next to work. Please redownload your copy of the editor.',
-                2: 'Sorry, you seem to be missing some of the required data files for Reggie Next to work. Please redownload your copy of the editor.[br][br]These are the files you are missing:[br][files]',
-            },
-            'Err_Save': {
-                0: 'Error',
-                1: 'Error while Reggie was trying to save the level:[br](#[err1]) [err2][br][br](Your work has not been saved! Try saving it under a different filename or in a different folder.)',
-                2: 'Error while Reggie was trying to save the level:[br]The original file data ([orig-len] bytes) exceeded the fixed length ([pad-len] bytes).[br][br](Your work has not been saved! Increase the fixed length in the Preferences Dialog.)',
-                3: 'Error while Reggie was trying to save the level:[br]An error occurred while compressing the level. Is it too big? The uncompressed size is [file-size] bytes.[br][br](Your work has not been saved! Try saving without compression or removing elements from your level.)',
-            },
-            'Err_UnknownSprite': {
-                0: 'Warning',
-                1: 'This level contains sprite ID [id], which is not defined in the current game patch. The sprite will be displayed as "UNKNOWN" but can still be edited and saved.',
-                2: 'This level contains sprite IDs ([ids]) which are not defined in the current game patch. These sprites will be displayed as "UNKNOWN" but can still be edited and saved.',
-            },
             'Gamedefs': {
                 0: 'This game has custom sprite images',
                 1: None,  # REMOVED: 'Loading patch...'

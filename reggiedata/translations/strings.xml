@@ -597,6 +597,7 @@
         <section id="title">
             <string id="error">Error</string>
             <string id="exception">Unhandled Exception</string>
+            <string id="warning">Warning</string>
         </section>
         <string id="common">An unhandled exception occurred. Please report the problem in the Horizon Discord server.\nA log will be written to "[log]".\n\nError information:\n</string>
         <section id="file_not_found">
@@ -604,6 +605,32 @@
             <string id="changelog">File "CHANGELOG.md" not found![br]Please go to https://github.com/NSMBW-Community/Reggie-Next to find it.</string>
             <string id="level">Could not find file:[br][name]</string>
             <string id="tileset">Cannot find the required tileset file [file]. Check your Stage folder and make sure it exists.</string>
+            <string id="tileset_texture">Cannot find the required texture within the tileset file [file], so it will not be loaded. Keep in mind that the tileset file cannot be renamed without changing the names of the texture/object files within the archive as well!</string>
+        </section>
+        <section id="broken_spritedata">
+            <string id="description">The sprite data file didn't load correctly. The following sprites have incorrect and/or broken data in them, and may not be editable correctly in the editor: [sprites]</string>
+        </section>
+        <section id="corrupted_tileset_data">
+        </section>
+        <section id="decompress">
+            <string id="lh">Failed to decompress the LH-compressed file [file].</string>
+            <string id="lz">Failed to decompress the LZ-compressed file [file].</string>
+        </section>
+        <section id="invalid_level">
+            <string id="description">This file doesn't seem to be a valid level.</string>
+        </section>
+        <section id="missing_data">
+            <string id="folder">Sorry, you seem to be missing the required data folder for Reggie Next to work. Please redownload your copy of the editor.</string>
+            <string id="some_files">Sorry, you seem to be missing some of the required data files for Reggie Next to work. Please redownload your copy of the editor.[br][br]These are the files you are missing:[br][files]</string>
+        </section>
+        <section id="save">
+            <string id="file_name">Error while Reggie was trying to save the level:[br](#[err1]) [err2][br][br](Your work has not been saved! Try saving it under a different filename or in a different folder.)</string>
+            <string id="fixed_size_exceeded">Error while Reggie was trying to save the level:[br]The original file data ([orig-len] bytes) exceeded the fixed length ([pad-len] bytes).[br][br](Your work has not been saved! Increase the fixed length in the Preferences Dialog.)</string>
+            <string id="compression">Error while Reggie was trying to save the level:[br]An error occurred while compressing the level. Is it too big? The uncompressed size is [file-size] bytes.[br][br](Your work has not been saved! Try saving without compression or removing elements from your level.)</string>
+        </section>
+        <section id="unknown_sprite">
+            <string id="single">This level contains sprite ID [id], which is not defined in the current game patch. The sprite will be displayed as "UNKNOWN" but can still be edited and saved.</string>
+            <string id="multiple">This level contains sprite IDs ([ids]) which are not defined in the current game patch. These sprites will be displayed as "UNKNOWN" but can still be edited and saved.</string>
         </section>
     </section>
     <section id="layout">
@@ -934,45 +961,6 @@
         <string id="31">Spawn Half a Tile Left</string>
         <string id="32">[b]Spawn Half a Tile Left:[/b][br]If this is checked, the entrance will spawn Mario half a tile to the left.</string>
         <string id="33">[i]No Entrance Selected[/i]</string>
-    </section>
-    <section id="Err_BrokenSpriteData">
-        <string id="0">Warning</string>
-        <string id="1">The sprite data file didn't load correctly. The following sprites have incorrect and/or broken data in them, and may not be editable correctly in the editor: [sprites]</string>
-        <string id="2">Errors</string>
-    </section>
-    <section id="Err_CorruptedTileset">
-        <string id="0">Error</string>
-        <string id="1">An error occurred while trying to load [file]. Check your Texture folder to make sure it is complete and not corrupted. The editor may run in a broken state or crash after this.</string>
-    </section>
-    <section id="Err_CorruptedTilesetData">
-        <string id="0">Error</string>
-        <string id="1">Cannot find the required texture within the tileset file [file], so it will not be loaded. Keep in mind that the tileset file cannot be renamed without changing the names of the texture/object files within the archive as well!</string>
-        <string id="2">Failed to decompress the tileset file [file]!</string>
-    </section>
-    <section id="Err_Decompress">
-        <string id="0">Error</string>
-        <string id="1">Failed to decompress the LH-compressed file [file].</string>
-        <string id="2">Failed to decompress the LZ-compressed file [file].</string>
-    </section>
-    <section id="Err_InvalidLevel">
-        <string id="0">This file doesn't seem to be a valid level.</string>
-        <string id="1">Error</string>
-    </section>
-    <section id="Err_MissingFiles">
-        <string id="0">Error</string>
-        <string id="1">Sorry, you seem to be missing the required data folder for Reggie Next to work. Please redownload your copy of the editor.</string>
-        <string id="2">Sorry, you seem to be missing some of the required data files for Reggie Next to work. Please redownload your copy of the editor.[br][br]These are the files you are missing:[br][files]</string>
-    </section>
-    <section id="Err_Save">
-        <string id="0">Error</string>
-        <string id="1">Error while Reggie was trying to save the level:[br](#[err1]) [err2][br][br](Your work has not been saved! Try saving it under a different filename or in a different folder.)</string>
-        <string id="2">Error while Reggie was trying to save the level:[br]The original file data ([orig-len] bytes) exceeded the fixed length ([pad-len] bytes).[br][br](Your work has not been saved! Increase the fixed length in the Preferences Dialog.)</string>
-        <string id="3">Error while Reggie was trying to save the level:[br]An error occurred while compressing the level. Is it too big? The uncompressed size is [file-size] bytes.[br][br](Your work has not been saved! Try saving without compression or removing elements from your level.)</string>
-    </section>
-    <section id="Err_UnknownSprite">
-        <string id="0">Warning</string>
-        <string id="1">This level contains sprite ID [id], which is not defined in the current game patch. The sprite will be displayed as "UNKNOWN" but can still be edited and saved.</string>
-        <string id="2">This level contains sprite IDs ([ids]) which are not defined in the current game patch. These sprites will be displayed as "UNKNOWN" but can still be edited and saved.</string>
     </section>
     <section id="Gamedefs">
         <string id="0">This game has custom sprite images</string>

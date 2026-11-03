@@ -1007,8 +1007,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if compressed is None:
                 # Error during compression
                 QtWidgets.QMessageBox.warning(None,
-                    globals_.trans.string('Err_Save', 0),
-                    globals_.trans.string('Err_Save', 3, '[file-size]', len(data))
+                    globals_.trans_new.string('error.title.error'),
+                    globals_.trans_new.string('error.save.compression', ('[file-size]', len(data)))
                 )
 
                 return None
@@ -1024,8 +1024,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             if pad_length < 0:
                 # Original data is longer than padding data
-                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Save', 0),
-                                                globals_.trans.string('Err_Save', 2, '[orig-len]', len(data), '[pad-len]', globals_.PaddingLength))
+                QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('error.title.error'),
+                                                globals_.trans_new.string('error.save.fixed_size_exceeded', ('[orig-len]', len(data)), ('[pad-len]', globals_.PaddingLength)))
                 return None
 
             data += bytes(pad_length)
@@ -1048,8 +1048,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
             with open(self.fileSavePath, 'wb') as f:
                 f.write(data)
         except IOError as e:
-            QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Save', 0),
-                                            globals_.trans.string('Err_Save', 1, '[err1]', e.args[0], '[err2]', e.args[1]))
+            QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('error.title.error'),
+                                            globals_.trans_new.string('error.save.file_name', ('[err1]', e.args[0]), ('[err2]', e.args[1])))
             return False
 
         globals_.Dirty = False
@@ -1260,7 +1260,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 return False
 
             if not IsValidLevel(check_name):
-                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_InvalidLevel', 1), globals_.trans.string('Err_InvalidLevel', 0),
+                QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('error.invalid_level.description'), globals_.trans_new.string('error.title.error'),
                                               QtWidgets.QMessageBox.StandardButton.Ok)
                 return False
 
@@ -1479,11 +1479,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 sprite_ids = sorted(globals_.Area.unknown_sprite_ids)
 
                 if len(sprite_ids) == 1:
-                    msg = globals_.trans.string('Err_UnknownSprite', 1, '[id]', str(sprite_ids[0]))
+                    msg = globals_.trans_new.string('error.unknown_sprite.single', ('[id]', str(sprite_ids[0])))
                 else:
-                    msg = globals_.trans.string('Err_UnknownSprite', 2, '[ids]', ', '.join(map(str, sprite_ids)))
+                    msg = globals_.trans_new.string('error.unknown_sprite.multiple', ('[ids]', ', '.join(map(str, sprite_ids))))
 
-                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_UnknownSprite', 0), msg)
+                QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('error.title.error'), msg)
 
         globals_.Area.reset()
 

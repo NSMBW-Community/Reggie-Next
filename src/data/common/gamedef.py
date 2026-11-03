@@ -561,11 +561,11 @@ def LoadGameDef(name: str | None = None):
         if unknown_sprite_ids and globals_.ShowUnknownSpriteWarning:
             sprite_ids = sorted(unknown_sprite_ids)
 
-            title = globals_.trans.string('Err_UnknownSprite', 0)
+            title = globals_.trans_new.string('error.title.error')
             if len(sprite_ids) == 1:
-                msg = globals_.trans.string('Err_UnknownSprite', 1, '[id]', str(sprite_ids[0]))
+                msg = globals_.trans_new.string('error.unknown_sprite.single', ('[id]', str(sprite_ids[0])))
             else:
-                msg = globals_.trans.string('Err_UnknownSprite', 2, '[ids]', ', '.join(map(str, sprite_ids)))
+                msg = globals_.trans_new.string('error.unknown_sprite.multiple', ('[ids]', ', '.join(map(str, sprite_ids))))
             QtWidgets.QMessageBox.warning(None, title, msg)
 
     # Reload the sprite-picker text

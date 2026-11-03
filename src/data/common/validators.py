@@ -43,7 +43,7 @@ def FilesAreMissing() -> bool:
     """
 
     if not os.path.isdir(get_reggiedata_folder()):
-        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_MissingFiles', 0), globals_.trans.string('Err_MissingFiles', 1))
+        QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('error.title.error'), globals_.trans_new.string('error.missing_data.folder'))
         return True
 
     required = ['icon.png', ]
@@ -55,8 +55,8 @@ def FilesAreMissing() -> bool:
             missing.append(check)
 
     if missing:
-        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_MissingFiles', 0),
-                                      globals_.trans.string('Err_MissingFiles', 2, '[files]', ', '.join(missing)))
+        QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('error.title.error'),
+                                      globals_.trans_new.string('error.missing_data.files', ('[files]', ', '.join(missing))))
         return True
 
     return False

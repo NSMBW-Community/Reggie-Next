@@ -483,10 +483,10 @@ def LoadSpriteData() -> None:
 
     # Warn the user if errors occurred
     if errors:
-        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_BrokenSpriteData', 0),
-                                      globals_.trans.string('Err_BrokenSpriteData', 1, '[sprites]', ', '.join(errors)),
+        QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('error.title.warning'),
+                                      globals_.trans_new.string('error.broken_spritedata.description', ('[sprites]', ', '.join(errors))),
                                       QtWidgets.QMessageBox.StandardButton.Ok)
-        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_BrokenSpriteData', 2), repr(errortext))
+        QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('error.title.error'), repr(errortext))
 
 
 def ReloadSpritedata():
@@ -1421,8 +1421,8 @@ def LoadTileset(idx: int, name: str, reload_: bool = False) -> None:
         comptiledata = arc[f'BG_tex/{name}_tex.bin.LZ']
         colldata = bytes(arc[f'BG_chk/d_bgchk_{name}.bin'])
     else:
-        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_CorruptedTilesetData', 0),
-                                      globals_.trans.string('Err_CorruptedTilesetData', 1, '[file]', name))
+        QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('error.title.error'),
+                                      globals_.trans_new.string('error.file_not_found.tileset_texture', ('[file]', name)))
         return
 
     # Load in the textures
@@ -2033,8 +2033,8 @@ def DecompressLevel(data: bytes, name: str) -> bytes | None:
         try:
             data = lh.UncompressLH(data)
         except IndexError:
-            QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
-                                            globals_.trans.string('Err_Decompress', 1, '[file]', name))
+            QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('error.title.error'),
+                                            globals_.trans_new.string('error.decompress.lh', ('[file]', name)))
             return None
 
     # LZ-compressed
@@ -2042,8 +2042,8 @@ def DecompressLevel(data: bytes, name: str) -> bytes | None:
         try:
             data = lz77.UncompressLZ77(data)
         except IndexError:
-            QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
-                                            globals_.trans.string('Err_Decompress', 2, '[file]', name))
+            QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('error.title.error'),
+                                            globals_.trans_new.string('error.decompress.lz', ('[file]', name)))
             return None
 
     return data
