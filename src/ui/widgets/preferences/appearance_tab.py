@@ -178,7 +178,9 @@ class AppearanceTab(PreferenceTabWidget):
             if theme.themeName == self.theme_combo.currentText():
                 self.preview.setPixmap(self.draw_preview(theme))
                 text = globals_.trans_new.string('dialog.preferences.tab.appearance.theme_info', ('[name]', theme.themeName),
-                                                 ('[version]', theme.version), ('[creator]', theme.creator), ('[description]', theme.description))
+                                                ('[version]', theme.version), ('[creator]', theme.creator), ('[description]', theme.description))
+
+                self.description.setVisible(not theme.is_default)
                 self.description.setText(text)
 
     def draw_preview(self, theme):

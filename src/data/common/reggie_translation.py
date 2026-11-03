@@ -433,13 +433,6 @@ class ReggieTranslation:
                 32: '[x] comments',
                 33: '- Comment under mouse: [xpos], [ypos]; "[text]"',
             },
-            'Themes': {
-                0: 'Classic',
-                1: 'Treeki, Tempus',
-                2: 'The default Reggie Next theme.',
-                3: '[i](unknown)[/i]',
-                4: '[i]No description[/i]',
-            },
             'WindowTitle': {
                 0: 'Untitled',
                 1: '[unsaved]',

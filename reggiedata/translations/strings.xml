@@ -852,6 +852,14 @@
             <string id="new_stamp">New Stamp</string>
         </section>
     </section>
+    <section id="theme">
+        <string id="default_name">Default</string>
+        <section id="unknown_info">
+            <string id="name">Untitled Theme "[folder]"</string>
+            <string id="creator">[i](unknown)[/i]</string>
+            <string id="description">[i]No description[/i]</string>
+        </section>
+    </section>
     <section id="widget">
         <section id="auto_diagnostic">
             <string id="manual_check">Manually check for errors.</string>
@@ -1254,13 +1262,6 @@
         <string id="31">1 comment</string>
         <string id="32">[x] comments</string>
         <string id="33">- Comment under mouse: [xpos], [ypos]; "[text]"</string>
-    </section>
-    <section id="Themes">
-        <string id="0">Classic</string>
-        <string id="1">Treeki, Tempus</string>
-        <string id="2">The default Reggie Next theme.</string>
-        <string id="3">[i](unknown)[/i]</string>
-        <string id="4">[i]No description[/i]</string>
     </section>
     <section id="WindowTitle">
         <string id="0">Untitled</string>
