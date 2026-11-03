@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<translation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../src/resources/schemas/translation.xsd">
+<translation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../src/resources/schema/translation.xsd">
     <section id="common">
         <string id="area_num">Area [num]</string>
         <string id="zone_num">Zone [num]</string>
@@ -366,9 +366,9 @@
             <string id="copy_image">Copy Image to Clipboard</string>
             <string id="grid_label">Grid Type:</string>
             <section id="grid_types">
-                <string id="None"></string>
-                <string id="Standard"></string>
-                <string id="Checker"></string>
+                <string id="none">None</string>
+                <string id="standard">Standard</string>
+                <string id="checker">Checker</string>
             </section>
             <section id="zone_margins">
                 <string id="text">Zone Margins:</string>
