@@ -139,7 +139,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         has_error = False
         is_critical = False
 
-        description_list = globals_.trans_new.section('dialog.diagnostic_tool.problems').string_list()
+        description_list = globals_.trans_new.string_list('dialog.diagnostic_tool.problems')
 
         for i, (icon, func, critical) in enumerate(self.check_functions):
             if func('c'):

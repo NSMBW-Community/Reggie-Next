@@ -66,7 +66,7 @@ class AppearanceTab(PreferenceTabWidget):
         # Tilesets Tab Position
         self.tileset_tab_pos = QtWidgets.QComboBox()
         self.tileset_tab_pos.setToolTip(globals_.trans_new.string('dialog.preferences.tab.appearance.tileset_tabs.tooltip'))
-        self.tileset_tab_pos.addItems(globals_.trans_new.section('dialog.preferences.tab.appearance.tileset_tabs.options').string_list())
+        self.tileset_tab_pos.addItems(globals_.trans_new.string_list('dialog.preferences.tab.appearance.tileset_tabs.options'))
         self.tileset_tab_pos.setCurrentIndex(globals_.TilesetTabPos)
 
         # Display full filepath
@@ -76,7 +76,7 @@ class AppearanceTab(PreferenceTabWidget):
         # Cursor modes
         self.cursor_mode = QtWidgets.QComboBox()
         self.cursor_mode.setMaximumWidth(256)
-        self.cursor_mode.addItems(globals_.trans_new.section('dialog.preferences.tab.appearance.cursor_mode.options').string_list())
+        self.cursor_mode.addItems(globals_.trans_new.string_list('dialog.preferences.tab.appearance.cursor_mode.options'))
         self.cursor_mode.setToolTip(globals_.trans_new.string('dialog.preferences.tab.appearance.cursor_mode.tooltip'))
         self.cursor_mode.setCurrentIndex(globals_.CursorMode)
 
@@ -115,7 +115,7 @@ class AppearanceTab(PreferenceTabWidget):
                 curr_grid = 2
 
         self.preview_grid_type = QtWidgets.QComboBox()
-        self.preview_grid_type.addItems(globals_.trans_new.section('dialog.preferences.tab.appearance.grid_type.types').string_list())
+        self.preview_grid_type.addItems(globals_.trans_new.string_list('dialog.preferences.tab.appearance.grid_type.types'))
         self.preview_grid_type.setCurrentIndex(curr_grid)
         self.preview_grid_type.currentIndexChanged.connect(self.update_preview)
 

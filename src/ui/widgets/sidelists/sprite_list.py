@@ -42,7 +42,7 @@ class SpriteList(QtWidgets.QWidget):
         # Set of row ids
         self.SearchResults = set()
 
-        idtypes_list = globals_.trans_new.section('palette.sprite.current.id_types').string_list()
+        idtypes_list = globals_.trans_new.string_list('palette.sprite.current.id_types')
 
         self.table = SpriteTableWidget(0, len(idtypes_list if idtypes_list is not None else []) + 1)
         headers = [globals_.trans_new.string('common.id'), globals_.trans_new.string('common.name')] + list(idtypes_list[1:] if idtypes_list is not None else [])

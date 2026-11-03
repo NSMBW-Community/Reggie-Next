@@ -125,7 +125,7 @@ class ZoneTab(QtWidgets.QWidget):
 
         combobox_size_policy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.Fixed)
 
-        terrain_light_values = globals_.trans_new.section('dialog.zone.rendering.terrain_light.options').string_list()
+        terrain_light_values = globals_.trans_new.string_list('dialog.zone.rendering.terrain_light.options')
 
         self.theme = QtWidgets.QComboBox()
         self.theme.setSizePolicy(combobox_size_policy)
@@ -209,7 +209,7 @@ class ZoneTab(QtWidgets.QWidget):
         self.modulation = QtWidgets.QComboBox()
         self.modulation.setToolTip(globals_.trans_new.string('dialog.zone.audio.sound_modulation.tooltip'))
 
-        modulation_list = globals_.trans_new.section('dialog.zone.audio.sound_modulation.options').string_list()
+        modulation_list = globals_.trans_new.string_list('dialog.zone.audio.sound_modulation.options')
         self.modulation.addItems(modulation_list)
         self.modulation.setCurrentIndex(zone.sfxmod // 16)
 
@@ -235,7 +235,7 @@ class ZoneTab(QtWidgets.QWidget):
         self.cam_settings = CameraSettingsLayout(True)
         self.cam_settings.set_values(zone.cammode, zone.camzoom)
 
-        dirs = globals_.trans_new.section('dialog.zone.camera.zone_direction.options').string_list()
+        dirs = globals_.trans_new.string_list('dialog.zone.camera.zone_direction.options')
         self.direction = QtWidgets.QComboBox()
         self.direction.addItems(dirs)
         self.direction.setToolTip(globals_.trans_new.string('dialog.zone.camera.zone_direction.tooltip'))
@@ -412,7 +412,7 @@ class ZoneTab(QtWidgets.QWidget):
             else:
                 section_key = 'normal'
 
-        item_list = globals_.trans_new.section(f'dialog.zone.rendering.visibility.{section_key}.options').string_list()
+        item_list = globals_.trans_new.string_list(f'dialog.zone.rendering.visibility.{section_key}.options')
 
         self.visibility.clear()
         self.visibility.addItems(item_list)

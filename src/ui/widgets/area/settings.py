@@ -21,7 +21,7 @@ class SettingsTab(QtWidgets.QWidget):
         self.initial_entrance.setValue(globals_.Area.start_entrance)
 
         self.toad_house_type = QtWidgets.QComboBox()
-        self.toad_house_type.addItems(globals_.trans_new.section('dialog.area.tab.settings.toad_house_types').string_list())
+        self.toad_house_type.addItems(globals_.trans_new.string_list('dialog.area.tab.settings.toad_house_types'))
         self.toad_house_type.setCurrentIndex(globals_.Area.toad_house_type)
 
         self.screen_wrap = QtWidgets.QCheckBox(globals_.trans_new.string('dialog.area.tab.settings.screen_wrap.text'))

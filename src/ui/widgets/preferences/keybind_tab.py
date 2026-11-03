@@ -23,7 +23,7 @@ class KeybindTab(PreferenceTabWidget):
         self.tab_widget = QtWidgets.QTabWidget()
         self.tabs = []
 
-        menu_bar_strings = globals_.trans_new.section('menu_bar').string_list()
+        menu_bar_strings = globals_.trans_new.string_list('menu_bar')
 
         # Create tabs
         for i in range(5):

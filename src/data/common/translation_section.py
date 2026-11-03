@@ -1,10 +1,8 @@
 import os
-from typing import Any, Literal
+from typing import Any
 from xml.etree import ElementTree
 
 from data.common.utils import get_reggiedata_folder, get_root_path
-
-ElementType = Literal["section", "string"]
 
 
 class TranslationSection:
@@ -18,36 +16,10 @@ class TranslationSection:
     ) -> None:
         self._items: dict[str, str | TranslationSection] = items or {}
 
-    def section(self, id: str) -> "TranslationSection":
-        """
-        Returns a section within this section or any sub-section whose ID
-        matches the given id.
-
-        :param id: The ID of the translation section to look for. Iterations
-        deeper into this section can be achieved by separating the ID with
-        periods.
-
-        **Example**: Providing the ID `common.greetings` will return the
-        section with the ID `greetings` found within the `common` section.
-        :return: A translation section whose ID matches the structure of the
-        given ID. If no section with the given ID was found, a warning will be
-        logged and an empty section will be returned instead.
-        """
-        result, stack_trace = self._fetch(id, "section")
-        if not isinstance(result, TranslationSection):
-            self._log_id_error("section", id, stack_trace)
-            return TranslationSection()
-
-        return result
-
     def string(self, id: str, *templates: tuple[str, Any]) -> str:
         """
-        Returns a string within this section or any sub-section whose ID
-        matches the given id.
-
         :param id: The ID of the translation string to look for. Iterations
-        deeper into this section can be achieved by separating the ID with
-        periods.
+        into deeper sections can be achieved by separating the ID with periods.
 
         **Example**: Providing the ID `common.hello_world` will return the
         translation string with the ID `hello_world` found within the `common`
@@ -56,10 +28,10 @@ class TranslationSection:
         given id. If no string with the given ID was found, a warning will be
         logged and said ID will be returned instead.
         """
-        result, stack_trace = self._fetch(id, "string")
+        result, stack_trace = self._fetch(id)
 
         if not isinstance(result, str):
-            self._log_id_error("string", id, stack_trace)
+            self._log_id_error(id, stack_trace)
             return id
 
         if templates:
@@ -68,44 +40,52 @@ class TranslationSection:
 
         return TranslationSection.convert_formatting(result)
 
-    def string_list(self, *ids: str) -> list[str]:
+    def string_list(self, id: str, *ids: str) -> list[str]:
         """
-        Returns a list of strings within this section or any sub-section where
-        each string's ID matches a given ID.
-
-        :param ids: The IDs of the translation strings to look for. Iterations
-        deeper into this section can be achieved by separating an ID with
-        periods.
+        :param id: The ID of the first translation string to look for.
+        Iterations into deeper sections can be achieved by separating the ID
+        with periods.
 
         **Example**: Providing the ID `common.hello_world` will return the
         translation string with the ID `hello_world` found within the `common`
         section.
-
-        :return: A list of translation strings whose IDs matches the structures
-        of the given IDs. The length of the list is always equal to the amount
-        of IDs provided. If no IDs are provided, all strings from this section
-        but no sub-section will be returned instead. If a string with a given
-        ID could not be found, a warning will be logged and said ID will be
-        added to the list instead.
+        :param ids: Additional IDs of strings or translation sections that
+        should be fetched.
+        :return: A list of translation strings whose IDs matche the structures
+        of the given IDs. If an ID matches a translation section, all strings
+        within that section but no sub-section will be added to the list.
+        Therefore, the length of the returned list is always greater than or
+        equal to the amount of IDs provided.
         """
-        if len(ids) == 0:
-            return [item for item in self._items.values() if isinstance(item, str)]
-        return [self.string(id) for id in ids]
+        result: list[str] = []
+        for sub_id in (id, *ids):
+            sub_result, stack_trace = self._fetch(sub_id)
+            if sub_result is None or len(stack_trace):
+                self._log_id_error(id, stack_trace)
+                continue
 
-    def _fetch(
-        self, id: str, type: ElementType
-    ) -> tuple["str | TranslationSection | None", list[str]]:
+            if isinstance(sub_result, str):
+                result.append(sub_result)
+                continue
+
+            result += [
+                item for item in sub_result._items.values() if isinstance(item, str)
+            ]
+
+        return result
+
+    def _fetch(self, id: str) -> tuple["str | TranslationSection | None", list[str]]:
         ids: list[str] = id.split(".")
         result: str | TranslationSection | None = self
         stack_trace: list[str] = []
         for index, sub_id in enumerate(ids):
-            if result == None:
+            if result is None:
                 stack_trace.append(
                     f' - Could not find translation section for ID "{sub_id}"'
                 )
                 continue
             result = result._items.get(sub_id)
-            if type == "string" and index == len(ids) - 1 and isinstance(result, str):
+            if index == len(ids) - 1 and isinstance(result, str):
                 break
             if not isinstance(result, TranslationSection):
                 result = None
@@ -115,8 +95,11 @@ class TranslationSection:
 
         return (result, stack_trace)
 
-    def _log_id_error(self, type: ElementType, id: str, stack_trace: list[str]) -> None:
-        message = f'[Warning] - Could not find translation {type} for ID "{id}"{("\n" + "\n".join(stack_trace)) if stack_trace else ""}'
+    def _log_id_error(self, id: str, stack_trace: list[str]) -> None:
+        message = (
+            "[Warning] - Could not find translation(s) for ID"
+            + f' "{id}"{("\n" + "\n".join(stack_trace)) if stack_trace else ""}'
+        )
         print(message)
 
         if not os.path.isfile(os.path.join(get_root_path(), "log.txt")):
@@ -135,12 +118,16 @@ class TranslationSection:
             if this_item == other_item:
                 continue
 
-            if isinstance(this_item, TranslationSection) and isinstance(other_item, TranslationSection):
+            if isinstance(this_item, TranslationSection) and isinstance(
+                other_item, TranslationSection
+            ):
                 # both are sections; merge via OR
                 self._items[key] = this_item | other_item
                 continue
 
-            if (isinstance(this_item, str) and isinstance(other_item, str)) or (this_item is None and other_item is not None):
+            if (isinstance(this_item, str) and isinstance(other_item, str)) or (
+                this_item is None and other_item is not None
+            ):
                 # both are strings or string does not exist; override original / add
                 self._items[key] = other_item
                 continue

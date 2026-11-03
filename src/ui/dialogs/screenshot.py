@@ -18,7 +18,7 @@ class ScreenshotDialog(QtWidgets.QDialog):
         self.setWindowIcon(GetIcon('camera'))
 
         self.target_combo = QtWidgets.QComboBox()
-        self.target_combo.addItems(globals_.trans_new.section('dialog.screenshot.targets').string_list())
+        self.target_combo.addItems(globals_.trans_new.string_list('dialog.screenshot.targets'))
         self.target_combo.currentIndexChanged.connect(self.target_changed)
 
         # Individual zones
@@ -26,7 +26,7 @@ class ScreenshotDialog(QtWidgets.QDialog):
             self.target_combo.addItem(globals_.trans_new.string('common.zone_num', ('[num]', i + 1)))
 
         self.grid_type = QtWidgets.QComboBox()
-        self.grid_type.addItems(globals_.trans_new.section('dialog.screenshot.grid_types').string_list())
+        self.grid_type.addItems(globals_.trans_new.string_list('dialog.screenshot.grid_types'))
 
         curr_grid = 0
         if globals_.GridType is not None:

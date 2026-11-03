@@ -98,7 +98,7 @@ class BackgroundEditorLayout(QtWidgets.QHBoxLayout):
             self.pos_boxes.append(pos_box)
 
         # The list of background scroll rate names
-        scroll_names = globals_.trans_new.section('layout.background.scroll_rates').string_list()
+        scroll_names = globals_.trans_new.string_list('layout.background.scroll_rates')
         scroll_names.insert(0, globals_.trans_new.string('common.none'))
         scroll_names.insert(9, globals_.trans_new.string('common.none'))
 
@@ -118,7 +118,7 @@ class BackgroundEditorLayout(QtWidgets.QHBoxLayout):
 
         # Zoom
         self.zoom_box = QtWidgets.QComboBox()
-        self.zoom_box.addItems(globals_.trans_new.section('layout.background.zoom.zoom_levels').string_list())
+        self.zoom_box.addItems(globals_.trans_new.string_list('layout.background.zoom.zoom_levels'))
         self.zoom_box.setToolTip(globals_.trans_new.string('layout.background.zoom.tooltip'))
         self.zoom_box.setCurrentIndex(bg_zoom)
 
@@ -242,7 +242,7 @@ class BackgroundEditorLayout(QtWidgets.QHBoxLayout):
         box3 = self.hex_boxes[2].value()
         align_mode = self.get_alignment_mode(box1, box2, box3)
 
-        align_list = globals_.trans_new.section('layout.background.alignment.alignment_modes').string_list()
+        align_list = globals_.trans_new.string_list('layout.background.alignment.alignment_modes')
         if align_list is not None:
             self.align_type.setText(globals_.trans_new.string('layout.background.alignment.info', ('[mode]', align_list[align_mode])))
 

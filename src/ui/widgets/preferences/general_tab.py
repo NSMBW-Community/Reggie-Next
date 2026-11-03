@@ -75,7 +75,7 @@ class GeneralTab(PreferenceTabWidget):
         # Auto-diag frequency
         self.diag_freq = QtWidgets.QComboBox()
         self.diag_freq.setMaximumWidth(256)
-        self.diag_freq.addItems(globals_.trans_new.section('dialog.preferences.tab.general.auto_diagnostic.error_check_frequency.options').string_list())
+        self.diag_freq.addItems(globals_.trans_new.string_list('dialog.preferences.tab.general.auto_diagnostic.error_check_frequency.options'))
         self.diag_freq.setToolTip(globals_.trans_new.string('dialog.preferences.tab.general.auto_diagnostic.error_check_frequency.tooltip'))
 
         auto_diag_box = QtWidgets.QGroupBox(globals_.trans_new.string('dialog.preferences.tab.general.auto_diagnostic.title'))

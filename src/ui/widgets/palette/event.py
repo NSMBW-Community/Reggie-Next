@@ -20,7 +20,7 @@ class EventTab(QtWidgets.QWidget):
 
         self.event_tree = QtWidgets.QTreeWidget()
         self.event_tree.setColumnCount(2)
-        self.event_tree.setHeaderLabels((globals_.trans_new.section('palette.event.header').string_list()))
+        self.event_tree.setHeaderLabels((globals_.trans_new.string_list('palette.event.header')))
         self.event_tree.itemClicked.connect(self.event_selected)
         self.event_tree_items: list[QtWidgets.QTreeWidgetItem] = []
 
