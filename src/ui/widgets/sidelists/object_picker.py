@@ -159,14 +159,17 @@ class ObjectPickerWidget(QtWidgets.QListView):
             """
             Renders all the object previews for the model
             """
-            if globals_.ObjectDefinitions[idx] is None: return
-
             self.beginResetModel()
 
             self.items = []
             self.ritems = []
             self.itemsize = []
             self.tooltips = []
+
+            if globals_.ObjectDefinitions[idx] is None:
+                self.endResetModel()
+                return
+
             defs = globals_.ObjectDefinitions[idx]
 
             for i in range(256):
