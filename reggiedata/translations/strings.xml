@@ -699,6 +699,9 @@
             <string id="palette_info">[x], [y]: [text]</string>
             <string id="tooltip">[b]Comment[/b][br]at [x], [y]</string>
         </section>
+        <section id="object">
+            <string id="tooltip">[b]Tileset [tileset], object [obj]:[/b][br][width]x[height] on layer [layer]</string>
+        </section>
         <section id="path">
             <string id="palette_info">Path [path], Node [node]</string>
             <string id="tooltip">[b]Path [path][/b][br]Node [node]</string>
@@ -711,6 +714,14 @@
         <string id="settings">&amp;Settings</string>
         <string id="help">&amp;Help</string>
         <string id="editor_toolbar">Editor Toolbar</string>
+    </section>
+    <section id="palette">
+        <section id="object">
+            <string id="tooltip">Object [id]</string>
+            <string id="tooltip_anim">Object [id][br][i]This object is animated[/i]</string>
+            <string id="tooltip_desc">[b]Object [id]:[/b][br][desc]</string>
+            <string id="tooltip_desc_anim">[b]Object [id]:[/b][br][desc][br][i]This object is animated[/i]</string>
+        </section>
     </section>
     <section id="widget">
         <section id="auto_diagnostic">
@@ -1038,13 +1049,6 @@
         <string id="145">Toggle viewing of entrances</string>
         <string id="146">Generate Strings XML</string>
         <string id="147">Generates a new strings.xml and saves it to /reggiedata/translations</string>
-    </section>
-    <section id="Objects">
-        <string id="0">[b]Tileset [tileset], object [obj]:[/b][br][width]x[height] on layer [layer]</string>
-        <string id="1">Object [id]</string>
-        <string id="2">Object [id][br][i]This object is animated[/i]</string>
-        <string id="3">[b]Object [id]:[/b][br][desc]</string>
-        <string id="4">[b]Object [id]:[/b][br][desc][br][i]This object is animated[/i]</string>
     </section>
     <section id="Palette">
         <string id="0">Paint on Layer:</string>

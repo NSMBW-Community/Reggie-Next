@@ -205,12 +205,12 @@ class ObjectPickerWidget(QtWidgets.QListView):
                 self.itemsize.append(QtCore.QSize(defs[i].width * 24 + 4, defs[i].height * 24 + 4))
                 if (idx == 0) and (i in globals_.ObjDesc):
                     if isAnim:
-                        self.tooltips.append(globals_.trans.string('Objects', 4, '[id]', i, '[desc]', globals_.ObjDesc[i]))
+                        self.tooltips.append(globals_.trans_new.string('palette.object.tooltip_desc_anim', ('[id]', i), ('[desc]', globals_.ObjDesc[i])))
                     else:
-                        self.tooltips.append(globals_.trans.string('Objects', 3, '[id]', i, '[desc]', globals_.ObjDesc[i]))
+                        self.tooltips.append(globals_.trans_new.string('palette.object.tooltip_desc', ('[id]', i), ('[desc]', globals_.ObjDesc[i])))
                 elif isAnim:
-                    self.tooltips.append(globals_.trans.string('Objects', 2, '[id]', i))
+                    self.tooltips.append(globals_.trans_new.string('palette.object.tooltip_anim', ('[id]', i)))
                 else:
-                    self.tooltips.append(globals_.trans.string('Objects', 1, '[id]', i))
+                    self.tooltips.append(globals_.trans_new.string('palette.object.tooltip', ('[id]', i)))
 
             self.endResetModel()
