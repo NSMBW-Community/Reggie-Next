@@ -749,6 +749,28 @@
         <string id="editor_toolbar">Editor Toolbar</string>
     </section>
     <section id="palette">
+        <section id="comment">
+            <string id="title">Comments</string>
+            <string id="info">Comments currently in this area:[br](Double-click one to jump to it instantly)</string>
+        </section>
+        <section id="entrance">
+            <string id="title">Entrances</string>
+            <string id="info">Entrances currently in this area:[br](Double-click one to jump to it instantly)</string>
+        </section>
+        <section id="event">
+            <string id="title">Events</string>
+            <string id="info">Event states upon level launch:[br](Click on one to add a note)</string>
+            <string id="note">Note:</string>
+            <string id="event_id">Event [id]</string>
+            <section id="header">
+                <string id="state">State</string>
+                <string id="notes">Notes</string>
+            </section>
+        </section>
+        <section id="location">
+            <string id="title">Locations</string>
+            <string id="info">Locations currently in this area:[br](Double-click one to jump to it instantly)</string>
+        </section>
         <section id="object">
             <string id="title">Objects</string>
             <section id="paint_on_layer">
@@ -763,6 +785,11 @@
             <string id="tooltip_anim">Object [id][br][i]This object is animated[/i]</string>
             <string id="tooltip_desc">[b]Object [id]:[/b][br][desc]</string>
             <string id="tooltip_desc_anim">[b]Object [id]:[/b][br][desc][br][i]This object is animated[/i]</string>
+        </section>
+        <section id="path">
+            <string id="title">Paths</string>
+            <string id="info">Path nodes currently in this area:[br](Double-click one to jump to it instantly)[br]To delete a path, remove all its nodes one by one.[br]To add new paths, hit the button below and right click.</string>
+            <string id="deselect_button">Deselect (then right click for new path)</string>
         </section>
         <section id="sprite">
             <string id="title">Sprites</string>
@@ -815,29 +842,6 @@
                 <string id="move_down">Move Down</string>
             </section>
         </section>
-        <section id="entrance">
-            <string id="title">Entrances</string>
-            <string id="info">Entrances currently in this area:[br](Double-click one to jump to it instantly)</string>
-        </section>
-        <section id="location">
-            <string id="title">Locations</string>
-            <string id="info">Locations currently in this area:[br](Double-click one to jump to it instantly)</string>
-        </section>
-        <section id="path">
-            <string id="title">Paths</string>
-            <string id="info">Path nodes currently in this area:[br](Double-click one to jump to it instantly)[br]To delete a path, remove all its nodes one by one.[br]To add new paths, hit the button below and right click.</string>
-            <string id="deselect_button">Deselect (then right click for new path)</string>
-        </section>
-        <section id="event">
-            <string id="title">Events</string>
-            <string id="info">Event states upon level launch:[br](Click on one to add a note)</string>
-            <string id="note">Note:</string>
-            <string id="event_id">Event [id]</string>
-            <section id="header">
-                <string id="state">State</string>
-                <string id="notes">Notes</string>
-            </section>
-        </section>
         <section id="stamp">
             <string id="title">Stamps</string>
             <string id="info">Available stamps:[br](Select one or more objects/sprites to create one)</string>
@@ -846,10 +850,6 @@
             <string id="import_set">Import Set...</string>
             <string id="save_set_as">Save Set As...</string>
             <string id="new_stamp">New Stamp</string>
-        </section>
-        <section id="comment">
-            <string id="title">Comments</string>
-            <string id="info">Comments currently in this area:[br](Double-click one to jump to it instantly)</string>
         </section>
     </section>
     <section id="widget">
