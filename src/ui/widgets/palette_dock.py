@@ -36,42 +36,42 @@ class PaletteDock(QtWidgets.QDockWidget):
         # Objects
         self.object_tab = ObjectTab()
         self.tabs.addTab(self.object_tab, GetIcon('block'), '')
-        self.tabs.setTabToolTip(0, globals_.trans.string('Palette', 13))
+        self.tabs.setTabToolTip(0, globals_.trans_new.string('palette.object.title'))
 
         # Sprites
         self.sprite_tab = SpriteTab()
         self.tabs.addTab(self.sprite_tab, GetIcon('rocket'), '')
-        self.tabs.setTabToolTip(1, globals_.trans.string('Palette', 14))
+        self.tabs.setTabToolTip(1, globals_.trans_new.string('palette.sprite.title'))
 
         # Entrances
         self.entrance_tab = EntranceTab()
         self.tabs.addTab(self.entrance_tab, GetIcon('door'), '')
-        self.tabs.setTabToolTip(2, globals_.trans.string('Palette', 15))
+        self.tabs.setTabToolTip(2, globals_.trans_new.string('palette.entrance.title'))
 
         # Locations
         self.location_tab = LocationTab()
         self.tabs.addTab(self.location_tab, GetIcon('layer-shape-purple'), '')
-        self.tabs.setTabToolTip(3, globals_.trans.string('Palette', 16))
+        self.tabs.setTabToolTip(3, globals_.trans_new.string('palette.location.title'))
 
         # Paths
         self.path_tab = PathTab()
         self.tabs.addTab(self.path_tab, GetIcon('node'), '')
-        self.tabs.setTabToolTip(4, globals_.trans.string('Palette', 17))
+        self.tabs.setTabToolTip(4, globals_.trans_new.string('palette.path.title'))
 
         # Events
         self.event_tab = EventTab()
         self.tabs.addTab(self.event_tab, GetIcon('flag'), '')
-        self.tabs.setTabToolTip(5, globals_.trans.string('Palette', 18))
+        self.tabs.setTabToolTip(5, globals_.trans_new.string('palette.event.title'))
 
         # Stamps
         self.stamp_tab = StampTab()
         self.tabs.addTab(self.stamp_tab, GetIcon('stamp'), '')
-        self.tabs.setTabToolTip(6, globals_.trans.string('Palette', 19))
+        self.tabs.setTabToolTip(6, globals_.trans_new.string('palette.stamp.title'))
 
         # Comments
         self.comment_tab = CommentTab()
         self.tabs.addTab(self.comment_tab, GetIcon('balloon'), '')
-        self.tabs.setTabToolTip(7, globals_.trans.string('Palette', 33))
+        self.tabs.setTabToolTip(7, globals_.trans_new.string('palette.comment.title'))
 
         self.setWidget(self.tabs)
 

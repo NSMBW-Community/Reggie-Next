@@ -66,7 +66,7 @@ class SpriteItem(LevelEditorItem):
         if 0 <= sprite_num < globals_.NumSprites:
             self.name = globals_.Sprites[sprite_num].name
         else:
-            self.name = globals_.trans_new.string('common.unknown')
+            self.name = globals_.trans_new.string('common.unknown_upper')
 
         self.InitializeSprite()
 
@@ -176,7 +176,7 @@ class SpriteItem(LevelEditorItem):
         if 0 <= sprite_num < globals_.NumSprites:
             self.name = globals_.Sprites[sprite_num].name
         else:
-            self.name = globals_.trans_new.string('common.unknown')
+            self.name = globals_.trans_new.string('common.unknown_upper')
 
         self.setToolTip(globals_.trans_new.string('levelitem.sprite.tooltip', ('[type]', sprite_num), ('[name]', self.name)))
         self.sprite_num = sprite_num

@@ -262,7 +262,7 @@ class EntranceItem(LevelEditorItem):
         elif self.destarea == 0:
             destination = globals_.trans_new.string('levelitem.entrance.dest_id_this_area', ('[id]', self.destentrance))
         else:
-            destination = globals_.trans_new.string('levelitem.entrance.dest_it_other_area', ('[id]', self.destentrance), ('[area]', self.destarea))
+            destination = globals_.trans_new.string('levelitem.entrance.dest_id_other_area', ('[id]', self.destentrance), ('[area]', self.destarea))
 
         self.name = name
         self.destination = destination

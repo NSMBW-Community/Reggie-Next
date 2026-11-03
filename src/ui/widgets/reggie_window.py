@@ -608,7 +608,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Default Sprite Editor
         self.defaultDataEditor = SpriteEditorWidget(True)
         self.defaultDataEditor.setVisible(False)
-        def_sprite_dock = self.create_dock_widget(globals_.trans.string('Palette', 7), 'defaultprops', self.defaultDataEditor,
+        def_sprite_dock = self.create_dock_widget(globals_.trans.string('SpriteDataEditor', 37), 'defaultprops', self.defaultDataEditor,
                                                 features | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable,
                                                 Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True)
         self.defaultPropDock = def_sprite_dock

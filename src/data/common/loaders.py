@@ -519,7 +519,10 @@ def LoadSpriteCategories(reload_: bool = False) -> None:
 
     globals_.SpriteCategories = []
     # Add a Search category
-    globals_.SpriteCategories.append(SpriteCategory(globals_.trans.string('Sprites', 19), [SpriteSubCategory(globals_.trans.string('Sprites', 16), list(range(globals_.NumSprites)))], []))
+    results_text = globals_.trans_new.string('palette.sprite.add.search_results')
+    search_text = globals_.trans_new.string('common.search')
+
+    globals_.SpriteCategories.append(SpriteCategory(search_text, [SpriteSubCategory(results_text, list(range(globals_.NumSprites)))], []))
     globals_.SpriteCategories[0].sub_categories[0].sprite_ids.append(9999)  # 'no results' special case
     for path in paths:
         if path is None:

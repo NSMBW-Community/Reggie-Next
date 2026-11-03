@@ -12,15 +12,15 @@ class EventTab(QtWidgets.QWidget):
     """
     def __init__(self):
         super().__init__(None)
-        label = QtWidgets.QLabel(globals_.trans.string('Palette', 20))
-        note_field_label = QtWidgets.QLabel(globals_.trans.string('Palette', 21))
+        label = QtWidgets.QLabel(globals_.trans_new.string('palette.event.info'))
+        note_field_label = QtWidgets.QLabel(globals_.trans_new.string('palette.event.note'))
 
         self.note_editor = QtWidgets.QLineEdit()
         self.note_editor.textEdited.connect(self.edit_event_note)
 
         self.event_tree = QtWidgets.QTreeWidget()
         self.event_tree.setColumnCount(2)
-        self.event_tree.setHeaderLabels((globals_.trans.string('Palette', 22), globals_.trans.string('Palette', 23)))
+        self.event_tree.setHeaderLabels((globals_.trans_new.section('palette.event.header').string_list()))
         self.event_tree.itemClicked.connect(self.event_selected)
         self.event_tree_items: list[QtWidgets.QTreeWidgetItem] = []
 
@@ -29,7 +29,7 @@ class EventTab(QtWidgets.QWidget):
             itm = QtWidgets.QTreeWidgetItem()
             itm.setFlags(flags)
             itm.setCheckState(0, Qt.CheckState.Unchecked)
-            itm.setText(0, globals_.trans.string('Palette', 24, '[id]', str(id + 1)))
+            itm.setText(0, globals_.trans_new.string('palette.event.event_id', ('[id]', str(id + 1))))
             itm.setText(1, '')
 
             self.event_tree.addTopLevelItem(itm)

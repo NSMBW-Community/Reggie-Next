@@ -8,6 +8,7 @@
         <string id="none">None</string>
         <string id="none_paren">(None)</string>
         <string id="name">Name</string>
+        <string id="name_colon">Name:</string>
         <string id="file">File</string>
         <string id="unknown_upper">UNKNOWN</string>
         <string id="max_area">You have reached the maximum amount of areas in this level.[br]Due to the game's limitations, Reggie Next only allows you to add up to 4 areas to a level.</string>
@@ -21,6 +22,8 @@
         <string id="empty_paren">(empty)</string>
         <string id="em_dash">-</string>
         <string id="id_data">[id]</string>
+        <string id="search">Search</string>
+        <string id="search_colon">Search:</string>
     </section>
     <section id="dialog">
         <section id="about">
@@ -180,7 +183,6 @@
         </section>
         <section id="external_database">
             <string id="title">External Database Viewer</string>
-            <string id="search">Search:</string>
             <string id="view_notes">View Notes...</string>
         </section>
         <section id="external_notes">
@@ -748,10 +750,106 @@
     </section>
     <section id="palette">
         <section id="object">
+            <string id="title">Objects</string>
+            <section id="paint_on_layer">
+                <string id="title">Paint on Layer:</string>
+                <string id="tooltip_0">[b]Layer 0:[/b][br]This layer is mostly used for hidden caves, but can also be used to overlay tiles to create effects. The flashlight effect will occur if Mario walks behind a tile on layer 0 and the zone has it enabled.[br][br]</string>
+                <string id="tooltip_1">[b]Layer 1:[/b][br]All or most of your normal level objects should be placed on this layer. This is the only layer where tile interactions (solids, slopes, etc) will work.[br][br]</string>
+                <string id="tooltip_2">[b]Layer 2:[/b][br]Background/wall tiles (such as those in the hidden caves) should be placed on this layer. Tiles on layer 2 have no effect on collisions.[br][br]</string>
+                <string id="tooltip_switch">[b]Note:[/b] To switch objects on other layers to this layer, select them and then click this button while holding down the [i]Alt[/i] key.</string>
+                <string id="change_button">Change Layer</string>
+            </section>
             <string id="tooltip">Object [id]</string>
             <string id="tooltip_anim">Object [id][br][i]This object is animated[/i]</string>
             <string id="tooltip_desc">[b]Object [id]:[/b][br][desc]</string>
             <string id="tooltip_desc_anim">[b]Object [id]:[/b][br][desc][br][i]This object is animated[/i]</string>
+        </section>
+        <section id="sprite">
+            <string id="title">Sprites</string>
+            <section id="add">
+                <string id="title">Add</string>
+                <string id="view">View:</string>
+                <string id="search_results">Search Results</string>
+                <string id="set_default">Set Default Properties</string>
+                <string id="list_item">[id]: [name]</string>
+                <string id="no_sprites_found">No sprites found</string>
+            </section>
+            <section id="current">
+                <string id="title">Current</string>
+                <string id="info">Sprites currently in this area:[br](Double-click one to jump to it instantly)</string>
+                <string id="filter">Filter:</string>
+                <section id="id_types">
+                    <string id="any">Any</string>
+                    <string id="rotation">Rotation ID</string>
+                    <string id="two_way_line">Two Way Line ID</string>
+                    <string id="water_ball">Water Ball ID</string>
+                    <string id="mushroom">Mushroom ID</string>
+                    <string id="group">Group ID</string>
+                    <string id="bolt">Bolt ID</string>
+                    <string id="target">Target Event ID</string>
+                    <string id="triggering">Triggering Event ID</string>
+                    <string id="collection">Collection ID</string>
+                    <string id="location">Location ID</string>
+                    <string id="message">Message ID</string>
+                    <string id="path">Path ID</string>
+                    <string id="path_movement">Path Movement ID</string>
+                    <string id="red_coin">Red Coin ID</string>
+                    <string id="hill">Hill ID</string>
+                    <string id="stretch">Stretch ID</string>
+                    <string id="ray">Ray ID</string>
+                    <string id="coaster">Coaster ID</string>
+                    <string id="bubble">Bubble Cannon ID</string>
+                    <string id="burner">Burner ID</string>
+                    <string id="wiggling">Wiggling ID</string>
+                    <string id="panel">Panel ID</string>
+                    <string id="colony">Colony ID</string>
+                    <string id="entrance">Entrance ID</string>
+                    <string id="path_node">Path Node ID</string>
+                    <string id="limit">Limit ID</string>
+                </section>
+            </section>
+            <section id="order">
+                <string id="title">Sprite Order</string>
+                <string id="info">Use this tab to modify the order of sprites within the level file.[br]The sprite order can sometimes change behavior between sprites.</string>
+                <string id="move_up">Move Up</string>
+                <string id="move_down">Move Down</string>
+            </section>
+        </section>
+        <section id="entrance">
+            <string id="title">Entrances</string>
+            <string id="info">Entrances currently in this area:[br](Double-click one to jump to it instantly)</string>
+        </section>
+        <section id="location">
+            <string id="title">Locations</string>
+            <string id="info">Locations currently in this area:[br](Double-click one to jump to it instantly)</string>
+        </section>
+        <section id="path">
+            <string id="title">Paths</string>
+            <string id="info">Path nodes currently in this area:[br](Double-click one to jump to it instantly)[br]To delete a path, remove all its nodes one by one.[br]To add new paths, hit the button below and right click.</string>
+            <string id="deselect_button">Deselect (then right click for new path)</string>
+        </section>
+        <section id="event">
+            <string id="title">Events</string>
+            <string id="info">Event states upon level launch:[br](Click on one to add a note)</string>
+            <string id="note">Note:</string>
+            <string id="event_id">Event [id]</string>
+            <section id="header">
+                <string id="state">State</string>
+                <string id="notes">Notes</string>
+            </section>
+        </section>
+        <section id="stamp">
+            <string id="title">Stamps</string>
+            <string id="info">Available stamps:[br](Select one or more objects/sprites to create one)</string>
+            <string id="copy_to_clipboard">Copy Selected to Clipboard</string>
+            <string id="tools">Tools</string>
+            <string id="import_set">Import Set...</string>
+            <string id="save_set_as">Save Set As...</string>
+            <string id="new_stamp">New Stamp</string>
+        </section>
+        <section id="comment">
+            <string id="title">Comments</string>
+            <string id="info">Comments currently in this area:[br](Double-click one to jump to it instantly)</string>
         </section>
     </section>
     <section id="widget">
@@ -1060,50 +1158,6 @@
         <string id="146">Generate Strings XML</string>
         <string id="147">Generates a new strings.xml and saves it to /reggiedata/translations</string>
     </section>
-    <section id="Palette">
-        <string id="0">Paint on Layer:</string>
-        <string id="1">[b]Layer 0:[/b][br]This layer is mostly used for hidden caves, but can also be used to overlay tiles to create effects. The flashlight effect will occur if Mario walks behind a tile on layer 0 and the zone has it enabled.[br][br]</string>
-        <string id="2">[b]Layer 1:[/b][br]All or most of your normal level objects should be placed on this layer. This is the only layer where tile interactions (solids, slopes, etc) will work.[br][br]</string>
-        <string id="3">[b]Layer 2:[/b][br]Background/wall tiles (such as those in the hidden caves) should be placed on this layer. Tiles on layer 2 have no effect on collisions.[br][br]</string>
-        <string id="4">View:</string>
-        <string id="5">Search:</string>
-        <string id="6">Set Default Properties</string>
-        <string id="7">Default Properties</string>
-        <string id="8">Entrances currently in this area:[br](Double-click one to jump to it instantly)</string>
-        <string id="9">Path nodes currently in this area:[br](Double-click one to jump to it instantly)[br]To delete a path, remove all its nodes one by one.[br]To add new paths, hit the button below and right click.</string>
-        <string id="10">Deselect (then right click for new path)</string>
-        <string id="11">Sprites currently in this area:[br](Double-click one to jump to it instantly)</string>
-        <string id="12">Locations currently in this area:[br](Double-click one to jump to it instantly)</string>
-        <string id="13">Objects</string>
-        <string id="14">Sprites</string>
-        <string id="15">Entrances</string>
-        <string id="16">Locations</string>
-        <string id="17">Paths</string>
-        <string id="18">Events</string>
-        <string id="19">Stamps</string>
-        <string id="20">Event states upon level launch:[br](Click on one to add a note)</string>
-        <string id="21">Note:</string>
-        <string id="22">State</string>
-        <string id="23">Notes</string>
-        <string id="24">Event [id]</string>
-        <string id="25">Add</string>
-        <string id="26">Current</string>
-        <string id="27">Available stamps:[br](Select one or more objects/sprites to create one)</string>
-        <string id="28">Add</string>
-        <string id="29">Remove</string>
-        <string id="30">Tools</string>
-        <string id="31">Import Set...</string>
-        <string id="32">Save Set As...</string>
-        <string id="33">Comments</string>
-        <string id="34">Comments currently in this area:[br](Double-click one to jump to it instantly)</string>
-        <string id="35">Name:</string>
-        <string id="36">Change Layer</string>
-        <string id="37">Copy Selected to Clipboard</string>
-        <string id="38">[b]Note:[/b] To switch objects on other layers to this layer, select them and then click this button while holding down the [i]Alt[/i] key.</string>
-        <string id="39">Sprite Order</string>
-        <string id="40">Use this tab to modify the order of sprites within the level file.[br]The sprite order can sometimes change behavior between sprites.</string>
-        <string id="41">New Stamp</string>
-    </section>
     <section id="PathDataEditor">
         <string id="0">Loops:</string>
         <string id="1">[b]Loops:[/b][br]Anything following this path will wait for any delay set at the last node and then proceed back in a straight line to the first node, and continue.</string>
@@ -1164,46 +1218,6 @@
         </stringlist>
         <string id="35">[id]: Undefined Entry</string>
         <string id="36">Unknown/Undefined</string>
-    </section>
-    <section id="Sprites">
-        <string id="16">Search Results</string>
-        <string id="17">No sprites found</string>
-        <string id="18">[id]: [name]</string>
-        <string id="19">Search</string>
-        <string id="20">Filter</string>
-        <string id="21">ID</string>
-        <string id="22">Name</string>
-        <stringlist id="23">
-            <entry>Any</entry>
-            <entry>Rotation ID</entry>
-            <entry>Two Way Line ID</entry>
-            <entry>Water Ball ID</entry>
-            <entry>Mushroom ID</entry>
-            <entry>Group ID</entry>
-            <entry>Bolt ID</entry>
-            <entry>Target Event ID</entry>
-            <entry>Triggering Event ID</entry>
-            <entry>Collection ID</entry>
-            <entry>Location ID</entry>
-            <entry>Message ID</entry>
-            <entry>Path ID</entry>
-            <entry>Path Movement ID</entry>
-            <entry>Red Coin ID</entry>
-            <entry>Hill ID</entry>
-            <entry>Stretch ID</entry>
-            <entry>Ray ID</entry>
-            <entry>Coaster ID</entry>
-            <entry>Bubble Cannon ID</entry>
-            <entry>Burner ID</entry>
-            <entry>Wiggling ID</entry>
-            <entry>Panel ID</entry>
-            <entry>Colony ID</entry>
-            <entry>Entrance ID</entry>
-            <entry>Path Node ID</entry>
-            <entry>Limit ID</entry>
-        </stringlist>
-        <string id="25">Move Up</string>
-        <string id="26">Move Down</string>
     </section>
     <section id="Statusbar">
         <string id="0">- 1 object selected</string>
