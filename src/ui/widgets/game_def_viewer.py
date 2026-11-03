@@ -8,7 +8,7 @@ class GameDefViewer(QtWidgets.QWidget):
     Widget which displays basic info about the current game definition
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initializes the widget
         """
@@ -51,7 +51,7 @@ class GameDefViewer(QtWidgets.QWidget):
 
         self.set_info()
 
-    def set_info(self):
+    def set_info(self) -> None:
         """
         Updates all info
         """

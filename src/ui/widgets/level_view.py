@@ -23,10 +23,10 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
     """
     PositionHover = QtCore.pyqtSignal(int, int)
     FrameSize = QtCore.pyqtSignal(int, int)
-    repaint = QtCore.pyqtSignal()
+    paint_signal = QtCore.pyqtSignal()
     dragstamp = False
 
-    def __init__(self, scene, parent):
+    def __init__(self, scene: QtWidgets.QGraphicsScene | None, parent: QtWidgets.QWidget | None) -> None:
         """
         Constructor
         """
@@ -53,7 +53,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
         self.PositionHover.connect(self.position_hovered)
 
-    def mousePressEvent(self, event):
+    def mousePressEvent(self, event: QtGui.QMouseEvent | None) -> None:
         """
         Overrides mouse pressing events if needed
         """
@@ -259,21 +259,31 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
         globals_.mainWindow.level_overview.update()
 
-    def resizeEvent(self, event):
+    def resizeEvent(self, event: QtGui.QResizeEvent | None) -> None:
         """
         Catches resize events
         """
+        if event is None:
+            return
+
         self.FrameSize.emit(event.size().width(), event.size().height())
         event.accept()
         QtWidgets.QGraphicsView.resizeEvent(self, event)
 
-    def mouseMoveEvent(self, event):
+    def mouseMoveEvent(self, event: QtGui.QMouseEvent | None) -> None:
         """
         Overrides mouse movement events if needed
         """
+        if event is None:
+            return
+
         pos = self.mapToScene(event.pos())
-        if pos.x() < 0: pos.setX(0)
-        if pos.y() < 0: pos.setY(0)
+        if pos.x() < 0:
+            pos.setX(0)
+
+        if pos.y() < 0:
+            pos.setY(0)
+
         self.PositionHover.emit(int(pos.x()), int(pos.y()))
 
         if ((event.buttons() & (QtCore.Qt.MouseButton.LeftButton | QtCore.Qt.MouseButton.RightButton))
@@ -299,10 +309,13 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         else:
             QtWidgets.QGraphicsView.mouseMoveEvent(self, event)
 
-    def mouseReleaseEvent(self, event):
+    def mouseReleaseEvent(self, event: QtGui.QMouseEvent | None) -> None:
         """
         Overrides mouse release events if needed
         """
+        if event is None:
+            return
+
         if event.button() in (QtCore.Qt.MouseButton.BackButton, QtCore.Qt.MouseButton.ForwardButton):
             self.xButtonScrollTimer.stop()
             return
@@ -318,10 +331,12 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
         QtWidgets.QGraphicsView.mouseReleaseEvent(self, event)
 
-    def updatePaintDraggedItems(self):
-        """Update items that are being paint-dragged (painted with
+    def updatePaintDraggedItems(self) -> bool:
+        """
+        Update items that are being paint-dragged (painted with
         right-click, and dragged while it's still held down). Returns
-        True if any items are being paint-dragged, False otherwise"""
+        True if any items are being paint-dragged, False otherwise
+        """
         if globals_.app.mouseButtons() != QtCore.Qt.MouseButton.RightButton or self.currentobj is None:
             return False
 
@@ -471,8 +486,12 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             self.scene().update()
             globals_.mainWindow.level_overview.update()
 
-    def scrollIfCursorNearEdge(self):
-        """Scroll the view if the cursor is dragging and near the edge"""
+        return True
+
+    def scrollIfCursorNearEdge(self) -> None:
+        """
+        Scroll the view if the cursor is dragging and near the edge
+        """
         pos = self.mapFromGlobal(QtGui.QCursor.pos())
 
         distFromL = pos.x()
@@ -501,10 +520,13 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
         self.updatePaintDraggedItems()
 
-    def wheelEvent(self, event):
+    def wheelEvent(self, event: QtGui.QWheelEvent | None) -> None:
         """
         Handle wheel events for zooming in/out
         """
+        if event is None:
+            return
+
         if event.modifiers() & QtCore.Qt.KeyboardModifier.ControlModifier:
             if event.angleDelta().y() > 0:
                 globals_.mainWindow.zoom_in(towards_cursor=True)
@@ -514,24 +536,23 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         else:
             super().wheelEvent(event)
 
-    def paintEvent(self, e):
+    def paintEvent(self, e: QtGui.QPaintEvent | None) -> None:
         """
         Handles paint events and fires a signal
         """
-        self.repaint.emit()
+        self.paint_signal.emit()
         QtWidgets.QGraphicsView.paintEvent(self, e)
 
-    def drawForeground(self, painter, rect):
+    def drawForeground(self, painter: QtGui.QPainter | None, rect: QtCore.QRectF) -> None:
         """
         Draws a foreground grid and other stuff
         """
         draw_foreground_grid(painter, rect, False)
 
-    def keyPressEvent(self, event):
+    def keyPressEvent(self, event: QtGui.QKeyEvent | None) -> None:
         """
         Allow for arrow keys to move selected items
         """
-
         arrow_keys = (
             QtCore.Qt.Key.Key_Left,
             QtCore.Qt.Key.Key_Right,
@@ -567,13 +588,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             curX = item.pos().x()
             curY = item.pos().y()
             item.setPos(curX + stepX, curY + stepY)
-
-    @staticmethod
-    def translateRect(rect, x, y):
-        """
-        Returns a translated copy of the rect
-        """
-        return rect.translated(x * 16, y * 16)
 
     def position_hovered(self, x: float, y: float) -> None:
         """

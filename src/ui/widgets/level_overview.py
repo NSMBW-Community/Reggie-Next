@@ -8,7 +8,7 @@ class LevelOverviewWidget(QtWidgets.QWidget):
     """
     moved = QtCore.pyqtSignal(float, float)
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Constructor for the level overview widget
         """
@@ -40,7 +40,7 @@ class LevelOverviewWidget(QtWidgets.QWidget):
         globals_.mainWindow.view.YScrollBar.valueChanged.connect(self.scroll_y_change)
         globals_.mainWindow.view.FrameSize.connect(self.size_change)
 
-    def reset(self):
+    def reset(self) -> None:
         """
         Resets the max and scale variables
         """
@@ -48,7 +48,7 @@ class LevelOverviewWidget(QtWidgets.QWidget):
         self.max_y = 40
         self.rescale()
 
-    def mouseMoveEvent(self, a0):
+    def mouseMoveEvent(self, a0: QtGui.QMouseEvent | None) -> None:
         """
         Handles mouse movement over the widget
         """
@@ -57,16 +57,17 @@ class LevelOverviewWidget(QtWidgets.QWidget):
             if a0.buttons() == QtCore.Qt.MouseButton.LeftButton:
                 self.moved.emit(a0.pos().x() * self.pos_mult, a0.pos().y() * self.pos_mult)
 
-    def mousePressEvent(self, a0):
+    def mousePressEvent(self, a0: QtGui.QMouseEvent | None) -> None:
         """
         Handles mouse pressing events over the widget
         """
         super().mouseMoveEvent(a0)
+
         if a0 is not None:
             if a0.button() == QtCore.Qt.MouseButton.LeftButton:
                 self.moved.emit(a0.pos().x() * self.pos_mult, a0.pos().y() * self.pos_mult)
 
-    def paintEvent(self, a0):
+    def paintEvent(self, a0: QtGui.QPaintEvent | None) -> None:
         """
         Paints the level overview widget
         """
@@ -144,7 +145,7 @@ class LevelOverviewWidget(QtWidgets.QWidget):
             scalar * self.width_locator, scalar * self.height_locator
         ))
 
-    def calc_size(self):
+    def calc_size(self) -> None:
         """
         Calculates self.max_x and self.max_y
         """
@@ -180,7 +181,7 @@ class LevelOverviewWidget(QtWidgets.QWidget):
 
         _, _, self.max_x, self.max_y = rect.getCoords()
 
-    def rescale(self):
+    def rescale(self) -> None:
         """
         Calculates self.scale and self.pos_mult.
         """

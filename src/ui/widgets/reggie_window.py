@@ -158,7 +158,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.setup_menu_bar()
 
         # Get the zoom level
-        self.ZoomLevel = setting('ZoomLevel', 100.0)
+        zoom = setting('ZoomLevel')
+        if zoom is not None:
+            self.ZoomLevel = zoom
+        else:
+            self.ZoomLevel = 100.0
 
         # Set up the status bar
         self.setup_status_bar()

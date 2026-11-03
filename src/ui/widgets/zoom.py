@@ -8,7 +8,7 @@ class ZoomWidget(QtWidgets.QWidget):
     Widget that allows easy zoom level control
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Creates and initializes the widget
         """
@@ -64,13 +64,13 @@ class ZoomWidget(QtWidgets.QWidget):
         self.setMaximumWidth(max_width)
         self.setMaximumHeight(max_height)
 
-    def handle_slider_moved(self):
+    def handle_slider_moved(self) -> None:
         """
         Handle the slider being moved
         """
         globals_.mainWindow.set_zoom(globals_.mainWindow.ZoomLevels[self.slider.value()])
 
-    def set_zoom_level(self, new_level):
+    def set_zoom_level(self, new_level: float) -> None:
         """
         Moves the slider to the zoom level given
         """
@@ -78,10 +78,12 @@ class ZoomWidget(QtWidgets.QWidget):
         if new_pos is not None:
             self.slider.setSliderPosition(new_pos)
 
-    def find_level_index(self, level):
+    def find_level_index(self, level: float) -> int:
         """
         Converts the Zoom level (float) to an index for the slider
         """
-        for i, main_level in enumerate(globals_.mainWindow.ZoomLevels):
-            if float(main_level) == float(level):
+        for i, zoom in enumerate(globals_.mainWindow.ZoomLevels):
+            if zoom == level:
                 return i
+
+        return 0

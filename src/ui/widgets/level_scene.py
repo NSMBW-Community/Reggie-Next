@@ -18,13 +18,13 @@ class LevelScene(QtWidgets.QGraphicsScene):
     GraphicsScene subclass for the level scene
     """
 
-    def __init__(self, *args):
+    def __init__(self, *args) -> None:
         QtWidgets.QGraphicsScene.__init__(self, *args)
         self.setBackgroundBrush(QtGui.QBrush(globals_.theme.color('bg')))
         self.is_screenshot = False
         self.selectionChanged.connect(self.change_selection)
 
-    def drawForeground(self, painter, rect):
+    def drawForeground(self, painter: QtGui.QPainter | None, rect: QtCore.QRectF) -> None:
         """
         Draw a grid for screenshots
         """

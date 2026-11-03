@@ -1,4 +1,4 @@
-from PyQt6 import QtWidgets
+from PyQt6 import QtWidgets, QtCore
 
 from data import globals_
 
@@ -13,7 +13,7 @@ class IconsOnlyTabBar(QtWidgets.QTabBar):
 
     This subclass limits tab widths to fix the problem.
     """
-    def tabSizeHint(self, index):
+    def tabSizeHint(self, index: int) -> QtCore.QSize:
         res = super().tabSizeHint(index)
         if globals_.app is None:
             return res
