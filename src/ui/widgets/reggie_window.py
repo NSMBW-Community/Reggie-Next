@@ -711,7 +711,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         dirty_text = ''
         if globals_.Dirty:
-            dirty_text = f' {globals_.trans.string('WindowTitle', 1)}' # '[unsaved]'
+            dirty_text = f' {globals_.trans_new.string('common.unsaved_bracket')}' # '[unsaved]'
 
         # ' - Reggie Next' is added automatically by Qt (see QApplication.setApplicationDisplayName())
         self.setWindowTitle(f'{self.fileTitle}{dirty_text}')
@@ -1271,7 +1271,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if new:
             # Set the filepath variables
             self.fileSavePath = None
-            self.fileTitle = str(globals_.trans.string('WindowTitle', 0))
+            self.fileTitle = str(globals_.trans_new.string('common.untitled'))
 
         elif not same:
             # Get the data
@@ -1298,7 +1298,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 # Auto-saved level. Check if there's a path associated with it:
                 if globals_.AutoSavePath == 'None':
                     self.fileSavePath = None
-                    self.fileTitle = globals_.trans.string('WindowTitle', 0)
+                    self.fileTitle = globals_.trans_new.string('common.untitled')
                 else:
                     self.fileSavePath = globals_.AutoSavePath
                     if globals_.UseFullFilepath:

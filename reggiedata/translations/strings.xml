@@ -26,6 +26,8 @@
         <string id="search_colon">Search:</string>
         <string id="list_comma">,&#32;</string>
         <string id="paren_close">)</string>
+        <string id="untitled">Untitled</string>
+        <string id="unsaved_bracket">[unsaved]</string>
     </section>
     <section id="dialog">
         <section id="about">
@@ -1255,45 +1257,5 @@
         </stringlist>
         <string id="35">[id]: Undefined Entry</string>
         <string id="36">Unknown/Undefined</string>
-    </section>
-    <section id="Statusbar">
-        <string id="0">- 1 object selected</string>
-        <string id="1">- 1 sprite selected</string>
-        <string id="2">- 1 entrance selected</string>
-        <string id="3">- 1 location selected</string>
-        <string id="4">- 1 path node selected</string>
-        <string id="5">- [x] objects selected</string>
-        <string id="6">- [x] sprites selected</string>
-        <string id="7">- [x] entrances selected</string>
-        <string id="8">- [x] locations selected</string>
-        <string id="9">- [x] path nodes selected</string>
-        <string id="10">- [x] items selected (</string>
-        <string id="11">, </string>
-        <string id="12">1 object</string>
-        <string id="13">[x] objects</string>
-        <string id="14">1 sprite</string>
-        <string id="15">[x] sprites</string>
-        <string id="16">1 entrance</string>
-        <string id="17">[x] entrances</string>
-        <string id="18">1 location</string>
-        <string id="19">[x] locations</string>
-        <string id="20">1 path node</string>
-        <string id="21">[x] path nodes</string>
-        <string id="22">)</string>
-        <string id="23">- Object under mouse: size [width]x[height] at ([xpos], [ypos]) on layer [layer]; type [type] from tileset [tileset]</string>
-        <string id="24">- Sprite under mouse: [name] at [xpos], [ypos]</string>
-        <string id="25">- Entrance under mouse: [name] at [xpos], [ypos] [dest]</string>
-        <string id="26">- Location under mouse: Location ID [id] at [xpos], [ypos]; width [width], height [height]</string>
-        <string id="27">- Path node under mouse: Path [path], Node [node] at [xpos], [ypos]</string>
-        <string id="28">([objx], [objy]) - ([sprx], [spry])</string>
-        <string id="29">- 1 comment selected</string>
-        <string id="30">- [x] comments selected</string>
-        <string id="31">1 comment</string>
-        <string id="32">[x] comments</string>
-        <string id="33">- Comment under mouse: [xpos], [ypos]; "[text]"</string>
-    </section>
-    <section id="WindowTitle">
-        <string id="0">Untitled</string>
-        <string id="1">[unsaved]</string>
     </section>
 </strings>-->
