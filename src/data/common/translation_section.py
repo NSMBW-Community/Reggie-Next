@@ -57,7 +57,26 @@ class TranslationSection:
         Therefore, the length of the returned list is always greater than or
         equal to the amount of IDs provided.
         """
-        result: list[str] = []
+        return list(self.string_dict(id, *ids).values())
+
+    def string_dict(self, id: str, *ids: str) -> dict[str, str]:
+        """
+        :param id: The ID of the first translation string to look for.
+        Iterations into deeper sections can be achieved by separating the ID
+        with periods.
+
+        **Example**: Providing the ID `common.hello_world` will return the
+        translation string with the ID `hello_world` found within the `common`
+        section.
+        :param ids: Additional IDs of strings or translation sections that
+        should be fetched.
+        :return: A dict ({`id`: `string`}) where each string's ID matches the
+        structure of one of the given IDs. If an ID matches a translation
+        section, all strings within that section but no sub-section will be
+        added to the dict. Therefore, the length of the returned dict is always
+        greater than or equal to the amount of IDs provided.
+        """
+        result: dict[str, str] = {}
         for sub_id in (id, *ids):
             sub_result, stack_trace = self._fetch(sub_id)
             if sub_result is None or len(stack_trace):
@@ -65,12 +84,12 @@ class TranslationSection:
                 continue
 
             if isinstance(sub_result, str):
-                result.append(sub_result)
+                result[sub_id] = sub_result
                 continue
 
-            result += [
-                item for item in sub_result._items.values() if isinstance(item, str)
-            ]
+            result |= {
+                key: value for key, value in sub_result._items.items() if isinstance(value, str)
+            }
 
         return result
 
