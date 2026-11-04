@@ -46,11 +46,11 @@ class ToolbarTab(PreferenceTabWidget):
         settings_lyt = QtWidgets.QVBoxLayout()
         help_lyt = QtWidgets.QVBoxLayout()
 
-        file_box = QtWidgets.QGroupBox(globals_.trans_new.string('menu_bar.file'))
-        edit_box = QtWidgets.QGroupBox(globals_.trans_new.string('menu_bar.edit'))
-        view_box = QtWidgets.QGroupBox(globals_.trans_new.string('menu_bar.view'))
-        settings_box = QtWidgets.QGroupBox(globals_.trans_new.string('menu_bar.settings'))
-        help_box = QtWidgets.QGroupBox(globals_.trans_new.string('menu_bar.help'))
+        file_box = QtWidgets.QGroupBox(globals_.trans_new.string('menu_bar.file.name'))
+        edit_box = QtWidgets.QGroupBox(globals_.trans_new.string('menu_bar.edit.name'))
+        view_box = QtWidgets.QGroupBox(globals_.trans_new.string('menu_bar.view.name'))
+        settings_box = QtWidgets.QGroupBox(globals_.trans_new.string('menu_bar.settings.name'))
+        help_box = QtWidgets.QGroupBox(globals_.trans_new.string('menu_bar.help.name'))
 
         # Arrange this data so it can be iterated over
         menu_items = (

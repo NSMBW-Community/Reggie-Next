@@ -311,7 +311,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         menubar = QtWidgets.QMenuBar()
         self.setMenuBar(menubar)
 
-        fmenu = menubar.addMenu(globals_.trans_new.string('menu_bar.file'))
+        fmenu = menubar.addMenu(globals_.trans_new.string('menu_bar.file.name'))
         if fmenu is not None:
             fmenu.addAction(self.action_list['newlevel'])
             fmenu.addAction(self.action_list['openfromname'])
@@ -330,7 +330,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             fmenu.addSeparator()
             fmenu.addAction(self.action_list['exit'])
 
-        emenu = menubar.addMenu(globals_.trans_new.string('menu_bar.edit'))
+        emenu = menubar.addMenu(globals_.trans_new.string('menu_bar.edit.name'))
         if emenu is not None:
             emenu.addAction(self.action_list['selectall'])
             emenu.addAction(self.action_list['deselect'])
@@ -357,7 +357,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             emenu.addAction(self.action_list['freezepaths'])
             emenu.addAction(self.action_list['freezecomments'])
 
-        vmenu = menubar.addMenu(globals_.trans_new.string('menu_bar.view'))
+        vmenu = menubar.addMenu(globals_.trans_new.string('menu_bar.view.name'))
         if vmenu is not None:
             vmenu.addAction(self.action_list['showlay0'])
             vmenu.addAction(self.action_list['showlay1'])
@@ -385,7 +385,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Several items are assigned to this later, so we need to keep track of it
         self.vmenu = vmenu
 
-        lmenu = menubar.addMenu(globals_.trans_new.string('menu_bar.settings'))
+        lmenu = menubar.addMenu(globals_.trans_new.string('menu_bar.settings.name'))
         if lmenu is not None:
             lmenu.addAction(self.action_list['areaoptions'])
             lmenu.addAction(self.action_list['camprofiles'])
@@ -399,7 +399,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             lmenu.addAction(self.action_list['reloadgfx'])
             lmenu.addAction(self.action_list['reloaddata'])
 
-        hmenu = menubar.addMenu(globals_.trans_new.string('menu_bar.help'))
+        hmenu = menubar.addMenu(globals_.trans_new.string('menu_bar.help.name'))
         self.setup_help_menu(hmenu)
 
         # Create a toolbar
@@ -549,7 +549,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             toggled = new_toggled
 
         if not hasattr(self, 'toolbar'):
-            self.toolbar = self.addToolBar(globals_.trans_new.string('menu_bar.editor_toolbar'))
+            self.toolbar = self.addToolBar(globals_.trans_new.string('menu_bar.editor_toolbar.name'))
         else:
             if self.toolbar is not None:
                 self.toolbar.clear()

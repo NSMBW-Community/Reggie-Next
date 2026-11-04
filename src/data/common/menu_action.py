@@ -1,3 +1,5 @@
+from collections.abc import Callable
+
 from PyQt6 import QtCore, QtGui
 
 
@@ -5,14 +7,19 @@ class MenuAction:
     """Represents a menu action."""
 
     def __init__(
-        self, shortname: str, function, icon: QtGui.QIcon, label: str | None, status_text: str | None,
-        key_sequence: QtGui.QKeySequence | QtGui.QKeySequence.StandardKey | str | None, checkable = False
-    ):
+        self,
+        shortname: str,
+        function: Callable | None,
+        icon: QtGui.QIcon,
+        strings: dict[str, str],
+        key_sequence: QtGui.QKeySequence | QtGui.QKeySequence.StandardKey | str | None,
+        checkable: bool = False,
+    ) -> None:
         self.shortname = shortname
         self.function = function
         self.icon = icon
-        self.label = label
-        self.status_text = status_text
+        self.label = strings.get("name", "")
+        self.status_text = strings.get("tooltip")
         self.key_sequence = key_sequence
         self.is_checkable = checkable
 
