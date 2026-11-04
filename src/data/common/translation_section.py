@@ -30,7 +30,7 @@ class TranslationSection:
         """
         result, stack_trace = self._fetch(id)
 
-        if not isinstance(result, str):
+        if not isinstance(result, str) or result == id:
             self._log_id_error(id, stack_trace)
             return id
 
