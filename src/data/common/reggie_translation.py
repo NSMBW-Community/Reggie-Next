@@ -375,7 +375,6 @@ class ReggieTranslation:
                 25: '- Entrance under mouse: [name] at [xpos], [ypos] [dest]',
                 26: '- Location under mouse: Location ID [id] at [xpos], [ypos]; width [width], height [height]',
                 27: '- Path node under mouse: Path [path], Node [node] at [xpos], [ypos]',
-                28: '([objx], [objy]) - ([sprx], [spry])',
                 29: '- 1 comment selected',
                 30: '- [x] comments selected',
                 31: '1 comment',

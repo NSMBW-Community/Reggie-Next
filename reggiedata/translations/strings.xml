@@ -24,6 +24,8 @@
         <string id="id_data">[id]</string>
         <string id="search">Search</string>
         <string id="search_colon">Search:</string>
+        <string id="list_comma">,&#32;</string>
+        <string id="paren_close">)</string>
     </section>
     <section id="dialog">
         <section id="about">
@@ -906,6 +908,50 @@
         </section>
         <section id="keybind_line_edit">
             <string id="no_keybind">No keybind set</string>
+        </section>
+        <section id="status_bar">
+            <section id="selected_singular">
+                <string id="object">- 1 object selected</string>
+                <string id="sprite">- 1 sprite selected</string>
+                <string id="entrance">- 1 entrance selected</string>
+                <string id="location">- 1 location selected</string>
+                <string id="path_node">- 1 path node selected</string>
+                <string id="comment">- 1 comment selected</string>
+            </section>
+            <section id="selected_plural">
+                <string id="object">- [x] objects selected</string>
+                <string id="sprite">- [x] sprites selected</string>
+                <string id="entrance">- [x] entrances selected</string>
+                <string id="location">- [x] locations selected</string>
+                <string id="path_node">- [x] path nodes selected</string>
+                <string id="comment">- [x] comments selected</string>
+                <string id="item">- [x] items selected (</string>
+            </section>
+            <section id="count_singular">
+                <string id="object">1 object</string>
+                <string id="sprite">1 sprite</string>
+                <string id="entrance">1 entrance</string>
+                <string id="location">1 location</string>
+                <string id="path_node">1 path node</string>
+                <string id="comment">1 comment</string>
+            </section>
+            <section id="count_plural">
+                <string id="object">[x] objects</string>
+                <string id="sprite">[x] sprites</string>
+                <string id="entrance">[x] entrances</string>
+                <string id="location">[x] locations</string>
+                <string id="path_node">[x] path nodes</string>
+                <string id="comment">[x] comments</string>
+            </section>
+            <section id="under_mouse">
+                <string id="object">- Object under mouse: size [width]x[height] at ([xpos], [ypos]) on layer [layer]; type [type] from tileset [tileset]</string>
+                <string id="sprite">- Sprite under mouse: [name] at [xpos], [ypos]</string>
+                <string id="entrance">- Entrance under mouse: [name] at [xpos], [ypos] [dest]</string>
+                <string id="location">- Location under mouse: Location ID [id] at [xpos], [ypos]; width [width], height [height]</string>
+                <string id="path_node">- Path node under mouse: Path [path], Node [node] at [xpos], [ypos]</string>
+                <string id="comment">- Comment under mouse: [xpos], [ypos]; "[text]"</string>
+            </section>
+            <string id="cursor_pos">([objx], [objy]) - ([sprx], [spry])</string>
         </section>
     </section>
 </translation>
