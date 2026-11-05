@@ -695,6 +695,7 @@
         </section>
         <section id="game_patch">
             <string id="no_name">The "[folder]" game patch has no 'name' attribute on the XML root node. The default game patch will instead be loaded.</string>
+            <string id="restore_old">Restoring the previous game patch ([real_gamedef]) failed after failing to load [name]! The default game patch will instead be loaded.</string>
         </section>
         <section id="invalid_level">
             <string id="description">This file doesn't seem to be a valid level.</string>

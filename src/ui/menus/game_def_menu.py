@@ -89,7 +89,9 @@ class GameDefMenu(QtWidgets.QMenu):
         real_gamedef = setting('LastGameDef')
         success = LoadGameDef(real_gamedef)
         if not success:
-            raise ValueError(f"Restoring the previous game def ({real_gamedef!r}) failed after failing to load new game def ({name!r})")
+            QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('error.title.error'), globals_.trans_new.string('error.game_patch.restore_old'))
+            LoadGameDef(None)
+            return
 
         self.update_flag = True
         for act in self.actGroup.actions():
