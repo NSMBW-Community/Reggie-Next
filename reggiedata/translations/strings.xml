@@ -18,6 +18,7 @@
         <string id="add">Add</string>
         <string id="remove">Remove</string>
         <string id="id">ID</string>
+        <string id="id_colon">ID:</string>
         <string id="ellipses">...</string>
         <string id="empty_paren">(empty)</string>
         <string id="em_dash">-</string>
@@ -193,7 +194,6 @@
             <string id="info">[b]Entrance [id]:[/b]</string>
             <string id="type_data">([id]) [name]</string>
             <section id="id">
-                <string id="name">ID:</string>
                 <string id="tooltip">[b]ID:[/b][br]Must be different from all other IDs</string>
             </section>
             <section id="type">
@@ -293,7 +293,6 @@
             <string id="info">[b]Location [id]:[/b]</string>
             <string id="snap_to_grid">Snap to Grid</string>
             <section id="id">
-                <string id="name">ID:</string>
                 <string id="tooltip">[b]ID:[/b][br]Must be different from all other IDs</string>
             </section>
             <section id="pos_x">
@@ -333,6 +332,37 @@
                 <string id="new_password">New Password:</string>
                 <string id="verify_password">Verify Password:</string>
             </section>
+        </section>
+        <section id="path_data_editor">
+            <string id="title">Modify Selected Path Node Properties</string>
+            <section id="info">
+                <string id="path">[b]Path [id][/b]</string>
+                <string id="node">[b]Node [id][/b]</string>
+            </section>
+            <section id="loops">
+                <string id="name">Loops:</string>
+                <string id="tooltip">[b]Loops:[/b][br]Anything following this path will wait for any delay set at the last node and then proceed back in a straight line to the first node, and continue.</string>
+            </section>
+            <section id="speed">
+                <string id="name">Speed:</string>
+                <string id="tooltip">[b]Speed:[/b][br]Unknown unit. Mess around and report your findings!</string>
+            </section>
+            <section id="accel">
+                <string id="name">Accel:</string>
+                <string id="tooltip">[b]Accel:[/b][br]Unknown unit. Mess around and report your findings!</string>
+            </section>
+            <section id="delay">
+                <string id="name">Delay:</string>
+                <string id="tooltip">[b]Delay:[/b][br]Amount of time to stop here (at this node) before continuing to next node. Unit is 1/60 of a second (60 for 1 second)</string>
+            </section>
+            <section id="placement_mode">
+                <section id="names">
+                    <string id="append">Append Node to End of Path</string>
+                    <string id="insert">Insert After Selected Node</string>
+                </section>
+                <string id="tooltip">[b]Placement Mode:[/b][br]This determines how new nodes will be added onto the path.[br][b]Appending[/b] will add each node to the end of the path.[br][b]Inserting[/b] will add a new node after the [i]selected[/i] node.</string>
+            </section>
+            <string id="none_selected">[i]No Node Selected[/i]</string>
         </section>
         <section id="preferences">
             <string id="title">Reggie Next Preferences</string>
@@ -1387,24 +1417,6 @@
     </section>
 </translation>
 <!--<strings>
-    <section id="PathDataEditor">
-        <string id="0">Loops:</string>
-        <string id="1">[b]Loops:[/b][br]Anything following this path will wait for any delay set at the last node and then proceed back in a straight line to the first node, and continue.</string>
-        <string id="2">Speed:</string>
-        <string id="3">[b]Speed:[/b][br]Unknown unit. Mess around and report your findings!</string>
-        <string id="4">Accel:</string>
-        <string id="5">[b]Accel:[/b][br]Unknown unit. Mess around and report your findings!</string>
-        <string id="6">Delay:</string>
-        <string id="7">[b]Delay:[/b][br]Amount of time to stop here (at this node) before continuing to next node. Unit is 1/60 of a second (60 for 1 second)</string>
-        <string id="8">[b]Path [id][/b]</string>
-        <string id="9">[b]Node [id][/b]</string>
-        <string id="10">Modify Selected Path Node Properties</string>
-        <string id="11">ID</string>
-        <string id="12">Append Node to End of Path</string>
-        <string id="13">Insert After Selected Node</string>
-        <string id="14">[b]Placement Mode:[/b][br]This determines how new nodes will be added onto the path.[br][b]Appending[/b] will add each node to the end of the path.[br][b]Inserting[/b] will add a new node after the [i]selected[/i] node.</string>
-        <string id="15">[i]No Node Selected[/i]</string>
-    </section>
     <section id="SpriteDataEditor">
         <string id="0">Modify Selected Sprite Properties</string>
         <string id="1">[b][name][/b]: [note]</string>

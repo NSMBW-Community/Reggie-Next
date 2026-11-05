@@ -627,7 +627,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Path (Node) Editor
         self.path_editor = PathNodeEditorWidget()
-        path_dock = self.create_dock_widget(globals_.trans.string('PathDataEditor', 10), 'pathnodeeditor', self.path_editor,
+        path_dock = self.create_dock_widget(globals_.trans.string('dialog.path_data_editor.title'), 'pathnodeeditor', self.path_editor,
                                             features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True, is_editor=True)
         self.path_editor_dock = cast(ItemEditorDockWidget, path_dock)
 

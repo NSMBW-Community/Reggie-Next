@@ -56,7 +56,7 @@ class LocationEditorWidget(QtWidgets.QWidget):
         layout.addWidget(self.editingLabel, 0, 0, 1, 4, QtCore.Qt.AlignmentFlag.AlignTop)
 
         # Add labels
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.location_data_editor.id.name')), 1, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
+        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('common.id_colon')), 1, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
 
         layout.addWidget(createHorzLine(), 2, 0, 1, 4)
 

@@ -97,7 +97,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         layout.addWidget(self.editing_label, 0, 0, 1, 4, QtCore.Qt.AlignmentFlag.AlignTop)
 
         # add labels
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.entrance_data_editor.id.name')), 3, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
+        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('common.id_colon')), 3, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
         layout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.entrance_data_editor.type.name')), 1, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
 
         layout.addWidget(createHorzLine(), 2, 0, 1, 4)
