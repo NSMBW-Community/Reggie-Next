@@ -425,20 +425,22 @@ class ReggieWindow(QtWidgets.QMainWindow):
         menu.addSeparator()
 
         # Add version info actions
-        if lib_versions["nsmblib-updated"] is not None:
-            value = str(lib_versions["nsmblib-updated"])
-            version = int(value[:4]), int(value[4:6]), int(value[6:8]), int(value[8:10])
-            nsmblib_info_text = "Using NSMBLib Updated %d.%d.%d.%d" % version
+        using_id = 'menu_bar.help.item.module_info.using'
+
+        if lib_versions['nsmblib-updated'] is not None:
+            value = str(lib_versions['nsmblib-updated'])
+            version = f'{value[:4]}.{value[4:6]}.{value[6:8]}.{value[8:10]}'
+            nsmblib_info = globals_.trans_new.string(using_id, ('[module]', 'NSMBLib-Updated'), ('[version]', version))
         elif lib_versions["nsmblib"] is not None:
-            nsmblib_info_text = "Using NSMBLib %d" % lib_versions["nsmblib"]
+            nsmblib_info = globals_.trans_new.string(using_id, ('[module]', 'NSMBLib'), ('[version]', lib_versions['nsmblib']))
         else:
-            nsmblib_info_text = "Not using NSMBLib"
+            nsmblib_info = globals_.trans_new.string('menu_bar.help.item.module_info.not_using', ('[module]', 'NSMBLib'))
 
         info_labels = [
-            "Using Python %d.%d.%d" % sys.version_info[:3],
-            "Using PyQt %s" % QtCore.PYQT_VERSION_STR,
-            "Using Qt %s" % QtCore.QT_VERSION_STR,
-            nsmblib_info_text
+            globals_.trans_new.string(using_id, ('[module]', 'Python'), ('[version]', '.'.join(str(_) for _ in sys.version_info[:3]))),
+            globals_.trans_new.string(using_id, ('[module]', 'PyQt'), ('[version]', QtCore.PYQT_VERSION_STR)),
+            globals_.trans_new.string(using_id, ('[module]', 'Qt'), ('[version]', QtCore.QT_VERSION_STR)),
+            nsmblib_info
         ]
 
         for label in info_labels:

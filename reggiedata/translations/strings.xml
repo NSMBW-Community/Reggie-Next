@@ -1137,6 +1137,10 @@
                     <string id="name">About PyQt...</string>
                     <string id="tooltip">About the Qt library Reggie Next is based on</string>
                 </section>
+                <section id="module_info">
+                    <string id="using">Using [module] [version]</string>
+                    <string id="not_using">Not using [module]</string>
+                </section>
             </section>
         </section>
         <section id="editor_toolbar">
