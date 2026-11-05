@@ -1269,10 +1269,6 @@
                     <string id="name">Reggie Next Tips...</string>
                     <string id="tooltip">Tips and controls for beginners and power users</string>
                 </section>
-                <section id="generate_strings_xml">
-                    <string id="name">Generate Strings XML</string>
-                    <string id="tooltip">Generates a new strings.xml and saves it to /reggiedata/translations</string>
-                </section>
                 <section id="about_qt">
                     <string id="name">About PyQt...</string>
                     <string id="tooltip">About the Qt library Reggie Next is based on</string>

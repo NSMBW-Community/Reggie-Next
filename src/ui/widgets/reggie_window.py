@@ -419,8 +419,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         menu.addAction(self.action_list['helpbox'])
         menu.addAction(self.action_list['tipbox'])
         menu.addSeparator()
-        menu.addAction(self.action_list['genstrxml'])
-        menu.addSeparator()
         menu.addAction(self.action_list['aboutqt'])
         menu.addSeparator()
 

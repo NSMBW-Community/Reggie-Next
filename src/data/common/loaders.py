@@ -925,9 +925,6 @@ def LoadMenuActions(mw: "ReggieWindow") -> None:
             'tipbox', mw.open_tips, GetIcon('light-bulb'), globals_.trans.string_dict('menu_bar.help.item.tips'), GetKeybind('tipbox')
         ),
         MenuAction(
-            'genstrxml', lambda: print('no'), GetIcon('document-code'), globals_.trans.string_dict('menu_bar.help.item.generate_strings_xml'), GetKeybind('genstrxml')
-        ),
-        MenuAction(
             'aboutqt', lambda: QtWidgets.QMessageBox.aboutQt(None), GetIcon('qt'), globals_.trans.string_dict('menu_bar.help.item.about_qt'), GetKeybind('aboutqt')
         ),
     )
@@ -1212,7 +1209,6 @@ def LoadDefaultKeybinds() -> None:
         Keybind("helpbox", globals_.trans.string("menu_bar.help.item.help_contents.name"), "Ctrl+Shift+H"),
         Keybind("tipbox", globals_.trans.string("menu_bar.help.item.tips.name"), "Ctrl+Shift+T"),
         Keybind("aboutqt", globals_.trans.string("menu_bar.help.item.about_qt.name"), "Ctrl+Shift+Q"),
-        Keybind("genstrxml", globals_.trans.string("menu_bar.help.item.generate_strings_xml.name"), None),
     ]
 
 
