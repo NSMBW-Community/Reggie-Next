@@ -182,7 +182,7 @@ class ZoneItem(LevelEditorItem):
         """
         Updates the zone's title
         """
-        self.title = globals_.trans_new.string('common.zone_num', ('[num]', self.id + 1))
+        self.title = globals_.trans.string('common.zone_num', ('[num]', self.id + 1))
 
     def UpdateRects(self) -> None:
         """

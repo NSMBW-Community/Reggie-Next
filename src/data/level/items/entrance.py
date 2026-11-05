@@ -208,8 +208,8 @@ class EntranceItem(LevelEditorItem):
             id_ = find_first_available_id({id for id in all_ids if id is not None}, 256)
 
         if id_ is None:
-            result = QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('levelitem.entrance.limit_warning.title'),
-                                                   globals_.trans_new.string('levelitem.entrance.limit_warning.text'),
+            result = QtWidgets.QMessageBox.warning(None, globals_.trans.string('levelitem.entrance.limit_warning.title'),
+                                                   globals_.trans.string('levelitem.entrance.limit_warning.text'),
                                                     QtWidgets.QMessageBox.StandardButton.Ok)
             if result == QtWidgets.QMessageBox.StandardButton.Ok:
                 return None
@@ -251,40 +251,40 @@ class EntranceItem(LevelEditorItem):
         Updates the entrance object's tooltip
         """
         if self.enttype >= len(globals_.EntranceTypeNames):
-            name = globals_.trans_new.string('levelitem.entrance.unknown_type', ('[type]', self.enttype))
+            name = globals_.trans.string('levelitem.entrance.unknown_type', ('[type]', self.enttype))
         else:
             name = globals_.EntranceTypeNames[self.enttype]
 
         if self.leave_level:
-            destination = globals_.trans_new.string('levelitem.entrance.info.goes_to_world_map')
+            destination = globals_.trans.string('levelitem.entrance.info.goes_to_world_map')
         elif (self.entsettings & 0x80) != 0:
-            destination = globals_.trans_new.string('levelitem.entrance.info.cannot_enter')
+            destination = globals_.trans.string('levelitem.entrance.info.cannot_enter')
         elif self.destarea == 0:
-            destination = globals_.trans_new.string('levelitem.entrance.dest_id_this_area', ('[id]', self.destentrance))
+            destination = globals_.trans.string('levelitem.entrance.dest_id_this_area', ('[id]', self.destentrance))
         else:
-            destination = globals_.trans_new.string('levelitem.entrance.dest_id_other_area', ('[id]', self.destentrance), ('[area]', self.destarea))
+            destination = globals_.trans.string('levelitem.entrance.dest_id_other_area', ('[id]', self.destentrance), ('[area]', self.destarea))
 
         self.name = name
         self.destination = destination
-        self.setToolTip(globals_.trans_new.string('levelitem.entrance.tooltip', ('[ent]', self.entid), ('[type]', name), ('[dest]', destination)))
+        self.setToolTip(globals_.trans.string('levelitem.entrance.tooltip', ('[ent]', self.entid), ('[type]', name), ('[dest]', destination)))
 
     def ListString(self) -> str | None:
         """
         Returns a string that can be used to describe the entrance in a list
         """
         if self.enttype >= len(globals_.EntranceTypeNames):
-            name = globals_.trans_new.string('levelitem.entrance.unknown_type', ('[type]', self.enttype))
+            name = globals_.trans.string('levelitem.entrance.unknown_type', ('[type]', self.enttype))
         else:
             name = globals_.EntranceTypeNames[self.enttype]
 
         if self.leave_level:
-            info = globals_.trans_new.string('levelitem.entrance.info.goes_to_world_map')
+            info = globals_.trans.string('levelitem.entrance.info.goes_to_world_map')
         elif (self.entsettings & 0x80) != 0:
-            info = globals_.trans_new.string('levelitem.entrance.info.cannot_enter')
+            info = globals_.trans.string('levelitem.entrance.info.cannot_enter')
         else:
-            info = globals_.trans_new.string('levelitem.entrance.info.can_enter')
+            info = globals_.trans.string('levelitem.entrance.info.can_enter')
 
-        return globals_.trans_new.string('levelitem.entrance.palette_info', ('[id]', self.entid), ('[name]', name),
+        return globals_.trans.string('levelitem.entrance.palette_info', ('[id]', self.entid), ('[name]', name),
                                          ('[info]', info), ('[x]', self.objx), ('[y]', self.objy))
 
     def __lt__(self, other: 'EntranceItem') -> bool:

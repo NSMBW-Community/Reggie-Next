@@ -29,28 +29,28 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         # Create widgets
         self.speed = QtWidgets.QDoubleSpinBox()
         self.speed.setRange(-FLT_MAX, FLT_MAX)
-        self.speed.setToolTip(globals_.trans_new.string('PathDataEditor', 3))
+        self.speed.setToolTip(globals_.trans.string('PathDataEditor', 3))
         self.speed.setDecimals(FLT_DIG)
         self.speed.valueChanged.connect(self.handle_speed_changed)
 
         self.accel = QtWidgets.QDoubleSpinBox()
         self.accel.setRange(-FLT_MAX, FLT_MAX)
-        self.accel.setToolTip(globals_.trans_new.string('PathDataEditor', 5))
+        self.accel.setToolTip(globals_.trans.string('PathDataEditor', 5))
         self.accel.setDecimals(FLT_DIG)
         self.accel.valueChanged.connect(self.handle_accel_changed)
 
         self.delay = QtWidgets.QSpinBox()
         self.delay.setRange(0, 65535)
-        self.delay.setToolTip(globals_.trans_new.string('PathDataEditor', 7))
+        self.delay.setToolTip(globals_.trans.string('PathDataEditor', 7))
         self.delay.valueChanged.connect(self.handle_delay_changed)
 
         self.loops = QtWidgets.QCheckBox()
-        self.loops.setToolTip(globals_.trans_new.string('PathDataEditor', 1))
+        self.loops.setToolTip(globals_.trans.string('PathDataEditor', 1))
         self.loops.clicked.connect(self.handle_loops_changed)
 
         self.mode_button = QtWidgets.QPushButton()
         self.mode_button.clicked.connect(self.handle_mode_changed)
-        self.mode_button.setToolTip(globals_.trans_new.string('PathDataEditor', 14))
+        self.mode_button.setToolTip(globals_.trans.string('PathDataEditor', 14))
         self.set_mode_text()
 
         # Create a layout
@@ -72,16 +72,16 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         layout.addRow(self.editing_path_label)
 
         # Add labels
-        layout.addRow(globals_.trans_new.string('PathDataEditor', 11), self.path_id)
-        layout.addRow(globals_.trans_new.string('PathDataEditor', 0), self.loops)
+        layout.addRow(globals_.trans.string('PathDataEditor', 11), self.path_id)
+        layout.addRow(globals_.trans.string('PathDataEditor', 0), self.loops)
         layout.addRow(self.mode_button)
         layout.addRow(createHorzLine())
 
         layout.addRow(self.editing_label)
-        layout.addRow(globals_.trans_new.string('PathDataEditor', 11), self.node_id)
-        layout.addRow(globals_.trans_new.string('PathDataEditor', 2), self.speed)
-        layout.addRow(globals_.trans_new.string('PathDataEditor', 4), self.accel)
-        layout.addRow(globals_.trans_new.string('PathDataEditor', 6), self.delay)
+        layout.addRow(globals_.trans.string('PathDataEditor', 11), self.node_id)
+        layout.addRow(globals_.trans.string('PathDataEditor', 2), self.speed)
+        layout.addRow(globals_.trans.string('PathDataEditor', 4), self.accel)
+        layout.addRow(globals_.trans.string('PathDataEditor', 6), self.delay)
 
         self.set_dummy()
 
@@ -109,7 +109,7 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         """
         self.set_widget_visibility(False)
 
-        self.editing_label.setText(globals_.trans_new.string('PathDataEditor', 15))
+        self.editing_label.setText(globals_.trans.string('PathDataEditor', 15))
         self.editing_label.setVisible(True)
 
     def setPath(self, path_item: PathItem):
@@ -123,8 +123,8 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
 
         self.path_node = path_item
 
-        self.editing_path_label.setText(globals_.trans_new.string('PathDataEditor', 8, ('[id]', path_item.pathid)))
-        self.editing_label.setText(globals_.trans_new.string('PathDataEditor', 9, ('[id]', path_item.nodeid)))
+        self.editing_path_label.setText(globals_.trans.string('PathDataEditor', 8, ('[id]', path_item.pathid)))
+        self.editing_label.setText(globals_.trans.string('PathDataEditor', 9, ('[id]', path_item.nodeid)))
 
         path: Path = path_item.path
         speed, accel, delay = path.get_data_for_node(path_item.nodeid)
@@ -219,7 +219,7 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         Sets the mode button text
         """
         text_id = 13 if globals_.InsertPathNode else 12
-        self.mode_button.setText(globals_.trans_new.string('PathDataEditor', text_id))
+        self.mode_button.setText(globals_.trans.string('PathDataEditor', text_id))
 
     def handle_mode_changed(self):
         """

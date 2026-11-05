@@ -45,7 +45,7 @@ class AppearanceTab(PreferenceTabWidget):
         # Create the window style options
         keys = QtWidgets.QStyleFactory().keys()
         self.window_style = QtWidgets.QComboBox()
-        self.window_style.setToolTip(globals_.trans_new.string('dialog.preferences.tab.appearance.window_style.tooltip'))
+        self.window_style.setToolTip(globals_.trans.string('dialog.preferences.tab.appearance.window_style.tooltip'))
         self.window_style.addItems(keys)
 
         ui_style = setting('uiStyle', 'Fusion')
@@ -53,50 +53,50 @@ class AppearanceTab(PreferenceTabWidget):
             self.window_style.setCurrentIndex(keys.index(ui_style))
 
         # Use Rounded Rectangles
-        self.rounded_rects = QtWidgets.QCheckBox(globals_.trans_new.string('dialog.preferences.tab.appearance.rounded_rectangles.text'))
-        self.rounded_rects.setToolTip(globals_.trans_new.string('dialog.preferences.tab.appearance.rounded_rectangles.tooltip'))
+        self.rounded_rects = QtWidgets.QCheckBox(globals_.trans.string('dialog.preferences.tab.appearance.rounded_rectangles.text'))
+        self.rounded_rects.setToolTip(globals_.trans.string('dialog.preferences.tab.appearance.rounded_rectangles.tooltip'))
         self.rounded_rects.setChecked(globals_.UseRoundedRectangles)
         self.rounded_rects.clicked.connect(self.update_preview)
 
         # Dark Mode
-        self.dark_mode = QtWidgets.QCheckBox(globals_.trans_new.string('dialog.preferences.tab.appearance.dark_mode.text'))
-        self.dark_mode.setToolTip(globals_.trans_new.string('dialog.preferences.tab.appearance.dark_mode.tooltip'))
+        self.dark_mode = QtWidgets.QCheckBox(globals_.trans.string('dialog.preferences.tab.appearance.dark_mode.text'))
+        self.dark_mode.setToolTip(globals_.trans.string('dialog.preferences.tab.appearance.dark_mode.tooltip'))
         self.dark_mode.setChecked(globals_.DarkMode)
 
         # Tilesets Tab Position
         self.tileset_tab_pos = QtWidgets.QComboBox()
-        self.tileset_tab_pos.setToolTip(globals_.trans_new.string('dialog.preferences.tab.appearance.tileset_tabs.tooltip'))
-        self.tileset_tab_pos.addItems(globals_.trans_new.string_list('dialog.preferences.tab.appearance.tileset_tabs.options'))
+        self.tileset_tab_pos.setToolTip(globals_.trans.string('dialog.preferences.tab.appearance.tileset_tabs.tooltip'))
+        self.tileset_tab_pos.addItems(globals_.trans.string_list('dialog.preferences.tab.appearance.tileset_tabs.options'))
         self.tileset_tab_pos.setCurrentIndex(globals_.TilesetTabPos)
 
         # Display full filepath
-        self.full_file_path = QtWidgets.QCheckBox(globals_.trans_new.string('dialog.preferences.tab.appearance.display_full_path'))
+        self.full_file_path = QtWidgets.QCheckBox(globals_.trans.string('dialog.preferences.tab.appearance.display_full_path'))
         self.full_file_path.setChecked(globals_.UseFullFilepath)
 
         # Cursor modes
         self.cursor_mode = QtWidgets.QComboBox()
         self.cursor_mode.setMaximumWidth(256)
-        self.cursor_mode.addItems(globals_.trans_new.string_list('dialog.preferences.tab.appearance.cursor_mode.options'))
-        self.cursor_mode.setToolTip(globals_.trans_new.string('dialog.preferences.tab.appearance.cursor_mode.tooltip'))
+        self.cursor_mode.addItems(globals_.trans.string_list('dialog.preferences.tab.appearance.cursor_mode.options'))
+        self.cursor_mode.setToolTip(globals_.trans.string('dialog.preferences.tab.appearance.cursor_mode.tooltip'))
         self.cursor_mode.setCurrentIndex(globals_.CursorMode)
 
         # Ignore Windows Scaling
-        self.ignore_win_scale = QtWidgets.QCheckBox(globals_.trans_new.string('dialog.preferences.tab.appearance.ignore_windows_scale.text'))
-        self.ignore_win_scale.setToolTip(globals_.trans_new.string('dialog.preferences.tab.appearance.ignore_windows_scale.tooltip'))
+        self.ignore_win_scale = QtWidgets.QCheckBox(globals_.trans.string('dialog.preferences.tab.appearance.ignore_windows_scale.text'))
+        self.ignore_win_scale.setToolTip(globals_.trans.string('dialog.preferences.tab.appearance.ignore_windows_scale.tooltip'))
         self.ignore_win_scale.setChecked(globals_.IgnoreWinScale)
 
-        self.show_tileset_preview = QtWidgets.QCheckBox(globals_.trans_new.string('dialog.preferences.tab.appearance.show_tileset_preview'))
+        self.show_tileset_preview = QtWidgets.QCheckBox(globals_.trans.string('dialog.preferences.tab.appearance.show_tileset_preview'))
         self.show_tileset_preview.setChecked(globals_.ShowTilesetPreview)
 
-        settings_box = QtWidgets.QGroupBox(globals_.trans_new.string('dialog.preferences.tab.appearance.style'))
+        settings_box = QtWidgets.QGroupBox(globals_.trans.string('dialog.preferences.tab.appearance.style'))
         L = QtWidgets.QFormLayout()
-        L.addRow(globals_.trans_new.string('dialog.preferences.tab.appearance.theme'), self.theme_combo)
-        L.addRow(globals_.trans_new.string('dialog.preferences.tab.appearance.window_style.text'), self.window_style)
+        L.addRow(globals_.trans.string('dialog.preferences.tab.appearance.theme'), self.theme_combo)
+        L.addRow(globals_.trans.string('dialog.preferences.tab.appearance.window_style.text'), self.window_style)
         L.addRow(self.dark_mode)
         L.addRow(self.rounded_rects)
         L.addRow(self.full_file_path)
-        L.addRow(globals_.trans_new.string('dialog.preferences.tab.appearance.tileset_tabs.text'), self.tileset_tab_pos)
-        L.addRow(globals_.trans_new.string('dialog.preferences.tab.appearance.cursor_mode.text'), self.cursor_mode)
+        L.addRow(globals_.trans.string('dialog.preferences.tab.appearance.tileset_tabs.text'), self.tileset_tab_pos)
+        L.addRow(globals_.trans.string('dialog.preferences.tab.appearance.cursor_mode.text'), self.cursor_mode)
         L.addRow(self.ignore_win_scale)
         L.addRow(self.show_tileset_preview)
         L2 = QtWidgets.QGridLayout()
@@ -104,7 +104,7 @@ class AppearanceTab(PreferenceTabWidget):
         settings_box.setLayout(L2)
 
         # Temp options to modify the preview rendering
-        self.preview_selected = QtWidgets.QCheckBox(globals_.trans_new.string('dialog.preferences.tab.appearance.show_item_select'))
+        self.preview_selected = QtWidgets.QCheckBox(globals_.trans.string('dialog.preferences.tab.appearance.show_item_select'))
         self.preview_selected.clicked.connect(self.update_preview)
 
         curr_grid = 0
@@ -115,12 +115,12 @@ class AppearanceTab(PreferenceTabWidget):
                 curr_grid = 2
 
         self.preview_grid_type = QtWidgets.QComboBox()
-        self.preview_grid_type.addItems(globals_.trans_new.string_list('dialog.preferences.tab.appearance.grid_type.types'))
+        self.preview_grid_type.addItems(globals_.trans.string_list('dialog.preferences.tab.appearance.grid_type.types'))
         self.preview_grid_type.setCurrentIndex(curr_grid)
         self.preview_grid_type.currentIndexChanged.connect(self.update_preview)
 
         L = QtWidgets.QHBoxLayout()
-        L.addWidget(QtWidgets.QLabel(globals_.trans_new.string('dialog.preferences.tab.appearance.grid_type.text')))
+        L.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.preferences.tab.appearance.grid_type.text')))
         L.addWidget(self.preview_grid_type)
         L.addSpacing(5)
         L.addWidget(self.preview_selected)
@@ -135,7 +135,7 @@ class AppearanceTab(PreferenceTabWidget):
         L2.addWidget(self.description)
         L2.addStretch(1)
 
-        preview_box = QtWidgets.QGroupBox(globals_.trans_new.string('dialog.preferences.tab.appearance.preview'))
+        preview_box = QtWidgets.QGroupBox(globals_.trans.string('dialog.preferences.tab.appearance.preview'))
         preview_box.setLayout(L2)
 
         # Create a main layout
@@ -177,7 +177,7 @@ class AppearanceTab(PreferenceTabWidget):
         for name, theme in self.themes:
             if theme.themeName == self.theme_combo.currentText():
                 self.preview.setPixmap(self.draw_preview(theme))
-                text = globals_.trans_new.string('dialog.preferences.tab.appearance.theme_info', ('[name]', theme.themeName),
+                text = globals_.trans.string('dialog.preferences.tab.appearance.theme_info', ('[name]', theme.themeName),
                                                 ('[version]', theme.version), ('[creator]', theme.creator), ('[description]', theme.description))
 
                 self.description.setVisible(not theme.is_default)

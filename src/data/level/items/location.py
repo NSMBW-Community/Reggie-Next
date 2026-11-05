@@ -81,8 +81,8 @@ class LocationItem(LevelEditorItem):
             id_ = find_first_available_id(all_ids, 256, 1)
 
             if id_ is None:
-                result = QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('levelitem.location.limit_warning.title'),
-                                                       globals_.trans_new.string('levelitem.location.limit_warning.text'),
+                result = QtWidgets.QMessageBox.warning(None, globals_.trans.string('levelitem.location.limit_warning.title'),
+                                                       globals_.trans.string('levelitem.location.limit_warning.text'),
                                                         QtWidgets.QMessageBox.StandardButton.Ok)
                 if result == QtWidgets.QMessageBox.StandardButton.Ok:
                     return None
@@ -167,14 +167,14 @@ class LocationItem(LevelEditorItem):
         """
         Returns a string that can be used to describe the location in a list
         """
-        return globals_.trans_new.string('levelitem.location.palette_info', ('[id]', self.id), ('[width]', int(self.width)),
+        return globals_.trans.string('levelitem.location.palette_info', ('[id]', self.id), ('[width]', int(self.width)),
                                         ('[height]', int(self.height)), ('[x]', int(self.objx)), ('[y]', int(self.objy)))
 
     def UpdateTitle(self) -> None:
         """
         Updates the location's title
         """
-        self.title = globals_.trans_new.string('common.id_data', ('[id]', self.id))
+        self.title = globals_.trans.string('common.id_data', ('[id]', self.id))
 
         # Since font never changes, we can just define TitleRect here
         if self.font is not None:

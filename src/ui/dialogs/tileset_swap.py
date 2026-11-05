@@ -15,7 +15,7 @@ class TilesetSwapDialog(QtWidgets.QDialog):
         Creates and initializes the dialog
         """
         super().__init__()
-        self.setWindowTitle(globals_.trans_new.string('dialog.tileset_swap.title'))
+        self.setWindowTitle(globals_.trans.string('dialog.tileset_swap.title'))
         self.setWindowIcon(GetIcon('arrow-switch-block'))
 
         # Create widgets
@@ -29,14 +29,14 @@ class TilesetSwapDialog(QtWidgets.QDialog):
                 self.new_tileset.addItem(f'Pa{i}')
 
         swap_layout = QtWidgets.QFormLayout()
-        swap_layout.addRow(globals_.trans_new.string('dialog.tileset_swap.from_slot'), self.curr_tileset)
-        swap_layout.addRow(globals_.trans_new.string('dialog.tileset_swap.to_slot'), self.new_tileset)
+        swap_layout.addRow(globals_.trans.string('dialog.tileset_swap.from_slot'), self.curr_tileset)
+        swap_layout.addRow(globals_.trans.string('dialog.tileset_swap.to_slot'), self.new_tileset)
 
-        self.exchange_tiles = QtWidgets.QCheckBox(globals_.trans_new.string('dialog.tileset_swap.exchange'))
+        self.exchange_tiles = QtWidgets.QCheckBox(globals_.trans.string('dialog.tileset_swap.exchange'))
 
         button_box = QtWidgets.QDialogButtonBox()
-        button_box.addButton(globals_.trans_new.string('common.swap'), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
-        button_box.addButton(globals_.trans_new.string('common.close'), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
+        button_box.addButton(globals_.trans.string('common.swap'), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
+        button_box.addButton(globals_.trans.string('common.close'), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
 
         button_box.accepted.connect(self.accept)
         button_box.rejected.connect(self.reject)

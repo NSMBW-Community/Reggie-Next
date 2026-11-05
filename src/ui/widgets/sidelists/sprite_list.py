@@ -42,10 +42,10 @@ class SpriteList(QtWidgets.QWidget):
         # Set of row ids
         self.SearchResults = set()
 
-        idtypes_list = globals_.trans_new.string_list('palette.sprite.current.id_types')
+        idtypes_list = globals_.trans.string_list('palette.sprite.current.id_types')
 
         self.table = SpriteTableWidget(0, len(idtypes_list if idtypes_list is not None else []) + 1)
-        headers = [globals_.trans_new.string('common.id'), globals_.trans_new.string('common.name')] + list(idtypes_list[1:] if idtypes_list is not None else [])
+        headers = [globals_.trans.string('common.id'), globals_.trans.string('common.name')] + list(idtypes_list[1:] if idtypes_list is not None else [])
         self.table.setHorizontalHeaderLabels(headers)
         vertical_header = self.table.verticalHeader()
         if vertical_header is not None:
@@ -68,8 +68,8 @@ class SpriteList(QtWidgets.QWidget):
         self.filterbox.addItems(idtypes_list)
 
         # Make a layout
-        search_label_text = globals_.trans_new.string('common.search_colon')
-        filter_label_text = globals_.trans_new.string('palette.sprite.current.filter')
+        search_label_text = globals_.trans.string('common.search_colon')
+        filter_label_text = globals_.trans.string('palette.sprite.current.filter')
         search_label = QtWidgets.QLabel(search_label_text if search_label_text is not None else "")
         filter_label = QtWidgets.QLabel((filter_label_text) if filter_label_text is not None else "")
 

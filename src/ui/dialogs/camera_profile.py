@@ -17,7 +17,7 @@ class CameraProfilesDialog(QtWidgets.QDialog):
         Creates and initialises the dialog
         """
         super().__init__()
-        self.setWindowTitle(globals_.trans_new.string('dialog.camera_profile.title'))
+        self.setWindowTitle(globals_.trans.string('dialog.camera_profile.title'))
         self.setWindowIcon(GetIcon('surveillance-camera'))
         self.setMinimumHeight(450)
 
@@ -25,10 +25,10 @@ class CameraProfilesDialog(QtWidgets.QDialog):
         self.list.itemSelectionChanged.connect(self.handle_selection_changed)
         self.list.setSortingEnabled(True)
 
-        self.add_button = QtWidgets.QPushButton(globals_.trans_new.string('common.add'))
+        self.add_button = QtWidgets.QPushButton(globals_.trans.string('common.add'))
         self.add_button.clicked.connect(self.handle_add)
 
-        self.remove_button = QtWidgets.QPushButton(globals_.trans_new.string('common.remove'))
+        self.remove_button = QtWidgets.QPushButton(globals_.trans.string('common.remove'))
         self.remove_button.clicked.connect(self.handle_remove)
         self.remove_button.setEnabled(False)
 
@@ -39,7 +39,7 @@ class CameraProfilesDialog(QtWidgets.QDialog):
 
         self.event_id = QtWidgets.QSpinBox()
         self.event_id.setRange(0, 255)
-        self.event_id.setToolTip(globals_.trans_new.string('dialog.camera_profile.event_id.tooltip'))
+        self.event_id.setToolTip(globals_.trans.string('dialog.camera_profile.event_id.tooltip'))
         self.event_id.valueChanged.connect(self.handle_event_id_changed)
 
         self.camera_settings = CameraSettingsLayout(False)
@@ -47,11 +47,11 @@ class CameraProfilesDialog(QtWidgets.QDialog):
         self.camera_settings.edited.connect(self.handle_camera_settings_changed)
 
         profile_layout = QtWidgets.QFormLayout()
-        profile_layout.addRow(globals_.trans_new.string('dialog.camera_profile.event_id.text'), self.event_id)
+        profile_layout.addRow(globals_.trans.string('dialog.camera_profile.event_id.text'), self.event_id)
         profile_layout.addRow(createHorzLine())
         profile_layout.addRow(self.camera_settings)
 
-        self.profile_box = QtWidgets.QGroupBox(globals_.trans_new.string('dialog.camera_profile.editor_title'))
+        self.profile_box = QtWidgets.QGroupBox(globals_.trans.string('dialog.camera_profile.editor_title'))
         self.profile_box.setLayout(profile_layout)
         self.profile_box.setEnabled(False)
 
@@ -59,7 +59,7 @@ class CameraProfilesDialog(QtWidgets.QDialog):
         button_box.accepted.connect(self.accept)
         button_box.rejected.connect(self.reject)
 
-        info_label = QtWidgets.QLabel(globals_.trans_new.string('dialog.camera_profile.info'))
+        info_label = QtWidgets.QLabel(globals_.trans.string('dialog.camera_profile.info'))
 
         main_layout = QtWidgets.QGridLayout()
         main_layout.addWidget(info_label, 0, 0, 1, 2)
@@ -161,4 +161,4 @@ class CameraProfilesDialog(QtWidgets.QDialog):
         """
         Updates the profile name in the list
         """
-        item.setText(globals_.trans_new.string('dialog.camera_profile.profile_name', ('[id]', item.data(QtCore.Qt.ItemDataRole.UserRole)[0])))
+        item.setText(globals_.trans.string('dialog.camera_profile.profile_name', ('[id]', item.data(QtCore.Qt.ItemDataRole.UserRole)[0])))

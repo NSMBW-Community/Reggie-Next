@@ -15,7 +15,7 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         Creates and initializes the dialog
         """
         super().__init__()
-        self.setWindowTitle(globals_.trans_new.string('dialog.object_swap.title'))
+        self.setWindowTitle(globals_.trans.string('dialog.object_swap.title'))
         self.setWindowIcon(GetIcon('arrow-switch-wooden-box'))
 
         # Create widgets
@@ -37,25 +37,25 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         # Call this manually to set maximums
         self.set_object_counts()
 
-        self.exchange_objects = QtWidgets.QCheckBox(globals_.trans_new.string('dialog.object_swap.exchange'))
+        self.exchange_objects = QtWidgets.QCheckBox(globals_.trans.string('dialog.object_swap.exchange'))
 
         # Swap layout
         swap_layout = QtWidgets.QGridLayout()
-        swap_layout.addWidget(QtWidgets.QLabel(globals_.trans_new.string('dialog.object_swap.object')), 0, 0)
+        swap_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.object_swap.object')), 0, 0)
         swap_layout.addWidget(self.curr_type, 0, 1)
-        swap_layout.addWidget(QtWidgets.QLabel(globals_.trans_new.string('dialog.object_swap.from_slot')), 1, 0)
+        swap_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.object_swap.from_slot')), 1, 0)
         swap_layout.addWidget(self.curr_tileset, 1, 1)
 
         swap_layout.addWidget(createVertLine(), 0, 2, 2, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
 
-        swap_layout.addWidget(QtWidgets.QLabel(globals_.trans_new.string('dialog.object_swap.to_object')), 0, 3)
+        swap_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.object_swap.to_object')), 0, 3)
         swap_layout.addWidget(self.new_type, 0, 4)
-        swap_layout.addWidget(QtWidgets.QLabel(globals_.trans_new.string('dialog.object_swap.in_slot')), 1, 3)
+        swap_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.object_swap.in_slot')), 1, 3)
         swap_layout.addWidget(self.new_tileset, 1, 4)
 
         self.button_box = QtWidgets.QDialogButtonBox()
-        self.button_box.addButton(globals_.trans_new.string('common.swap'), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
-        self.button_box.addButton(globals_.trans_new.string('common.close'), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
+        self.button_box.addButton(globals_.trans.string('common.swap'), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
+        self.button_box.addButton(globals_.trans.string('common.close'), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
         self.button_box.clicked.connect(self.button_clicked)
 
         # Main layout

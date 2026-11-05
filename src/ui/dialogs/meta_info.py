@@ -13,7 +13,7 @@ class ChangePasswordDialog(QtWidgets.QDialog):
     """
     def __init__(self) -> None:
         QtWidgets.QDialog.__init__(self)
-        self.setWindowTitle(globals_.trans_new.string('dialog.meta_info.change_password.title'))
+        self.setWindowTitle(globals_.trans.string('dialog.meta_info.change_password.title'))
         self.setWindowIcon(GetIcon('lock'))
 
         self.new_pass = QtWidgets.QLineEdit()
@@ -39,11 +39,11 @@ class ChangePasswordDialog(QtWidgets.QDialog):
             self.ok_button.setDisabled(True)
 
         password_lyt = QtWidgets.QFormLayout()
-        password_lyt.addRow(globals_.trans_new.string('dialog.meta_info.change_password.new_password'), self.new_pass)
-        password_lyt.addRow(globals_.trans_new.string('dialog.meta_info.change_password.verify_password'), self.verify_pass)
+        password_lyt.addRow(globals_.trans.string('dialog.meta_info.change_password.new_password'), self.new_pass)
+        password_lyt.addRow(globals_.trans.string('dialog.meta_info.change_password.verify_password'), self.verify_pass)
 
         main_layout = QtWidgets.QVBoxLayout()
-        main_layout.addWidget(QtWidgets.QLabel(globals_.trans_new.string('dialog.meta_info.change_password.info')), 0, QtCore.Qt.AlignmentFlag.AlignCenter)
+        main_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.meta_info.change_password.info')), 0, QtCore.Qt.AlignmentFlag.AlignCenter)
         main_layout.addLayout(password_lyt)
         main_layout.addWidget(button_box)
         self.setLayout(main_layout)
@@ -66,7 +66,7 @@ class MetaInfoDialog(QtWidgets.QDialog):
         Creates and initializes the dialog
         """
         super().__init__()
-        self.setWindowTitle(globals_.trans_new.string('dialog.meta_info.title'))
+        self.setWindowTitle(globals_.trans.string('dialog.meta_info.title'))
         self.setWindowIcon(GetIcon('information-frame'))
 
         metadata = cast(NSMBWLevel, globals_.Level).metadata
@@ -87,7 +87,7 @@ class MetaInfoDialog(QtWidgets.QDialog):
         if website is None:
             website = '-'
         if creator is None:
-            creator = globals_.trans_new.string('dialog.meta_info.unknown_version')
+            creator = globals_.trans.string('dialog.meta_info.unknown_version')
         if password is None:
             password = ''
 
@@ -116,7 +116,7 @@ class MetaInfoDialog(QtWidgets.QDialog):
         self.password_field.textChanged.connect(self.update_password)
         self.password_field.setMinimumWidth(320)
 
-        self.edit_password_button = QtWidgets.QPushButton(globals_.trans_new.string('dialog.meta_info.add_change_password'))
+        self.edit_password_button = QtWidgets.QPushButton(globals_.trans.string('dialog.meta_info.add_change_password'))
 
         if password != '':
             self.name_field.setReadOnly(False)
@@ -134,17 +134,17 @@ class MetaInfoDialog(QtWidgets.QDialog):
         self.edit_password_button.clicked.connect(self.change_password)
         self.edit_password_button.setDisabled(True)
 
-        self.locked_label = QtWidgets.QLabel(globals_.trans_new.string('dialog.meta_info.password_info'))
+        self.locked_label = QtWidgets.QLabel(globals_.trans.string('dialog.meta_info.password_info'))
         self.line = createHorzLine()
 
         infoLayout = QtWidgets.QFormLayout()
         infoLayout.addWidget(self.locked_label)
-        infoLayout.addRow(globals_.trans_new.string('dialog.meta_info.field.password'), self.password_field)
+        infoLayout.addRow(globals_.trans.string('dialog.meta_info.field.password'), self.password_field)
         infoLayout.addRow(self.line)
-        infoLayout.addRow(globals_.trans_new.string('dialog.meta_info.field.title'), self.name_field)
-        infoLayout.addRow(globals_.trans_new.string('dialog.meta_info.field.author'), self.author_field)
-        infoLayout.addRow(globals_.trans_new.string('dialog.meta_info.field.group'), self.group_field)
-        infoLayout.addRow(globals_.trans_new.string('dialog.meta_info.field.website'), self.website_field)
+        infoLayout.addRow(globals_.trans.string('dialog.meta_info.field.title'), self.name_field)
+        infoLayout.addRow(globals_.trans.string('dialog.meta_info.field.author'), self.author_field)
+        infoLayout.addRow(globals_.trans.string('dialog.meta_info.field.group'), self.group_field)
+        infoLayout.addRow(globals_.trans.string('dialog.meta_info.field.website'), self.website_field)
 
         self.password_label = infoLayout.labelForField(self.password_field)
 
@@ -155,7 +155,7 @@ class MetaInfoDialog(QtWidgets.QDialog):
             self.line.setVisible(levelIsLocked)
         self.password_field.setVisible(levelIsLocked)
 
-        info_box = QtWidgets.QGroupBox(globals_.trans_new.string('dialog.meta_info.version', ('[name]', creator)))
+        info_box = QtWidgets.QGroupBox(globals_.trans.string('dialog.meta_info.version', ('[name]', creator)))
         info_box.setLayout(infoLayout)
 
         main_layout = QtWidgets.QVBoxLayout()

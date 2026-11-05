@@ -26,7 +26,7 @@ class DiagnosticWidget(QtWidgets.QWidget):
         self.manual_check_button = QtWidgets.QToolButton()
         self.manual_check_button.setAutoRaise(True)
         self.manual_check_button.setIcon(GetIcon('arrow-circle-double-135'))
-        self.manual_check_button.setToolTip(globals_.trans_new.string('widget.auto_diagnostic.manual_check'))
+        self.manual_check_button.setToolTip(globals_.trans.string('widget.auto_diagnostic.manual_check'))
         self.manual_check_button.clicked.connect(self.handle_manual_update)
 
         self.main_layout = QtWidgets.QGridLayout()
@@ -77,11 +77,11 @@ class DiagnosticWidget(QtWidgets.QWidget):
         # Error checking is disabled
         if globals_.AutoDiagFrequency == 0:
             self.status_button.setIcon(GetIcon('wrench-screwdriver'))
-            self.status_button.setText(globals_.trans_new.string('widget.auto_diagnostic.checking_disabled'))
+            self.status_button.setText(globals_.trans.string('widget.auto_diagnostic.checking_disabled'))
             return
 
         self.status_button.setIcon(GetIcon(f'wrench-screwdriver-{icons[result]}'))
-        self.status_button.setText(globals_.trans_new.string(f'widget.auto_diagnostic.errors.error_{string}', ('[num]', error_num)))
+        self.status_button.setText(globals_.trans.string(f'widget.auto_diagnostic.errors.error_{string}', ('[num]', error_num)))
 
     def handle_manual_update(self):
         """
@@ -97,7 +97,7 @@ class DiagnosticWidget(QtWidgets.QWidget):
 
         if globals_.AutoDiagFrequency == 0:
             pos = self.manual_check_button.mapToGlobal(self.manual_check_button.rect().center())
-            text = globals_.trans_new.string(f'widget.auto_diagnostic.errors.error_{string}', ('[num]', error_num))
+            text = globals_.trans.string(f'widget.auto_diagnostic.errors.error_{string}', ('[num]', error_num))
             QtWidgets.QToolTip.showText(pos, text, self.manual_check_button)
         else:
             self.update_status()

@@ -24,13 +24,13 @@ class SpriteTab(QtWidgets.QTabWidget):
 
         # Add Sprites tab
         self.add_sprite_tab = QtWidgets.QWidget()
-        self.addTab(self.add_sprite_tab, GetIcon('rocket-plus'), globals_.trans_new.string('palette.sprite.add.title'))
+        self.addTab(self.add_sprite_tab, GetIcon('rocket-plus'), globals_.trans.string('palette.sprite.add.title'))
 
         view_lyt = QtWidgets.QHBoxLayout()
-        view_lyt.addWidget(QtWidgets.QLabel(globals_.trans_new.string('palette.sprite.add.view')))
+        view_lyt.addWidget(QtWidgets.QLabel(globals_.trans.string('palette.sprite.add.view')))
 
         self.search_lyt = QtWidgets.QHBoxLayout()
-        self.search_lyt.addWidget(QtWidgets.QLabel(globals_.trans_new.string('common.search_colon')))
+        self.search_lyt.addWidget(QtWidgets.QLabel(globals_.trans.string('common.search_colon')))
 
         LoadSpriteCategories()
 
@@ -50,7 +50,7 @@ class SpriteTab(QtWidgets.QTabWidget):
         self.sprite_picker.SpriteReplace.connect(self.sprite_replaced)
         self.sprite_picker.SwitchView(globals_.SpriteCategories[0])
 
-        self.default_prop_button = QtWidgets.QPushButton(globals_.trans_new.string('palette.sprite.add.set_default'))
+        self.default_prop_button = QtWidgets.QPushButton(globals_.trans.string('palette.sprite.add.set_default'))
         self.default_prop_button.setEnabled(False)
         self.default_prop_button.clicked.connect(self.show_default_props_dock)
 
@@ -68,9 +68,9 @@ class SpriteTab(QtWidgets.QTabWidget):
 
         # Current sprites
         self.current_sprite_tab = QtWidgets.QWidget()
-        self.addTab(self.current_sprite_tab, GetIcon('rocket-document-list'), globals_.trans_new.string('palette.sprite.current.title'))
+        self.addTab(self.current_sprite_tab, GetIcon('rocket-document-list'), globals_.trans.string('palette.sprite.current.title'))
 
-        curr_label = QtWidgets.QLabel(globals_.trans_new.string('palette.sprite.current.info'))
+        curr_label = QtWidgets.QLabel(globals_.trans.string('palette.sprite.current.info'))
         curr_label.setWordWrap(True)
 
         self.sprite_list = SpriteList()
@@ -82,9 +82,9 @@ class SpriteTab(QtWidgets.QTabWidget):
 
         # Sprite Order
         self.sprite_order_tab = QtWidgets.QWidget()
-        self.addTab(self.sprite_order_tab, GetIcon('rocket-arrow'), globals_.trans_new.string('palette.sprite.order.title'))
+        self.addTab(self.sprite_order_tab, GetIcon('rocket-arrow'), globals_.trans.string('palette.sprite.order.title'))
 
-        order_label = QtWidgets.QLabel(globals_.trans_new.string('palette.sprite.order.info'))
+        order_label = QtWidgets.QLabel(globals_.trans.string('palette.sprite.order.info'))
         order_label.setWordWrap(True)
         self.sprite_order_list = SpriteOrderList()
 

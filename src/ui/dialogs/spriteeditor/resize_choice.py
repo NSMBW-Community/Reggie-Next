@@ -15,7 +15,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         Initialise the dialog
         """
         QtWidgets.QDialog.__init__(self)
-        self.setWindowTitle(globals_.trans_new.string('dialog.sprite_resize.title'))
+        self.setWindowTitle(globals_.trans.string('dialog.sprite_resize.title'))
         self.setWindowIcon(GetIcon('arrow-out'))
 
         # Scale levels used by both Resizer modes
@@ -40,12 +40,12 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         self.buttongroup.addButton(self.radio3, 2)
         self.buttongroup.buttonClicked.connect(self.toggleGlbResizerScale)
 
-        a_label = QtWidgets.QLabel(globals_.trans_new.string('dialog.sprite_resize.selective.nybble_5'))
-        b_label = QtWidgets.QLabel(globals_.trans_new.string('dialog.sprite_resize.selective.nybble_7'))
-        g_label = QtWidgets.QLabel(globals_.trans_new.string('dialog.sprite_resize.global.global_button'))
+        a_label = QtWidgets.QLabel(globals_.trans.string('dialog.sprite_resize.selective.nybble_5'))
+        b_label = QtWidgets.QLabel(globals_.trans.string('dialog.sprite_resize.selective.nybble_7'))
+        g_label = QtWidgets.QLabel(globals_.trans.string('dialog.sprite_resize.global.global_button'))
 
-        selDesc = QtWidgets.QLabel(globals_.trans_new.string('dialog.sprite_resize.selective.info'))
-        glbDesc = QtWidgets.QLabel(globals_.trans_new.string('dialog.sprite_resize.global.info'))
+        selDesc = QtWidgets.QLabel(globals_.trans.string('dialog.sprite_resize.selective.info'))
+        glbDesc = QtWidgets.QLabel(globals_.trans.string('dialog.sprite_resize.global.info'))
 
         # Display a warning if this sprite has settings on Nybbles 5 or 7
         isDispWarning = True
@@ -54,16 +54,16 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
 
         # Check if there are conflicts
         if len(used[5]) != 0 and len(used[7]) != 0: # Both are occupied
-            warnLabel.setText(globals_.trans_new.string('dialog.sprite_resize.selective.warning_both'))
+            warnLabel.setText(globals_.trans.string('dialog.sprite_resize.selective.warning_both'))
             warnLabel.setStyleSheet("color: red;")
         elif len(used[5]) != 0: # Only 5
-            warnLabel.setText(globals_.trans_new.string('dialog.sprite_resize.selective.warning_one', ('[id]', 5)))
+            warnLabel.setText(globals_.trans.string('dialog.sprite_resize.selective.warning_one', ('[id]', 5)))
         elif len(used[7]) != 0: # Only 7
-            warnLabel.setText(globals_.trans_new.string('dialog.sprite_resize.selective.warning_one', ('[id]', 7)))
+            warnLabel.setText(globals_.trans.string('dialog.sprite_resize.selective.warning_one', ('[id]', 7)))
         else: # Both are available
             isDispWarning = False
 
-        selectiveBox = QtWidgets.QGroupBox(globals_.trans_new.string('dialog.sprite_resize.selective.title'))
+        selectiveBox = QtWidgets.QGroupBox(globals_.trans.string('dialog.sprite_resize.selective.title'))
         selLyt = QtWidgets.QGridLayout()
         selLyt.addWidget(selDesc,     0, 0, 1, 2, QtCore.Qt.AlignmentFlag.AlignHCenter)
         selLyt.addWidget(a_label,     1, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
@@ -74,7 +74,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
             selLyt.addWidget(warnLabel, 3, 0, 1, 2, QtCore.Qt.AlignmentFlag.AlignHCenter)
         selectiveBox.setLayout(selLyt)
 
-        globalBox = QtWidgets.QGroupBox(globals_.trans_new.string('dialog.sprite_resize.global.title'))
+        globalBox = QtWidgets.QGroupBox(globals_.trans.string('dialog.sprite_resize.global.title'))
         glbLyt = QtWidgets.QGridLayout()
         glbLyt.addWidget(glbDesc,     0, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
         glbLyt.addWidget(g_label,     1, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
@@ -84,7 +84,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         globalBox.setLayout(glbLyt)
 
         # Global Resizer scale
-        sliderLabel = QtWidgets.QLabel(globals_.trans_new.string('dialog.sprite_resize.global_scale'))
+        sliderLabel = QtWidgets.QLabel(globals_.trans.string('dialog.sprite_resize.global_scale'))
         self.sliderVal = QtWidgets.QLabel('x' + str(self.scaleLevels[0]))
 
         self.slider = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal)
@@ -149,9 +149,9 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
 
         # Action button (does the create/update behavior)
         if not self.present:
-            btnText = globals_.trans_new.string('dialog.sprite_resize.create')
+            btnText = globals_.trans.string('dialog.sprite_resize.create')
         else:
-            btnText = globals_.trans_new.string('dialog.sprite_resize.update')
+            btnText = globals_.trans.string('dialog.sprite_resize.update')
 
         spriteButton = QtWidgets.QPushButton(btnText)
         spriteButton.clicked.connect(self.handleResizer)
@@ -162,11 +162,11 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         buttonBox.addButton(spriteButton, QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
 
         mainLayout = QtWidgets.QVBoxLayout()
-        mainLayout.addWidget(QtWidgets.QLabel(globals_.trans_new.string('dialog.sprite_resize.info')))
+        mainLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.sprite_resize.info')))
 
         # Warn the user if a Special Event exists
         if self.present:
-            mainLayout.addWidget(QtWidgets.QLabel(globals_.trans_new.string('dialog.sprite_resize.exists')))
+            mainLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.sprite_resize.exists')))
 
         mainLayout.addLayout(slotsLayout)
         mainLayout.addWidget(buttonBox, 0, QtCore.Qt.AlignmentFlag.AlignBottom)

@@ -31,8 +31,8 @@ class CameraSettingsLayout(QtWidgets.QFormLayout):
             (1, 'layout.camera_settings.track_y'),
             (2, 'layout.camera_settings.expand_y')
         ]:
-            mode_name = globals_.trans_new.string(f'{key}.text')
-            tooltip = globals_.trans_new.string(f'{key}.tooltip')
+            mode_name = globals_.trans.string(f'{key}.text')
+            tooltip = globals_.trans.string(f'{key}.tooltip')
 
             btn = QtWidgets.QRadioButton(mode_name)
             btn.setToolTip(f'<b>{mode_name}:</b><br>{tooltip}')
@@ -47,7 +47,7 @@ class CameraSettingsLayout(QtWidgets.QFormLayout):
             btn.clicked.connect(self.mode_changed)
 
         self.screen_sizes = QtWidgets.QComboBox()
-        self.screen_sizes.setToolTip(globals_.trans_new.string('layout.camera_settings.screen_height.tooltip'))
+        self.screen_sizes.setToolTip(globals_.trans.string('layout.camera_settings.screen_height.tooltip'))
         self.screen_sizes.setSizePolicy(combobox_size_policy)
         self.screen_sizes.currentIndexChanged.connect(self.screen_size_changed)
 
@@ -56,7 +56,7 @@ class CameraSettingsLayout(QtWidgets.QFormLayout):
             modes_layout.addWidget(btn, i % 4, i // 4)
 
         self.addRow(modes_layout)
-        self.addRow(globals_.trans_new.string('layout.camera_settings.screen_height.text'), self.screen_sizes)
+        self.addRow(globals_.trans.string('layout.camera_settings.screen_height.text'), self.screen_sizes)
 
         self.updating = False
 

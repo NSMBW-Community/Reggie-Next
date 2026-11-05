@@ -30,7 +30,7 @@ class ReggieTheme:
         self.styleSheet: str = ''
         self.formatver: float = 1.0
         self.version: float = 1.0
-        self.themeName: str = globals_.trans_new.string('theme.default_name')
+        self.themeName: str = globals_.trans.string('theme.default_name')
         self.creator: str = ''
         self.description: str = ''
         self.icon_cache: dict[str, QtGui.QIcon] = {}
@@ -175,7 +175,7 @@ class ReggieTheme:
             return False
 
         # Check for optional attributes
-        self.themeName = root.get('name', globals_.trans_new.string('theme.unknown_info.name', ('[folder]', self.folder_name)))
+        self.themeName = root.get('name', globals_.trans.string('theme.unknown_info.name', ('[folder]', self.folder_name)))
         self.creator = root.get('creator', '')
         self.description = root.get('description', '')
         self.style = root.get("style")

@@ -23,7 +23,7 @@ class GeneralTab(PreferenceTabWidget):
         self.info = info_text
 
         # Add the Clear Recent Files button
-        clear_recent_button = QtWidgets.QPushButton(globals_.trans_new.string('dialog.preferences.tab.general.clear_recent_files'))
+        clear_recent_button = QtWidgets.QPushButton(globals_.trans.string('dialog.preferences.tab.general.clear_recent_files'))
         clear_recent_button.setMaximumWidth(clear_recent_button.minimumSizeHint().width())
         clear_recent_button.clicked.connect(self.clear_recent_files)
 
@@ -37,22 +37,22 @@ class GeneralTab(PreferenceTabWidget):
 
         self.translation_info = QtWidgets.QLabel()
 
-        trans_info_box = QtWidgets.QGroupBox(globals_.trans_new.string('dialog.preferences.tab.general.translation_info.title'))
+        trans_info_box = QtWidgets.QGroupBox(globals_.trans.string('dialog.preferences.tab.general.translation_info.title'))
         trans_lyt = QtWidgets.QFormLayout()
         trans_lyt.addRow(self.translation_info)
         trans_info_box.setLayout(trans_lyt)
 
         # Add the Zone Entrance Indicator checkbox
-        self.zone_entrance_line = QtWidgets.QCheckBox(globals_.trans_new.string('dialog.preferences.tab.general.display_entrance_lines'))
+        self.zone_entrance_line = QtWidgets.QCheckBox(globals_.trans.string('dialog.preferences.tab.general.display_entrance_lines'))
 
         # Add the Zone Bounds Indicator checkbox
-        self.zone_bound_indicators = QtWidgets.QCheckBox(globals_.trans_new.string('dialog.preferences.tab.general.display_zone_bounds'))
+        self.zone_bound_indicators = QtWidgets.QCheckBox(globals_.trans.string('dialog.preferences.tab.general.display_zone_bounds'))
 
         # Reset data when hide checkbox
-        self.reset_data_hide = QtWidgets.QCheckBox(globals_.trans_new.string('dialog.preferences.tab.general.reset_hidden_sprite_fields'))
+        self.reset_data_hide = QtWidgets.QCheckBox(globals_.trans.string('dialog.preferences.tab.general.reset_hidden_sprite_fields'))
 
         # Enable padding button
-        self.enable_padding = QtWidgets.QCheckBox(globals_.trans_new.string('dialog.preferences.tab.general.pad_setting.title'))
+        self.enable_padding = QtWidgets.QCheckBox(globals_.trans.string('dialog.preferences.tab.general.pad_setting.title'))
         self.enable_padding.stateChanged.connect(
             lambda v: self.padding_value.setDisabled(v == 0)
         )
@@ -61,13 +61,13 @@ class GeneralTab(PreferenceTabWidget):
         self.padding_value = QtWidgets.QSpinBox()
         self.padding_value.setRange(0, 500000) # Set maximum to 500kb, more than enough for any level
 
-        padding_warning = QtWidgets.QLabel(globals_.trans_new.string('dialog.preferences.tab.general.pad_setting.note'))
+        padding_warning = QtWidgets.QLabel(globals_.trans.string('dialog.preferences.tab.general.pad_setting.note'))
 
         # Place objects at full size
-        self.full_object_size = QtWidgets.QCheckBox(globals_.trans_new.string('dialog.preferences.tab.general.place_objects_at_full_size'))
+        self.full_object_size = QtWidgets.QCheckBox(globals_.trans.string('dialog.preferences.tab.general.place_objects_at_full_size'))
 
         # Toggle auto-diag
-        self.auto_diag = QtWidgets.QCheckBox(globals_.trans_new.string('dialog.preferences.tab.general.auto_diagnostic.enable'))
+        self.auto_diag = QtWidgets.QCheckBox(globals_.trans.string('dialog.preferences.tab.general.auto_diagnostic.enable'))
         self.auto_diag.stateChanged.connect(
             lambda v: self.diag_freq.setDisabled(v == 0)
         )
@@ -75,24 +75,24 @@ class GeneralTab(PreferenceTabWidget):
         # Auto-diag frequency
         self.diag_freq = QtWidgets.QComboBox()
         self.diag_freq.setMaximumWidth(256)
-        self.diag_freq.addItems(globals_.trans_new.string_list('dialog.preferences.tab.general.auto_diagnostic.error_check_frequency.options'))
-        self.diag_freq.setToolTip(globals_.trans_new.string('dialog.preferences.tab.general.auto_diagnostic.error_check_frequency.tooltip'))
+        self.diag_freq.addItems(globals_.trans.string_list('dialog.preferences.tab.general.auto_diagnostic.error_check_frequency.options'))
+        self.diag_freq.setToolTip(globals_.trans.string('dialog.preferences.tab.general.auto_diagnostic.error_check_frequency.tooltip'))
 
-        auto_diag_box = QtWidgets.QGroupBox(globals_.trans_new.string('dialog.preferences.tab.general.auto_diagnostic.title'))
+        auto_diag_box = QtWidgets.QGroupBox(globals_.trans.string('dialog.preferences.tab.general.auto_diagnostic.title'))
         diag_lyt = QtWidgets.QFormLayout()
         diag_lyt.addRow(self.auto_diag)
-        diag_lyt.addRow(globals_.trans_new.string('dialog.preferences.tab.general.auto_diagnostic.error_check_frequency.text'), self.diag_freq)
+        diag_lyt.addRow(globals_.trans.string('dialog.preferences.tab.general.auto_diagnostic.error_check_frequency.text'), self.diag_freq)
         auto_diag_box.setLayout(diag_lyt)
 
         # Display unknown sprite warnings
-        self.show_unk_sprite_msg = QtWidgets.QCheckBox(globals_.trans_new.string('dialog.preferences.tab.general.show_unknown_sprite_warning'))
+        self.show_unk_sprite_msg = QtWidgets.QCheckBox(globals_.trans.string('dialog.preferences.tab.general.show_unknown_sprite_warning'))
 
         main_layout = QtWidgets.QFormLayout()
-        main_layout.addRow(globals_.trans_new.string('dialog.preferences.tab.general.translation_info.title'), self.trans_combo)
+        main_layout.addRow(globals_.trans.string('dialog.preferences.tab.general.translation_info.title'), self.trans_combo)
         main_layout.addWidget(trans_info_box)
         main_layout.addWidget(clear_recent_button)
         main_layout.addWidget(self.enable_padding)
-        main_layout.addRow(globals_.trans_new.string('dialog.preferences.tab.general.pad_setting.fixed_level_size'), self.padding_value)
+        main_layout.addRow(globals_.trans.string('dialog.preferences.tab.general.pad_setting.fixed_level_size'), self.padding_value)
         main_layout.addWidget(padding_warning)
         main_layout.addWidget(self.zone_entrance_line)
         main_layout.addWidget(self.zone_bound_indicators)
@@ -191,8 +191,8 @@ class GeneralTab(PreferenceTabWidget):
         """
         Handle the Clear Recent Files button being clicked
         """
-        ans = QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('dialog.preferences.tab.general.clear_recent_files'),
-                                            globals_.trans_new.string('dialog.preferences.tab.general.warning_clear_files'),
+        ans = QtWidgets.QMessageBox.warning(None, globals_.trans.string('dialog.preferences.tab.general.clear_recent_files'),
+                                            globals_.trans.string('dialog.preferences.tab.general.warning_clear_files'),
                                             QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
         if ans != QtWidgets.QMessageBox.StandardButton.Yes:
             return
@@ -228,9 +228,9 @@ class GeneralTab(PreferenceTabWidget):
             t = transObj
             if t.name == self.trans_combo.currentText():
                 if t.name == 'English':
-                    text = globals_.trans_new.string('dialog.preferences.tab.general.translation_info.info_default', ('[name]', t.name))
+                    text = globals_.trans.string('dialog.preferences.tab.general.translation_info.info_default', ('[name]', t.name))
                     self.translation_info.setText(text)
                 else:
-                    text = globals_.trans_new.string('dialog.preferences.tab.general.translation_info.info', ('[name]', t.name),
+                    text = globals_.trans.string('dialog.preferences.tab.general.translation_info.info', ('[name]', t.name),
                                                      ('[version]', t.version), ('[translator]', t.translator))
                     self.translation_info.setText(text)

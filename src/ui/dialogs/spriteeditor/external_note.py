@@ -13,7 +13,7 @@ class ExternalNotesDialog(QtWidgets.QDialog):
         Creates and initializes the dialog
         """
         super().__init__()
-        self.setWindowTitle(globals_.trans_new.string('dialog.external_notes.title'))
+        self.setWindowTitle(globals_.trans.string('dialog.external_notes.title'))
 
         text = Translation.convert_formatting(text)
 

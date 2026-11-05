@@ -31,7 +31,7 @@ class ObjectTab(QtWidgets.QTabWidget):
             self.addTab(slot, GetIcon('block'), str(i + 1))
 
         # Get strings for the layer change
-        layer_change_str = globals_.trans_new.string('palette.object.paint_on_layer.tooltip_switch')
+        layer_change_str = globals_.trans.string('palette.object.paint_on_layer.tooltip_switch')
 
         self.layer_button_group = QtWidgets.QButtonGroup(self)
         self.layer_button_group.buttonClicked.connect(lambda button: self.layer_changed(self.layer_button_group.id(button)))
@@ -39,16 +39,16 @@ class ObjectTab(QtWidgets.QTabWidget):
         # Setup the radio buttons
         for i in range(3):
             self.layer_buttons[i] = QtWidgets.QRadioButton(str(i))
-            layer_string = globals_.trans_new.string(f'palette.object.paint_on_layer.tooltip_{i}')
+            layer_string = globals_.trans.string(f'palette.object.paint_on_layer.tooltip_{i}')
             self.layer_buttons[i].setToolTip(f'{layer_string}{layer_change_str}')
             self.layer_button_group.addButton(self.layer_buttons[i], i)
 
-        self.layer_change_button = QtWidgets.QPushButton(globals_.trans_new.string('palette.object.paint_on_layer.change_button'))
+        self.layer_change_button = QtWidgets.QPushButton(globals_.trans.string('palette.object.paint_on_layer.change_button'))
         self.layer_change_button.clicked.connect(self.change_selection_layer)
         self.layer_change_button.setEnabled(False)
 
         layer_lyt = QtWidgets.QHBoxLayout()
-        layer_lyt.addWidget(QtWidgets.QLabel(globals_.trans_new.string('palette.object.paint_on_layer.title')))
+        layer_lyt.addWidget(QtWidgets.QLabel(globals_.trans.string('palette.object.paint_on_layer.title')))
         for i in range(3):
             layer_lyt.addWidget(self.layer_buttons[i])
         layer_lyt.addStretch(1)

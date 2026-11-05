@@ -14,10 +14,10 @@ class AutoSaveDialog(QtWidgets.QDialog):
         Creates and initializes the dialog
         """
         super().__init__()
-        self.setWindowTitle(globals_.trans_new.string('dialog.auto_save.title'))
+        self.setWindowTitle(globals_.trans.string('dialog.auto_save.title'))
         self.setWindowIcon(GetAppIcon())
 
-        info = QtWidgets.QLabel(globals_.trans_new.string('dialog.auto_save.info', ('[path]', filename)))
+        info = QtWidgets.QLabel(globals_.trans.string('dialog.auto_save.info', ('[path]', filename)))
         info.setWordWrap(True)
 
         button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Yes | QtWidgets.QDialogButtonBox.StandardButton.No)

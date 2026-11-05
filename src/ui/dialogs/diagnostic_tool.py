@@ -33,7 +33,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         Creates and initializes the dialog
         """
         super().__init__()
-        self.setWindowTitle(globals_.trans_new.string('dialog.diagnostic_tool.title'))
+        self.setWindowTitle(globals_.trans.string('dialog.diagnostic_tool.title'))
         self.setWindowIcon(GetIcon('wrench-screwdriver'))
 
         # check_functions: (icons, function, is_critical)
@@ -56,7 +56,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             # Non-location liquid in zone bigger than 8192 pixels (crest stops rendering)
         )
 
-        error_box = QtWidgets.QGroupBox(globals_.trans_new.string('dialog.diagnostic_tool.problems_found'))
+        error_box = QtWidgets.QGroupBox(globals_.trans.string('dialog.diagnostic_tool.problems_found'))
         self.error_layout = QtWidgets.QVBoxLayout()
         result, _numErrors = self.populate_list()
         error_box.setLayout(self.error_layout)
@@ -80,7 +80,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         Creates/updates the header
         """
         self.header = QtWidgets.QGridLayout()
-        self.header.addWidget(QtWidgets.QLabel(globals_.trans_new.string('dialog.diagnostic_tool.header.this_level_is')), 0, 0, 1, 3)
+        self.header.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.diagnostic_tool.header.this_level_is')), 0, 0, 1, 3)
 
         point_size = 14
         icon_names = ['tick_32x', 'exclamation_32x', 'cross_32x']
@@ -107,7 +107,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         font.setPointSize(point_size)
         painter.setFont(font)
         painter.setPen(colors[result])
-        painter.drawText(0, point_size, globals_.trans_new.string(f'dialog.diagnostic_tool.header.status_{status_types[result]}.title'))
+        painter.drawText(0, point_size, globals_.trans.string(f'dialog.diagnostic_tool.header.status_{status_types[result]}.title'))
 
         del painter
 
@@ -115,7 +115,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         pix_label.setPixmap(pixmap)
         self.header.addWidget(pix_label, 1, 1)
 
-        self.header.addWidget(QtWidgets.QLabel(globals_.trans_new.string(f'dialog.diagnostic_tool.header.status_{status_types[result]}.info')), 1, 2)
+        self.header.addWidget(QtWidgets.QLabel(globals_.trans.string(f'dialog.diagnostic_tool.header.status_{status_types[result]}.info')), 1, 2)
 
         if not_first_run:
             widget = QtWidgets.QWidget()
@@ -139,7 +139,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         has_error = False
         is_critical = False
 
-        description_list = globals_.trans_new.string_list('dialog.diagnostic_tool.problems')
+        description_list = globals_.trans.string_list('dialog.diagnostic_tool.problems')
 
         for i, (icon, func, critical) in enumerate(self.check_functions):
             if func('c'):
@@ -158,8 +158,8 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
                 self.error_list.addItem(item)
 
-        self.fix_button = QtWidgets.QPushButton(globals_.trans_new.string('dialog.diagnostic_tool.fix_selected.text'))
-        self.fix_button.setToolTip(globals_.trans_new.string('dialog.diagnostic_tool.fix_selected.tooltip'))
+        self.fix_button = QtWidgets.QPushButton(globals_.trans.string('dialog.diagnostic_tool.fix_selected.text'))
+        self.fix_button.setToolTip(globals_.trans.string('dialog.diagnostic_tool.fix_selected.tooltip'))
         self.fix_button.clicked.connect(self.fix_selected)
         if not has_error:
             self.fix_button.setEnabled(False)
@@ -187,7 +187,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         """
 
         # Ask the user to make sure
-        btn = QtWidgets.QMessageBox.warning(None, globals_.trans_new.string('common.warning'), globals_.trans_new.string('dialog.diagnostic_tool.warning_fix'),
+        btn = QtWidgets.QMessageBox.warning(None, globals_.trans.string('common.warning'), globals_.trans.string('dialog.diagnostic_tool.warning_fix'),
                                             QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
         if btn != QtWidgets.QMessageBox.StandardButton.Yes:
             return

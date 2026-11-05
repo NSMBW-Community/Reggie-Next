@@ -16,7 +16,7 @@ class GameDefViewer(QtWidgets.QWidget):
 
         # "Has Sprite Images" indicator
         self.sprite_img_label = QtWidgets.QLabel()
-        self.sprite_img_label.setToolTip(globals_.trans_new.string('widget.game_patch_viewer.tooltip.sprite_image'))
+        self.sprite_img_label.setToolTip(globals_.trans.string('widget.game_patch_viewer.tooltip.sprite_image'))
         self.sprite_img_label.setPixmap(GetIcon('rocket-image').pixmap(16, 16))
 
         self.version_label = QtWidgets.QLabel()
