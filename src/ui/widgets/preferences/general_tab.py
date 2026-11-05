@@ -6,7 +6,7 @@ from data.common.settings import setting, setSetting
 
 from data.common.utils import get_reggiedata_folder
 from data.common.translation_section import TranslationSection
-from data.common.translation_info import TranslationInfo
+from data.common.translation_metadata import TranslationMetadata
 from ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
 
 class GeneralTab(PreferenceTabWidget):
@@ -206,7 +206,7 @@ class GeneralTab(PreferenceTabWidget):
         Automatically adds 'English' to the list.
         """
         trans_path = os.path.join(get_reggiedata_folder(), 'translations')
-        trans_list = [('English', TranslationInfo("English", "1.0", "Treeki, Tempus"))]
+        trans_list = [('English', TranslationMetadata.english())]
         for trans_name in os.listdir(trans_path):
             if not os.path.isdir(os.path.join(trans_path, trans_name)):
                 continue

@@ -52,7 +52,7 @@ def getResourcePaths(res_name: str) -> list[str]:
     # Then, we ask the current translation to give a path for each of those
     # gamedefs. If there is no translation for a specific resource and gamedef,
     # the corresponding entry will have the value 'None'.
-    trans_files = globals_.trans.paths(res_name, gamedef_names)
+    trans_files = globals_.trans_new.paths(res_name, gamedef_names)
 
     # Combine the gamedef_files and trans_files lists to get them in the right
     # order.
