@@ -97,7 +97,7 @@ class Translation:
         """
         Returns the path to the file indicated by key
         """
-        if gamedef == self.string("Gamedefs", 13):  # 'New Super Mario Bros. Wii'
+        if gamedef == self.string("game_patch.default_info.name"):  # 'New Super Mario Bros. Wii'
             gamedef = None
 
         try:

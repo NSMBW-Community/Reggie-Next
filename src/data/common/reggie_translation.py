@@ -45,9 +45,6 @@ class ReggieTranslation:
         }}
 
         self.strings: dict[str, dict[int, str | None | tuple[str | None, ...]]] = {
-            'Gamedefs': {
-                13: 'New Super Mario Bros. Wii'
-            },
             'LocationDataEditor': {
                 0: 'ID:',
                 1: '[b]ID:[/b][br]Must be different from all other IDs',
