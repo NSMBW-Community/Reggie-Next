@@ -45,22 +45,6 @@ class ReggieTranslation:
         }}
 
         self.strings: dict[str, dict[int, str | None | tuple[str | None, ...]]] = {
-            'LocationDataEditor': {
-                0: 'ID:',
-                1: '[b]ID:[/b][br]Must be different from all other IDs',
-                2: 'X Pos:',
-                3: '[b]X Pos:[/b][br]Specifies the X position of the location',
-                4: 'Y Pos:',
-                5: '[b]Y Pos:[/b][br]Specifies the Y position of the location',
-                6: 'Width:',
-                7: '[b]Width:[/b][br]Specifies the width of the location',
-                8: 'Height:',
-                9: '[b]Height:[/b][br]Specifies the height of the location',
-                10: 'Snap to Grid',
-                11: '[b]Location [id]:[/b]',
-                12: 'Modify Selected Location Properties',
-                13: '[i]No Location Selected[/i]'
-            },
             'PathDataEditor': {
                 0: 'Loops:',
                 1: '[b]Loops:[/b][br]Anything following this path will wait for any delay set at the last node and then proceed back in a straight line to the first node, and continue.',

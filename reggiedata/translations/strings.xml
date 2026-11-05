@@ -288,6 +288,32 @@
             <string id="stay_in_area">Stay in Current Area:</string>
             <string id="import">Import</string>
         </section>
+        <section id="location_data_editor">
+            <string id="title">Modify Selected Location Properties</string>
+            <string id="info">[b]Location [id]:[/b]</string>
+            <string id="snap_to_grid">Snap to Grid</string>
+            <section id="id">
+                <string id="name">ID:</string>
+                <string id="tooltip">[b]ID:[/b][br]Must be different from all other IDs</string>
+            </section>
+            <section id="pos_x">
+                <string id="name">X Pos:</string>
+                <string id="tooltip">[b]X Pos:[/b][br]Specifies the X position of the location</string>
+            </section>
+            <section id="pos_y">
+                <string id="name">Y Pos:</string>
+                <string id="tooltip">[b]Y Pos:[/b][br]Specifies the Y position of the location</string>
+            </section>
+            <section id="width">
+                <string id="name">Width:</string>
+                <string id="tooltip">[b]Width:[/b][br]Specifies the width of the location</string>
+            </section>
+            <section id="height">
+                <string id="name">Height:</string>
+                <string id="tooltip">[b]Height:[/b][br]Specifies the height of the location</string>
+            </section>
+            <string id="none_selected">[i]No Location Selected[/i]</string>
+        </section>
         <section id="meta_info">
             <string id="title">Level Information</string>
             <string id="version">Information last modified using [name]</string>
@@ -1361,22 +1387,6 @@
     </section>
 </translation>
 <!--<strings>
-    <section id="LocationDataEditor">
-        <string id="0">ID:</string>
-        <string id="1">[b]ID:[/b][br]Must be different from all other IDs</string>
-        <string id="2">X Pos:</string>
-        <string id="3">[b]X Pos:[/b][br]Specifies the X position of the location</string>
-        <string id="4">Y Pos:</string>
-        <string id="5">[b]Y Pos:[/b][br]Specifies the Y position of the location</string>
-        <string id="6">Width:</string>
-        <string id="7">[b]Width:[/b][br]Specifies the width of the location</string>
-        <string id="8">Height:</string>
-        <string id="9">[b]Height:[/b][br]Specifies the height of the location</string>
-        <string id="10">Snap to Grid</string>
-        <string id="11">[b]Location [id]:[/b]</string>
-        <string id="12">Modify Selected Location Properties</string>
-        <string id="13">[i]No Location Selected[/i]</string>
-    </section>
     <section id="PathDataEditor">
         <string id="0">Loops:</string>
         <string id="1">[b]Loops:[/b][br]Anything following this path will wait for any delay set at the last node and then proceed back in a straight line to the first node, and continue.</string>

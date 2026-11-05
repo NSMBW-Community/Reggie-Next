@@ -621,7 +621,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Location Editor
         self.location_editor = LocationEditorWidget()
-        location_dock = self.create_dock_widget(globals_.trans.string('LocationDataEditor', 12), 'locationeditor', self.location_editor,
+        location_dock = self.create_dock_widget(globals_.trans_new.string('dialog.location_data_editor.title'), 'locationeditor', self.location_editor,
                                               features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True, is_editor=True)
         self.location_editor_dock = cast(ItemEditorDockWidget, location_dock)
 
