@@ -64,11 +64,6 @@ class ReggieTranslation:
                 12: 'Modify Selected Location Properties',
                 13: '[i]No Location Selected[/i]'
             },
-            'MainWindow': {
-                0: None,  # REMOVED: '[unsaved]'
-                1: 'You\'re trying to paste over 300 items at once.[br]This may take a while (depending on your computer speed), are you sure you want to continue?',
-                8: 'Warning',
-            },
             'PathDataEditor': {
                 0: 'Loops:',
                 1: '[b]Loops:[/b][br]Anything following this path will wait for any delay set at the last node and then proceed back in a straight line to the first node, and continue.',

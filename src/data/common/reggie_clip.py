@@ -132,7 +132,8 @@ class ReggieClip:
         clip = reggie_clip.split('|')
 
         if len(clip) > 300 + 2:
-            result = QtWidgets.QMessageBox.warning(globals_.mainWindow, globals_.trans.string('MainWindow', 8), globals_.trans.string('MainWindow', 1),
+            result = QtWidgets.QMessageBox.warning(globals_.mainWindow, globals_.trans_new.string('error.title.warning'),
+                                                   globals_.trans_new.string('error.paste_many_files.description'),
                                                     QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
             if result == QtWidgets.QMessageBox.StandardButton.No:
                 globals_.mainWindow.SelectionUpdateFlag = False
