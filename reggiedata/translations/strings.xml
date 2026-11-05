@@ -268,6 +268,8 @@
             <string id="open_stamps">Choose a stamp archive</string>
             <string id="save_as">Save As: Choose a new filename</string>
             <string id="save_copy">Save Copy: Choose a new filename</string>
+            <string id="choose_stage_folder">Choose the Stage folder from [game]</string>
+            <string id="choose_texture_folder">Choose the Texture folder from [game]</string>
             <section id="filter">
                 <string id="all">All Files</string>
                 <string id="arc">Level Archives</string>
@@ -700,6 +702,10 @@
         <section id="missing_data">
             <string id="folder">Sorry, you seem to be missing the required data folder for Reggie Next to work. Please redownload your copy of the editor.</string>
             <string id="some_files">Sorry, you seem to be missing some of the required data files for Reggie Next to work. Please redownload your copy of the editor.[br][br]These are the files you are missing:[br][files]</string>
+        </section>
+        <section id="missing_game_files">
+            <string id="retail">This folder doesn't have all of the files from the extracted New Super Mario Bros. Wii Stage folder.</string>
+            <string id="game_patch">This folder doesn't seem to have the required files. In order to use the [game] game patch, you need the Stage folder, including the Texture folder and the level files contained within it.</string>
         </section>
         <section id="save">
             <string id="file_name">Error while Reggie was trying to save the level:[br](#[err1]) [err2][br][br](Your work has not been saved! Try saving it under a different filename or in a different folder.)</string>
@@ -1351,13 +1357,6 @@
     </section>
 </translation>
 <!--<strings>
-    <section id="ChangeGamePath">
-        <string id="0">Choose the Stage folder from [game]</string>
-        <string id="1">Error</string>
-        <string id="2">This folder doesn't have all of the files from the extracted New Super Mario Bros. Wii Stage folder.</string>
-        <string id="3">This folder doesn't seem to have the required files. In order to use the [game] game patch, you need the Stage folder, including the Texture folder and the level files contained within it.</string>
-        <string id="4">Choose the Texture folder from [game]</string>
-    </section>
     <section id="LocationDataEditor">
         <string id="0">ID:</string>
         <string id="1">[b]ID:[/b][br]Must be different from all other IDs</string>

@@ -905,7 +905,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         while True:
             stage_path = QtWidgets.QFileDialog.getExistingDirectory(
                 None,
-                globals_.trans.string('ChangeGamePath', 0, '[game]', globals_.gamedef.name)
+                globals_.trans_new.string('dialog.file_prompt.choose_stage_folder', ('[game]', globals_.gamedef.name))
             )
 
             if stage_path == '':
@@ -917,7 +917,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             while not os.path.isdir(texture_path):
                 texture_path = QtWidgets.QFileDialog.getExistingDirectory(
                     None,
-                    globals_.trans.string('ChangeGamePath', 4, '[game]', globals_.gamedef.name)
+                    globals_.trans_new.string('dialog.file_prompt.choose_texture_folder', ('[game]', globals_.gamedef.name))
                 )
 
                 if texture_path == "":
@@ -925,8 +925,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             if (not areValidGamePaths(stage_path, texture_path)) and (not globals_.gamedef.custom):  # custom gamedefs can use incomplete folders
                 QtWidgets.QMessageBox.information(
-                    None, globals_.trans.string('ChangeGamePath', 1),
-                    globals_.trans.string('ChangeGamePath', 2)
+                    None, globals_.trans_new.string('error.title.error'),
+                    globals_.trans_new.string('error.missing_game_files.retail')
                 )
             else:
                 SetGamePaths(stage_path, texture_path)

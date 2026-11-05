@@ -282,7 +282,7 @@ def main():
     while not areValidGamePaths():
         stage_path = QtWidgets.QFileDialog.getExistingDirectory(
             None,
-            globals_.trans.string('ChangeGamePath', 0, '[game]', globals_.gamedef.name)
+            globals_.trans_new.string('dialog.file_prompt.choose_stage_folder', ('[game]', globals_.gamedef.name))
         )
 
         if stage_path == '':
@@ -294,7 +294,7 @@ def main():
         while not os.path.isdir(texture_path):
             texture_path = QtWidgets.QFileDialog.getExistingDirectory(
                 None,
-                globals_.trans.string('ChangeGamePath', 4, '[game]', globals_.gamedef.name)
+                globals_.trans_new.string('dialog.file_prompt.choose_texture_folder', ('[game]', globals_.gamedef.name))
             )
 
             if texture_path == "":
@@ -305,10 +305,10 @@ def main():
             break
 
         if globals_.gamedef.custom:
-            msg = globals_.trans.string('ChangeGamePath', 3, '[game]', globals_.gamedef.name)
+            msg = globals_.trans_new.string('error.missing_game_files.game_patch', ('[game]', globals_.gamedef.name))
         else:
-            msg = globals_.trans.string('ChangeGamePath', 2)
-        QtWidgets.QMessageBox.information(None, globals_.trans.string('ChangeGamePath', 1), msg)
+            msg = globals_.trans_new.string('error.missing_game_files.retail')
+        QtWidgets.QMessageBox.information(None, globals_.trans_new.string('error.title.error'), msg)
 
     # Check to see if we have anything saved
     auto_file = setting('AutoSaveFilePath')
