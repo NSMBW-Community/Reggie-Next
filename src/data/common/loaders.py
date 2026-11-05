@@ -14,7 +14,6 @@ from data.common import archive
 from data.common.gamedef_update import convert_txt_to_xml
 from data.common.keybind import Keybind
 from data.common.menu_action import MenuAction
-from data.common.reggie_translation import ReggieTranslation
 from data.common.settings import delSetting, setSetting, setting
 from data.common.toolbar_action import ToolbarAction
 from data.common.utils import get_main_path, get_reggiedata_folder
@@ -30,6 +29,7 @@ from data.tileset.tile.tile_def import TileDef
 from data.tileset.tile.tileset_tile import TilesetTile
 from data.tileset.tileset_category import TilesetCategory, TilesetFileEntry
 from libs import lh, lib_versions, lz77, tpl
+from data.common.translation_section import TranslationSection
 from ui.dialogs.about import AboutDialog
 from ui.dialogs.diagnostic_tool import DiagnosticToolDialog
 from ui.dialogs.object_swap import ObjectTypeSwapDialog
@@ -1954,9 +1954,9 @@ def LoadTranslation() -> None:
     # The default value is English and can be represented in the settings in
     # several ways.
     if name in (None, 'None', 'English', '', 0):
-        name = None
+        return
 
-    globals_.trans = ReggieTranslation(name)
+    globals_.trans_new |= TranslationSection.from_xml(name)
 
 def DecompressLevel(data: bytes, name: str) -> bytes | None:
     """

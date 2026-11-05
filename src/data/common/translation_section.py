@@ -2,6 +2,7 @@ import os
 from typing import Any
 from xml.etree import ElementTree
 
+from data.common.translation_info import TranslationInfo
 from data.common.utils import get_reggiedata_folder, get_root_path
 
 
@@ -88,7 +89,9 @@ class TranslationSection:
                 continue
 
             result |= {
-                key: value for key, value in sub_result._items.items() if isinstance(value, str)
+                key: value
+                for key, value in sub_result._items.items()
+                if isinstance(value, str)
             }
 
         return result
@@ -144,12 +147,14 @@ class TranslationSection:
                 self._items[key] = this_item | other_item
                 continue
 
-            if (isinstance(this_item, str) and isinstance(other_item, str)) or (
-                this_item is None and other_item is not None
-            ):
-                # both are strings or string does not exist; override original / add
+            if isinstance(this_item, str) and isinstance(other_item, str):
+                # both are strings; override original
                 self._items[key] = other_item
                 continue
+
+            if this_item is None and other_item is not None:
+                # string does not exist in english; log warning
+                print(f'[Warning]: Found unused translation string or section "{key}"')
 
         return self
 
@@ -197,12 +202,74 @@ class TranslationSection:
         :param language: The language folder name to fetch the translation file
         from.
         """
-        tree = ElementTree.parse(
-            os.path.join(
-                get_reggiedata_folder(), "translations", language, "strings.xml"
-            )
+        info = cls.parse_main(language)
+        strings_path = os.path.join(
+            get_reggiedata_folder(), "translations", info.name, info.strings
         )
+        if not os.path.isfile(strings_path):
+            print(f"[Warning] - Failed to load language {info}")
+            return cls.init_as_english()
+        tree = ElementTree.parse(strings_path)
         return cls._parse_tree(tree.getroot())
+
+    @classmethod
+    def parse_main(cls, language: str) -> TranslationInfo:
+        info = TranslationInfo("", "", "")
+        if language in ("", None, "None"):
+            return info
+
+        language = str(language)
+
+        # Parse the file
+        path = os.path.join(
+            get_reggiedata_folder(), "translations", language, "main.xml"
+        )
+
+        try:
+            tree = ElementTree.parse(path)
+        except FileNotFoundError:
+            return info
+
+        root = tree.getroot()
+
+        # Add attributes
+        # Name
+        if "name" not in root.attrib:
+            return info
+        info.name = root.attrib["name"]
+        # Version
+        if "version" not in root.attrib:
+            return info
+        info.version = root.attrib["version"]
+        # Translator
+        if "translator" not in root.attrib:
+            return info
+        info.translator = root.attrib["translator"]
+
+        # Parse the nodes
+        info.strings = ""
+        base_path = os.path.join(get_reggiedata_folder(), "translations", language)
+        for node in root:
+            if node.tag.lower() == "file":
+                # It's a file node
+                language = node.attrib["name"]
+                path = os.path.join(base_path, node.attrib["path"])
+                info.files[None][language] = path
+            elif node.tag.lower() == "strings":
+                # It's a strings node
+                info.strings = os.path.join(base_path, node.attrib["path"])
+            elif node.tag.lower() == "for":
+                # Translation for other gamedefs
+                target = node.attrib["name"]
+                info.files[target] = {}
+                for child in node:
+                    if child.tag.lower() == "file":
+                        language = child.attrib["name"]
+                        info.files[target][language] = os.path.join(
+                            base_path, child.attrib["path"]
+                        )
+
+        return info
 
     @classmethod
     def _parse_tree(cls, element: ElementTree.Element) -> "TranslationSection":

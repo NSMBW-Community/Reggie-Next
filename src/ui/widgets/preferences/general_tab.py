@@ -3,10 +3,10 @@ import os
 
 from data import globals_
 from data.common.settings import setting, setSetting
-from data.common.reggie_translation import ReggieTranslation
-from data.level.items.zone import ZoneItem
 
 from data.common.utils import get_reggiedata_folder
+from data.common.translation_section import TranslationSection
+from data.common.translation_info import TranslationInfo
 from ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
 
 class GeneralTab(PreferenceTabWidget):
@@ -116,12 +116,11 @@ class GeneralTab(PreferenceTabWidget):
             if trans_dir.lower() == 'english':
                 continue
 
-            fp = os.path.join(get_reggiedata_folder(), 'translations', trans_dir, 'main.xml')
+            fp = os.path.join(get_reggiedata_folder(), 'translations', trans_dir, 'strings.xml')
             if not os.path.isfile(fp):
                 continue
 
-            trans_obj = ReggieTranslation(trans_dir)
-            self.trans_combo.addItem(trans_obj.name)
+            self.trans_combo.addItem(trans_dir.title())
             if trans_dir == str(setting('Translation')):
                 self.trans_combo.setCurrentIndex(i)
 
@@ -207,13 +206,13 @@ class GeneralTab(PreferenceTabWidget):
         Automatically adds 'English' to the list.
         """
         trans_path = os.path.join(get_reggiedata_folder(), 'translations')
-        trans_list = [('English', ReggieTranslation(None))]
+        trans_list = [('English', TranslationInfo("English", "1.0", "Treeki, Tempus"))]
         for trans_name in os.listdir(trans_path):
             if not os.path.isdir(os.path.join(trans_path, trans_name)):
                 continue
 
             try:
-                trans = ReggieTranslation(trans_name)
+                trans = TranslationSection.parse_main(trans_name)
             except Exception:
                 continue
 
