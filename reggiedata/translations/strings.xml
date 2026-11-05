@@ -28,6 +28,9 @@
         <string id="paren_close">)</string>
         <string id="untitled">Untitled</string>
         <string id="unsaved_bracket">[unsaved]</string>
+        <string id="layer0">Layer 0</string>
+        <string id="layer1">Layer 1</string>
+        <string id="layer2">Layer 2</string>
     </section>
     <section id="dialog">
         <section id="about">
@@ -184,6 +187,74 @@
         <section id="dirty">
             <string id="info">The level has unsaved changes in it.</string>
             <string id="info_2">Do you want to save them?</string>
+        </section>
+        <section id="entrance_data_editor">
+            <string id="title">Modify Selected Entrance Properties</string>
+            <string id="info">[b]Entrance [id]:[/b]</string>
+            <string id="type_data">([id]) [name]</string>
+            <section id="id">
+                <string id="name">ID:</string>
+                <string id="tooltip">[b]ID:[/b][br]Must be different from all other IDs</string>
+            </section>
+            <section id="type">
+                <string id="name">Type:</string>
+                <string id="tooltip">[b]Type:[/b][br]Sets how the entrance behaves</string>
+            </section>
+            <section id="dest_id">
+                <string id="name">Dest. ID:</string>
+                <string id="tooltip">[b]Dest. ID:[/b][br]If this entrance leads nowhere, set this to 0.</string>
+            </section>
+            <section id="dest_area">
+                <string id="name">Dest. Area:</string>
+                <string id="tooltip">[b]Dest. Area:[/b][br]If this entrance leads nowhere or the destination is in this area, set this to 0.</string>
+            </section>
+            <section id="enterable">
+                <string id="name">Enterable</string>
+                <string id="tooltip">[b]Enterable:[/b][br]If this box is checked on a pipe or door entrance, Mario will be able to enter the pipe/door. If it's not checked, he won't be able to enter it. Behaviour on other types of entrances is unknown/undefined.</string>
+            </section>
+            <section id="unknown_flag">
+                <string id="name">Unknown Flag</string>
+                <string id="tooltip">[b]Unknown Flag:[/b][br]This box is checked on a few entrances in the game, but we haven't managed to figure out what it does (or if it does anything).</string>
+            </section>
+            <section id="connected_pipe">
+                <string id="name">Connected Pipe</string>
+                <string id="tooltip">[b]Connected Pipe:[/b][br]This box allows you to enable an unused/broken feature in the game. It allows the pipe to function like the pipes in SMB3 where Mario simply goes through the pipe. However, it doesn't work correctly.</string>
+            </section>
+            <section id="reverse_path">
+                <string id="name">Reverse Path</string>
+                <string id="tooltip">[b]Reverse Path:[/b][br]This box tells the connected pipe whether or not it should follow its path in reverse (backwards).</string>
+            </section>
+            <section id="path_id">
+                <string id="name">Path ID:</string>
+                <string id="tooltip">[b]Path ID:[/b][br]Use this option to set the path number that the connected pipe will follow.</string>
+            </section>
+            <section id="link_to_forward">
+                <string id="name">Links to Forward Pipe</string>
+                <string id="tooltip">[b]Links to Forward Pipe:[/b][br]If this option is set on a pipe, the destination entrance/area values will be ignored - Mario will pass through the pipe and then reappear several tiles ahead, coming out of a forward-facing pipe.</string>
+            </section>
+            <section id="layer">
+                <string id="name">Layer:</string>
+                <string id="tooltip">[b]Layer:[/b][br]Allows you to change the collision layer which this entrance is active on. This option is very glitchy and not used in the default levels - for almost all normal cases, you will want to use layer 1.</string>
+            </section>
+            <section id="send_to_world_map">
+                <string id="name">Send to World Map</string>
+                <string id="tooltip">[b]Send to World Map:[/b][br]If this is checked, the player will be sent to the world map when entering this entrance, and the level will be cleared.</string>
+            </section>
+            <section id="shift_left">
+                <string id="name">Spawn Half a Tile Left</string>
+                <string id="tooltip">[b]Spawn Half a Tile Left:[/b][br]If this is checked, the entrance will spawn Mario half a tile to the left.</string>
+            </section>
+            <string id="none_selected">[i]No Entrance Selected[/i]</string>
+            <section id="exit_direction">
+                <string id="name">Exit Direction:</string>
+                <string id="tooltip">[b]Exit Direction:[/b][br]Set the direction the player will exit out of a connected pipe.</string>
+                <section id="direction">
+                    <string id="up">Up</string>
+                    <string id="down">Down</string>
+                    <string id="left">Left</string>
+                    <string id="right">Right</string>
+                </section>
+            </section>
         </section>
         <section id="external_database">
             <string id="title">External Database Viewer</string>
@@ -1250,51 +1321,6 @@
         <string id="2">This folder doesn't have all of the files from the extracted New Super Mario Bros. Wii Stage folder.</string>
         <string id="3">This folder doesn't seem to have the required files. In order to use the [game] game patch, you need the Stage folder, including the Texture folder and the level files contained within it.</string>
         <string id="4">Choose the Texture folder from [game]</string>
-    </section>
-    <section id="EntranceDataEditor">
-        <string id="0">ID:</string>
-        <string id="1">[b]ID:[/b][br]Must be different from all other IDs</string>
-        <string id="2">Type:</string>
-        <string id="3">[b]Type:[/b][br]Sets how the entrance behaves</string>
-        <string id="4">Dest. ID:</string>
-        <string id="5">[b]Dest. ID:[/b][br]If this entrance leads nowhere, set this to 0.</string>
-        <string id="6">Dest. Area:</string>
-        <string id="7">[b]Dest. Area:[/b][br]If this entrance leads nowhere or the destination is in this area, set this to 0.</string>
-        <string id="8">Enterable</string>
-        <string id="9">[b]Enterable:[/b][br]If this box is checked on a pipe or door entrance, Mario will be able to enter the pipe/door. If it's not checked, he won't be able to enter it. Behaviour on other types of entrances is unknown/undefined.</string>
-        <string id="10">Unknown Flag</string>
-        <string id="11">[b]Unknown Flag:[/b][br]This box is checked on a few entrances in the game, but we haven't managed to figure out what it does (or if it does anything).</string>
-        <string id="12">Connected Pipe</string>
-        <string id="13">[b]Connected Pipe:[/b][br]This box allows you to enable an unused/broken feature in the game. It allows the pipe to function like the pipes in SMB3 where Mario simply goes through the pipe. However, it doesn't work correctly.</string>
-        <string id="14">Reverse Path</string>
-        <string id="15">[b]Reverse Path:[/b][br]This box tells the connected pipe whether or not it should follow its path in reverse (backwards).</string>
-        <string id="16">Path ID:</string>
-        <string id="17">[b]Path ID:[/b][br]Use this option to set the path number that the connected pipe will follow.</string>
-        <string id="18">Links to Forward Pipe</string>
-        <string id="19">[b]Links to Forward Pipe:[/b][br]If this option is set on a pipe, the destination entrance/area values will be ignored - Mario will pass through the pipe and then reappear several tiles ahead, coming out of a forward-facing pipe.</string>
-        <string id="20">Layer:</string>
-        <stringlist id="21">
-            <entry>Layer 1</entry>
-            <entry>Layer 2</entry>
-            <entry>Layer 0</entry>
-        </stringlist>
-        <string id="22">[b]Layer:[/b][br]Allows you to change the collision layer which this entrance is active on. This option is very glitchy and not used in the default levels - for almost all normal cases, you will want to use layer 1.</string>
-        <string id="23">[b]Entrance [id]:[/b]</string>
-        <string id="24">Modify Selected Entrance Properties</string>
-        <string id="25">Exit Direction:</string>
-        <string id="26">[b]Exit Direction:[/b][br]Set the direction the player will exit out of a connected pipe.</string>
-        <stringlist id="27">
-            <entry>Up</entry>
-            <entry>Down</entry>
-            <entry>Left</entry>
-            <entry>Right</entry>
-        </stringlist>
-        <string id="28">([id]) [name]</string>
-        <string id="29">Send to World Map</string>
-        <string id="30">[b]Send to World Map:[/b][br]If this is checked, the player will be sent to the world map when entering this entrance, and the level will be cleared.</string>
-        <string id="31">Spawn Half a Tile Left</string>
-        <string id="32">[b]Spawn Half a Tile Left:[/b][br]If this is checked, the entrance will spawn Mario half a tile to the left.</string>
-        <string id="33">[i]No Entrance Selected[/i]</string>
     </section>
     <section id="Gamedefs">
         <string id="0">This game has custom sprite images</string>

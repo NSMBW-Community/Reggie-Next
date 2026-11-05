@@ -589,7 +589,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                    QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable | \
                    QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable
 
-        overview_dock = self.create_dock_widget(globals_.trans.string('MenuItems', 94), 'leveloverview', self.level_overview,
+        overview_dock = self.create_dock_widget(globals_.trans_new.string('menu_bar.view.item.level_overview.name'), 'leveloverview', self.level_overview,
                                               features, Qt.DockWidgetArea.RightDockWidgetArea, None, True, False)
         self.level_overview_dock = overview_dock
 
@@ -613,7 +613,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Entrance Editor
         self.entrance_editor = EntranceEditorWidget()
-        entrance_dock = self.create_dock_widget(globals_.trans.string('EntranceDataEditor', 24), 'entranceeditor', self.entrance_editor,
+        entrance_dock = self.create_dock_widget(globals_.trans_new.string('dialog.entrance_data_editor.title'), 'entranceeditor', self.entrance_editor,
                                               features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True, is_editor=True)
         self.entrance_editor_dock = cast(ItemEditorDockWidget, entrance_dock)
 
@@ -634,7 +634,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                    QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable | \
                    QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable
 
-        palette_dock = self.create_dock_widget(globals_.trans.string('MenuItems', 96), 'palette', None, features,
+        palette_dock = self.create_dock_widget(globals_.trans_new.string('menu_bar.view.item.palette.name'), 'palette', None, features,
                                              Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, True, False, True)
         self.palette_dock = cast(PaletteDock, palette_dock)
 
@@ -647,7 +647,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if act is not None:
             act.setShortcut(GetKeybind('palette'))
             act.setIcon(GetIcon('palette'))
-            act.setStatusTip(globals_.trans.string('MenuItems', 97))
+            act.setStatusTip(globals_.trans_new.string('menu_bar.view.item.palette.tooltip'))
             if self.vmenu is not None:
                 self.vmenu.addAction(act)
 
@@ -658,7 +658,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if act is not None:
             act.setShortcut(GetKeybind('leveloverview'))
             act.setIcon(GetIcon('globe-model'))
-            act.setStatusTip(globals_.trans.string('MenuItems', 95))
+            act.setStatusTip(globals_.trans_new.string('menu_bar.view.item.level_overview.tooltip'))
             if self.vmenu is not None:
                 self.vmenu.addAction(act)
 
@@ -856,7 +856,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Adds a new area to the level
         """
         if len(globals_.Level.areas) >= 4:
-            QtWidgets.QMessageBox.warning(self, globals_.trans.string('MenuItems', 78), globals_.trans_new.string('common.max_area'))
+            QtWidgets.QMessageBox.warning(self, globals_.trans_new.string('menu_bar.settings.item.add_area.title'), globals_.trans_new.string('common.max_area'))
             return
 
         # This is an unsaved new level if self.fileSavePath is None

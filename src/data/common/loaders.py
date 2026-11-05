@@ -594,7 +594,7 @@ def LoadEntranceNames(reload_: bool = False) -> None:
 
     globals_.EntranceTypeNames.clear()
     for idx in names:
-        entrance_name = globals_.trans.string('EntranceDataEditor', 28, '[id]', idx, '[name]', names[idx])
+        entrance_name = globals_.trans_new.string('dialog.entrance_data_editor.type_data', ('[id]', idx), ('[name]', names[idx]))
         if not entrance_name:
             continue
 
