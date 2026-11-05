@@ -58,7 +58,7 @@ class GameDefMenu(QtWidgets.QMenu):
 
         # Add the reload button
         act = QtGui.QAction(self)
-        act.setText(globals_.trans.string('Gamedefs', 19))
+        act.setText(globals_.trans_new.string('widget.game_patch_menu.refresh_list'))
         act.setData('reload_gamedef')
         act.setActionGroup(self.actGroup)
         act.setIcon(GetIcon('drive-disc'))

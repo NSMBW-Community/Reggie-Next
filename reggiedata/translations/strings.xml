@@ -691,6 +691,9 @@
             <string id="lh">Failed to decompress the LH-compressed file [file].</string>
             <string id="lz">Failed to decompress the LZ-compressed file [file].</string>
         </section>
+        <section id="game_patch">
+            <string id="no_name">The "[folder]" game patch has no 'name' attribute on the XML root node. The default game patch will instead be loaded.</string>
+        </section>
         <section id="invalid_level">
             <string id="description">This file doesn't seem to be a valid level.</string>
         </section>
@@ -706,6 +709,27 @@
         <section id="unknown_sprite">
             <string id="single">This level contains sprite ID [id], which is not defined in the current game patch. The sprite will be displayed as "UNKNOWN" but can still be edited and saved.</string>
             <string id="multiple">This level contains sprite IDs ([ids]) which are not defined in the current game patch. These sprites will be displayed as "UNKNOWN" but can still be edited and saved.</string>
+        </section>
+    </section>
+    <section id="game_patch">
+        <section id="default_info">
+            <string id="name">New Super Mario Bros. Wii</string>
+            <string id="description">A new Mario adventure![br]Published by Nintendo in November 2009.</string>
+        </section>
+        <section id="unknown_info">
+            <string id="description">[i]No description[/i]</string>
+        </section>
+        <section id="first_load">
+            <string id="title">New Game Patch</string>
+            <string id="text">It appears that this is your first time using the game patch for [game]. Please select its Stage folder so custom tilesets and levels can be loaded.</string>
+        </section>
+        <section id="aborted">
+            <string id="title">Aborted Game Path Selection</string>
+            <string id="text">Since you did not select the stage folder for [game], stages and tilesets will not load correctly. You can try again by choosing Change Game Path while the [game] patch is loaded.</string>
+        </section>
+        <section id="success">
+            <string id="title">Patch Loaded Successfully</string>
+            <string id="text">You can change the game path for [game] at any time by choosing Change Game Path while the [game] patch is loaded.</string>
         </section>
     </section>
     <section id="layout">
@@ -1269,6 +1293,14 @@
                 <string id="error_none">No errors found.</string>
             </section>
         </section>
+        <section id="game_patch_menu">
+            <string id="refresh_list">Refresh List</string>
+        </section>
+        <section id="game_patch_viewer">
+            <section id="tooltip">
+                <string id="sprite_image">This game has custom sprite images</string>
+            </section>
+        </section>
         <section id="keybind_line_edit">
             <string id="no_keybind">No keybind set</string>
         </section>
@@ -1325,28 +1357,6 @@
         <string id="2">This folder doesn't have all of the files from the extracted New Super Mario Bros. Wii Stage folder.</string>
         <string id="3">This folder doesn't seem to have the required files. In order to use the [game] game patch, you need the Stage folder, including the Texture folder and the level files contained within it.</string>
         <string id="4">Choose the Texture folder from [game]</string>
-    </section>
-    <section id="Gamedefs">
-        <string id="0">This game has custom sprite images</string>
-        <string id="1" />
-        <string id="2">New Game Patch</string>
-        <string id="3">It appears that this is your first time using the game patch for [game]. Please select its Stage folder so custom tilesets and levels can be loaded.</string>
-        <string id="4">Aborted Game Path Selection</string>
-        <string id="5">Since you did not select the stage folder for [game], stages and tilesets will not load correctly. You can try again by choosing Change Game Path while the [game] patch is loaded.</string>
-        <string id="6">New Game Patch</string>
-        <string id="7">You can change the game path for [game] at any time by choosing Change Game Path while the [game] patch is loaded.</string>
-        <string id="8" />
-        <string id="9" />
-        <string id="10" />
-        <string id="11" />
-        <string id="12" />
-        <string id="13">New Super Mario Bros. Wii</string>
-        <string id="14">A new Mario adventure![br]Published by Nintendo in November 2009.</string>
-        <string id="15">[i]No description[/i]</string>
-        <string id="16" />
-        <string id="17">Error</string>
-        <string id="18">An error occurred while attempting to load this game patch. It will now be unloaded. Here's the specific error:[br][error]</string>
-        <string id="19">Refresh List</string>
     </section>
     <section id="LocationDataEditor">
         <string id="0">ID:</string>

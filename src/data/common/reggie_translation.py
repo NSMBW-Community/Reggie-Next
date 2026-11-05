@@ -53,26 +53,7 @@ class ReggieTranslation:
                 4: 'Choose the Texture folder from [game]',
             },
             'Gamedefs': {
-                0: 'This game has custom sprite images',
-                1: None,  # REMOVED: 'Loading patch...'
-                2: 'New Game Patch',
-                3: 'It appears that this is your first time using the game patch for [game]. Please select its Stage folder so custom tilesets and levels can be loaded.',
-                4: 'Aborted Game Path Selection',
-                5: 'Since you did not select the stage folder for [game], stages and tilesets will not load correctly. You can try again by choosing Change Game Path while the [game] patch is loaded.',
-                6: 'New Game Patch',
-                7: 'You can change the game path for [game] at any time by choosing Change Game Path while the [game] patch is loaded.',
-                8: None,  # REMOVED: 'Loading sprite data...'
-                9: None,  # REMOVED: 'Loading background names...'
-                10: None,  # REMOVED: 'Reloading tilesets...'
-                11: None,  # REMOVED: 'Loading sprite image data...'
-                12: None,  # REMOVED: 'Applying sprite image data...'
-                13: 'New Super Mario Bros. Wii',
-                14: 'A new Mario adventure![br]Published by Nintendo in November 2009.',
-                15: '[i]No description[/i]',
-                16: None,  # REMOVED: 'Loading entrance names...'
-                17: 'Error',
-                18: 'An error occurred while attempting to load this game patch. It will now be unloaded. Here\'s the specific error:[br][error]',
-                19: 'Refresh List',
+                13: 'New Super Mario Bros. Wii'
             },
             'LocationDataEditor': {
                 0: 'ID:',
