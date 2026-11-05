@@ -92,7 +92,7 @@ class SpriteTexPropertyDecoder(PropertyDecoder[SpriteTexSpriteField]):
                 self.comboBox.setCurrentIndex(i)
                 break
         else:
-            self.comboBox.setPlaceholderText(globals_.trans.string('SpriteDataEditor', 35, ('[id]', str(value))))
+            self.comboBox.setPlaceholderText(globals_.trans.string('dialog.sprite_data_editor.property_decoder.spritetex.undefined', ('[id]', str(value))))
             self.comboBox.setCurrentIndex(-1)
 
     def HandleValueChanged(self, value):

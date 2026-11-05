@@ -514,6 +514,56 @@
             <string id="move_by">Move objects by:</string>
             <string id="object_warn">You are trying to move object(s) by an offset which isn't a multiple of 16. The offset will be rounded to the nearest multiple of 16. Are you sure you want to do this?</string>
         </section>
+        <section id="sprite_data_editor">
+            <string id="title">Modify Selected Sprite Properties</string>
+            <string id="default_title">Default Properties</string>
+            <string id="info">[b]Sprite [id]:[br][name][/b]</string>
+            <string id="unknown_info">[b]Unidentified/Unknown Sprite ([id])[/b]</string>
+            <section id="dependencies">
+                <string id="require_area">Sprite [id]: required in area</string>
+                <string id="suggest_area">Sprite [id]: suggested in area</string>
+                <string id="require_resource">Sprite [id]: required resource</string>
+                <string id="add_sprite">Add Sprite</string>
+                <string id="add_to_loaded">Add to Loaded Sprites</string>
+            </section>
+            <string id="comment">[b][name][/b]: [note]</string>
+            <string id="reset_all">Reset all settings</string>
+            <string id="modify_raw_data">Modify Raw Data:</string>
+            <section id="notes">
+                <string id="name">Notes</string>
+                <string id="text">[b]Sprite Notes:[/b] [notes]</string>
+            </section>
+            <section id="advanced_notes">
+                <string id="name">Advanced Notes</string>
+                <string id="text">[b]Advanced Notes:[/b] [notes]</string>
+            </section>
+            <section id="object_files">
+                <string id="name">Object Files</string>
+                <string id="text">[b]This sprite loads:[/b][br]* [list]</string>
+            </section>
+            <section id="yoshi_notes">
+                <string id="text">[b]Yoshi Notes:[/b] [notes]</string>
+            </section>
+            <string id="read_more">Read more...</string>
+            <string id="read_less">Read less...</string>
+            <string id="check_dependencies">Check dependent sprites</string>
+            <string id="check_dependency_notes">Check dependency notes</string>
+            <string id="resize">Resize</string>
+            <section id="property_decoder">
+                <string id="no_title">NO TITLE GIVEN!</string>
+                <string id="next_free">Next Free</string>
+                <section id="external">
+                    <string id="unknown">Unknown/Undefined</string>
+                </section>
+                <section id="spritetex">
+                    <string id="undefined">[id]: Undefined Entry</string>
+                </section>
+                <section id="layer_default">
+                    <string id="name">Layer</string>
+                    <string id="comment">[b]Layer[/b]: This determines what layer the sprite will be active on. In almost all cases, you'll want to use Layer 1.</string>
+                </section>
+            </section>
+        </section>
         <section id="sprite_resize">
             <string id="title">Sprite Resizer</string>
             <string id="info">Let's resize your sprite. In order to do this, choose one of the two modes, based on the below information. Note that some choices can overlap with other settings, leading to undesired effects.</string>
@@ -1416,48 +1466,3 @@
         </section>
     </section>
 </translation>
-<!--<strings>
-    <section id="SpriteDataEditor">
-        <string id="0">Modify Selected Sprite Properties</string>
-        <string id="1">[b][name][/b]: [note]</string>
-        <string id="2">[b]Sprite Notes:[/b] [notes]</string>
-        <string id="3">Modify Raw Data:</string>
-        <string id="4">Notes</string>
-        <string id="5">[b]Unidentified/Unknown Sprite ([id])[/b]</string>
-        <string id="6">[b]Sprite [id]:[br][name][/b]</string>
-        <string id="7">Object Files</string>
-        <string id="8">[b]This sprite loads:[/b][br]* [list]</string>
-        <string id="9">[b]Yoshi Notes:[/b] [notes]</string>
-        <string id="10">Advanced Notes</string>
-        <string id="11">[b]Advanced Notes:[/b] [notes]</string>
-        <string id="12">Notes</string>
-        <string id="13">Read more...</string>
-        <string id="14">Read less...</string>
-        <string id="15">This sprite works properly with Yoshi.</string>
-        <string id="16" />
-        <string id="17">Reset all settings</string>
-        <string id="18">Check dependent sprites</string>
-        <string id="19">Check dependency notes</string>
-        <string id="20">Sprite [id]: required in area</string>
-        <string id="21">Sprite [id]: suggested in area</string>
-        <string id="22">Sprite [id]: required in zone</string>
-        <string id="23">Sprite [id]: suggested in zone</string>
-        <string id="24" />
-        <string id="25">This sprite has the following dependencies:</string>
-        <string id="26">Add Sprite</string>
-        <string id="27">Resize</string>
-        <string id="28">NO TITLE GIVEN!</string>
-        <string id="29">Next Free</string>
-        <string id="30">Sprite [id]: required resource</string>
-        <string id="31">Add to Loaded Sprites</string>
-        <string id="32">Layer</string>
-        <string id="33">[b]Layer[/b]: This determines what layer the sprite will be active on. In almost all cases, you'll want to use Layer 1.</string>
-        <stringlist id="34">
-            <entry>Layer 1</entry>
-            <entry>Layer 2</entry>
-            <entry>Layer 0</entry>
-        </stringlist>
-        <string id="35">[id]: Undefined Entry</string>
-        <string id="36">Unknown/Undefined</string>
-    </section>
-</strings>-->

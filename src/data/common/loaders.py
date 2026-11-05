@@ -438,20 +438,20 @@ def LoadSpriteData() -> None:
             attribs = sprite.keys()
 
             if 'notes' in attribs:
-                notes = globals_.trans.string('SpriteDataEditor', 2, ('[notes]', sprite.get('notes')))
+                notes = globals_.trans.string('dialog.sprite_data_editor.notes.text', ('[notes]', sprite.get('notes')))
 
             if 'advancednotes' in attribs:
-                advNotes = globals_.trans.string('SpriteDataEditor', 11, ('[notes]', sprite.get('advancednotes')))
+                advNotes = globals_.trans.string('dialog.sprite_data_editor.advanced_notes.text', ('[notes]', sprite.get('advancednotes')))
 
             if 'files' in attribs:
                 sprite_files = sprite.get('files')
                 if sprite_files is None:
                     continue
-                relatedObjFiles = globals_.trans.string('SpriteDataEditor', 8, ('[list]',
+                relatedObjFiles = globals_.trans.string('dialog.sprite_data_editor.object_files.text', ('[list]',
                     sprite_files.replace(';', '<br>* ')))
 
             if 'yoshinotes' in attribs:
-                yoshiNotes = globals_.trans.string('SpriteDataEditor', 9, ('[notes]',
+                yoshiNotes = globals_.trans.string('dialog.sprite_data_editor.yoshi_notes.text', ('[notes]',
                     sprite.get('yoshinotes')))
 
             noyoshi = sprite.get('noyoshi', 'False') == "True"

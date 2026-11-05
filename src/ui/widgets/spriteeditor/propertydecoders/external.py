@@ -95,7 +95,7 @@ class ExternalPropertyDecoder(PropertyDecoder[ExternalSpriteField]):
         Gets the name for the entry
         """
         value = int(value)
-        text = str(globals_.trans.string('SpriteDataEditor', 36))
+        text = str(globals_.trans.string('dialog.sprite_data_editor.property_decoder.external.unknown'))
 
         # Find the correct XML
         filename = globals_.gamedef.externalFile(f'{self.field.type}.xml')
