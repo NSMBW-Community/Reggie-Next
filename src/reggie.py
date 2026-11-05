@@ -331,9 +331,6 @@ def main():
     # We might have something in the clipboard already, activate Paste if so
     globals_.mainWindow.track_clipboard_updates()
 
-    if '-generatestringsxml' in sys.argv:
-        globals_.trans.generateXML()
-
     exitcodesys = globals_.app.exec()
     globals_.app.deleteLater()
     sys.exit(exitcodesys)

@@ -438,21 +438,21 @@ def LoadSpriteData() -> None:
             attribs = sprite.keys()
 
             if 'notes' in attribs:
-                notes = globals_.trans.string('SpriteDataEditor', 2, '[notes]', sprite.get('notes'))
+                notes = globals_.trans_new.string('SpriteDataEditor', 2, ('[notes]', sprite.get('notes')))
 
             if 'advancednotes' in attribs:
-                advNotes = globals_.trans.string('SpriteDataEditor', 11, '[notes]', sprite.get('advancednotes'))
+                advNotes = globals_.trans_new.string('SpriteDataEditor', 11, ('[notes]', sprite.get('advancednotes')))
 
             if 'files' in attribs:
                 sprite_files = sprite.get('files')
                 if sprite_files is None:
                     continue
-                relatedObjFiles = globals_.trans.string('SpriteDataEditor', 8, '[list]',
-                                                sprite_files.replace(';', '<br>* '))
+                relatedObjFiles = globals_.trans_new.string('SpriteDataEditor', 8, ('[list]',
+                    sprite_files.replace(';', '<br>* ')))
 
             if 'yoshinotes' in attribs:
-                yoshiNotes = globals_.trans.string('SpriteDataEditor', 9, '[notes]',
-                                                sprite.get('yoshinotes'))
+                yoshiNotes = globals_.trans_new.string('SpriteDataEditor', 9, ('[notes]',
+                    sprite.get('yoshinotes')))
 
             noyoshi = sprite.get('noyoshi', 'False') == "True"
             asm = sprite.get('asmhacks', 'False') == "True"

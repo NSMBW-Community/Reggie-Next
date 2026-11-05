@@ -601,14 +601,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Sprite Editor
         self.spriteDataEditor = SpriteEditorWidget()
-        sprite_dock = self.create_dock_widget(globals_.trans.string('SpriteDataEditor', 0), 'spriteeditor', self.spriteDataEditor,
+        sprite_dock = self.create_dock_widget(globals_.trans_new.string('SpriteDataEditor', 0), 'spriteeditor', self.spriteDataEditor,
                                             features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True, is_editor=True)
         self.spriteEditorDock = cast(ItemEditorDockWidget, sprite_dock)
 
         # Default Sprite Editor
         self.defaultDataEditor = SpriteEditorWidget(True)
         self.defaultDataEditor.setVisible(False)
-        def_sprite_dock = self.create_dock_widget(globals_.trans.string('SpriteDataEditor', 37), 'defaultprops', self.defaultDataEditor,
+        def_sprite_dock = self.create_dock_widget(globals_.trans_new.string('SpriteDataEditor', 37), 'defaultprops', self.defaultDataEditor,
                                                 features | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable,
                                                 Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True)
         self.defaultPropDock = def_sprite_dock
@@ -627,7 +627,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Path (Node) Editor
         self.path_editor = PathNodeEditorWidget()
-        path_dock = self.create_dock_widget(globals_.trans.string('PathDataEditor', 10), 'pathnodeeditor', self.path_editor,
+        path_dock = self.create_dock_widget(globals_.trans_new.string('PathDataEditor', 10), 'pathnodeeditor', self.path_editor,
                                             features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True, is_editor=True)
         self.path_editor_dock = cast(ItemEditorDockWidget, path_dock)
 

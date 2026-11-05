@@ -1,7 +1,7 @@
 import os
 from PyQt6 import QtWidgets
 from data import globals_
-from data.common.reggie_translation import convert_formatting
+from data.common.translation import Translation
 
 class ExternalNotesDialog(QtWidgets.QDialog):
     """
@@ -15,7 +15,7 @@ class ExternalNotesDialog(QtWidgets.QDialog):
         super().__init__()
         self.setWindowTitle(globals_.trans_new.string('dialog.external_notes.title'))
 
-        text = convert_formatting(text)
+        text = Translation.convert_formatting(text)
 
         text_view = QtWidgets.QTextEdit()
         text_view.setText(text)
