@@ -265,27 +265,23 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         """
         slot = self.buttongroup.checkedId()
         size = self.slider.value()
-        data = bytearray(8)
+        data = bytearray(10)
 
         if slot == 2: # Global
             data[5] = (size << 4) | 5
         else: # Selective
             data[5] = (slot << 4) | 6
 
-        mainWindow = globals_.mainWindow
-        if mainWindow is None:
-            return
-
-        selObj = mainWindow.selObj
-        if selObj is None or not isinstance(selObj, InstanceDefinition):
+        selObj = globals_.mainWindow.selObj
+        if not isinstance(selObj, SpriteItem):
             return
 
         x = selObj.objx + 16 if selObj.objx is not None else 16
         y = selObj.objy if selObj.objy is not None else 0
         special_event_id = globals_.SpecialEventSpriteID
 
-        if SpriteItem.create(x, y, special_event_id, data) is not None:
-            mainWindow.scene.update()
+        if SpriteItem.create(x, y, special_event_id, bytes(data)) is not None:
+            globals_.mainWindow.scene.update()
 
     def getGlobalScale(self) -> int | None:
         """

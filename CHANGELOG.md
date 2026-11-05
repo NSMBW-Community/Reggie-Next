@@ -105,6 +105,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed invalid ReggieClips still marking the level as modified.
 - Fixed Sprite Images not being re-enabled when loading into a different level.
 - Fixed discarded changes still being saved when adding/importing a new area.
+- Fixed various minor issues with the Objects palette in Areas with no tilesets.
+- Fixed a small visual bug when opening the Level Information in levels with a password set.
 
 ## [4.10.0] - 2026-07-25
 

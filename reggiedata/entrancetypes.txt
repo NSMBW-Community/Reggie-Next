@@ -26,5 +26,3 @@
 13:Normal (Mispositioned)
 14:Unknown
 15:Unknown
-28:Unknown (Crash)
-29:Unknown (Freeze)

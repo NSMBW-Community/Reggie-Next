@@ -74,8 +74,6 @@ class ObjectTab(QtWidgets.QTabWidget):
             self.layer_buttons[1].setChecked(True) # Toggle Layer 1
         self.object_picker.LoadFromTilesets()
 
-        self.setCurrentIndex(0)
-
         if is_new_level:
             self.setTabEnabled(0, True)
             for i in range(1, 4):
@@ -83,6 +81,8 @@ class ObjectTab(QtWidgets.QTabWidget):
         else: # Check tileset validity
             for i, tileset in enumerate(globals_.Area.tilesets):
                 self.setTabEnabled(i, tileset != '')
+
+        self.setCurrentIndex(0)
 
     def slot_tab_changed(self, new_tab):
         """

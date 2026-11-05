@@ -10,7 +10,7 @@ class DiagnosticWidget(QtWidgets.QWidget):
     """
     Widget for the auto-diagnostic tool
     """
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Creates and initializes the widget
         """
@@ -40,7 +40,7 @@ class DiagnosticWidget(QtWidgets.QWidget):
         self.check_timer = QtCore.QTimer()
         self.check_timer.timeout.connect(self.update_status)
 
-    def set_timer(self):
+    def set_timer(self) -> None:
         """
         Starts a timer
         """
@@ -58,7 +58,7 @@ class DiagnosticWidget(QtWidgets.QWidget):
         if globals_.AutoDiagFrequency != 0:
             self.check_timer.start(timer_values[globals_.AutoDiagFrequency - 1])
 
-    def update_status(self):
+    def update_status(self) -> None:
         """
         Checks for errors and updates the widget accordingly
         """
@@ -83,7 +83,7 @@ class DiagnosticWidget(QtWidgets.QWidget):
         self.status_button.setIcon(GetIcon(f'wrench-screwdriver-{icons[result]}'))
         self.status_button.setText(globals_.trans.string(f'widget.auto_diagnostic.errors.error_{string}', ('[num]', error_num)))
 
-    def handle_manual_update(self):
+    def handle_manual_update(self) -> None:
         """
         Handles the manual update button being pressed
         """
@@ -102,7 +102,7 @@ class DiagnosticWidget(QtWidgets.QWidget):
         else:
             self.update_status()
 
-    def update_widget(self):
+    def update_widget(self) -> None:
         """
         Updates the widget after (possibly) being modifed in the Preferences
         """

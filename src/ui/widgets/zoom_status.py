@@ -6,7 +6,7 @@ class ZoomStatusWidget(QtWidgets.QWidget):
     """
     Shows the current zoom level's percentage
     """
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Creates and initializes the widget
         """
@@ -23,11 +23,11 @@ class ZoomStatusWidget(QtWidgets.QWidget):
         self.set_zoom_level(globals_.mainWindow.ZoomLevel)
         self.setMaximumWidth(57)
 
-    def set_zoom_level(self, zoom_level):
+    def set_zoom_level(self, zoom_level: float) -> None:
         """
-        Updates the widget
+        Updates the visible zoom level
         """
-        if float(int(zoom_level)) == float(zoom_level):
+        if zoom_level.is_integer():
             self.label.setText(str(int(zoom_level)) + '%')
         else:
-            self.label.setText(str(float(zoom_level)) + '%')
+            self.label.setText(str(zoom_level) + '%')

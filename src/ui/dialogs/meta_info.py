@@ -146,15 +146,6 @@ class MetaInfoDialog(QtWidgets.QDialog):
         infoLayout.addRow(globals_.trans.string('dialog.meta_info.field.group'), self.group_field)
         infoLayout.addRow(globals_.trans.string('dialog.meta_info.field.website'), self.website_field)
 
-        self.password_label = infoLayout.labelForField(self.password_field)
-
-        levelIsLocked = password != ''
-        self.locked_label.setVisible(levelIsLocked)
-        if self.password_label is not None:
-            self.password_label.setVisible(levelIsLocked)
-            self.line.setVisible(levelIsLocked)
-        self.password_field.setVisible(levelIsLocked)
-
         info_box = QtWidgets.QGroupBox(globals_.trans.string('dialog.meta_info.version', ('[name]', creator)))
         info_box.setLayout(infoLayout)
 
@@ -162,6 +153,16 @@ class MetaInfoDialog(QtWidgets.QDialog):
         main_layout.addWidget(info_box)
         main_layout.addWidget(button_box)
         self.setLayout(main_layout)
+
+        self.password_label = infoLayout.labelForField(self.password_field)
+
+        locked = password != ''
+        self.locked_label.setVisible(locked)
+        if self.password_label is not None:
+            self.password_label.setVisible(locked)
+            self.line.setVisible(locked)
+
+        self.password_field.setVisible(locked)
 
         self.update_password('')
 

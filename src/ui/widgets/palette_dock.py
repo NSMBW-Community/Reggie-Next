@@ -24,7 +24,7 @@ class PaletteDock(QtWidgets.QDockWidget):
     """
     Represents the Palette widget
     """
-    def setup(self):
+    def setup(self) -> None:
         """
         Sets up the various palette tabs
         """
@@ -75,7 +75,7 @@ class PaletteDock(QtWidgets.QDockWidget):
 
         self.setWidget(self.tabs)
 
-    def reset(self):
+    def reset(self) -> None:
         """
         Resets data for all child tabs
         """
@@ -133,13 +133,13 @@ class PaletteDock(QtWidgets.QDockWidget):
             globals_.mainWindow.scene.addItem(com)
             com.UpdateListItem()
 
-    def set_tab(self, index):
+    def set_tab(self, index: int) -> None:
         """
         Updates the current palette tab
         """
         self.tabs.setCurrentIndex(index)
 
-    def current_tab_changed(self, new_tab):
+    def current_tab_changed(self, new_tab: int) -> None:
         """
         Handles the selected palette tab changing
         """

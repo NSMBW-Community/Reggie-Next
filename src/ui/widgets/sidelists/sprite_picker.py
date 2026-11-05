@@ -20,8 +20,6 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
         self.setIndentation(16)
         self.currentItemChanged.connect(self.HandleItemChange)
 
-        LoadSpriteData()
-        LoadSpriteCategories()
         self.LoadItems()
 
     def UpdateSpriteNames(self):
