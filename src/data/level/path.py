@@ -15,7 +15,7 @@ class Path:
         """
         A simple class to store the data belonging to a node.
         """
-        def __init__(self, speed: float, accel: float, delay: float) -> None:
+        def __init__(self, speed: float, accel: float, delay: int) -> None:
             self.speed = speed
             self.accel = accel
             self.delay = delay
@@ -55,7 +55,7 @@ class Path:
 
         return True
 
-    def set_node_data(self, node: PathItem, speed: float | None = None, accel: float | None = None, delay: float | None = None) -> bool:
+    def set_node_data(self, node: PathItem, speed: float | None = None, accel: float | None = None, delay: int | None = None) -> bool:
         """
         This function can change the speed, accel and delay values associated
         with a specific node. It only changes the parameters that are given, and
@@ -139,7 +139,7 @@ class Path:
 
         return points
 
-    def get_data_for_node(self, node_id: int) -> tuple[float, float, float]:
+    def get_data_for_node(self, node_id: int) -> tuple[float, float, int]:
         data = self._node_data[node_id]
         return data.speed, data.accel, data.delay
 
@@ -149,7 +149,7 @@ class Path:
         y: int,
         speed: float = 0.5,
         accel: float = 0.00498,
-        delay: float = 0,
+        delay: int = 0,
         index: int | None = None,
         add_to_list: bool = True,
         add_to_scene: bool = True,

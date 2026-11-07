@@ -1,18 +1,18 @@
 from PyQt6 import QtWidgets
 
 from data import globals_
-from ui.theme.reggie_theme import createHorzLine
 from data.level.dirty import SetDirty
-
-from data.level.path import Path
 from data.level.items.path import PathItem
+from data.level.path import Path
+from ui.theme.reggie_theme import createHorzLine
+
 
 class PathNodeEditorWidget(QtWidgets.QWidget):
     """
     Widget for editing path node properties
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Constructor
         """
@@ -112,7 +112,7 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         self.editing_label.setText(globals_.trans.string('dialog.path_data_editor.none_selected'))
         self.editing_label.setVisible(True)
 
-    def setPath(self, path_item: PathItem):
+    def setPath(self, path_item: PathItem) -> None:
         """
         Change the path being edited by the editor, update all fields
         """
@@ -144,47 +144,44 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
 
         self.update_flag = False
 
-    def update_path_length(self):
+    def update_path_length(self) -> None:
         """
         The length of the path changed, so update the range of the Node ID editor.
         """
         if self.path_node is not None:
             self.node_id.setRange(0, len(self.path_node.path) - 1)
 
-    def handle_speed_changed(self, i):
+    def handle_speed_changed(self, i: int) -> None:
         """
         Handler for the speed changing
         """
         if self.update_flag:
             return
 
-        if self.path_node is not None:
-            if self.path_node.path.set_node_data(self.path_node, speed=i):
-                SetDirty()
+        if self.path_node is not None and self.path_node.path.set_node_data(self.path_node, speed=i):
+            SetDirty()
 
-    def handle_accel_changed(self, i):
+    def handle_accel_changed(self, i: int) -> None:
         """
         Handler for the accel changing
         """
         if self.update_flag:
             return
 
-        if self.path_node is not None:
-            if self.path_node.path.set_node_data(self.path_node, accel=i):
-                SetDirty()
+        if self.path_node is not None and self.path_node.path.set_node_data(self.path_node, accel=i):
+            SetDirty()
 
-    def handle_delay_changed(self, i):
+    def handle_delay_changed(self, i: int) -> None:
         """
         Handler for the delay changing
         """
         if self.update_flag:
             return
 
-        if self.path_node is not None:
-            if self.path_node.path.set_node_data(self.path_node, delay=i):
-                SetDirty()
+        if self.path_node is not None and  self.path_node.path.set_node_data(self.path_node, delay=i):
+            SetDirty()
 
-    def handle_loops_changed(self, checked):
+    def handle_loops_changed(self, checked: bool) -> None:
         if self.path_node is None:
             return
 
@@ -194,7 +191,7 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         self.path_node.path.set_loops(checked)
         SetDirty()
 
-    def handle_path_id_changed(self, i):
+    def handle_path_id_changed(self, i: int) -> None:
         if self.path_node is None:
             return
 
@@ -204,7 +201,7 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         self.path_node.path.set_id(i)
         SetDirty()
 
-    def handle_node_id_changed(self, i):
+    def handle_node_id_changed(self, i: int) -> None:
         if self.path_node is None:
             return
 
@@ -214,14 +211,14 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         self.path_node.path.move_node(self.path_node, i)
         SetDirty()
 
-    def set_mode_text(self):
+    def set_mode_text(self) -> None:
         """
         Sets the mode button text
         """
         text_id = 'insert' if globals_.InsertPathNode else 'append'
         self.mode_button.setText(globals_.trans.string(f'dialog.path_data_editor.placement_mode.names.{text_id}'))
 
-    def handle_mode_changed(self):
+    def handle_mode_changed(self) -> None:
         """
         Handles the placement mode being switched
         """

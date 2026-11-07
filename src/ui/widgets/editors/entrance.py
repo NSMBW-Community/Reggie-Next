@@ -1,18 +1,18 @@
-from PyQt6 import QtWidgets, QtCore
+from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
-from ui.theme.reggie_theme import createHorzLine
-from data.level.dirty import SetDirty
 from data.common.loaders import LoadEntranceNames
-
+from data.level.dirty import SetDirty
 from data.level.items.entrance import EntranceItem
+from ui.theme.reggie_theme import createHorzLine
+
 
 class EntranceEditorWidget(QtWidgets.QWidget):
     """
     Widget for editing entrance properties
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Constructor
         """
@@ -163,7 +163,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.editing_label.setText(globals_.trans.string('dialog.entrance_data_editor.none_selected')) # Default 'No Entrance Selected' label
         self.editing_label.setVisible(True)
 
-    def set_entrance(self, ent: EntranceItem, reset = False):
+    def set_entrance(self, ent: EntranceItem, reset: bool = False) -> None:
         """
         Change the entrance being edited by the editor, update all fields
         """
@@ -184,21 +184,21 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.dest_area.setValue(ent.destarea)
         self.dest_entrance.setValue(ent.destentrance)
 
-        self.is_enterable_box.setChecked(((ent.entsettings & 0x80) == 0))
-        self.unk_flag_box.setChecked(((ent.entsettings & 2) != 0))
+        self.is_enterable_box.setChecked((ent.entsettings & 0x80) == 0)
+        self.unk_flag_box.setChecked((ent.entsettings & 2) != 0)
         self.exit_level_box.setChecked(ent.leave_level)
 
         self.shift_left_box.setVisible(ent.enttype in self.supports_shift_left)
-        self.shift_left_box.setChecked(((ent.entsettings & 0x40) != 0))
+        self.shift_left_box.setChecked((ent.entsettings & 0x40) != 0)
 
         self.connect_pipe_box.setVisible(ent.enttype in self.supports_connected_pipe)
-        self.connect_pipe_box.setChecked(((ent.entsettings & 8) != 0))
+        self.connect_pipe_box.setChecked((ent.entsettings & 8) != 0)
 
         self.connect_pipe_reverse_box.setVisible(ent.enttype in self.supports_connected_pipe and ((ent.entsettings & 8) != 0))
-        self.connect_pipe_reverse_box.setChecked(((ent.entsettings & 1) != 0))
+        self.connect_pipe_reverse_box.setChecked((ent.entsettings & 1) != 0)
 
         self.forward_pipe_box.setVisible(ent.enttype in self.supports_forward_pipe)
-        self.forward_pipe_box.setChecked(((ent.entsettings & 4) != 0))
+        self.forward_pipe_box.setChecked((ent.entsettings & 4) != 0)
 
         self.path_id.setVisible(ent.enttype in self.supports_connected_pipe and ((ent.entsettings & 8) != 0))
         self.path_id.setValue(ent.entpath)
@@ -213,7 +213,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
 
         self.update_flag = False
 
-    def handle_entrance_id_changed(self, i):
+    def handle_entrance_id_changed(self, i: int) -> None:
         """
         Handler for the entrance ID changing
         """
@@ -228,7 +228,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
             self.ent.UpdateListItem()
             self.editing_label.setText(globals_.trans.string('dialog.entrance_data_editor.info', ('[id]', i)))
 
-    def handle_shift_left_clicked(self, checked):
+    def handle_shift_left_clicked(self, checked: bool) -> None:
         """
         Handle for the Spawn Half a Tile Left checkbox being clicked
         """
@@ -242,7 +242,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
             else:
                 self.ent.entsettings &= ~0x40
 
-    def handle_entrance_type_changed(self, new_index):
+    def handle_entrance_type_changed(self, new_index: int) -> None:
         """
         Handler for the entrance type changing
         """
@@ -259,8 +259,8 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.shift_left_box.setVisible(has_left_shift)
         self.connect_pipe_box.setVisible(has_connect_pipe)
         self.connect_pipe_reverse_box.setVisible(has_connect_pipe and connect_pipe_toggled)
-        self.path_id_label.setVisible(i and connect_pipe_toggled)
-        self.path_id.setVisible(i and connect_pipe_toggled)
+        self.path_id_label.setVisible(bool(i) and connect_pipe_toggled)
+        self.path_id.setVisible(bool(i) and connect_pipe_toggled)
         self.connect_exit_dir.setVisible(ent_has_connect_pipe and connect_pipe_toggled and globals_.DispConnectedPipeDir)
         self.connect_exit_dir.setVisible(ent_has_connect_pipe and connect_pipe_toggled and globals_.DispConnectedPipeDir)
         self.connect_pipe_line.setVisible(ent_has_connect_pipe and connect_pipe_toggled)
@@ -277,7 +277,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         globals_.mainWindow.scene.update()
         self.ent.UpdateListItem()
 
-    def handle_dest_area_changed(self, i):
+    def handle_dest_area_changed(self, i: int) -> None:
         """
         Handler for the destination area changing
         """
@@ -290,7 +290,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
             self.ent.UpdateTooltip()
             self.ent.UpdateListItem()
 
-    def handle_dest_entrance_changed(self, i):
+    def handle_dest_entrance_changed(self, i: int) -> None:
         """
         Handler for the destination entrance changing
         """
@@ -303,7 +303,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
             self.ent.UpdateTooltip()
             self.ent.UpdateListItem()
 
-    def handle_is_enterable_clicked(self, checked):
+    def handle_is_enterable_clicked(self, checked: bool) -> None:
         """
         Handle for the Allow Entry checkbox being clicked
         """
@@ -319,7 +319,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
             self.ent.UpdateTooltip()
             self.ent.UpdateListItem()
 
-    def handle_unk_flag_clicked(self, checked):
+    def handle_unk_flag_clicked(self, checked: bool) -> None:
         """
         Handle for the Unknown Flag checkbox being clicked
         """
@@ -333,7 +333,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
             else:
                 self.ent.entsettings &= ~2
 
-    def handle_exit_level_clicked(self, checked):
+    def handle_exit_level_clicked(self, checked: bool) -> None:
         """
         Handle the Send to World Map checkbox being clicked
         """
@@ -348,7 +348,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.ent.UpdateTooltip()
         self.ent.UpdateListItem()
 
-    def handle_connect_pipe_clicked(self, checked):
+    def handle_connect_pipe_clicked(self, checked: bool) -> None:
         """
         Handle for the connected pipe checkbox being clicked
         """
@@ -369,7 +369,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
             else:
                 self.ent.entsettings &= ~8
 
-    def handle_connect_pipe_reverse_clicked(self, checked):
+    def handle_connect_pipe_reverse_clicked(self, checked: bool) -> None:
         """
         Handle for the connected pipe reverse checkbox being clicked
         """
@@ -383,7 +383,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
             else:
                 self.ent.entsettings &= ~1
 
-    def handle_path_id_changed(self, i):
+    def handle_path_id_changed(self, i: int) -> None:
         """
         Handler for the path ID changing
         """
@@ -394,7 +394,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         if self.ent is not None:
             self.ent.entpath = i
 
-    def handle_forward_pipe_clicked(self, checked):
+    def handle_forward_pipe_clicked(self, checked: bool) -> None:
         """
         Handle for the forward pipe checkbox being clicked
         """
@@ -412,7 +412,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
             self.ent.TypeChange()
             self.ent.update()
 
-    def handle_layer_id_changed(self, i):
+    def handle_layer_id_changed(self, i: int) -> None:
         """
         Handle for the active layer changing
         """
@@ -423,7 +423,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         if self.ent is not None:
             self.ent.entlayer = i
 
-    def handle_connect_exit_dir_changed(self, i):
+    def handle_connect_exit_dir_changed(self, i: int) -> None:
         """
         Handle for CP Direction changing
         """

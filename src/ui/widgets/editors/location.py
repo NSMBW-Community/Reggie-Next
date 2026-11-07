@@ -1,17 +1,17 @@
-from PyQt6 import QtWidgets, QtCore
+from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
-from ui.theme.reggie_theme import createHorzLine
 from data.level.dirty import SetDirty
-
 from data.level.items.location import LocationItem
+from ui.theme.reggie_theme import createHorzLine
+
 
 class LocationEditorWidget(QtWidgets.QWidget):
     """
     Widget for editing location properties
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Constructor
         """
@@ -105,7 +105,7 @@ class LocationEditorWidget(QtWidgets.QWidget):
         self.editingLabel.setText(globals_.trans.string('dialog.location_data_editor.none_selected'))
         self.editingLabel.setVisible(True)
 
-    def set_location(self, loc: LocationItem):
+    def set_location(self, loc: LocationItem) -> None:
         """
         Change the location being edited by the editor, update all fields
         """
@@ -123,11 +123,11 @@ class LocationEditorWidget(QtWidgets.QWidget):
 
         self.update_flag = False
 
-    def fix_title(self):
+    def fix_title(self) -> None:
         if self.loc is not None:
             self.editingLabel.setText(globals_.trans.string('dialog.location_data_editor.info', ('[id]', self.loc.id)))
 
-    def handle_location_id_changed(self, i):
+    def handle_location_id_changed(self, i: int) -> None:
         """
         Handler for the location ID changing
         """
@@ -141,7 +141,7 @@ class LocationEditorWidget(QtWidgets.QWidget):
             self.loc.UpdateTitle()
         self.fix_title()
 
-    def handle_location_x_changed(self, i):
+    def handle_location_x_changed(self, i: int) -> None:
         """
         Handler for the location X-pos changing
         """
@@ -157,7 +157,7 @@ class LocationEditorWidget(QtWidgets.QWidget):
             self.loc.UpdateRects()
             self.loc.update()
 
-    def handle_location_y_changed(self, i):
+    def handle_location_y_changed(self, i: int) -> None:
         """
         Handler for the location Y-pos changing
         """
@@ -173,7 +173,7 @@ class LocationEditorWidget(QtWidgets.QWidget):
             self.loc.UpdateRects()
             self.loc.update()
 
-    def handle_location_width_changed(self, i):
+    def handle_location_width_changed(self, i: int) -> None:
         """
         Handler for the location width changing
         """
@@ -186,7 +186,7 @@ class LocationEditorWidget(QtWidgets.QWidget):
             self.loc.UpdateRects()
             self.loc.update()
 
-    def handle_location_height_changed(self, i):
+    def handle_location_height_changed(self, i: int) -> None:
         """
         Handler for the location height changing
         """
@@ -199,7 +199,7 @@ class LocationEditorWidget(QtWidgets.QWidget):
             self.loc.UpdateRects()
             self.loc.update()
 
-    def handle_snap_to_grid(self):
+    def handle_snap_to_grid(self) -> None:
         """
         Snaps the current location to an 8x8 grid
         """
