@@ -3,6 +3,7 @@ from PyQt6 import QtWidgets
 from data.level.items.zone import ZoneItem
 from ui.layouts.background_editor import BackgroundEditorLayout
 
+
 class BackgroundTab(QtWidgets.QWidget):
     """
     Tab representing a Zone's bgA and bgB

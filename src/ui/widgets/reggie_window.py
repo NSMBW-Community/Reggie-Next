@@ -1,38 +1,32 @@
 import os.path
-import struct
 import sys
-
 from typing import cast
 
 from PyQt6 import QtCore, QtGui, QtWidgets
+
 Qt = QtCore.Qt
 
 from data import globals_
-
-import spritelib as SLib
-
-from libs import lh, lib_versions, lz77
-from ui.theme.reggie_theme import GetIcon, GetAppIcon
-from data.common.loaders import LoadMenuActions, LoadLevelNames, LoadZoneThemes, GetKeybind, DecompressLevel
+from data.common.loaders import (
+    DecompressLevel,
+    GetKeybind,
+    LoadLevelNames,
+    LoadMenuActions,
+    LoadZoneThemes,
+)
+from data.common.reggie_clip import ReggieClip
+from data.common.settings import setSetting, setting
 from data.common.utils import SetGamePaths, get_reggiedata_folder
 from data.common.validators import IsValidLevel, areValidGamePaths
-from ui.widgets.level_scene import LevelScene
-from ui.widgets.level_view import LevelViewWidget
-from data.level.dirty import SetDirty, CheckDirty
-from data.common.settings import setting, setSetting
+from data.level.dirty import CheckDirty, SetDirty
 from data.level.items.basic import LevelEditorItem
-from data.level.items.comment import CommentItem
 from data.level.items.entrance import EntranceItem
 from data.level.items.location import LocationItem
-from data.level.items.object import ObjectItem
 from data.level.items.path import PathItem
-from data.level.items.path_editor_line import PathEditorLineItem
 from data.level.items.sprite import SpriteItem
-from data.level.items.zone import ZoneItem
 from data.level.nsmbw_level import NSMBWLevel
-from ui.widgets.spriteeditor.sprite_editor import SpriteEditorWidget
+from libs import lib_versions, lz77
 from ui.actions.undo.undo_stack import UndoStack
-
 from ui.dialogs.area import AreaOptionsDialog
 from ui.dialogs.area_delete import AreaDeleteDialog
 from ui.dialogs.area_import import AreaImportDialog
@@ -41,26 +35,25 @@ from ui.dialogs.camera_profile import CameraProfilesDialog
 from ui.dialogs.choose_level_name import ChooseLevelNameDialog
 from ui.dialogs.item_shift import ItemShiftDialog
 from ui.dialogs.meta_info import MetaInfoDialog
-from ui.dialogs.tileset_swap import TilesetSwapDialog
 from ui.dialogs.preference import PreferencesDialog
 from ui.dialogs.screenshot import ScreenshotDialog
+from ui.dialogs.tileset_swap import TilesetSwapDialog
 from ui.dialogs.zone import ZonesDialog
-
 from ui.menus.game_def_menu import GameDefMenu
 from ui.menus.recent_files_menu import RecentFilesMenu
-
-from ui.widgets.zoom import ZoomWidget
-from ui.widgets.zoom_status import ZoomStatusWidget
+from ui.theme.reggie_theme import GetAppIcon, GetIcon
 from ui.widgets.diagnostic import DiagnosticWidget
-from ui.widgets.level_overview import LevelOverviewWidget
-
 from ui.widgets.editors.entrance import EntranceEditorWidget
 from ui.widgets.editors.location import LocationEditorWidget
 from ui.widgets.editors.path_node import PathNodeEditorWidget
-
-from ui.widgets.palette_dock import PaletteDock
-from data.common.reggie_clip import ReggieClip
 from ui.widgets.item_editor_dock import ItemEditorDockWidget
+from ui.widgets.level_overview import LevelOverviewWidget
+from ui.widgets.level_scene import LevelScene
+from ui.widgets.level_view import LevelViewWidget
+from ui.widgets.palette_dock import PaletteDock
+from ui.widgets.spriteeditor.sprite_editor import SpriteEditorWidget
+from ui.widgets.zoom import ZoomWidget
+from ui.widgets.zoom_status import ZoomStatusWidget
 
 ################################################################################
 ################################################################################
@@ -72,7 +65,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
     """
     action_list: dict[str, QtGui.QAction] = {}
 
-    def create_dock_widget(self, title: str | None, obj_name: str, widget: QtWidgets.QWidget, features: QtWidgets.QDockWidget.DockWidgetFeature,
+    def create_dock_widget(self, title: str | None, obj_name: str, widget: QtWidgets.QWidget | None, features: QtWidgets.QDockWidget.DockWidgetFeature,
                            area: QtCore.Qt.DockWidgetArea, allowed_areas: QtCore.Qt.DockWidgetArea | None, visible: bool, floating: bool,
                            is_palette: bool = False, is_editor: bool = False) -> PaletteDock | ItemEditorDockWidget | QtWidgets.QDockWidget:
         """
@@ -211,8 +204,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
             globals_.Area.show_path_nodes: globals_.PathsShown,
         }
 
-        for handler in toggle_handlers:
-            handler(toggle_handlers[handler])
+        for handler, item in toggle_handlers.items():
+            handler(item)
 
         # Let's restore the state and geometry
         # Geometry determines the main window position
@@ -543,7 +536,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     toggled[action.id] = action.active
         else:
             # Get the settings from the .ini
-            toggled = setting('ToolbarActs')
+            toggled: dict[str, bool] | None = setting('ToolbarActs', {})
             if toggled is None:
                 return
 
@@ -567,7 +560,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for group in toolbar_groups:
             added_buttons = False
             for key in group:
-                if key in toggled and toggled[key]:
+                if toggled.get(key):
                     act = self.action_list[key]
                     self.toolbar.addAction(act)
                     added_buttons = True
@@ -735,7 +728,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         file_path = os.path.join(get_reggiedata_folder(), 'help', 'index.html')
         QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(file_path))
 
-    def open_tips(self):
+    def open_tips(self) -> None:
         """
         Shows the tips and tricks page (redirect)
         """
@@ -762,7 +755,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         paintRect.addRect(0, 0, 1024 * 24, 512 * 24)
         self.scene.setSelectionArea(paintRect)
 
-    def deselect(self):
+    def deselect(self) -> None:
         """
         Deselect all currently selected items
         """
@@ -789,6 +782,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if is_cut_action:
                 # Delete everything
                 for obj in selitems:
+                    if not isinstance(obj, LevelEditorItem):
+                        continue
+
                     obj.delete()
                     obj.setSelected(False)
                     self.scene.removeItem(obj)
@@ -897,12 +893,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             dlg.delete_area()
 
-    def change_game_path(self, auto: bool = False) -> None:
+    def change_game_path(self, auto: bool = False) -> bool:
         """
         Change the game path used by the current game definition
         """
         if CheckDirty():
-            return
+            return False
 
         while True:
             stage_path = QtWidgets.QFileDialog.getExistingDirectory(
@@ -1051,7 +1047,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         try:
             with open(self.fileSavePath, 'wb') as f:
                 f.write(data)
-        except IOError as e:
+        except OSError as e:
             QtWidgets.QMessageBox.warning(None, globals_.trans.string('error.title.error'),
                                             globals_.trans.string('error.save.file_name', ('[err1]', e.args[0]), ('[err2]', e.args[1])))
             return False
@@ -1242,7 +1238,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         new = name is None
         same = False
 
-        level_data = bytes()
+        level_data = b''
 
         if not new:
             check_names = []
@@ -1474,20 +1470,19 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Load it
         if not globals_.Level.load(level_data, area_num):
-            raise Exception
+            raise ValueError()
 
         # https://github.com/Zement/Reggie/blob/master/reggie.py#L3630-L3637
         # Check for unknown sprite IDs and show warning message
-        if globals_.ShowUnknownSpriteWarning:
-            if hasattr(globals_.Area, 'unknown_sprite_ids') and globals_.Area.unknown_sprite_ids is not None:
-                sprite_ids = sorted(globals_.Area.unknown_sprite_ids)
+        if globals_.ShowUnknownSpriteWarning and hasattr(globals_.Area, 'unknown_sprite_ids') and globals_.Area.unknown_sprite_ids is not None:
+            sprite_ids = sorted(globals_.Area.unknown_sprite_ids)
 
-                if len(sprite_ids) == 1:
-                    msg = globals_.trans.string('error.unknown_sprite.single', ('[id]', str(sprite_ids[0])))
-                else:
-                    msg = globals_.trans.string('error.unknown_sprite.multiple', ('[ids]', ', '.join(map(str, sprite_ids))))
+            if len(sprite_ids) == 1:
+                msg = globals_.trans.string('error.unknown_sprite.single', ('[id]', str(sprite_ids[0])))
+            else:
+                msg = globals_.trans.string('error.unknown_sprite.multiple', ('[ids]', ', '.join(map(str, sprite_ids))))
 
-                QtWidgets.QMessageBox.warning(None, globals_.trans.string('error.title.error'), msg)
+            QtWidgets.QMessageBox.warning(None, globals_.trans.string('error.title.error'), msg)
 
         globals_.Area.reset()
 
@@ -1509,7 +1504,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.UpdateFlag = False
 
-    def keyPressEvent(self, a0) -> None:
+    def keyPressEvent(self, a0: QtGui.QKeyEvent | None) -> None:
         """
         Handles key press events for the main window if needed
         """

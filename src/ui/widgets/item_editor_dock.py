@@ -2,6 +2,7 @@ from PyQt6 import QtWidgets
 
 from data import globals_
 
+
 class ItemEditorDockWidget(QtWidgets.QDockWidget):
     """
     DockWidget subclass that switches between show/hide and
@@ -27,7 +28,7 @@ class ItemEditorDockWidget(QtWidgets.QDockWidget):
         # special-case this using self.initial_setup.
         self.initial_setup = (not globals_.settings.contains('MainWindowGeometry'))
 
-    def top_level_changed(self, top_level: bool) -> None:
+    def top_level_changed(self, _top_level: bool) -> None:
         if self.initial_setup:
             self.setVisible(False)
             self.initial_setup = False

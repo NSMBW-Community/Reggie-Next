@@ -1,7 +1,8 @@
-from PyQt6 import QtWidgets, QtGui
+from PyQt6 import QtGui, QtWidgets
 
-from ui.theme.reggie_theme import GetIcon, createVertLine
 from data import globals_
+from ui.theme.reggie_theme import GetIcon, createVertLine
+
 
 class GameDefViewer(QtWidgets.QWidget):
     """
@@ -66,8 +67,8 @@ class GameDefViewer(QtWidgets.QWidget):
         if globals_.gamedef.version is None:
             ver = ''
         else:
-            ver = '<p style="font-size:10px;">v%s</p>' % str(globals_.gamedef.version)
-        title = '<b>%s</b>' % str(globals_.gamedef.name)
+            ver = f'<p style="font-size:10px;">v{globals_.gamedef.version}</p>'
+        title = f'<b>{globals_.gamedef.name}</b>'
         desc = str(globals_.gamedef.description)
 
         self.sprite_img_label.setPixmap(img)

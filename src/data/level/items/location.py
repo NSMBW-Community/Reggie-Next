@@ -1,3 +1,5 @@
+from typing import Callable
+
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data import globals_
@@ -31,7 +33,7 @@ class LocationItem(LevelEditorItem):
     Level editor item that represents a sprite location
     """
     instanceDef = InstanceDefinition_LocationItem
-    sizeChanged = None  # Callback: sizeChanged(SpriteItem obj, int width, int height)
+    sizeChanged: Callable[["LocationItem", int, int], None] | None = None  # Callback: sizeChanged(SpriteItem obj, int width, int height)
     dragstartx: int = -1
     dragstarty: int = -1
 

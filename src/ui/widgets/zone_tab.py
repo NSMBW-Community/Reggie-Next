@@ -5,6 +5,7 @@ from data.common.utils import clamp
 from data.level.items.zone import ZoneItem
 from ui.layouts.camera_settings import CameraSettingsLayout
 
+
 class ZoneTab(QtWidgets.QWidget):
     """
     Represents an individial zone within the Zones Dialog

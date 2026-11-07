@@ -3,6 +3,7 @@ from PyQt6 import QtCore, QtWidgets
 from data import globals_
 from ui.theme.reggie_theme import GetIcon
 
+
 class ZoomWidget(QtWidgets.QWidget):
     """
     Widget that allows easy zoom level control

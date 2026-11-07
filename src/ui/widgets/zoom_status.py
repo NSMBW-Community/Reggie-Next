@@ -2,6 +2,7 @@ from PyQt6 import QtWidgets
 
 from data import globals_
 
+
 class ZoomStatusWidget(QtWidgets.QWidget):
     """
     Shows the current zoom level's percentage

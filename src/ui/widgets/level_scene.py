@@ -1,6 +1,8 @@
-from PyQt6 import QtCore, QtGui, QtWidgets
 from typing import cast
 
+from PyQt6 import QtCore, QtGui, QtWidgets
+
+import spritelib
 from data import globals_
 from data.common.settings import setSetting
 from data.level.items.basic import LevelEditorItem
@@ -11,15 +13,15 @@ from data.level.items.object import ObjectItem
 from data.level.items.path import PathItem
 from data.level.items.sprite import SpriteItem
 from ui.graphics.grid import draw_foreground_grid
-import spritelib
+
 
 class LevelScene(QtWidgets.QGraphicsScene):
     """
     GraphicsScene subclass for the level scene
     """
 
-    def __init__(self, *args) -> None:
-        QtWidgets.QGraphicsScene.__init__(self, *args)
+    def __init__(self, x: float, y: float, width: float, height: float, /, parent: QtCore.QObject|None = None) -> None:
+        QtWidgets.QGraphicsScene.__init__(self, x, y, width, height, parent)
         self.setBackgroundBrush(QtGui.QBrush(globals_.theme.color('bg')))
         self.is_screenshot = False
         self.selectionChanged.connect(self.change_selection)
@@ -77,14 +79,15 @@ class LevelScene(QtWidgets.QGraphicsScene):
         # Assigning global variables to local variables for performance
         tiles = globals_.Tiles
         odefs = globals_.ObjectDefinitions
-        unkn_tile = globals_.Overrides[globals_.OVERRIDE_UNKNOWN].getCurrentTile()
+        unkn_tile = globals_.Overrides[globals_.OVERRIDE_UNKNOWN]
+        unkn_tile_pixmap = unkn_tile.getCurrentTile() if unkn_tile is not None else QtGui.QPixmap()
 
         # create and draw the tilemaps
         for layer_idx, layer in enumerate([layer2, layer1, layer0]):
             if not layer:
                 continue
 
-            tmap = [[None] * width for _ in range(height)]
+            tmap: list[list[int | None]] = [[None] * width for _ in range(height)]
 
             for item in layer:
                 startx = item.objx - x1
@@ -118,11 +121,13 @@ class LevelScene(QtWidgets.QGraphicsScene):
                     destx += 24
                     if tile == -1:
                         # Draw unknown tiles
-                        painter.drawPixmap(destx, desty, unkn_tile)
+                        painter.drawPixmap(destx, desty, unkn_tile_pixmap)
                     elif tile is not None:
                         # Only show collisions on layer 1 (i.e. layer_idx == 1)
-                        pixmap = tiles[tile].getCurrentTile(layer_idx == 1)
-                        painter.drawPixmap(destx, desty, pixmap)
+                        tile_data = tiles[tile]
+                        if tile_data is not None:
+                            pixmap = tile_data.getCurrentTile(layer_idx == 1)
+                            painter.drawPixmap(destx, desty, pixmap)
 
             painter.restore()
 

@@ -1,6 +1,7 @@
-from PyQt6 import QtWidgets, QtCore
+from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
+
 
 class IconsOnlyTabBar(QtWidgets.QTabBar):
     """

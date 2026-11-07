@@ -1,7 +1,10 @@
-from PyQt6 import QtCore, QtGui, QtWidgets
 from typing import cast
 
+from PyQt6 import QtCore, QtGui, QtWidgets
+
+import spritelib
 from data import globals_
+from data.common.reggie_clip import ReggieClip
 from data.level.dirty import SetDirty
 from data.level.items.basic import LevelEditorItem
 from data.level.items.comment import CommentItem
@@ -12,9 +15,8 @@ from data.level.items.path import PathItem
 from data.level.items.path_editor_line import PathEditorLineItem
 from data.level.items.sprite import SpriteItem
 from data.level.items.zone import ZoneItem
-from data.common.reggie_clip import ReggieClip
 from ui.graphics.grid import draw_foreground_grid
-import spritelib
+from ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
 
 
 class LevelViewWidget(QtWidgets.QGraphicsView):
@@ -30,7 +32,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         """
         Constructor
         """
-        super(LevelViewWidget, self).__init__(scene, parent)
+        super().__init__(scene, parent)
 
         self.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
         self.setDragMode(QtWidgets.QGraphicsView.DragMode.RubberBandDrag)
@@ -156,14 +158,16 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                     path = Path(newpathid, globals_.mainWindow.scene)
                     new_node = path.add_node(clickedx, clickedy)
 
-                    new_node.listitem.setSelected(True)
+                    item = new_node.listitem
+                    if item is not None:
+                        item.setSelected(True)
                     new_node.setSelected(True)
                     new_node.positionChanged = PathItem.position_changed
 
                     globals_.Area.paths.append(path)
 
                 else:
-                    path_node = selectedpn.reference
+                    path_node = cast(PathItem, cast(ListWidgetItem_SortsByOther, selectedpn).reference)
 
                     path = path_node.path
 
@@ -338,7 +342,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         right-click, and dragged while it's still held down). Returns
         True if any items are being paint-dragged, False otherwise
         """
-        if globals_.app.mouseButtons() != QtCore.Qt.MouseButton.RightButton or self.currentobj is None:
+        if globals_.app is not None and globals_.app.mouseButtons() != QtCore.Qt.MouseButton.RightButton or self.currentobj is None:
             return False
 
         pos = self.mapToScene(self.mapFromGlobal(QtGui.QCursor.pos()))
@@ -404,7 +408,9 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         updaterect = oldrect.united(newrect)
 
                         obj.UpdateRects()
-                        obj.scene().update(updaterect)
+                        scene = obj.scene()
+                        if scene is not None:
+                            scene.update(updaterect)
                         globals_.mainWindow.level_overview.update()
 
                 elif isinstance(obj, type_loc):
@@ -450,7 +456,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             type_spr = SpriteItem
 
             # iterate through the objects if there's more than one
-            if isinstance(self.currentobj, list) or isinstance(self.currentobj, tuple):
+            if isinstance(self.currentobj, (list, tuple)):
                 objlist = self.currentobj
             else:
                 objlist = (self.currentobj,)
@@ -484,7 +490,9 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         obj.setNewObjPos(newx, newy)
                         obj.ImageObj.positionChanged()
 
-            self.scene().update()
+            scene = self.scene()
+            if scene is not None:
+                scene.update()
             globals_.mainWindow.level_overview.update()
 
         return True
@@ -600,6 +608,9 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         type_zone = ZoneItem
         type_peline = PathEditorLineItem
         for item in hovereditems:
+            if item is None:
+                continue
+
             hover = item.hover if hasattr(item, 'hover') else True
             if (not isinstance(item, (type_zone, type_peline))) and hover:
                 hovered = item

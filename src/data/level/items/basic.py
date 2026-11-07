@@ -352,6 +352,9 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
 
         return final
 
+    def delete(self) -> None:
+        pass
+
     def boundingRect(self) -> QtCore.QRectF:
         """
         Required for Qt

@@ -45,3 +45,13 @@ class AbstractLevel:
         archive. Note that number is 1-based, not 0-based.
         """
         return False
+
+    def appendArea(
+        self,
+        course_new: bytes | None,
+        layer0: bytes | None,
+        layer1: bytes | None,
+        layer2: bytes | None,
+        metadata: bytes | None,
+    ) -> None:
+        pass

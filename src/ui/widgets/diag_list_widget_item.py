@@ -1,6 +1,7 @@
+from collections.abc import Callable
+
 from PyQt6 import QtWidgets
 
-from collections.abc import Callable
 
 class DiagnosticListWidgetItem(QtWidgets.QListWidgetItem):
     """

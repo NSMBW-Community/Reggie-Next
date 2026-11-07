@@ -1,6 +1,7 @@
 from typing import cast
 
 from PyQt6 import QtWidgets
+
 from data.level.items.basic import LevelEditorItem
 
 

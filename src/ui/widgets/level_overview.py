@@ -1,6 +1,7 @@
-from PyQt6 import QtWidgets, QtGui, QtCore
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data import globals_
+
 
 class LevelOverviewWidget(QtWidgets.QWidget):
     """
@@ -31,7 +32,7 @@ class LevelOverviewWidget(QtWidgets.QWidget):
         self.pos_y_locator = 0
         self.height_locator = 50
         self.width_locator = 80
-        self.main_window_scale = 1
+        self.main_window_scale: float = 1
 
         self.moved.connect(self.position_moved)
 
@@ -53,9 +54,8 @@ class LevelOverviewWidget(QtWidgets.QWidget):
         Handles mouse movement over the widget
         """
         super().mouseMoveEvent(a0)
-        if a0 is not None:
-            if a0.buttons() == QtCore.Qt.MouseButton.LeftButton:
-                self.moved.emit(a0.pos().x() * self.pos_mult, a0.pos().y() * self.pos_mult)
+        if a0 is not None and a0.buttons() == QtCore.Qt.MouseButton.LeftButton:
+            self.moved.emit(a0.pos().x() * self.pos_mult, a0.pos().y() * self.pos_mult)
 
     def mousePressEvent(self, a0: QtGui.QMouseEvent | None) -> None:
         """
@@ -63,9 +63,8 @@ class LevelOverviewWidget(QtWidgets.QWidget):
         """
         super().mouseMoveEvent(a0)
 
-        if a0 is not None:
-            if a0.button() == QtCore.Qt.MouseButton.LeftButton:
-                self.moved.emit(a0.pos().x() * self.pos_mult, a0.pos().y() * self.pos_mult)
+        if a0 is not None and a0.button() == QtCore.Qt.MouseButton.LeftButton:
+            self.moved.emit(a0.pos().x() * self.pos_mult, a0.pos().y() * self.pos_mult)
 
     def paintEvent(self, a0: QtGui.QPaintEvent | None) -> None:
         """

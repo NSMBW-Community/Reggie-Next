@@ -1,24 +1,22 @@
-from PyQt6 import QtCore, QtWidgets, QtGui
+from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
-from ui.widgets.icon_only_tab_bar import IconsOnlyTabBar
-from ui.theme.reggie_theme import GetIcon
-
-from ui.widgets.palette.object import ObjectTab
-from ui.widgets.palette.sprite import SpriteTab
-from ui.widgets.palette.entrance import EntranceTab
-from ui.widgets.palette.location import LocationTab
-from ui.widgets.palette.path import PathTab
-from ui.widgets.palette.event import EventTab
-from ui.widgets.palette.stamp import StampTab
-from ui.widgets.palette.comment import CommentTab
-
-from data.level.items.sprite import SpriteItem
+from data.level.items.comment import CommentItem
 from data.level.items.entrance import EntranceItem
 from data.level.items.location import LocationItem
-from data.level.items.comment import CommentItem
-
+from data.level.items.sprite import SpriteItem
+from ui.theme.reggie_theme import GetIcon
+from ui.widgets.icon_only_tab_bar import IconsOnlyTabBar
 from ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
+from ui.widgets.palette.comment import CommentTab
+from ui.widgets.palette.entrance import EntranceTab
+from ui.widgets.palette.event import EventTab
+from ui.widgets.palette.location import LocationTab
+from ui.widgets.palette.object import ObjectTab
+from ui.widgets.palette.path import PathTab
+from ui.widgets.palette.sprite import SpriteTab
+from ui.widgets.palette.stamp import StampTab
+
 
 class PaletteDock(QtWidgets.QDockWidget):
     """
