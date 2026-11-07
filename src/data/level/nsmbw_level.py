@@ -168,7 +168,6 @@ class NSMBWLevel(AbstractLevel):
         """
         Creates a new area and adds it to the current level.
         """
-        print(type(course_new), type(L0_new), type(L1_new), type(L2_new), type(meta_new))
         # Add new area
         new_area = Area(len(self.areas) + 1)
         new_area.set_data(course_new, L0_new, L1_new, L2_new, meta_new)
