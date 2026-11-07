@@ -2,14 +2,14 @@
 <xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:element name="translation">
         <xs:complexType>
-            <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                <xs:element minOccurs="1" maxOccurs="unbounded" name="section" type="SectionType" />
+            <xs:sequence>
+                <xs:element minOccurs="1" maxOccurs="unbounded" name="section" type="section" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    <xs:complexType name="SectionType">
-        <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element minOccurs="0" maxOccurs="unbounded" name="section" type="SectionType" />
+    <xs:complexType name="section">
+        <xs:choice>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="section" type="section" />
             <xs:element minOccurs="0" maxOccurs="unbounded" name="string" type="string" />
         </xs:choice>
         <xs:attribute name="id" type="ID" use="required" />
