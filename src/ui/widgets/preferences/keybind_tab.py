@@ -1,10 +1,10 @@
 import collections
-from PyQt6 import QtWidgets, QtGui
+
+from PyQt6 import QtGui, QtWidgets
 
 from data import globals_
-from data.common.settings import setSetting
 from data.common.loaders import SetKeybind
-
+from data.common.settings import setSetting
 from ui.widgets.preferences.widgets.keybind_editor_tab import KeybindEditorTab
 from ui.widgets.preferences.widgets.keybind_line_edit import KeybindLineEdit
 from ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
@@ -15,7 +15,7 @@ class KeybindTab(PreferenceTabWidget):
     Keybind Tab
     """
 
-    def __init__(self, info_text):
+    def __init__(self, info_text: str) -> None:
         """
         Initializes the Keybinds Tab
         """
@@ -56,7 +56,7 @@ class KeybindTab(PreferenceTabWidget):
         L.addWidget(self.check_conflict_button, 3, 1, 1, 1)
         self.setLayout(L)
 
-    def reset(self):
+    def reset(self) -> None:
         """
         Resets all keybinds to their original values
         """
@@ -67,7 +67,7 @@ class KeybindTab(PreferenceTabWidget):
             for tab in self.tabs:
                 tab.reset_keys()
 
-    def check_conflicts(self):
+    def check_conflicts(self) -> None:
         """
         Checks for any conflicting (duplicate) keybinds
         """

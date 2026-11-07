@@ -9,7 +9,7 @@ class KeybindEditorTab(QtWidgets.QWidget):
     """
     Represents a tab within the Keybinds tab
     """
-    def __init__(self, index):
+    def __init__(self, index: int) -> None:
         super().__init__()
         self.index = index
         widget = QtWidgets.QWidget()
@@ -43,7 +43,7 @@ class KeybindEditorTab(QtWidgets.QWidget):
         main_layout.addWidget(scroll_area)
         self.setLayout(main_layout)
 
-    def reset_keys(self):
+    def reset_keys(self) -> None:
         """
         Resets keybinds for this tab
         """

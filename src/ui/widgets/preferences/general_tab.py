@@ -1,13 +1,14 @@
-from PyQt6 import QtWidgets
 import os
 
-from data import globals_
-from data.common.settings import setting, setSetting
+from PyQt6 import QtWidgets
 
-from data.common.utils import get_reggiedata_folder
-from data.common.translation_section import TranslationSection
+from data import globals_
+from data.common.settings import setSetting, setting
+from data.common.translation import Translation
 from data.common.translation_metadata import TranslationMetadata
+from data.common.utils import get_reggiedata_folder
 from ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
+
 
 class GeneralTab(PreferenceTabWidget):
     """
@@ -15,7 +16,7 @@ class GeneralTab(PreferenceTabWidget):
     """
     info: str | None = None
 
-    def __init__(self, info_text):
+    def __init__(self, info_text: str) -> None:
         """
         Initializes the General Tab
         """
@@ -105,7 +106,7 @@ class GeneralTab(PreferenceTabWidget):
         # Set the button data
         self.set_data()
 
-    def set_data(self):
+    def set_data(self) -> None:
         """
         Read the preferences and check the respective boxes
         """
@@ -187,7 +188,7 @@ class GeneralTab(PreferenceTabWidget):
 
         return show_restart_warning
 
-    def clear_recent_files(self):
+    def clear_recent_files(self) -> None:
         """
         Handle the Clear Recent Files button being clicked
         """
@@ -200,7 +201,7 @@ class GeneralTab(PreferenceTabWidget):
         globals_.mainWindow.RecentMenu.clear_all()
 
     @property
-    def get_translations(self):
+    def get_translations(self) -> tuple[tuple[str, TranslationMetadata], ...]:
         """
         Searches the Translations folder and returns a list of filepaths.
         Automatically adds 'English' to the list.
@@ -211,16 +212,13 @@ class GeneralTab(PreferenceTabWidget):
             if not os.path.isdir(os.path.join(trans_path, trans_name)):
                 continue
 
-            try:
-                trans = TranslationSection.parse_main(trans_name)
-            except Exception:
-                continue
+            trans = Translation.parse_main(trans_name)
 
             trans_list.append((trans_name, trans))
 
         return tuple(trans_list)
 
-    def update_translation(self):
+    def update_translation(self) -> None:
         """
         Updates the translation info
         """

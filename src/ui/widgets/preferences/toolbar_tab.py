@@ -2,17 +2,17 @@
 from PyQt6 import QtWidgets
 
 from data import globals_
-from data.common.settings import setting, setSetting
-
+from data.common.settings import setSetting, setting
 from ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
 from ui.widgets.preferences.widgets.toolbar_check_box import ToolbarCheckBox
+
 
 class ToolbarTab(PreferenceTabWidget):
     """
     Toolbar Tab
     """
 
-    def __init__(self, info_text):
+    def __init__(self, info_text: str) -> None:
         """
         Initializes the Toolbar Tab
         """
@@ -28,7 +28,7 @@ class ToolbarTab(PreferenceTabWidget):
                     toggled[action.id] = action.active
         else:
             # Get the settings from the .ini
-            toggled = setting('ToolbarActs')
+            toggled: dict[str, bool] | None = setting('ToolbarActs', {})
             if toggled is not None:
                 # Replace the QString keys with python string keys
                 toggled = {str(key): toggled[key] for key in toggled}
@@ -94,7 +94,7 @@ class ToolbarTab(PreferenceTabWidget):
         L.addWidget(help_box, 2, 3, 1, 1)
         self.setLayout(L)
 
-    def reset(self):
+    def reset(self) -> None:
         """
         This is called when the Reset button is clicked
         """
@@ -128,7 +128,7 @@ class ToolbarTab(PreferenceTabWidget):
             self.help_boxes
         )
 
-        toolbar_actions = {}
+        toolbar_actions: dict[str, bool] = {}
         box: ToolbarCheckBox
 
         for box_list in boxes:

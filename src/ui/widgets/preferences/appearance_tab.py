@@ -1,27 +1,29 @@
-from PyQt6 import QtCore, QtWidgets, QtGui
 import os
+from typing import cast
+
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data import globals_
-from data.common.settings import setting, setSetting
-from data.level.path import Path
-from data.level.items.location import LocationItem
+from data.common.settings import setSetting, setting
+from data.common.utils import get_reggiedata_folder
 from data.level.items.comment import CommentItem
 from data.level.items.entrance import EntranceItem
+from data.level.items.location import LocationItem
 from data.level.items.sprite import SpriteItem
 from data.level.items.zone import ZoneItem
-from data.common.utils import get_reggiedata_folder
+from data.level.path import Path
+from ui.theme.reggie_theme import ReggieTheme, SetColorScheme
+from ui.widgets.level_scene import LevelScene
 from ui.widgets.level_view import LevelViewWidget
-from ui.theme.reggie_theme import ReggieTheme
-from ui.theme.reggie_theme import SetColorScheme
-
 from ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
+
 
 class AppearanceTab(PreferenceTabWidget):
     """
     Appearance Tab
     """
 
-    def __init__(self, info_text):
+    def __init__(self, info_text: None) -> None:
         """
         Initializes the Appearance Tab
         """
@@ -33,7 +35,7 @@ class AppearanceTab(PreferenceTabWidget):
 
         # Create the theme box
         self.theme_combo = QtWidgets.QComboBox()
-        for folder_name, theme_obj in self.themes:
+        for _folder_name, theme_obj in self.themes:
             self.theme_combo.addItem(theme_obj.themeName)
 
         index = self.theme_combo.findText(self.theme_id, QtCore.Qt.MatchFlag.MatchFixedString)
@@ -149,7 +151,7 @@ class AppearanceTab(PreferenceTabWidget):
         self.update_preview()
 
     @property
-    def get_themes(self):
+    def get_themes(self) -> tuple[tuple[str, ReggieTheme], ...]:
         """
         Searches the Themes folder and returns a list of theme filepaths.
         Automatically adds 'Classic' to the list.
@@ -170,11 +172,11 @@ class AppearanceTab(PreferenceTabWidget):
 
         return tuple(theme_list)
 
-    def update_preview(self):
+    def update_preview(self) -> None:
         """
         Updates the preview and theme box
         """
-        for name, theme in self.themes:
+        for _name, theme in self.themes:
             if theme.themeName == self.theme_combo.currentText():
                 self.preview.setPixmap(self.draw_preview(theme))
                 text = globals_.trans.string('dialog.preferences.tab.appearance.theme_info', ('[name]', theme.themeName),
@@ -183,7 +185,7 @@ class AppearanceTab(PreferenceTabWidget):
                 self.description.setVisible(not theme.is_default)
                 self.description.setText(text)
 
-    def draw_preview(self, theme):
+    def draw_preview(self, theme: ReggieTheme) -> QtGui.QPixmap:
         """
         Returns a preview pixmap for the given theme
         """
@@ -219,7 +221,7 @@ class AppearanceTab(PreferenceTabWidget):
         scene.addItem(zone)
 
         # Path [1] making a rectangle shape between (13, 5) and (18, 9)
-        path = Path(1, scene, loops=True)
+        path = Path(1, cast(LevelScene, scene), loops=True)
 
         for x, y in ((13, 5), (18, 5), (18, 9), (13, 9)):
             path.add_node(x * 16, y * 16, add_to_list=False)

@@ -1,12 +1,13 @@
-from PyQt6 import QtGui, QtWidgets, QtCore
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data import globals_
+
 
 class KeybindLineEdit(QtWidgets.QKeySequenceEdit):
     """
     A wrapper for QtWidgets.QKeySequenceEdit
     """
-    def __init__(self, keySequence: QtGui.QKeySequence | None, name: str):
+    def __init__(self, keySequence: QtGui.QKeySequence | None, name: str) -> None:
         QtWidgets.QKeySequenceEdit.__init__(self, keySequence)
         self.name = name
 
@@ -20,11 +21,10 @@ class KeybindLineEdit(QtWidgets.QKeySequenceEdit):
         if lineEdit is not None:
             lineEdit.setPlaceholderText(globals_.trans.string('widget.keybind_line_edit.no_keybind')) # No keybind set
 
-    def keyPressEvent(self, a0: QtGui.QKeyEvent | None):
+    def keyPressEvent(self, a0: QtGui.QKeyEvent | None) -> None:
         """
         Clears the current keybind if Delete or Backspace is pressed
         """
         super().keyPressEvent(a0)
-        if a0 is not None:
-            if a0.key() in (QtCore.Qt.Key.Key_Delete, QtCore.Qt.Key.Key_Backspace):
-                self.clear()
+        if a0 is not None and a0.key() in (QtCore.Qt.Key.Key_Delete, QtCore.Qt.Key.Key_Backspace):
+            self.clear()
