@@ -1,7 +1,6 @@
 from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
-from data.common.loaders import LoadSpriteCategories, LoadSpriteData
 from data.sprite.sprite_category import SpriteCategory
 
 
@@ -10,7 +9,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
     Widget that shows a list of available sprites
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initializes the widget
         """
@@ -22,7 +21,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
 
         self.LoadItems()
 
-    def UpdateSpriteNames(self):
+    def UpdateSpriteNames(self) -> None:
         """
         Updates all spritenames
         """
@@ -49,7 +48,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
 
                     snode.setText(0, globals_.trans.string('palette.sprite.add.list_item', ('[id]', id_), ('[name]', name)))
 
-    def LoadItems(self):
+    def LoadItems(self) -> None:
         """
         Loads tree widget items
         """
@@ -103,7 +102,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
 
         self.SwitchView(globals_.SpriteCategories[0])
 
-    def SwitchView(self, view: SpriteCategory):
+    def SwitchView(self, view: SpriteCategory) -> None:
         """
         Changes the selected sprite view
         """
@@ -116,16 +115,17 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
         for node in view.nodes:
             node.setHidden(False)
 
-    def HandleItemChange(self, current, previous):
+    def HandleItemChange(self, current: QtWidgets.QTreeWidgetItem | None, _previous: QtWidgets.QTreeWidgetItem | None) -> None:
         """
         Throws a signal when the selected object changed
         """
-        if current is None: return
-        id_ = current.data(0, QtCore.Qt.ItemDataRole.UserRole)
-        if id_ != -1:
-            self.SpriteChanged.emit(id_)
+        if current is None:
+            return
+        id = current.data(0, QtCore.Qt.ItemDataRole.UserRole)
+        if id != -1:
+            self.SpriteChanged.emit(id)
 
-    def SetSearchString(self, searchfor):
+    def SetSearchString(self, searchfor: str | None) -> None:
         """
         Shows the items containing that string
         """
@@ -141,7 +141,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
         self.NoSpritesFound.setHidden(bool(results))
         self.SearchResultsCategory.setExpanded(True)
 
-    def HandleSprReplace(self, item, column):
+    def HandleSprReplace(self, item: QtWidgets.QTreeWidgetItem, _column: int) -> None:
         """
         Throws a signal when the selected sprite is used as a replacement
         """

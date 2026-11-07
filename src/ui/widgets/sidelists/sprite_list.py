@@ -3,14 +3,14 @@ import base64
 from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
+from data.level.items.sprite import SpriteItem
 from data.sprite.spritefield.list import ListSpriteField
 from data.sprite.spritefield.sprite_field import SpriteField
 from data.sprite.spritefield.value import ValueSpriteField
+from ui.widgets.sprite_table import SpriteTableWidget
 from ui.widgets.spriteeditor.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
-from ui.widgets.sprite_table import SpriteTableWidget
-from data.level.items.sprite import SpriteItem
 
 
 class SpriteList(QtWidgets.QWidget):
@@ -28,7 +28,7 @@ class SpriteList(QtWidgets.QWidget):
         "Wiggling", "Panel", "Colony", "Entrance", "Path Node", "Limit"
     )
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         self.searchbox = QtWidgets.QLineEdit()
@@ -88,7 +88,7 @@ class SpriteList(QtWidgets.QWidget):
 
         self.setLayout(layout)
 
-    def search(self, text):
+    def search(self, text: str) -> None:
         """
         Search the table
         """
@@ -108,7 +108,7 @@ class SpriteList(QtWidgets.QWidget):
 
         self.SearchResults = rows
 
-    def filter(self, newidx):
+    def filter(self, newidx: int) -> None:
         """
         Filters all search results
         """
@@ -122,7 +122,7 @@ class SpriteList(QtWidgets.QWidget):
             else:
                 self.table.hideColumn(col)
 
-    def filterRow(self, row, filteridx = 0):
+    def filterRow(self, row: int, filteridx: int = 0) -> None:
         """
         Filters one row of the table.
         """
@@ -161,11 +161,11 @@ class SpriteList(QtWidgets.QWidget):
         # No field had the correct id type, so hide this row.
         self.table.setRowHidden(row, True)
 
-    def updateItems(self):
+    def updateItems(self) -> None:
         self.search(self.searchbox.text())
         self.filter(self.filterbox.currentIndex())
 
-    def getRowFor(self, sprite):
+    def getRowFor(self, sprite: SpriteItem) -> int:
         """
         Returns the row number for a given sprite, or -1 if no row exists.
         """
@@ -176,7 +176,7 @@ class SpriteList(QtWidgets.QWidget):
 
         return -1
 
-    def prepareBatchAdd(self):
+    def prepareBatchAdd(self) -> None:
         """
         Disables sorting, because sorting every time a new element is added is
         pretty bad performance-wise. We'll sort them once afterwards.
@@ -184,7 +184,7 @@ class SpriteList(QtWidgets.QWidget):
         self.is_batch_add = True
         self.table.setSortingEnabled(False)
 
-    def endBatchAdd(self):
+    def endBatchAdd(self) -> None:
         """
         Re-enables sorting after a batch adding is finished.
         """
@@ -193,7 +193,7 @@ class SpriteList(QtWidgets.QWidget):
         self.table.setSortingEnabled(True)
         self.updateItems()
 
-    def addSprite(self, sprite):
+    def addSprite(self, sprite: SpriteItem) -> None:
         """
         Adds a sprite to the table
         """
@@ -249,7 +249,7 @@ class SpriteList(QtWidgets.QWidget):
             self.table.setSortingEnabled(True)
             self.updateItems()
 
-    def updateSprite(self, sprite):
+    def updateSprite(self, sprite: SpriteItem) -> None:
         """
         Updates the IDs of the given sprite
         """
@@ -278,7 +278,7 @@ class SpriteList(QtWidgets.QWidget):
         # re-enable sorting
         self.table.setSortingEnabled(True)
 
-    def takeSprite(self, sprite):
+    def takeSprite(self, sprite: SpriteItem) -> None:
         """
         Removes a sprite from the table
         """
@@ -293,7 +293,7 @@ class SpriteList(QtWidgets.QWidget):
         if row in self.SearchResults:
             self.SearchResults = {x if x < row else x - 1 for x in self.SearchResults if x != row}
 
-    def clear(self):
+    def clear(self) -> None:
         """
         Clears the sprite list.
         """
@@ -308,7 +308,7 @@ class SpriteList(QtWidgets.QWidget):
         self.filterbox.setCurrentIndex(0)
         self.SearchResults = set()
 
-    def toolTip(self, item):
+    def toolTip(self, item: QtWidgets.QGraphicsItem) -> None:
         """
         Creates a tooltip for the item
         """
@@ -329,7 +329,7 @@ class SpriteList(QtWidgets.QWidget):
         )
 
     @staticmethod
-    def getIDsFor(sprite):
+    def getIDsFor(sprite: SpriteItem) -> dict[str, list[int]]:
         """
         Returns an (idtype, [values]) dict for every
         idtype this sprite has
@@ -338,7 +338,7 @@ class SpriteList(QtWidgets.QWidget):
             return {}
 
         sdef = globals_.Sprites[sprite.sprite_num]
-        res = {}
+        res: dict[str, list[int]] = {}
         decoder = PropertyDecoder(SpriteField())
         data = sprite.spritedata
 
@@ -366,8 +366,8 @@ class SpriteList(QtWidgets.QWidget):
         return res
 
     # Functions that are passed on to self.table
-    def selectionModel(self):
+    def selectionModel(self) -> QtCore.QItemSelectionModel | None:
         return self.table.selectionModel()
 
-    def row(self, item):
+    def row(self, item: QtWidgets.QTableWidgetItem) -> int:
         return self.table.row(item)

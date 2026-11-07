@@ -3,9 +3,9 @@ import base64
 from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
-from ui.widgets.sprite_table import SpriteTableWidget
-from data.level.items.sprite import SpriteItem
 from data.level.dirty import SetDirty
+from data.level.items.sprite import SpriteItem
+from ui.widgets.sprite_table import SpriteTableWidget
 
 
 class SpriteOrderList(QtWidgets.QWidget):
@@ -13,7 +13,7 @@ class SpriteOrderList(QtWidgets.QWidget):
     Sprite order viewer, similar to the Sprite List, but without sorting.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         self.is_batch_add = False
@@ -59,7 +59,7 @@ class SpriteOrderList(QtWidgets.QWidget):
         layout.addWidget(self.table, 1, 0, 1, 2)
         self.setLayout(layout)
 
-    def getRowFor(self, sprite):
+    def getRowFor(self, sprite: SpriteItem) -> int:
         """
         Returns the row number for a given sprite, or -1 if no row exists.
         """
@@ -70,20 +70,20 @@ class SpriteOrderList(QtWidgets.QWidget):
 
         return -1
 
-    def prepareBatchAdd(self):
+    def prepareBatchAdd(self) -> None:
         """
         Enables batch-adding mode
         """
         self.is_batch_add = True
 
-    def endBatchAdd(self):
+    def endBatchAdd(self) -> None:
         """
         Disables batch-adding mode
         """
         self.is_batch_add = False
         self.table.resizeRowsToContents()
 
-    def addSprite(self, sprite):
+    def addSprite(self, sprite: SpriteItem) -> None:
         """
         Adds a sprite to the table
         """
@@ -109,7 +109,7 @@ class SpriteOrderList(QtWidgets.QWidget):
             # in a batch add, don't resize the rows until the very end.
             self.table.resizeRowsToContents()
 
-    def takeSprite(self, sprite):
+    def takeSprite(self, sprite: SpriteItem) -> None:
         """
         Removes a sprite from the table
         """
@@ -119,7 +119,7 @@ class SpriteOrderList(QtWidgets.QWidget):
 
         self.table.removeRow(row)
 
-    def moveSprite(self, action: int):
+    def moveSprite(self, action: int) -> None:
         """
         Moves a sprite up/down in the list
         """
@@ -156,7 +156,7 @@ class SpriteOrderList(QtWidgets.QWidget):
         for spr in globals_.Area.sprites:
             self.addSprite(spr)
 
-    def clear(self):
+    def clear(self) -> None:
         """
         Clears the sprite list.
         """
@@ -168,7 +168,7 @@ class SpriteOrderList(QtWidgets.QWidget):
 
         self.table.clearContents()
 
-    def select_item(self):
+    def select_item(self) -> None:
         """
         Toggle buttons depending on the selected item index
         """
@@ -191,7 +191,7 @@ class SpriteOrderList(QtWidgets.QWidget):
         self.move_up_btn.setEnabled(enable_up)
         self.move_down_btn.setEnabled(enable_down)
 
-    def toolTip(self, item):
+    def toolTip(self, item: QtWidgets.QGraphicsItem) -> None:
         """
         Creates a tooltip for the item
         """
@@ -212,8 +212,8 @@ class SpriteOrderList(QtWidgets.QWidget):
         )
 
     # Functions that are passed on to self.table
-    def selectionModel(self):
+    def selectionModel(self) -> QtCore.QItemSelectionModel | None:
         return self.table.selectionModel()
 
-    def row(self, item):
+    def row(self, item: QtWidgets.QTableWidgetItem) -> int:
         return self.table.row(item)

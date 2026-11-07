@@ -10,7 +10,7 @@ class ObjectPickerWidget(QtWidgets.QListView):
     Widget that shows a list of available objects
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initializes the widget
         """
@@ -34,29 +34,29 @@ class ObjectPickerWidget(QtWidgets.QListView):
 
         self.clicked.connect(self.HandleObjReplace)
 
-    def LoadFromTilesets(self):
+    def LoadFromTilesets(self) -> None:
         """
         Renders all the object previews
         """
         for i in range(4):
             self.models[i].LoadFromTileset(i)
 
-    def ShowTileset(self, id_):
+    def ShowTileset(self, id: int) -> None:
         """
         Shows a specific tileset in the picker
         """
         sel = self.currentIndex().row()
-        model = self.models[id_]
+        model = self.models[id]
         self.setModel(model)
         self.setCurrentIndex(model.index(sel, 0, QtCore.QModelIndex()))
 
-    def currentChanged(self, current, previous):
+    def currentChanged(self, current: QtCore.QModelIndex, previous: QtCore.QModelIndex) -> None:
         """
         Throws a signal when the selected object changed
         """
         self.ObjChanged.emit(current.row())
 
-    def HandleObjReplace(self, index):
+    def HandleObjReplace(self, index: QtCore.QModelIndex) -> None:
         """
         Throws a signal when the selected object is used as a replacement
         """
@@ -71,13 +71,13 @@ class ObjectPickerWidget(QtWidgets.QListView):
         Handles tileset objects and their rendering
         """
 
-        def __init__(self):
+        def __init__(self) -> None:
             """
             Initializes the delegate
             """
             QtWidgets.QAbstractItemDelegate.__init__(self)
 
-        def paint(self, painter, option, index):
+        def paint(self, painter: QtGui.QPainter, option: QtWidgets.QStyleOptionViewItem, index: QtCore.QModelIndex) -> None:
             """
             Paints an object
             """
@@ -95,7 +95,7 @@ class ObjectPickerWidget(QtWidgets.QListView):
             painter.drawPixmap(option.rect.x() + 2, option.rect.y() + 2, p)
             # painter.drawText(option.rect, str(index.row()))
 
-        def sizeHint(self, option, index):
+        def sizeHint(self, option: QtWidgets.QStyleOptionViewItem, index: QtCore.QModelIndex) -> QtCore.QSize:
             """
             Returns the size for the object
             """
@@ -112,22 +112,26 @@ class ObjectPickerWidget(QtWidgets.QListView):
         Model containing all the objects in a tileset
         """
 
-        def __init__(self):
+        def __init__(self) -> None:
             """
             Initializes the model
             """
-            self.items = []
-            self.ritems = []
-            self.itemsize = []
+            self.items: list[list[list[int]]] = []
+            self.ritems: list[QtGui.QPixmap] = []
+            self.itemsize: list[QtCore.QSize] = []
             QtCore.QAbstractListModel.__init__(self)
 
-        def rowCount(self, parent=None):
+        def rowCount(self, parent: QtWidgets.QWidget | None = None) -> int:
             """
             Required by Qt
             """
             return len(self.items)
 
-        def data(self, index, role=QtCore.Qt.ItemDataRole.DisplayRole):
+        def data(
+            self,
+            index: QtCore.QModelIndex,
+            role: QtCore.Qt.ItemDataRole = QtCore.Qt.ItemDataRole.DisplayRole,
+        ) -> QtGui.QPixmap | QtGui.QBrush | QtCore.QSize | str | None:
             """
             Get what we have for a specific row
             """
@@ -155,7 +159,7 @@ class ObjectPickerWidget(QtWidgets.QListView):
 
             return None
 
-        def LoadFromTileset(self, idx):
+        def LoadFromTileset(self, idx: int) -> None:
             """
             Renders all the object previews for the model
             """
@@ -164,7 +168,7 @@ class ObjectPickerWidget(QtWidgets.QListView):
             self.items = []
             self.ritems = []
             self.itemsize = []
-            self.tooltips = []
+            self.tooltips: list[str] = []
 
             if globals_.ObjectDefinitions[idx] is None:
                 self.endResetModel()
@@ -173,11 +177,12 @@ class ObjectPickerWidget(QtWidgets.QListView):
             defs = globals_.ObjectDefinitions[idx]
 
             for i in range(256):
-                if defs[i] is None: break
-                obj = RenderObject(idx, i, defs[i].width, defs[i].height, True)
+                object_def = defs[i]
+                if object_def is None: break
+                obj = RenderObject(idx, i, object_def.width, object_def.height, True)
                 self.items.append(obj)
 
-                pm = QtGui.QPixmap(defs[i].width * 24, defs[i].height * 24)
+                pm = QtGui.QPixmap(object_def.width * 24, object_def.height * 24)
                 pm.fill(QtCore.Qt.GlobalColor.transparent)
                 p = QtGui.QPainter()
                 p.begin(pm)
@@ -205,7 +210,7 @@ class ObjectPickerWidget(QtWidgets.QListView):
                 p.end()
 
                 self.ritems.append(pm)
-                self.itemsize.append(QtCore.QSize(defs[i].width * 24 + 4, defs[i].height * 24 + 4))
+                self.itemsize.append(QtCore.QSize(object_def.width * 24 + 4, object_def.height * 24 + 4))
                 if (idx == 0) and (i in globals_.ObjDesc):
                     if isAnim:
                         self.tooltips.append(globals_.trans.string('palette.object.tooltip_desc_anim', ('[id]', i), ('[desc]', globals_.ObjDesc[i])))

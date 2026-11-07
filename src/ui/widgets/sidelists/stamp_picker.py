@@ -1,5 +1,6 @@
-from PyQt6 import QtCore, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 
+from data.stamp.stamp import Stamp
 from data.stamp.stamp_list import StampListModel
 
 
@@ -9,7 +10,7 @@ class StampPickerWidget(QtWidgets.QListView):
     """
     selectionChangedSignal = QtCore.pyqtSignal()
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initializes the widget
         """
@@ -30,19 +31,19 @@ class StampPickerWidget(QtWidgets.QListView):
         Handles stamp rendering
         """
 
-        def __init__(self):
+        def __init__(self) -> None:
             """
             Initializes the delegate
             """
             QtWidgets.QStyledItemDelegate.__init__(self)
 
-        def createEditor(self, parent, option, index):
+        def createEditor(self, parent: QtWidgets.QWidget, option: QtWidgets.QStyleOptionGraphicsItem, index: int) -> QtWidgets.QLineEdit:
             """
             Creates a stamp name editor
             """
             return QtWidgets.QLineEdit(parent)
 
-        def setEditorData(self, editor, index):
+        def setEditorData(self, editor: QtWidgets.QLineEdit, index: QtCore.QModelIndex) -> None:
             """
             Sets the data for the stamp name editor from the data at index
             """
@@ -52,7 +53,7 @@ class StampPickerWidget(QtWidgets.QListView):
 
             editor.setText(model.data(index, QtCore.Qt.ItemDataRole.UserRole + 1))
 
-        def setModelData(self, editor, model, index):
+        def setModelData(self, editor: QtWidgets.QLineEdit, model: QtCore.QAbstractItemModel, index: QtCore.QModelIndex) -> None:
             """
             Set the data in the model for the data at index
             """
@@ -62,7 +63,7 @@ class StampPickerWidget(QtWidgets.QListView):
 
             indexed_model.setData(index, editor.text())
 
-        def paint(self, painter, option, index):
+        def paint(self, painter: QtGui.QPainter, option: QtWidgets.QStyleOptionGraphicsItem, index: QtCore.QModelIndex) -> None:
             """
             Paints a stamp
             """
@@ -75,7 +76,7 @@ class StampPickerWidget(QtWidgets.QListView):
 
             painter.drawPixmap(option.rect.x() + 2, option.rect.y() + 2, model.data(index, QtCore.Qt.ItemDataRole.DecorationRole))
 
-        def sizeHint(self, option, index):
+        def sizeHint(self, option: QtWidgets.QStyleOptionGraphicsItem, index: QtCore.QModelIndex) -> QtCore.QSize:
             """
             Returns the size for the stamp
             """
@@ -85,7 +86,7 @@ class StampPickerWidget(QtWidgets.QListView):
 
             return model.data(index, QtCore.Qt.ItemDataRole.DecorationRole).size() + QtCore.QSize(4, 4)
 
-    def addStamp(self, stamp):
+    def addStamp(self, stamp: Stamp) -> None:
         """
         Adds a stamp
         """
@@ -95,7 +96,7 @@ class StampPickerWidget(QtWidgets.QListView):
 
         model.addStamp(stamp)
 
-    def removeStamp(self, stamp):
+    def removeStamp(self, stamp: Stamp) -> None:
         """
         Removes a stamp
         """
@@ -106,7 +107,7 @@ class StampPickerWidget(QtWidgets.QListView):
 
         model.removeStamp(stamp)
 
-    def currentlySelectedStamp(self):
+    def currentlySelectedStamp(self) -> Stamp | None:
         """
         Returns the currently selected stamp
         """
@@ -118,7 +119,7 @@ class StampPickerWidget(QtWidgets.QListView):
 
         return model.items[idxobj.row()]
 
-    def selectionChanged(self, selected, deselected):
+    def selectionChanged(self, selected: QtCore.QItemSelection, deselected: QtCore.QItemSelection) -> None:
         """
         Called when the selection changes.
         """
