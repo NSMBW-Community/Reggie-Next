@@ -16,7 +16,7 @@ class ChangelogDialog(QtWidgets.QDialog):
         Creates and initializes the dialog
         """
         super().__init__()
-        self.setWindowTitle(globals_.trans.string('ChangelogDlg', 0))
+        self.setWindowTitle(globals_.trans.string('dialog.changelog.title'))
         self.setMinimumSize(625, 555)
 
         # Open the changelog
@@ -25,7 +25,7 @@ class ChangelogDialog(QtWidgets.QDialog):
             with open(os.path.join(get_root_path(), 'CHANGELOG.md'), 'r', encoding='utf-8') as f:
                 changelog = f.read()
         except FileNotFoundError:
-            changelog = globals_.trans.string('ChangelogDlg', 1)
+            changelog = globals_.trans.string('error.file_not_found.changelog')
 
         changelog_view = QtWidgets.QTextBrowser()
         changelog_view.setMarkdown(changelog)

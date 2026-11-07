@@ -16,7 +16,7 @@ class ItemShiftDialog(QtWidgets.QDialog):
         Creates and initializes the dialog
         """
         super().__init__()
-        self.setWindowTitle(globals_.trans.string('ShftItmDlg', 0))
+        self.setWindowTitle(globals_.trans.string('dialog.shift_item.title'))
         self.setWindowIcon(GetIcon('arrow-move'))
 
         self.offset_x = QtWidgets.QSpinBox()
@@ -25,7 +25,7 @@ class ItemShiftDialog(QtWidgets.QDialog):
         self.offset_y = QtWidgets.QSpinBox()
         self.offset_y.setRange(-8192, 8191)
 
-        offset_label = QtWidgets.QLabel(globals_.trans.string('ShftItmDlg', 2))
+        offset_label = QtWidgets.QLabel(globals_.trans.string('dialog.shift_item.info'))
         offset_label.setWordWrap(True)
 
         button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
@@ -34,10 +34,10 @@ class ItemShiftDialog(QtWidgets.QDialog):
 
         move_lyt = QtWidgets.QFormLayout()
         move_lyt.addWidget(offset_label)
-        move_lyt.addRow(globals_.trans.string('ShftItmDlg', 3), self.offset_x)
-        move_lyt.addRow(globals_.trans.string('ShftItmDlg', 4), self.offset_y)
+        move_lyt.addRow(globals_.trans.string('common.x_colon'), self.offset_x)
+        move_lyt.addRow(globals_.trans.string('common.y_colon'), self.offset_y)
 
-        move_box = QtWidgets.QGroupBox(globals_.trans.string('ShftItmDlg', 1))
+        move_box = QtWidgets.QGroupBox(globals_.trans.string('dialog.shift_item.move_by'))
         move_box.setLayout(move_lyt)
 
         main_layout = QtWidgets.QVBoxLayout()
@@ -75,7 +75,7 @@ class ItemShiftDialog(QtWidgets.QDialog):
                 # We should warn the user that we will round the offset to the
                 # nearest multiple of 16, because objects can only be placed on
                 # the grid.
-                result = QtWidgets.QMessageBox.warning(None, globals_.trans.string('ShftItmDlg', 5), globals_.trans.string('ShftItmDlg', 6),
+                result = QtWidgets.QMessageBox.warning(None, globals_.trans.string('common.warning'), globals_.trans.string('dialog.shift_item.object_warn'),
                                                        QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
                 if result == QtWidgets.QMessageBox.StandardButton.No:
                     return

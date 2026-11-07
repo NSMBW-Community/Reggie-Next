@@ -6,8 +6,8 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from data.common.gamedef import ReggieGameDefinition
 from data.common.keybind import Keybind
 from data.common.menu_action import MenuAction
-from data.common.reggie_translation import ReggieTranslation
 from data.common.toolbar_action import ToolbarAction
+from data.common.translation import Translation
 from data.level.abstract_level import AbstractLevel
 from data.level.area import Area as AreaType
 from data.level.background_file import BackgroundFileEntry
@@ -142,7 +142,7 @@ AllowSizeHacks: bool = False
 
 app: QtWidgets.QApplication | None = None
 firstLoad: bool = True
-trans: ReggieTranslation = ReggieTranslation(None)
+trans: Translation = Translation.init_as_english()
 gamedef: ReggieGameDefinition = ReggieGameDefinition()
 # uninitialized
 mainWindow: ReggieWindow

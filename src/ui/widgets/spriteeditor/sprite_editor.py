@@ -6,7 +6,7 @@ from data.level.dirty import SetDirty
 from data.level.items.sprite import SpriteItem
 from data.level.sprite_definition import SpriteDefinition
 from data.common.list_property import ListPropertyModel
-from data.common.reggie_translation import convert_formatting
+from data.common.translation import Translation
 from data.sprite.spritefield.check_box import CheckBoxSpriteField
 from data.sprite.spritefield.dual_box import DualBoxSpriteField
 from data.sprite.spritefield.external import ExternalSpriteField
@@ -51,7 +51,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         # create the raw editor
         font = QtGui.QFont()
         font.setPointSize(8)
-        self.editbox = QtWidgets.QLabel(globals_.trans.string('SpriteDataEditor', 3))
+        self.editbox = QtWidgets.QLabel(globals_.trans.string('dialog.sprite_data_editor.modify_raw_data'))
         self.editbox.setFont(font)
         edit = QtWidgets.QLineEdit()
         edit.textEdited.connect(self.HandleRawDataEdited)
@@ -61,7 +61,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         edit.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.Fixed))
         self.raweditor = edit
 
-        self.resetButton = QtWidgets.QPushButton(globals_.trans.string('SpriteDataEditor', 17))
+        self.resetButton = QtWidgets.QPushButton(globals_.trans.string('dialog.sprite_data_editor.reset_all'))
         self.resetButton.clicked.connect(self.HandleResetData)
 
         editboxlayout = QtWidgets.QHBoxLayout()
@@ -75,28 +75,28 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
         self.noteButton = QtWidgets.QToolButton()
         self.noteButton.setIcon(GetIcon('sticky-note-text'))
-        self.noteButton.setText(globals_.trans.string('SpriteDataEditor', 4))
+        self.noteButton.setText(globals_.trans.string('dialog.sprite_data_editor.notes.name'))
         self.noteButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.noteButton.setAutoRaise(True)
         self.noteButton.clicked.connect(self.ShowNoteTooltip)
 
         self.depButton = QtWidgets.QToolButton()
         self.depButton.setIcon(GetIcon('node-select-child'))
-        self.depButton.setText(globals_.trans.string('SpriteDataEditor', 4))
+        self.depButton.setText(globals_.trans.string('dialog.sprite_data_editor.notes.name'))
         self.depButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.depButton.setAutoRaise(True)
         self.depButton.clicked.connect(self.ShowDependencies)
 
         self.relatedObjFilesButton = QtWidgets.QToolButton()
         self.relatedObjFilesButton.setIcon(GetIcon('documents-stack'))
-        self.relatedObjFilesButton.setText(globals_.trans.string('SpriteDataEditor', 7))
+        self.relatedObjFilesButton.setText(globals_.trans.string('dialog.sprite_data_editor.object_files.name'))
         self.relatedObjFilesButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.relatedObjFilesButton.setAutoRaise(True)
         self.relatedObjFilesButton.clicked.connect(self.ShowRelatedObjFilesTooltip)
 
         self.advNoteButton = QtWidgets.QToolButton()
         self.advNoteButton.setIcon(GetIcon('sticky-note-text-advanced'))
-        self.advNoteButton.setText(globals_.trans.string('SpriteDataEditor', 10))
+        self.advNoteButton.setText(globals_.trans.string('dialog.sprite_data_editor.advanced_notes.name'))
         self.advNoteButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.advNoteButton.setAutoRaise(True)
         self.advNoteButton.clicked.connect(self.ShowAdvancedNoteTooltip)
@@ -105,7 +105,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
         self.yoshiInfo = QtWidgets.QToolButton()
         self.yoshiInfo.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
-        self.yoshiInfo.setText(globals_.trans.string('SpriteDataEditor', 12))
+        self.yoshiInfo.setText(globals_.trans.string('dialog.sprite_data_editor.notes.name'))
         self.yoshiInfo.setAutoRaise(True)
         self.yoshiInfo.clicked.connect(self.ShowYoshiTooltip)
 
@@ -114,7 +114,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
         self.sizeButton = QtWidgets.QToolButton()
         self.sizeButton.setIcon(GetIcon('arrow-out'))
-        self.sizeButton.setText(globals_.trans.string('SpriteDataEditor', 27))
+        self.sizeButton.setText(globals_.trans.string('dialog.sprite_data_editor.resize'))
         self.sizeButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.sizeButton.setAutoRaise(True)
         self.sizeButton.clicked.connect(self.HandleSizeButtonClicked)
@@ -139,9 +139,9 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         self.msg_layout = QtWidgets.QVBoxLayout()
 
         self.com_main.setReadOnly(True)
-        self.com_more.setText(globals_.trans.string('SpriteDataEditor', 13))
+        self.com_more.setText(globals_.trans.string('dialog.sprite_data_editor.read_more'))
         self.com_more.clicked.connect(self.ShowMoreComments)
-        self.com_dep.setText(globals_.trans.string('SpriteDataEditor', 18))
+        self.com_dep.setText(globals_.trans.string('dialog.sprite_data_editor.check_dependencies'))
         self.com_dep.clicked.connect(self.DependencyToggle)
         self.com_dep.setVisible(False)
         self.com_extra.setReadOnly(True)
@@ -248,7 +248,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         self.com_box.setVisible(False)
 
         if sprite is None:
-            self.spriteLabel.setText(globals_.trans.string('SpriteDataEditor', 5, '[id]', type_))
+            self.spriteLabel.setText(globals_.trans.string('dialog.sprite_data_editor.unknown_info', ('[id]', type_)))
             self.noteButton.setVisible(False)
             self.yoshiInfo.setVisible(False)
             self.advNoteButton.setVisible(False)
@@ -257,7 +257,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
             return
 
-        self.spriteLabel.setText(globals_.trans.string('SpriteDataEditor', 6, '[id]', type_, '[name]', sprite.name))
+        self.spriteLabel.setText(globals_.trans.string('dialog.sprite_data_editor.info', ('[id]', type_), ('[name]', sprite.name)))
 
         self.noteButton.setVisible(sprite.notes is not None)
         if sprite.notes is not None:
@@ -306,8 +306,8 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         # if there are missing things
         # Required
         for missingSprite in missing[0]:
-            name = globals_.trans.string('SpriteDataEditor', 20, '[id]', missingSprite)
-            action = globals_.trans.string('SpriteDataEditor', 26)
+            name = globals_.trans.string('dialog.sprite_data_editor.dependencies.require_area', ('[id]', missingSprite))
+            action = globals_.trans.string('dialog.sprite_data_editor.dependencies.add_sprite')
             addButton = QtWidgets.QPushButton(action)
 
             message = self.addMessage(name, level = 0, close = action)
@@ -323,8 +323,8 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
         # Suggested
         for missingSprite in missing[1]:
-            name = globals_.trans.string('SpriteDataEditor', 21, '[id]', missingSprite)
-            action = globals_.trans.string('SpriteDataEditor', 26)
+            name = globals_.trans.string('dialog.sprite_data_editor.dependencies.suggest_area', ('[id]', missingSprite))
+            action = globals_.trans.string('dialog.sprite_data_editor.dependencies.add_sprite')
 
             addButton = QtWidgets.QPushButton(action)
             addButton.clicked.connect(self.HandleSpritePlaced(missingSprite, addButton))
@@ -335,8 +335,8 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
         # Resource
         for missingSprite in missing[2]:
-            name = globals_.trans.string('SpriteDataEditor', 30, '[id]', missingSprite)
-            action = globals_.trans.string('SpriteDataEditor', 31)
+            name = globals_.trans.string('dialog.sprite_data_editor.dependencies.require_resource', ('[id]', missingSprite))
+            action = globals_.trans.string('dialog.sprite_data_editor.dependencies.add_to_loaded')
             addButton = QtWidgets.QPushButton(action)
 
             message = self.addMessage(name, level = 3, close = action)
@@ -352,8 +352,8 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
         # Suggested Resource
         for missingSprite in missing[3]:
-            name = globals_.trans.string('SpriteDataEditor', 30, '[id]', missingSprite)
-            action = globals_.trans.string('SpriteDataEditor', 31)
+            name = globals_.trans.string('dialog.sprite_data_editor.dependencies.require_resource', ('[id]', missingSprite))
+            action = globals_.trans.string('dialog.sprite_data_editor.dependencies.add_to_loaded')
 
             addButton = QtWidgets.QPushButton(action)
             addButton.clicked.connect(self.HandleAppendToLoadList(missingSprite, addButton))
@@ -368,7 +368,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         self.com_dep.setVisible(False)
 
         if sprite.dependencynotes is not None:
-            self.dependencyNotes = convert_formatting(sprite.dependencynotes)
+            self.dependencyNotes = Translation.convert_formatting(sprite.dependencynotes)
 
             if sprite.notes is None:
                 self.com_more.setVisible(False)
@@ -445,13 +445,14 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
             if hasattr(sprite, 'layer_title'):
                 title = sprite.layer_title
             else:
-                title = globals_.trans.string('SpriteDataEditor', 32)
+                title = globals_.trans.string('dialog.sprite_data_editor.property_decoder.layer_default.name')
 
             if hasattr(sprite, 'layer_comment'):
                 comment = sprite.layer_comment
             else:
-                comment = globals_.trans.string('SpriteDataEditor', 33)
-            strList = globals_.trans.stringList('SpriteDataEditor', 34)
+                comment = globals_.trans.string('dialog.sprite_data_editor.property_decoder.layer_default.comment')
+
+            strList = globals_.trans.string_list('common.layer1', 'common.layer2', 'common.layer0')
             if strList is None:
                 return
             itemList = [(0, strList[0]), (1, strList[1]), (2, strList[2])]
@@ -653,12 +654,12 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
         if self.com_extra.isVisible():
             self.com_extra.setVisible(False)
-            self.com_more.setText(globals_.trans.string('SpriteDataEditor', 13))
+            self.com_more.setText(globals_.trans.string('dialog.sprite_data_editor.read_more'))
             self.com_main.setVisible(True)
 
         else:
             self.com_extra.setVisible(True)
-            self.com_more.setText(globals_.trans.string('SpriteDataEditor', 14))
+            self.com_more.setText(globals_.trans.string('dialog.sprite_data_editor.read_less'))
             self.com_main.setVisible(False)
 
     def ShowDependencies(self):
@@ -669,7 +670,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         self.com_main.setVisible(True)
         self.com_extra.setVisible(False)
         self.com_deplist_w.setVisible(False)
-        self.com_dep.setText(globals_.trans.string('SpriteDataEditor', 18))
+        self.com_dep.setText(globals_.trans.string('dialog.sprite_data_editor.check_dependencies'))
         self.com_dep.setVisible(self.com_deplist.count() > 0)
         self.com_box.setVisible(True)
 
@@ -678,12 +679,12 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         The button was clicked
         """
         if not self.com_main.isVisible():
-            self.com_dep.setText(globals_.trans.string('SpriteDataEditor', 18))
+            self.com_dep.setText(globals_.trans.string('dialog.sprite_data_editor.check_dependencies'))
             self.com_main.setVisible(True)
             self.com_deplist_w.setVisible(False)
 
         else:
-            self.com_dep.setText(globals_.trans.string('SpriteDataEditor', 19))
+            self.com_dep.setText(globals_.trans.string('dialog.sprite_data_editor.check_dependency_notes'))
             self.com_main.setVisible(False)
             self.com_deplist_w.setVisible(True)
 

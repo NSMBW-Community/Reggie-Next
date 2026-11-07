@@ -24,8 +24,8 @@ def CheckDirty() -> bool:
         return False
 
     msg = QtWidgets.QMessageBox()
-    msg.setText(globals_.trans.string('AutoSaveDlg', 2))
-    msg.setInformativeText(globals_.trans.string('AutoSaveDlg', 3))
+    msg.setText(globals_.trans.string('dialog.dirty.info'))
+    msg.setInformativeText(globals_.trans.string('dialog.dirty.info_2'))
     msg.setStandardButtons(
         QtWidgets.QMessageBox.StandardButton.Save | QtWidgets.QMessageBox.StandardButton.Discard | QtWidgets.QMessageBox.StandardButton.Cancel)
     msg.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Save)

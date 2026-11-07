@@ -14,28 +14,28 @@ class StampTab(QtWidgets.QWidget):
     """
     def __init__(self):
         super().__init__(None)
-        label = QtWidgets.QLabel(globals_.trans.string('Palette', 27))
+        label = QtWidgets.QLabel(globals_.trans.string('palette.stamp.info'))
 
-        self.add_button = QtWidgets.QPushButton(globals_.trans.string('Palette', 28))
+        self.add_button = QtWidgets.QPushButton(globals_.trans.string('common.add'))
         self.add_button.clicked.connect(self.add_stamp)
         self.add_button.setEnabled(False)
 
-        self.remove_button = QtWidgets.QPushButton(globals_.trans.string('Palette', 29))
+        self.remove_button = QtWidgets.QPushButton(globals_.trans.string('common.remove'))
         self.remove_button.clicked.connect(self.remove_stamp)
         self.remove_button.setEnabled(False)
 
         menu = QtWidgets.QMenu()
-        menu.addAction(globals_.trans.string('Palette', 31), self.open_stamps) # 'Open Set...'
-        menu.addAction(globals_.trans.string('Palette', 32), self.save_stamps) # 'Save Set As...'
+        menu.addAction(globals_.trans.string('palette.stamp.import_set'), self.open_stamps)
+        menu.addAction(globals_.trans.string('palette.stamp.save_set_as'), self.save_stamps)
 
         self.tool_button = QtWidgets.QToolButton()
-        self.tool_button.setText(globals_.trans.string('Palette', 30))
+        self.tool_button.setText(globals_.trans.string('palette.stamp.tools'))
         self.tool_button.setMenu(menu)
         self.tool_button.setPopupMode(QtWidgets.QToolButton.ToolButtonPopupMode.InstantPopup)
         self.tool_button.setSizePolicy(self.add_button.sizePolicy())
         self.tool_button.setMinimumHeight(self.add_button.height() // 20)
 
-        self.copy_button = QtWidgets.QPushButton(globals_.trans.string('Palette', 37))
+        self.copy_button = QtWidgets.QPushButton(globals_.trans.string('palette.stamp.copy_to_clipboard'))
         self.copy_button.clicked.connect(self.copy_stamp)
         self.copy_button.setEnabled(False)
 
@@ -43,7 +43,7 @@ class StampTab(QtWidgets.QWidget):
         self.name_edit.setEnabled(False)
         self.name_edit.textChanged.connect(self.stamp_name_edited)
 
-        name_label = QtWidgets.QLabel(globals_.trans.string('Palette', 35))
+        name_label = QtWidgets.QLabel(globals_.trans.string('common.name_colon'))
         name_layout = QtWidgets.QHBoxLayout()
         name_layout.addWidget(name_label)
         name_layout.addWidget(self.name_edit)
@@ -72,7 +72,7 @@ class StampTab(QtWidgets.QWidget):
         clip = ReggieClip.get_reggie_clip(sel_items)
 
         # Create a Stamp
-        self.stamp_picker.addStamp(Stamp(clip, f'{globals_.trans.string('Palette', 41)}'))
+        self.stamp_picker.addStamp(Stamp(clip, globals_.trans.string('palette.stamp.new_stamp')))
 
     def remove_stamp(self):
         """
@@ -95,9 +95,12 @@ class StampTab(QtWidgets.QWidget):
         """
         Handles the "Open Set..." btn being clicked
         """
-        filetypes = f'{globals_.trans.string('FileDlgs', 7)}  (*.stamps);; {globals_.trans.string('FileDlgs', 2)} (*)'
+        filter = (
+            f'{globals_.trans.string('dialog.file_prompt.filter.stamps')}  (*.stamps);;'
+            f'{globals_.trans.string('dialog.file_prompt.filter.all')} (*)'
+        )
 
-        fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('FileDlgs', 6), '', filetypes)[0]
+        fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('dialog.file_prompt.open_stamps'), '', filter)[0]
         if fn == '':
             return
 
@@ -122,9 +125,12 @@ class StampTab(QtWidgets.QWidget):
         """
         Handles the "Save Set As..." btn being clicked
         """
-        filetypes = f'{globals_.trans.string('FileDlgs', 7)}  (*.stamps);; {globals_.trans.string('FileDlgs', 2)} (*)'
+        filter = (
+            f'{globals_.trans.string('dialog.file_prompt.filter.stamps')}  (*.stamps);;'
+            f'{globals_.trans.string('dialog.file_prompt.filter.all')} (*)'
+        )
 
-        fn = QtWidgets.QFileDialog.getSaveFileName(self, globals_.trans.string('FileDlgs', 3), '', filetypes)[0]
+        fn = QtWidgets.QFileDialog.getSaveFileName(self, globals_.trans.string('dialog.file_prompt.save_as'), '', filter)[0]
         if fn == '':
             return
 

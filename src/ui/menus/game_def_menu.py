@@ -58,7 +58,7 @@ class GameDefMenu(QtWidgets.QMenu):
 
         # Add the reload button
         act = QtGui.QAction(self)
-        act.setText(globals_.trans.string('Gamedefs', 19))
+        act.setText(globals_.trans.string('widget.game_patch_menu.refresh_list'))
         act.setData('reload_gamedef')
         act.setActionGroup(self.actGroup)
         act.setIcon(GetIcon('drive-disc'))
@@ -89,7 +89,9 @@ class GameDefMenu(QtWidgets.QMenu):
         real_gamedef = setting('LastGameDef')
         success = LoadGameDef(real_gamedef)
         if not success:
-            raise ValueError(f"Restoring the previous game def ({real_gamedef!r}) failed after failing to load new game def ({name!r})")
+            QtWidgets.QMessageBox.warning(None, globals_.trans.string('error.title.error'), globals_.trans.string('error.game_patch.restore_old'))
+            LoadGameDef(None)
+            return
 
         self.update_flag = True
         for act in self.actGroup.actions():

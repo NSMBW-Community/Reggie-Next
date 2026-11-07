@@ -100,13 +100,13 @@ class PathItem(LevelEditorItem):
         """
         Updates the path node's tooltip
         """
-        self.setToolTip(globals_.trans.string('Paths', 0, '[path]', self.pathid, '[node]', self.nodeid))
+        self.setToolTip(globals_.trans.string('levelitem.path.tooltip', ('[path]', self.pathid), ('[node]', self.nodeid)))
 
     def ListString(self) -> str | None:
         """
         Returns a string that can be used to describe the path node in a list
         """
-        return globals_.trans.string('Paths', 1, '[path]', self.pathid, '[node]', self.nodeid)
+        return globals_.trans.string('levelitem.path.palette_info', ('[path]', self.pathid), ('[node]', self.nodeid))
 
     def __lt__(self, other: 'PathItem') -> bool:
         return (self.pathid, self.nodeid) < (other.pathid, other.nodeid)

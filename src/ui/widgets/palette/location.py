@@ -11,7 +11,7 @@ class LocationTab(QtWidgets.QWidget):
     """
     def __init__(self):
         super().__init__(None)
-        label = QtWidgets.QLabel(globals_.trans.string('Palette', 12))
+        label = QtWidgets.QLabel(globals_.trans.string('palette.location.info'))
         label.setWordWrap(True)
 
         self.location_list = ListWidgetWithToolTipSignal()

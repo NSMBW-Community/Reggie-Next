@@ -17,7 +17,7 @@ class ChooseLevelNameDialog(QtWidgets.QDialog):
         Creates and initializes the dialog
         """
         QtWidgets.QDialog.__init__(self)
-        self.setWindowTitle(globals_.trans.string('OpenFromNameDlg', 0))
+        self.setWindowTitle(globals_.trans.string('dialog.open_by_name.title'))
         self.setWindowIcon(GetIcon('folder-open-image'))
 
         LoadLevelNames()

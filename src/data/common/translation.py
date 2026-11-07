@@ -1,0 +1,279 @@
+import os
+from typing import Any
+from xml.etree import ElementTree
+
+from data.common.translation_metadata import TranslationMetadata
+from data.common.translation_section import TranslationSection
+from data.common.utils import get_reggiedata_folder, get_root_path
+
+
+class Translation:
+    def __init__(
+        self, metadata: TranslationMetadata, translation_data: TranslationSection
+    ) -> None:
+        self._metadata = metadata
+        self._translation_data = translation_data
+
+    def string(self, id: str, *templates: tuple[str, Any]) -> str:
+        """
+        :param id: The ID of the translation string to look for. Iterations
+        into deeper sections can be achieved by separating the ID with periods.
+
+        **Example**: Providing the ID `common.hello_world` will return the
+        translation string with the ID `hello_world` found within the `common`
+        section.
+        :return: A translation string whose ID matches the structure of the
+        given id. If no string with the given ID was found, a warning will be
+        logged and said ID will be returned instead.
+        """
+        result, stack_trace = self._fetch(id)
+
+        if not isinstance(result, str) or result == id:
+            self._log_id_error(id, stack_trace)
+            return id
+
+        if templates:
+            for template in templates:
+                result = result.replace(template[0], str(template[1]))
+
+        return Translation.convert_formatting(result)
+
+    def string_list(self, id: str, *ids: str) -> list[str]:
+        """
+        :param id: The ID of the first translation string to look for.
+        Iterations into deeper sections can be achieved by separating the ID
+        with periods.
+
+        **Example**: Providing the ID `common.hello_world` will return the
+        translation string with the ID `hello_world` found within the `common`
+        section.
+        :param ids: Additional IDs of strings or translation sections that
+        should be fetched.
+        :return: A list of translation strings whose IDs matche the structures
+        of the given IDs. If an ID matches a translation section, all strings
+        within that section but no sub-section will be added to the list.
+        Therefore, the length of the returned list is always greater than or
+        equal to the amount of IDs provided.
+        """
+        return list(self.string_dict(id, *ids).values())
+
+    def string_dict(self, id: str, *ids: str) -> dict[str, str]:
+        """
+        :param id: The ID of the first translation string to look for.
+        Iterations into deeper sections can be achieved by separating the ID
+        with periods.
+
+        **Example**: Providing the ID `common.hello_world` will return the
+        translation string with the ID `hello_world` found within the `common`
+        section.
+        :param ids: Additional IDs of strings or translation sections that
+        should be fetched.
+        :return: A dict ({`id`: `string`}) where each string's ID matches the
+        structure of one of the given IDs. If an ID matches a translation
+        section, all strings within that section but no sub-section will be
+        added to the dict. Therefore, the length of the returned dict is always
+        greater than or equal to the amount of IDs provided.
+        """
+        result: dict[str, str] = {}
+        for sub_id in (id, *ids):
+            sub_result, stack_trace = self._fetch(sub_id)
+            if sub_result is None or len(stack_trace):
+                self._log_id_error(id, stack_trace)
+                continue
+
+            if isinstance(sub_result, str):
+                result[sub_id] = sub_result
+                continue
+
+            result |= {
+                key: value
+                for key, value in sub_result.items.items()
+                if isinstance(value, str)
+            }
+
+        return result
+
+    def path(self, key: str, gamedef: str | None = None) -> str | None:
+        """
+        Returns the path to the file indicated by key
+        """
+        if gamedef == self.string("game_patch.default_info.name"):  # 'New Super Mario Bros. Wii'
+            gamedef = None
+
+        try:
+            return self._metadata.files[gamedef][key]
+        except KeyError:
+            return None
+
+    def paths(
+        self, key: str, gamedef_names: list[str | None] | None = None
+    ) -> list[str | None]:
+        if gamedef_names is None:
+            return [self.path(key)]
+
+        return [self.path(key, name) for name in gamedef_names]
+
+    def _fetch(self, id: str) -> tuple["str | TranslationSection | None", list[str]]:
+        ids: list[str] = id.split(".")
+        result: str | TranslationSection | None = self._translation_data
+        stack_trace: list[str] = []
+        for index, sub_id in enumerate(ids):
+            if result is None:
+                stack_trace.append(
+                    f' - Could not find translation section for ID "{sub_id}"'
+                )
+                continue
+            result = result.items.get(sub_id)
+            if index == len(ids) - 1 and isinstance(result, str):
+                break
+            if not isinstance(result, TranslationSection):
+                result = None
+                stack_trace.append(
+                    f' - Could not find translation section for ID "{sub_id}"'
+                )
+
+        return (result, stack_trace)
+
+    def _log_id_error(self, id: str, stack_trace: list[str]) -> None:
+        message = (
+            "[Warning] - Could not find translation(s) for ID"
+            + f' "{id}"{("\n" + "\n".join(stack_trace)) if stack_trace else ""}'
+        )
+        print(message)
+
+        if not os.path.isfile(os.path.join(get_root_path(), "log.txt")):
+            mode = "w"
+        else:
+            mode = "a"
+
+        with open("log.txt", mode, encoding="utf-8") as f:
+            f.write(message)
+
+    def __or__(self, other: "Translation") -> "Translation":
+        self._metadata |= other._metadata
+        self._translation_data |= other._translation_data
+        return self
+
+    @staticmethod
+    def convert_formatting(text: str) -> str:
+        """
+        Performs automatic replacements on text strings.
+        Intended for XMLs where proper formatting can't be applied
+        """
+        replace = {
+            "[br]": "<br>",
+            "[b]": "<b>",
+            "[/b]": "</b>",
+            "[i]": "<i>",
+            "[/i]": "</i>",
+            "[a": "<a",
+            '"]': '">',  # Workaround
+            "[/a]": "</a>",
+            "\\n": "\n",
+            "//n": "\n",
+            "[tm]": "™",
+            "[small]": "<small>",
+            "[/small]": "</small>",
+        }
+
+        for old, new in replace.items():
+            text = text.replace(old, new)
+
+        return text
+
+    @classmethod
+    def init_as_english(cls) -> "Translation":
+        """
+        Initialises the English translation.
+        """
+        tree = ElementTree.parse(
+            os.path.join(get_reggiedata_folder(), "translations", "strings.xml")
+        )
+        return cls(TranslationMetadata.english(), cls._parse_tree(tree.getroot()))
+
+    @classmethod
+    def from_xml(cls, language: str) -> "Translation":
+        """
+        Loads the translation of the given language.
+        :param language: The language folder name to fetch the translation file
+        from.
+        """
+        metadata = cls.parse_main(language)
+        strings_path = os.path.join(
+            get_reggiedata_folder(), "translations", metadata.name, metadata.strings
+        )
+        if not os.path.isfile(strings_path):
+            print(f"[Warning] - Failed to load language {metadata}")
+            return cls.init_as_english()
+        tree = ElementTree.parse(strings_path)
+        return cls(metadata, cls._parse_tree(tree.getroot()))
+
+    @classmethod
+    def parse_main(cls, language: str) -> TranslationMetadata:
+        metadata = TranslationMetadata("", "", "")
+        if language in ("", None, "None"):
+            return metadata
+
+        language = str(language)
+
+        # Parse the file
+        path = os.path.join(
+            get_reggiedata_folder(), "translations", language, "main.xml"
+        )
+
+        try:
+            tree = ElementTree.parse(path)
+        except FileNotFoundError:
+            return metadata
+
+        root = tree.getroot()
+
+        # Add attributes
+        # Name
+        if "name" not in root.attrib:
+            return metadata
+        metadata.name = root.attrib["name"]
+        # Version
+        if "version" not in root.attrib:
+            return metadata
+        metadata.version = root.attrib["version"]
+        # Translator
+        if "translator" not in root.attrib:
+            return metadata
+        metadata.translator = root.attrib["translator"]
+
+        # Parse the nodes
+        metadata.strings = ""
+        base_path = os.path.join(get_reggiedata_folder(), "translations", language)
+        for node in root:
+            if node.tag.lower() == "file":
+                # It's a file node
+                language = node.attrib["name"]
+                path = os.path.join(base_path, node.attrib["path"])
+                metadata.files[None][language] = path
+            elif node.tag.lower() == "strings":
+                # It's a strings node
+                metadata.strings = os.path.join(base_path, node.attrib["path"])
+            elif node.tag.lower() == "for":
+                # Translation for other gamedefs
+                target = node.attrib["name"]
+                metadata.files[target] = {}
+                for child in node:
+                    if child.tag.lower() == "file":
+                        language = child.attrib["name"]
+                        metadata.files[target][language] = os.path.join(
+                            base_path, child.attrib["path"]
+                        )
+
+        return metadata
+
+    @staticmethod
+    def _parse_tree(element: ElementTree.Element) -> "TranslationSection":
+        result: dict[str, str | TranslationSection] = {}
+        for node in element:
+            if node.tag == "section":
+                result[node.attrib["id"]] = Translation._parse_tree(node)
+            elif node.tag == "string":
+                result[node.attrib["id"]] = node.text or node.attrib["id"]
+
+        return TranslationSection(result)

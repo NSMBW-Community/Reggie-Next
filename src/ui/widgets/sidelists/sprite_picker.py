@@ -43,11 +43,11 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
                         sdef = None
 
                     if sdef is None:
-                        name = 'UNKNOWN'
+                        name = globals_.trans.string('common.unknown_upper')
                     else:
                         name = sdef.name
 
-                    snode.setText(0, globals_.trans.string('Sprites', 18, '[id]', id_, '[name]', name))
+                    snode.setText(0, globals_.trans.string('palette.sprite.add.list_item', ('[id]', id_), ('[name]', name)))
 
     def LoadItems(self):
         """
@@ -63,14 +63,14 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
                 cnode.setText(0, view.name)
                 cnode.setData(0, QtCore.Qt.ItemDataRole.UserRole, -1)
 
-                isSearch = (view.name == globals_.trans.string('Sprites', 16))
+                isSearch = (view.name == globals_.trans.string('palette.sprite.add.search_results'))
                 if isSearch:
                     self.SearchResultsCategory = cnode
 
                 for id_ in view.sprite_ids:
                     snode = QtWidgets.QTreeWidgetItem()
                     if id_ == 9999:
-                        snode.setText(0, globals_.trans.string('Sprites', 17))
+                        snode.setText(0, globals_.trans.string('palette.sprite.add.no_sprites_found'))
                         snode.setData(0, QtCore.Qt.ItemDataRole.UserRole, -2)
                         self.NoSpritesFound = snode
                     else:
@@ -80,11 +80,11 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
                             sdef = None
 
                         if sdef is None:
-                            sname = "UNKNOWN"
+                            sname = globals_.trans.string('common.unknown_upper')
                         else:
                             sname = sdef.name
 
-                        snode.setText(0, globals_.trans.string('Sprites', 18, '[id]', id_, '[name]', sname))
+                        snode.setText(0, globals_.trans.string('palette.sprite.add.list_item', ('[id]', id_), ('[name]', sname)))
                         snode.setData(0, QtCore.Qt.ItemDataRole.UserRole, id_)
 
                     if isSearch:

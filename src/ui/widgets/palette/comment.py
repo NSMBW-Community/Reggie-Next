@@ -11,7 +11,7 @@ class CommentTab(QtWidgets.QWidget):
     """
     def __init__(self):
         super().__init__(None)
-        label = QtWidgets.QLabel(globals_.trans.string('Palette', 34))
+        label = QtWidgets.QLabel(globals_.trans.string('palette.comment.info'))
         label.setWordWrap(True)
 
         self.comment_list = ListWidgetWithToolTipSignal()

@@ -11,10 +11,10 @@ class PathTab(QtWidgets.QWidget):
     """
     def __init__(self):
         super().__init__(None)
-        label = QtWidgets.QLabel(globals_.trans.string('Palette', 9))
+        label = QtWidgets.QLabel(globals_.trans.string('palette.path.info'))
         label.setWordWrap(True)
 
-        deselect_button = QtWidgets.QPushButton(globals_.trans.string('Palette', 10))
+        deselect_button = QtWidgets.QPushButton(globals_.trans.string('palette.path.deselect_button'))
         deselect_button.clicked.connect(self.deselect_path)
 
         self.path_list = ListWidgetWithToolTipSignal()

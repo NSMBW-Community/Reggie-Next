@@ -14,20 +14,19 @@ class ScreenshotDialog(QtWidgets.QDialog):
         Creates and initializes the dialog
         """
         super().__init__()
-        self.setWindowTitle(globals_.trans.string('ScrShtDlg', 0))
+        self.setWindowTitle(globals_.trans.string('dialog.screenshot.title'))
         self.setWindowIcon(GetIcon('camera'))
 
         self.target_combo = QtWidgets.QComboBox()
-        self.target_combo.addItem(globals_.trans.string('ScrShtDlg', 1)) # Current Screen
-        self.target_combo.addItem(globals_.trans.string('ScrShtDlg', 2)) # All Zones
+        self.target_combo.addItems(globals_.trans.string_list('dialog.screenshot.targets'))
         self.target_combo.currentIndexChanged.connect(self.target_changed)
 
         # Individual zones
         for i in range(len(globals_.Area.zones)):
-            self.target_combo.addItem(globals_.trans.string('ScrShtDlg', 3, '[zone]', i + 1))
+            self.target_combo.addItem(globals_.trans.string('common.zone_num', ('[num]', i + 1)))
 
         self.grid_type = QtWidgets.QComboBox()
-        self.grid_type.addItems(globals_.trans.stringList('ScrShtDlg', 9))
+        self.grid_type.addItems(globals_.trans.string_list('dialog.screenshot.grid_types'))
 
         curr_grid = 0
         if globals_.GridType is not None:
@@ -52,22 +51,22 @@ class ScreenshotDialog(QtWidgets.QDialog):
         save_type_layout.addWidget(self.save_img)
         save_type_layout.addWidget(QtWidgets.QLabel('|'))
         save_type_layout.addWidget(self.save_clip)
-        save_type_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('ScrShtDlg', 7)))
+        save_type_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.screenshot.copy_image')))
 
-        self.margin_label = QtWidgets.QLabel(globals_.trans.string('ScrShtDlg', 10))
+        self.margin_label = QtWidgets.QLabel(globals_.trans.string('dialog.screenshot.zone_margins.text'))
 
         self.margin = QtWidgets.QSpinBox()
         self.margin.setRange(0, 16384)
         self.margin.setValue(40)
-        self.margin.setToolTip(globals_.trans.string('ScrShtDlg', 11))
+        self.margin.setToolTip(globals_.trans.string('dialog.screenshot.zone_margins.tooltip'))
 
         self.target_changed(0)
 
         main_layout = QtWidgets.QFormLayout()
-        main_layout.addRow(globals_.trans.string('ScrShtDlg', 4), self.target_combo)
-        main_layout.addRow(globals_.trans.string('ScrShtDlg', 8), self.grid_type)
-        main_layout.addRow(globals_.trans.string('ScrShtDlg', 5), self.hide_background)
-        main_layout.addRow(globals_.trans.string('ScrShtDlg', 6), save_type_layout)
+        main_layout.addRow(globals_.trans.string('dialog.screenshot.target_label'), self.target_combo)
+        main_layout.addRow(globals_.trans.string('dialog.screenshot.grid_label'), self.grid_type)
+        main_layout.addRow(globals_.trans.string('dialog.screenshot.hide_background'), self.hide_background)
+        main_layout.addRow(globals_.trans.string('dialog.screenshot.save_image'), save_type_layout)
         main_layout.addRow(self.margin_label, self.margin)
         main_layout.addRow(button_box)
         self.setLayout(main_layout)
@@ -97,9 +96,9 @@ class ScreenshotDialog(QtWidgets.QDialog):
 
         file_name = ''
         if save_to_file:
-            filt = f'{globals_.trans.string('FileDlgs', 4)} (*.png)'
+            filt = f'{globals_.trans.string('dialog.file_prompt.filter.png')} (*.png)'
 
-            file_name = QtWidgets.QFileDialog.getSaveFileName(self, globals_.trans.string('FileDlgs', 3), None, filt)[0]
+            file_name = QtWidgets.QFileDialog.getSaveFileName(self, globals_.trans.string('dialog.file_prompt.save_as'), None, filt)[0]
             if file_name == '':
                 return
 

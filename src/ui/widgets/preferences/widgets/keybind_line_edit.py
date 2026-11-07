@@ -18,7 +18,7 @@ class KeybindLineEdit(QtWidgets.QKeySequenceEdit):
         # Set placeholder text on the QLineEdit
         lineEdit = self.findChild(QtWidgets.QLineEdit, "qt_keysequenceedit_lineedit")
         if lineEdit is not None:
-            lineEdit.setPlaceholderText(globals_.trans.string('PrefsDlg', 60)) # No keybind set
+            lineEdit.setPlaceholderText(globals_.trans.string('widget.keybind_line_edit.no_keybind')) # No keybind set
 
     def keyPressEvent(self, a0: QtGui.QKeyEvent | None):
         """

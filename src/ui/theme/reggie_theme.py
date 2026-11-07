@@ -17,20 +17,22 @@ class ReggieTheme:
         """
         Initializes the theme
         """
-        self.initAsClassic()
-        if folder and folder != "Classic": self.initFromFolder(folder)
+        self.initAsDefault()
+        if folder and folder != "Default":
+            self.initFromFolder(folder)
 
-    def initAsClassic(self) -> None:
+    def initAsDefault(self) -> None:
         """
-        Initializes the theme as the hardcoded Classic theme
+        Initializes the theme as the hardcoded Default theme
         """
-        self.fileName: str = 'Classic'
+        self.folder_name: str = 'Default'
+        self.is_default = True
         self.styleSheet: str = ''
         self.formatver: float = 1.0
         self.version: float = 1.0
-        self.themeName: str | None = globals_.trans.string('Themes', 0)
-        self.creator: str | None = globals_.trans.string('Themes', 1)
-        self.description: str | None = globals_.trans.string('Themes', 2)
+        self.themeName: str = globals_.trans.string('theme.default_name')
+        self.creator: str = ''
+        self.description: str = ''
         self.icon_cache: dict[str, QtGui.QIcon] = {}
         self.style: str | None = None
         self.forceUiColor: bool = False
@@ -88,6 +90,9 @@ class ReggieTheme:
         """
         Initializes the theme from the folder
         """
+        self.is_default = False
+        self.folder_name = folder
+
         folder = os.path.join(get_reggiedata_folder(), 'themes', folder)
 
         try:
@@ -169,14 +174,10 @@ class ReggieTheme:
         if self.formatver > max_support_version:
             return False
 
-        if 'name' in root.attrib:
-            self.themeName = root.attrib['name']
-        else:
-            return False
-
         # Check for optional attributes
-        self.creator = root.get("creator", globals_.trans.string("Themes", 3))
-        self.description = root.get("description", globals_.trans.string("Themes", 4))
+        self.themeName = root.get('name', globals_.trans.string('theme.unknown_info.name', ('[folder]', self.folder_name)))
+        self.creator = root.get('creator', '')
+        self.description = root.get('description', '')
         self.style = root.get("style")
         self.forceUiColor = root.get("forceUiColor", "false") == "true"
         self.forceStyleSheet = root.get("forceStyleSheet", "false") == "true"

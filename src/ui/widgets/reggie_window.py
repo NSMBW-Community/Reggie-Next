@@ -315,7 +315,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         menubar = QtWidgets.QMenuBar()
         self.setMenuBar(menubar)
 
-        fmenu = menubar.addMenu(globals_.trans.string('Menubar', 0))
+        fmenu = menubar.addMenu(globals_.trans.string('menu_bar.file.name'))
         if fmenu is not None:
             fmenu.addAction(self.action_list['newlevel'])
             fmenu.addAction(self.action_list['openfromname'])
@@ -334,7 +334,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             fmenu.addSeparator()
             fmenu.addAction(self.action_list['exit'])
 
-        emenu = menubar.addMenu(globals_.trans.string('Menubar', 1))
+        emenu = menubar.addMenu(globals_.trans.string('menu_bar.edit.name'))
         if emenu is not None:
             emenu.addAction(self.action_list['selectall'])
             emenu.addAction(self.action_list['deselect'])
@@ -361,7 +361,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             emenu.addAction(self.action_list['freezepaths'])
             emenu.addAction(self.action_list['freezecomments'])
 
-        vmenu = menubar.addMenu(globals_.trans.string('Menubar', 2))
+        vmenu = menubar.addMenu(globals_.trans.string('menu_bar.view.name'))
         if vmenu is not None:
             vmenu.addAction(self.action_list['showlay0'])
             vmenu.addAction(self.action_list['showlay1'])
@@ -389,7 +389,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Several items are assigned to this later, so we need to keep track of it
         self.vmenu = vmenu
 
-        lmenu = menubar.addMenu(globals_.trans.string('Menubar', 3))
+        lmenu = menubar.addMenu(globals_.trans.string('menu_bar.settings.name'))
         if lmenu is not None:
             lmenu.addAction(self.action_list['areaoptions'])
             lmenu.addAction(self.action_list['camprofiles'])
@@ -403,7 +403,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             lmenu.addAction(self.action_list['reloadgfx'])
             lmenu.addAction(self.action_list['reloaddata'])
 
-        hmenu = menubar.addMenu(globals_.trans.string('Menubar', 4))
+        hmenu = menubar.addMenu(globals_.trans.string('menu_bar.help.name'))
         self.setup_help_menu(hmenu)
 
         # Create a toolbar
@@ -417,32 +417,32 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Creates the help menu
         """
         if menu is None:
-            menu = QtWidgets.QMenu(globals_.trans.string('Menubar', 4))
+            menu = QtWidgets.QMenu(globals_.trans.string('menu_bar.help'))
 
         menu.addAction(self.action_list['infobox'])
         menu.addAction(self.action_list['helpbox'])
         menu.addAction(self.action_list['tipbox'])
         menu.addSeparator()
-        menu.addAction(self.action_list['genstrxml'])
-        menu.addSeparator()
         menu.addAction(self.action_list['aboutqt'])
         menu.addSeparator()
 
         # Add version info actions
-        if lib_versions["nsmblib-updated"] is not None:
-            value = str(lib_versions["nsmblib-updated"])
-            version = int(value[:4]), int(value[4:6]), int(value[6:8]), int(value[8:10])
-            nsmblib_info_text = "Using NSMBLib Updated %d.%d.%d.%d" % version
+        using_id = 'menu_bar.help.item.module_info.using'
+
+        if lib_versions['nsmblib-updated'] is not None:
+            value = str(lib_versions['nsmblib-updated'])
+            version = f'{value[:4]}.{value[4:6]}.{value[6:8]}.{value[8:10]}'
+            nsmblib_info = globals_.trans.string(using_id, ('[module]', 'NSMBLib-Updated'), ('[version]', version))
         elif lib_versions["nsmblib"] is not None:
-            nsmblib_info_text = "Using NSMBLib %d" % lib_versions["nsmblib"]
+            nsmblib_info = globals_.trans.string(using_id, ('[module]', 'NSMBLib'), ('[version]', lib_versions['nsmblib']))
         else:
-            nsmblib_info_text = "Not using NSMBLib"
+            nsmblib_info = globals_.trans.string('menu_bar.help.item.module_info.not_using', ('[module]', 'NSMBLib'))
 
         info_labels = [
-            "Using Python %d.%d.%d" % sys.version_info[:3],
-            "Using PyQt %s" % QtCore.PYQT_VERSION_STR,
-            "Using Qt %s" % QtCore.QT_VERSION_STR,
-            nsmblib_info_text
+            globals_.trans.string(using_id, ('[module]', 'Python'), ('[version]', '.'.join(str(_) for _ in sys.version_info[:3]))),
+            globals_.trans.string(using_id, ('[module]', 'PyQt'), ('[version]', QtCore.PYQT_VERSION_STR)),
+            globals_.trans.string(using_id, ('[module]', 'Qt'), ('[version]', QtCore.QT_VERSION_STR)),
+            nsmblib_info
         ]
 
         for label in info_labels:
@@ -553,7 +553,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             toggled = new_toggled
 
         if not hasattr(self, 'toolbar'):
-            self.toolbar = self.addToolBar(globals_.trans.string('Menubar', 5))
+            self.toolbar = self.addToolBar(globals_.trans.string('menu_bar.editor_toolbar.name'))
         else:
             if self.toolbar is not None:
                 self.toolbar.clear()
@@ -593,7 +593,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                    QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable | \
                    QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable
 
-        overview_dock = self.create_dock_widget(globals_.trans.string('MenuItems', 94), 'leveloverview', self.level_overview,
+        overview_dock = self.create_dock_widget(globals_.trans.string('menu_bar.view.item.level_overview.name'), 'leveloverview', self.level_overview,
                                               features, Qt.DockWidgetArea.RightDockWidgetArea, None, True, False)
         self.level_overview_dock = overview_dock
 
@@ -603,33 +603,33 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Sprite Editor
         self.spriteDataEditor = SpriteEditorWidget()
-        sprite_dock = self.create_dock_widget(globals_.trans.string('SpriteDataEditor', 0), 'spriteeditor', self.spriteDataEditor,
+        sprite_dock = self.create_dock_widget(globals_.trans.string('dialog.sprite_data_editor.title'), 'spriteeditor', self.spriteDataEditor,
                                             features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True, is_editor=True)
         self.spriteEditorDock = cast(ItemEditorDockWidget, sprite_dock)
 
         # Default Sprite Editor
         self.defaultDataEditor = SpriteEditorWidget(True)
         self.defaultDataEditor.setVisible(False)
-        def_sprite_dock = self.create_dock_widget(globals_.trans.string('Palette', 7), 'defaultprops', self.defaultDataEditor,
+        def_sprite_dock = self.create_dock_widget(globals_.trans.string('dialog.sprite_data_editor.default_title'), 'defaultprops', self.defaultDataEditor,
                                                 features | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable,
                                                 Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True)
         self.defaultPropDock = def_sprite_dock
 
         # Entrance Editor
         self.entrance_editor = EntranceEditorWidget()
-        entrance_dock = self.create_dock_widget(globals_.trans.string('EntranceDataEditor', 24), 'entranceeditor', self.entrance_editor,
+        entrance_dock = self.create_dock_widget(globals_.trans.string('dialog.entrance_data_editor.title'), 'entranceeditor', self.entrance_editor,
                                               features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True, is_editor=True)
         self.entrance_editor_dock = cast(ItemEditorDockWidget, entrance_dock)
 
         # Location Editor
         self.location_editor = LocationEditorWidget()
-        location_dock = self.create_dock_widget(globals_.trans.string('LocationDataEditor', 12), 'locationeditor', self.location_editor,
+        location_dock = self.create_dock_widget(globals_.trans.string('dialog.location_data_editor.title'), 'locationeditor', self.location_editor,
                                               features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True, is_editor=True)
         self.location_editor_dock = cast(ItemEditorDockWidget, location_dock)
 
         # Path (Node) Editor
         self.path_editor = PathNodeEditorWidget()
-        path_dock = self.create_dock_widget(globals_.trans.string('PathDataEditor', 10), 'pathnodeeditor', self.path_editor,
+        path_dock = self.create_dock_widget(globals_.trans.string('dialog.path_data_editor.title'), 'pathnodeeditor', self.path_editor,
                                             features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True, is_editor=True)
         self.path_editor_dock = cast(ItemEditorDockWidget, path_dock)
 
@@ -638,7 +638,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                    QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable | \
                    QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable
 
-        palette_dock = self.create_dock_widget(globals_.trans.string('MenuItems', 96), 'palette', None, features,
+        palette_dock = self.create_dock_widget(globals_.trans.string('menu_bar.view.item.palette.name'), 'palette', None, features,
                                              Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, True, False, True)
         self.palette_dock = cast(PaletteDock, palette_dock)
 
@@ -651,7 +651,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if act is not None:
             act.setShortcut(GetKeybind('palette'))
             act.setIcon(GetIcon('palette'))
-            act.setStatusTip(globals_.trans.string('MenuItems', 97))
+            act.setStatusTip(globals_.trans.string('menu_bar.view.item.palette.tooltip'))
             if self.vmenu is not None:
                 self.vmenu.addAction(act)
 
@@ -662,7 +662,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if act is not None:
             act.setShortcut(GetKeybind('leveloverview'))
             act.setIcon(GetIcon('globe-model'))
-            act.setStatusTip(globals_.trans.string('MenuItems', 95))
+            act.setStatusTip(globals_.trans.string('menu_bar.view.item.level_overview.tooltip'))
             if self.vmenu is not None:
                 self.vmenu.addAction(act)
 
@@ -715,7 +715,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         dirty_text = ''
         if globals_.Dirty:
-            dirty_text = f' {globals_.trans.string('WindowTitle', 1)}' # '[unsaved]'
+            dirty_text = f' {globals_.trans.string('common.unsaved_bracket')}' # '[unsaved]'
 
         # ' - Reggie Next' is added automatically by Qt (see QApplication.setApplicationDisplayName())
         self.setWindowTitle(f'{self.fileTitle}{dirty_text}')
@@ -860,7 +860,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Adds a new area to the level
         """
         if len(globals_.Level.areas) >= 4:
-            QtWidgets.QMessageBox.warning(self, globals_.trans.string('MenuItems', 78), globals_.trans.string('AreaImportDlg', 2))
+            QtWidgets.QMessageBox.warning(self, globals_.trans.string('menu_bar.settings.item.add_area.title'), globals_.trans.string('common.max_area'))
             return
 
         # This is an unsaved new level if self.fileSavePath is None
@@ -878,7 +878,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Imports an area from another level
         """
         if len(globals_.Level.areas) >= 4:
-            QtWidgets.QMessageBox.warning(self, globals_.trans.string('AreaImportDlg', 0), globals_.trans.string('AreaImportDlg', 2))
+            QtWidgets.QMessageBox.warning(self, globals_.trans.string('dialog.import_area.title'), globals_.trans.string('common.max_area'))
             return
 
         if CheckDirty():
@@ -907,7 +907,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         while True:
             stage_path = QtWidgets.QFileDialog.getExistingDirectory(
                 None,
-                globals_.trans.string('ChangeGamePath', 0, '[game]', globals_.gamedef.name)
+                globals_.trans.string('dialog.file_prompt.choose_stage_folder', ('[game]', globals_.gamedef.name))
             )
 
             if stage_path == '':
@@ -919,7 +919,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             while not os.path.isdir(texture_path):
                 texture_path = QtWidgets.QFileDialog.getExistingDirectory(
                     None,
-                    globals_.trans.string('ChangeGamePath', 4, '[game]', globals_.gamedef.name)
+                    globals_.trans.string('dialog.file_prompt.choose_texture_folder', ('[game]', globals_.gamedef.name))
                 )
 
                 if texture_path == "":
@@ -927,8 +927,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             if (not areValidGamePaths(stage_path, texture_path)) and (not globals_.gamedef.custom):  # custom gamedefs can use incomplete folders
                 QtWidgets.QMessageBox.information(
-                    None, globals_.trans.string('ChangeGamePath', 1),
-                    globals_.trans.string('ChangeGamePath', 2)
+                    None, globals_.trans.string('error.title.error'),
+                    globals_.trans.string('error.missing_game_files.retail')
                 )
             else:
                 SetGamePaths(stage_path, texture_path)
@@ -986,13 +986,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
             open_dir = ''
 
         filter = (
-            f'{globals_.trans.string('FileDlgs', 9)} (*.arc *.arc.LH *.arc.LZ);;'
-            f'{globals_.trans.string('FileDlgs', 1)} (*.arc);;'
-            f'{globals_.trans.string('FileDlgs', 5)} (*.arc.LH);;'
-            f'{globals_.trans.string('FileDlgs', 10)} (*.arc.LZ);;'
-            f'{globals_.trans.string('FileDlgs', 2)} (*)'
+            f'{globals_.trans.string('dialog.file_prompt.filter.arc_all')} (*.arc *.arc.LH *.arc.LZ);;'
+            f'{globals_.trans.string('dialog.file_prompt.filter.arc')} (*.arc);;'
+            f'{globals_.trans.string('dialog.file_prompt.filter.arc_lh')} (*.arc.LH);;'
+            f'{globals_.trans.string('dialog.file_prompt.filter.arc_lz')} (*.arc.LZ);;'
+            f'{globals_.trans.string('dialog.file_prompt.filter.all')} (*)'
         )
-        fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('FileDlgs', 0), open_dir, filter)[0]
+        fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('dialog.file_prompt.open_archive'), open_dir, filter)[0]
         if fn == '':
             return
 
@@ -1011,8 +1011,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if compressed is None:
                 # Error during compression
                 QtWidgets.QMessageBox.warning(None,
-                    globals_.trans.string('Err_Save', 0),
-                    globals_.trans.string('Err_Save', 3, '[file-size]', len(data))
+                    globals_.trans.string('error.title.error'),
+                    globals_.trans.string('error.save.compression', ('[file-size]', len(data)))
                 )
 
                 return None
@@ -1028,8 +1028,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             if pad_length < 0:
                 # Original data is longer than padding data
-                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Save', 0),
-                                                globals_.trans.string('Err_Save', 2, '[orig-len]', len(data), '[pad-len]', globals_.PaddingLength))
+                QtWidgets.QMessageBox.warning(None, globals_.trans.string('error.title.error'),
+                                                globals_.trans.string('error.save.fixed_size_exceeded', ('[orig-len]', len(data)), ('[pad-len]', globals_.PaddingLength)))
                 return None
 
             data += bytes(pad_length)
@@ -1052,8 +1052,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
             with open(self.fileSavePath, 'wb') as f:
                 f.write(data)
         except IOError as e:
-            QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Save', 0),
-                                            globals_.trans.string('Err_Save', 1, '[err1]', e.args[0], '[err2]', e.args[1]))
+            QtWidgets.QMessageBox.warning(None, globals_.trans.string('error.title.error'),
+                                            globals_.trans.string('error.save.file_name', ('[err1]', e.args[0]), ('[err2]', e.args[1])))
             return False
 
         globals_.Dirty = False
@@ -1069,7 +1069,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Save a level back to the archive, with a new filename. Returns whether
         saving was successful.
         """
-        caption = globals_.trans.string('FileDlgs', 8 if is_copy else 3)
+        caption = globals_.trans.string(f'dialog.file_prompt.save_{'copy' if is_copy else 'as'}')
 
         # Use the currently open level's directory, if applicable
         if self.fileSavePath is not None:
@@ -1078,9 +1078,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
             save_dir = ''
 
         filter = (
-            f'{globals_.trans.string('FileDlgs', 1)} (*.arc);;'
-            f'{globals_.trans.string('FileDlgs', 10)} (*.arc.LZ);;'
-            f'{globals_.trans.string('FileDlgs', 2)} (*)'
+            f'{globals_.trans.string('dialog.file_prompt.filter.arc')} (*.arc);;'
+            f'{globals_.trans.string('dialog.file_prompt.filter.arc_lz')} (*.arc.LZ);;'
+            f'{globals_.trans.string('dialog.file_prompt.filter.all')} (*)'
         )
 
         fn = QtWidgets.QFileDialog.getSaveFileName(self, caption, save_dir, filter)[0]
@@ -1258,13 +1258,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     break
             else:
                 base_name = f'{os.path.splitext(check_names[0])[0]}.arc'
-                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_CantFindLevel', 1),
-                                              globals_.trans.string('Err_CantFindLevel', 0, '[name]', base_name),
+                QtWidgets.QMessageBox.warning(None, globals_.trans.string('error.title.error'),
+                                              globals_.trans.string('error.file_not_found.level', ('[name]', base_name)),
                                               QtWidgets.QMessageBox.StandardButton.Ok)
                 return False
 
             if not IsValidLevel(check_name):
-                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_InvalidLevel', 1), globals_.trans.string('Err_InvalidLevel', 0),
+                QtWidgets.QMessageBox.warning(None, globals_.trans.string('error.invalid_level.description'), globals_.trans.string('error.title.error'),
                                               QtWidgets.QMessageBox.StandardButton.Ok)
                 return False
 
@@ -1275,7 +1275,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if new:
             # Set the filepath variables
             self.fileSavePath = None
-            self.fileTitle = str(globals_.trans.string('WindowTitle', 0))
+            self.fileTitle = str(globals_.trans.string('common.untitled'))
 
         elif not same:
             # Get the data
@@ -1302,7 +1302,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 # Auto-saved level. Check if there's a path associated with it:
                 if globals_.AutoSavePath == 'None':
                     self.fileSavePath = None
-                    self.fileTitle = globals_.trans.string('WindowTitle', 0)
+                    self.fileTitle = globals_.trans.string('common.untitled')
                 else:
                     self.fileSavePath = globals_.AutoSavePath
                     if globals_.UseFullFilepath:
@@ -1376,7 +1376,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.area_combo_box.clear()
 
         for area in globals_.Level.areas:
-            self.area_combo_box.addItem(globals_.trans.string('AreaCombobox', 0, '[num]', area.areanum))
+            self.area_combo_box.addItem(globals_.trans.string('common.area_num', ('[num]', area.areanum)))
 
         self.area_combo_box.setCurrentIndex(area_num - 1)
 
@@ -1483,11 +1483,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 sprite_ids = sorted(globals_.Area.unknown_sprite_ids)
 
                 if len(sprite_ids) == 1:
-                    msg = globals_.trans.string('Err_UnknownSprite', 1, '[id]', str(sprite_ids[0]))
+                    msg = globals_.trans.string('error.unknown_sprite.single', ('[id]', str(sprite_ids[0])))
                 else:
-                    msg = globals_.trans.string('Err_UnknownSprite', 2, '[ids]', ', '.join(map(str, sprite_ids)))
+                    msg = globals_.trans.string('error.unknown_sprite.multiple', ('[ids]', ', '.join(map(str, sprite_ids))))
 
-                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_UnknownSprite', 0), msg)
+                QtWidgets.QMessageBox.warning(None, globals_.trans.string('error.title.error'), msg)
 
         globals_.Area.reset()
 

@@ -143,7 +143,8 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         # be enough. Also, the game doesn't allow path ids greater
                         # than 255 anyway, so just don't let the user create the
                         # path.
-                        result = QtWidgets.QMessageBox.warning(self, globals_.trans.string('MainWindow', 6), globals_.trans.string('MainWindow', 7),
+                        result = QtWidgets.QMessageBox.warning(self, globals_.trans.string('levelitem.path.limit_warning.title'),
+                                                               globals_.trans.string('levelitem.path.limit_warning.text'),
                                                                QtWidgets.QMessageBox.StandardButton.Ok)
                         if result == QtWidgets.QMessageBox.StandardButton.Ok:
                             return
@@ -606,29 +607,29 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
         if hovered is not None:
             if isinstance(hovered, ObjectItem):  # Object
-                info = globals_.trans.string('Statusbar', 23, '[width]', hovered.width, '[height]', hovered.height, '[xpos]',
-                                    hovered.objx, '[ypos]', hovered.objy, '[layer]', hovered.layer, '[type]',
-                                    hovered.object_num, '[tileset]', hovered.tileset + 1)
+                info = globals_.trans.string('widget.status_bar.under_mouse.object', ('[width]', hovered.width), ('[height]', hovered.height), ('[xpos]',
+                                    hovered.objx), ('[ypos]', hovered.objy), ('[layer]', hovered.layer), ('[type]',
+                                        hovered.object_num), ('[tileset]', hovered.tileset + 1))
             elif isinstance(hovered, SpriteItem):  # Sprite
-                info = globals_.trans.string('Statusbar', 24, '[name]', hovered.name, '[xpos]', hovered.objx, '[ypos]',
-                                    hovered.objy)
+                info = globals_.trans.string('widget.status_bar.under_mouse.sprite', ('[name]', hovered.name), ('[xpos]', hovered.objx), ('[ypos]',
+                                    hovered.objy))
             elif isinstance(hovered, spritelib.AuxiliaryItem):  # Sprite (auxiliary thing) (treat it like the actual sprite)
                 parent = cast(SpriteItem, hovered.parentItem())
-                info = globals_.trans.string('Statusbar', 24, '[name]', parent.name, '[xpos]', parent.objx, '[ypos]', parent.objy)
+                info = globals_.trans.string('widget.status_bar.under_mouse.sprite', ('[name]', parent.name), ('[xpos]', parent.objx), ('[ypos]', parent.objy))
             elif isinstance(hovered, EntranceItem):  # Entrance
-                info = globals_.trans.string('Statusbar', 25, '[name]', hovered.name, '[xpos]', hovered.objx, '[ypos]',
-                                    hovered.objy, '[dest]', hovered.destination)
+                info = globals_.trans.string('widget.status_bar.under_mouse.entrance', ('[name]', hovered.name), ('[xpos]', hovered.objx), ('[ypos]',
+                                    hovered.objy), ('[dest]', hovered.destination))
             elif isinstance(hovered, LocationItem):  # Location
-                info = globals_.trans.string('Statusbar', 26, '[id]', int(hovered.id), '[xpos]', int(hovered.objx), '[ypos]',
-                                    int(hovered.objy), '[width]', int(hovered.width), '[height]', int(hovered.height))
+                info = globals_.trans.string('widget.status_bar.under_mouse.location', ('[id]', int(hovered.id)), ('[xpos]', int(hovered.objx)), ('[ypos]',
+                                    int(hovered.objy)), ('[width]', int(hovered.width)), ('[height]', int(hovered.height)))
             elif isinstance(hovered, PathItem):  # Path
-                info = globals_.trans.string('Statusbar', 27, '[path]', hovered.pathid, '[node]', hovered.nodeid, '[xpos]',
-                                    hovered.objx, '[ypos]', hovered.objy)
+                info = globals_.trans.string('widget.status_bar.under_mouse.path_node', ('[path]', hovered.pathid), ('[node]', hovered.nodeid), ('[xpos]',
+                                    hovered.objx), ('[ypos]', hovered.objy))
             elif isinstance(hovered, CommentItem):  # Comment
-                info = globals_.trans.string('Statusbar', 33, '[xpos]', hovered.objx, '[ypos]', hovered.objy, '[text]',
-                                    hovered.OneLineText())
+                info = globals_.trans.string('widget.status_bar.under_mouse.comment', ('[xpos]', hovered.objx), ('[ypos]', hovered.objy), ('[text]',
+                                    hovered.OneLineText()))
 
         globals_.mainWindow.posLabel.setText(
-            globals_.trans.string('Statusbar', 28, '[objx]', int(x / 24), '[objy]', int(y / 24), '[sprx]', int(x / 1.5),
-                            '[spry]', int(y / 1.5)))
+            globals_.trans.string('widget.status_bar.cursor_pos', ('[objx]', int(x / 24)), ('[objy]', int(y / 24)), ('[sprx]', int(x / 1.5)),
+                            ('[spry]', int(y / 1.5))))
         globals_.mainWindow.hoverLabel.setText(info)

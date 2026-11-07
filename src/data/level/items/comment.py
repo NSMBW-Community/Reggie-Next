@@ -144,14 +144,14 @@ class CommentItem(LevelEditorItem):
         """
         For compatibility, just in case
         """
-        self.setToolTip(globals_.trans.string('Comments', 1, '[x]', self.objx, '[y]', self.objy))
+        self.setToolTip(globals_.trans.string('levelitem.comment.tooltip',('[x]', self.objx), ('[y]', self.objy)))
 
     def ListString(self) -> str | None:
         """
         Returns a string that can be used to describe the comment in a list
         """
         t = self.OneLineText()
-        return globals_.trans.string('Comments', 0, '[x]', self.objx, '[y]', self.objy, '[text]', t)
+        return globals_.trans.string('levelitem.comment.palette_info', ('[x]', self.objx), ('[y]', self.objy), ('[text]', t))
 
     def OneLineText(self) -> str | None:
         """
@@ -159,7 +159,7 @@ class CommentItem(LevelEditorItem):
         """
         t = str(self.text)
         if not t.strip():
-            t = globals_.trans.string('Comments', 3)
+            t = globals_.trans.string('common.empty_paren')
 
         if t is None:
             return ''
@@ -167,7 +167,7 @@ class CommentItem(LevelEditorItem):
         while '\n\n' in t:
             t = t.replace('\n\n', '\n')
 
-        new = globals_.trans.string('Comments', 2)
+        new = globals_.trans.string('common.em_dash')
         if new is not None:
             t = t.replace('\n', new)
 
@@ -177,7 +177,7 @@ class CommentItem(LevelEditorItem):
 
         t2 = clipStr(t, 128, f)
         if t2 is not None:
-            t = t2 + '...'
+            t = t2 + globals_.trans.string('common.ellipses')
 
         return t
 

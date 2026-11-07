@@ -11,7 +11,7 @@ class EntranceTab(QtWidgets.QWidget):
     """
     def __init__(self):
         super().__init__(None)
-        label = QtWidgets.QLabel(globals_.trans.string('Palette', 8))
+        label = QtWidgets.QLabel(globals_.trans.string('palette.entrance.info'))
         label.setWordWrap(True)
 
         self.entrance_list = ListWidgetWithToolTipSignal()

@@ -302,56 +302,56 @@ class LevelScene(QtWidgets.QGraphicsScene):
             singleitem = len(selitems) == 1
             if singleitem:
                 if obj:
-                    text = globals_.trans.string('Statusbar', 0)  # 1 object selected
+                    text = globals_.trans.string('widget.status_bar.selected_singular.object')  # 1 object selected
                 elif spr:
-                    text = globals_.trans.string('Statusbar', 1)  # 1 sprite selected
+                    text = globals_.trans.string('widget.status_bar.selected_singular.sprite')  # 1 sprite selected
                 elif ent:
-                    text = globals_.trans.string('Statusbar', 2)  # 1 entrance selected
+                    text = globals_.trans.string('widget.status_bar.selected_singular.entrance')  # 1 entrance selected
                 elif loc:
-                    text = globals_.trans.string('Statusbar', 3)  # 1 location selected
+                    text = globals_.trans.string('widget.status_bar.selected_singular.location')  # 1 location selected
                 elif path:
-                    text = globals_.trans.string('Statusbar', 4)  # 1 path node selected
+                    text = globals_.trans.string('widget.status_bar.selected_singular.path_node')  # 1 path node selected
                 else:
-                    text = globals_.trans.string('Statusbar', 29)  # 1 comment selected
+                    text = globals_.trans.string('widget.status_bar.selected_singular.comment')  # 1 comment selected
 
             # Multiple things selected; see if they're all the same type
             else:
                 if not any((spr, ent, loc, path, com)):
-                    text = globals_.trans.string('Statusbar', 5, '[x]', obj)  # X objects selected
+                    text = globals_.trans.string('widget.status_bar.selected_plural.object', ('[x]', obj))  # X objects selected
                 elif not any((obj, ent, loc, path, com)):
-                    text = globals_.trans.string('Statusbar', 6, '[x]', spr)  # X sprites selected
+                    text = globals_.trans.string('widget.status_bar.selected_plural.sprite', ('[x]', spr))  # X sprites selected
                 elif not any((obj, spr, loc, path, com)):
-                    text = globals_.trans.string('Statusbar', 7, '[x]', ent)  # X entrances selected
+                    text = globals_.trans.string('widget.status_bar.selected_plural.entrance', ('[x]', ent))  # X entrances selected
                 elif not any((obj, spr, ent, path, com)):
-                    text = globals_.trans.string('Statusbar', 8, '[x]', loc)  # X locations selected
+                    text = globals_.trans.string('widget.status_bar.selected_plural.location', ('[x]', loc))  # X locations selected
                 elif not any((obj, spr, ent, loc, com)):
-                    text = globals_.trans.string('Statusbar', 9, '[x]', path) # X path nodes selected
+                    text = globals_.trans.string('widget.status_bar.selected_plural.path_node', ('[x]', path)) # X path nodes selected
                 elif not any((obj, spr, ent, path, loc)):
-                    text = globals_.trans.string('Statusbar', 30, '[x]', com) # X comments selected
+                    text = globals_.trans.string('widget.status_bar.selected_plural.comment', ('[x]', com)) # X comments selected
                 else:  # Different types
-                    text = globals_.trans.string('Statusbar', 10, '[x]', len(selitems)) # X items selected
+                    text = globals_.trans.string('widget.status_bar.selected_plural.item', ('[x]', len(selitems))) # X items selected
                     text = cast(str, text)
 
                     # Count, single ID, multi ID
                     types = (
-                        (obj, 12, 13),
-                        (spr, 14, 15),
-                        (ent, 16, 17),
-                        (loc, 18, 19),
-                        (path, 20, 21),
-                        (com, 31, 32),
+                        (obj, 'object'),
+                        (spr, 'sprite'),
+                        (ent, 'entrance'),
+                        (loc, 'location'),
+                        (path, 'path_node'),
+                        (com, 'comment'),
                     )
 
                     first = True
-                    for count, single_code, multi_code in types:
+                    for count, name in types:
                         if count > 0:
                             if not first:
-                                text += str(globals_.trans.string('Statusbar', 11))
+                                text += str(globals_.trans.string('common.list_comma'))
 
                             first = False
-                            text += str(globals_.trans.string('Statusbar', (single_code if count == 1 else multi_code), '[x]', count))
+                            text += str(globals_.trans.string(f'widget.status_bar.count_{"singular" if count == 1 else "plural"}.{name}', ('[x]', count)))
 
-                    text += str(globals_.trans.string('Statusbar', 22))  # ')'
+                    text += str(globals_.trans.string('common.paren_close'))  # ')'
 
         main_window.selectionLabel.setText(text)
         main_window.CurrentSelection = selitems

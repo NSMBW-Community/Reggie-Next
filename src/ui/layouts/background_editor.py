@@ -33,8 +33,8 @@ class BackgroundEditorLayout(QtWidgets.QHBoxLayout):
         """
         Creates the background settings
         """
-        str_id = 4 if self.is_bgb else 3
-        self.settings_box = QtWidgets.QGroupBox(globals_.trans.string('BGDlg', str_id))
+        key = 'backdrop' if self.is_bgb else 'scenery'
+        self.settings_box = QtWidgets.QGroupBox(globals_.trans.string(f'layout.background.{key}'))
 
         zone = self.zone
 
@@ -72,14 +72,14 @@ class BackgroundEditorLayout(QtWidgets.QHBoxLayout):
             # Fill in the BG list
             for file in bg_files:
                 file_id = int(file.bg_id, 16)
-                name_box.addItem(globals_.trans.string('BGDlg', 17, '[name]', file.name, '[hex]', f'{file_id:04X}'), file_id)
+                name_box.addItem(globals_.trans.string('layout.background.combobox_item', ('[name]', file.name), ('[hex]', f'{file_id:04X}')), file_id)
 
             # Find the correct one to select
             idx = name_box.findData(value)
             if idx != -1: # Defined BG entry
                 name_box.setCurrentIndex(idx)
             else: # Undefined BG entry
-                custom_text = globals_.trans.string('BGDlg', 18)
+                custom_text = globals_.trans.string('layout.background.custom')
                 last_entry = name_box.itemText(name_box.count() - 1)
 
                 if last_entry != custom_text:
@@ -92,19 +92,21 @@ class BackgroundEditorLayout(QtWidgets.QHBoxLayout):
         # Position offset
         for i in range(2):
             pos_box = QtWidgets.QSpinBox()
-            pos_box.setToolTip(globals_.trans.string('BGDlg', [7, 9][i]))
+            pos_box.setToolTip(globals_.trans.string(f'layout.background.position.tooltip_{['x', 'y'][i]}'))
             pos_box.setRange(-256, 255)
             pos_box.setValue(bg_pos_offs[i])
             self.pos_boxes.append(pos_box)
 
         # The list of background scroll rate names
-        scroll_names = globals_.trans.stringList('BGDlg', 1)
+        scroll_names = globals_.trans.string_list('layout.background.scroll_rates')
+        scroll_names.insert(0, globals_.trans.string('common.none'))
+        scroll_names.insert(9, globals_.trans.string('common.none'))
 
         # Scroll speed
         for i, value in enumerate(bg_scroll_speeds):
             scroll_box = QtWidgets.QComboBox()
             scroll_box.addItems(scroll_names)
-            scroll_box.setToolTip(globals_.trans.string('BGDlg', [11, 12][i]))
+            scroll_box.setToolTip(globals_.trans.string(f'layout.background.scroll_rate.tooltip_{['x', 'y'][i]}'))
 
             if scroll_names is not None:
                 value = clamp(value, 0, len(scroll_names) - 1)
@@ -116,26 +118,26 @@ class BackgroundEditorLayout(QtWidgets.QHBoxLayout):
 
         # Zoom
         self.zoom_box = QtWidgets.QComboBox()
-        self.zoom_box.addItems(globals_.trans.stringList('BGDlg', 15))
-        self.zoom_box.setToolTip(globals_.trans.string('BGDlg', 14))
+        self.zoom_box.addItems(globals_.trans.string_list('layout.background.zoom.zoom_levels'))
+        self.zoom_box.setToolTip(globals_.trans.string('layout.background.zoom.tooltip'))
         self.zoom_box.setCurrentIndex(bg_zoom)
 
         # Labels
-        bg_label = QtWidgets.QLabel(globals_.trans.string('BGDlg', 19))
-        position_label = QtWidgets.QLabel(globals_.trans.string('BGDlg', 5))
-        scroll_label = QtWidgets.QLabel(globals_.trans.string('BGDlg', 10))
+        bg_label = QtWidgets.QLabel(globals_.trans.string('layout.background.background_types'))
+        position_label = QtWidgets.QLabel(globals_.trans.string('layout.background.position.title'))
+        scroll_label = QtWidgets.QLabel(globals_.trans.string('layout.background.scroll_rate.title'))
 
         # Layouts
         pos_lyt = QtWidgets.QFormLayout()
-        pos_lyt.addRow(globals_.trans.string('BGDlg', 6), self.pos_boxes[0])
-        pos_lyt.addRow(globals_.trans.string('BGDlg', 8), self.pos_boxes[1])
+        pos_lyt.addRow(globals_.trans.string('common.x_colon'), self.pos_boxes[0])
+        pos_lyt.addRow(globals_.trans.string('common.y_colon'), self.pos_boxes[1])
 
         scroll_lyt = QtWidgets.QFormLayout()
-        scroll_lyt.addRow(globals_.trans.string('BGDlg', 6), self.scroll_boxes[0])
-        scroll_lyt.addRow(globals_.trans.string('BGDlg', 8), self.scroll_boxes[1])
+        scroll_lyt.addRow(globals_.trans.string('common.x_colon'), self.scroll_boxes[0])
+        scroll_lyt.addRow(globals_.trans.string('common.y_colon'), self.scroll_boxes[1])
 
         zoom_lyt = QtWidgets.QFormLayout()
-        zoom_lyt.addRow(globals_.trans.string('BGDlg', 13), self.zoom_box)
+        zoom_lyt.addRow(globals_.trans.string('layout.background.zoom.title'), self.zoom_box)
 
         main_layout = QtWidgets.QGridLayout()
         main_layout.addWidget(bg_label, 0, 0, 1, 2)
@@ -156,7 +158,7 @@ class BackgroundEditorLayout(QtWidgets.QHBoxLayout):
         """
         Creates the background preview
         """
-        self.preview_box = QtWidgets.QGroupBox(globals_.trans.string('BGDlg', 16)) # 'Preview'
+        self.preview_box = QtWidgets.QGroupBox(globals_.trans.string('layout.background.preview')) # 'Preview'
 
         self.preview_label = (QtWidgets.QLabel(), QtWidgets.QLabel(), QtWidgets.QLabel())
         self.align_type = QtWidgets.QLabel()
@@ -164,7 +166,7 @@ class BackgroundEditorLayout(QtWidgets.QHBoxLayout):
 
         main_layout = QtWidgets.QGridLayout()
         for i, preview in enumerate(self.preview_label):
-            slot_label = globals_.trans.string('BGDlg', 22, '[i]', i + 1)
+            slot_label = globals_.trans.string('layout.background.slot', ('[i]', i + 1))
             main_layout.addWidget(QtWidgets.QLabel(slot_label), 0, i)
             main_layout.addWidget(preview, 1, i)
         main_layout.addWidget(self.align_type, 2, 0, 1, 3)
@@ -179,7 +181,7 @@ class BackgroundEditorLayout(QtWidgets.QHBoxLayout):
         """
         for i in range(3):
             name_box = self.name_boxes[i]
-            custom_str = globals_.trans.string('BGDlg', 18)
+            custom_str = globals_.trans.string('layout.background.custom')
             val = self.hex_boxes[i].value()
             idx = name_box.findData(val)
 
@@ -240,17 +242,17 @@ class BackgroundEditorLayout(QtWidgets.QHBoxLayout):
         box3 = self.hex_boxes[2].value()
         align_mode = self.get_alignment_mode(box1, box2, box3)
 
-        align_list = globals_.trans.stringList('BGDlg', 21)
+        align_list = globals_.trans.string_list('layout.background.alignment.alignment_modes')
         if align_list is not None:
-            self.align_type.setText(globals_.trans.string('BGDlg', 20, '[mode]', align_list[align_mode]))
+            self.align_type.setText(globals_.trans.string('layout.background.alignment.info', ('[mode]', align_list[align_mode])))
 
         # Show a message if needed
         if align_mode == 0: # No BGs
             self.align_note.setStyleSheet('color: orange;')
-            self.align_note.setText(globals_.trans.string('BGDlg', 23))
+            self.align_note.setText(globals_.trans.string('layout.background.alignment.warning_no_render'))
         elif align_mode in (3, 4): # Crashes
             self.align_note.setStyleSheet('color: red;')
-            self.align_note.setText(globals_.trans.string('BGDlg', 24))
+            self.align_note.setText(globals_.trans.string('layout.background.alignment.warning_crash'))
         else:
             self.align_note.setText('')
 

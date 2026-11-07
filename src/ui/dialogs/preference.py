@@ -21,7 +21,7 @@ class PreferencesDialog(QtWidgets.QDialog):
         Creates and initializes the dialog
         """
         QtWidgets.QDialog.__init__(self)
-        self.setWindowTitle(globals_.trans.string('PrefsDlg', 0))
+        self.setWindowTitle(globals_.trans.string('dialog.preferences.title'))
         self.setWindowIcon(GetIcon('gear'))
 
         # Create the tab widget
@@ -29,15 +29,15 @@ class PreferencesDialog(QtWidgets.QDialog):
         self.tab_widget.currentChanged.connect(self.tab_changed)
 
         self.info_label = QtWidgets.QLabel()
-        self.general_tab = GeneralTab(globals_.trans.string('PrefsDlg', 4))
-        self.toolbar_tab = ToolbarTab(globals_.trans.string('PrefsDlg', 5))
-        self.keybind_tab = KeybindTab(globals_.trans.string('PrefsDlg', 57))
-        self.appearance_tab = AppearanceTab(globals_.trans.string('PrefsDlg', 6))
+        self.general_tab = GeneralTab(globals_.trans.string('dialog.preferences.tab.general.info'))
+        self.toolbar_tab = ToolbarTab(globals_.trans.string('dialog.preferences.tab.toolbar.info'))
+        self.keybind_tab = KeybindTab(globals_.trans.string('dialog.preferences.tab.keybinds.info'))
+        self.appearance_tab = AppearanceTab(globals_.trans.string('dialog.preferences.tab.appearance.info'))
 
-        self.tab_widget.addTab(self.general_tab, GetIcon('gear'), globals_.trans.string('PrefsDlg', 1))
-        self.tab_widget.addTab(self.toolbar_tab, GetIcon('toolbox'), globals_.trans.string('PrefsDlg', 2))
-        self.tab_widget.addTab(self.keybind_tab, GetIcon('keyboard-full'), globals_.trans.string('PrefsDlg', 56))
-        self.tab_widget.addTab(self.appearance_tab, GetIcon('monitor'), globals_.trans.string('PrefsDlg', 3))
+        self.tab_widget.addTab(self.general_tab, GetIcon('gear'), globals_.trans.string('dialog.preferences.tab.general.title'))
+        self.tab_widget.addTab(self.toolbar_tab, GetIcon('toolbox'), globals_.trans.string('dialog.preferences.tab.toolbar.title'))
+        self.tab_widget.addTab(self.keybind_tab, GetIcon('keyboard-full'), globals_.trans.string('dialog.preferences.tab.keybinds.title'))
+        self.tab_widget.addTab(self.appearance_tab, GetIcon('monitor'), globals_.trans.string('dialog.preferences.tab.appearance.title'))
 
         button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
         button_box.accepted.connect(self.accept)
@@ -70,4 +70,4 @@ class PreferencesDialog(QtWidgets.QDialog):
 
         # Warn the user that they may need to restart
         if restart_1 or restart_2 or restart_3 or restart_4:
-            QtWidgets.QMessageBox.warning(None, globals_.trans.string('PrefsDlg', 0), globals_.trans.string('PrefsDlg', 30))
+            QtWidgets.QMessageBox.warning(None, globals_.trans.string('dialog.preferences.title'), globals_.trans.string('dialog.preferences.warning_restart'))

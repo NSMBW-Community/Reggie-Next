@@ -73,8 +73,8 @@ class ReggieGameDefinition:
         self.custom = False
         self.base = None  # gamedef to use as a base
         self.gamepath = None
-        self.name = globals_.trans.string('Gamedefs', 13)  # 'New Super Mario Bros. Wii'
-        self.description = globals_.trans.string('Gamedefs', 14)  # 'A new Mario adventure!<br>' and the date
+        self.name = globals_.trans.string('game_patch.default_info.name')
+        self.description = globals_.trans.string('game_patch.default_info.description')
         self.version = '2'
 
         self.sprites = sprites
@@ -124,11 +124,10 @@ class ReggieGameDefinition:
         self.name = root.get('name')
 
         if self.name is None:
-            raise ValueError(f"Game definition XML {path!r} has no 'name' attribute on the root node.")
+            QtWidgets.QMessageBox.warning(None, globals_.trans.string('error.title.warning'), globals_.trans.string('error.game_patch.no_name', ('[folder]', name)))
+            return False
 
-        default = globals_.trans.string('Gamedefs', 15)
-
-        desc = root.get('description', default)
+        desc = root.get('description', globals_.trans.string('game_patch.unknown_info.description'))
         if desc is not None:
             self.description = desc.replace('[', '<').replace(']', '>')
         self.version = root.get('version')
@@ -168,7 +167,7 @@ class ReggieGameDefinition:
                 game = node.get('game')
                 if game is None:
                     path = os.path.join(addpath, node_path)
-                elif game == globals_.trans.string('Gamedefs', 13):  # 'New Super Mario Bros. Wii'
+                elif game == globals_.trans.string('game_patch.default_info.name'):  # 'New Super Mario Bros. Wii'
                     path = os.path.join(get_reggiedata_folder(), node_path)
                 else:
                     def_ = FindGameDef(game, self.gamepath)
@@ -459,8 +458,8 @@ def LoadGameDef(name: str | None = None):
         # user pick a stage folder so we can load stages
         # and tilesets from there
         pressed_button = QtWidgets.QMessageBox.information(None,
-            globals_.trans.string('Gamedefs', 2),
-            globals_.trans.string('Gamedefs', 3, '[game]', globals_.gamedef.name),
+            globals_.trans.string('game_patch.first_load.title'),
+            globals_.trans.string('game_patch.first_load.text', ('[game]', globals_.gamedef.name)),
             QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.Cancel
         )
 
@@ -475,15 +474,14 @@ def LoadGameDef(name: str | None = None):
             return False
 
         result = globals_.mainWindow.change_game_path(True)
-
         if result:
-            msg_ids = (6, 7)
+            message_type = 'success'
         else:
-            msg_ids = (4, 5)
+            message_type = 'aborted'
 
         QtWidgets.QMessageBox.information(None,
-            globals_.trans.string('Gamedefs', msg_ids[0]),
-            globals_.trans.string('Gamedefs', msg_ids[1], '[game]', globals_.gamedef.name),
+            globals_.trans.string(f'game_patch.{message_type}.title'),
+            globals_.trans.string(f'game_patch.{message_type}.text', ('[game]', globals_.gamedef.name)),
             QtWidgets.QMessageBox.StandardButton.Ok
         )
 
@@ -562,11 +560,11 @@ def LoadGameDef(name: str | None = None):
         if unknown_sprite_ids and globals_.ShowUnknownSpriteWarning:
             sprite_ids = sorted(unknown_sprite_ids)
 
-            title = globals_.trans.string('Err_UnknownSprite', 0)
+            title = globals_.trans.string('error.title.error')
             if len(sprite_ids) == 1:
-                msg = globals_.trans.string('Err_UnknownSprite', 1, '[id]', str(sprite_ids[0]))
+                msg = globals_.trans.string('error.unknown_sprite.single', ('[id]', str(sprite_ids[0])))
             else:
-                msg = globals_.trans.string('Err_UnknownSprite', 2, '[ids]', ', '.join(map(str, sprite_ids)))
+                msg = globals_.trans.string('error.unknown_sprite.multiple', ('[ids]', ', '.join(map(str, sprite_ids))))
             QtWidgets.QMessageBox.warning(None, title, msg)
 
     # Reload the sprite-picker text

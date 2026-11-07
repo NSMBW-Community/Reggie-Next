@@ -234,8 +234,8 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
         Updates the tooltip
         """
         self.setToolTip(
-            globals_.trans.string('Objects', 0, '[tileset]', self.tileset + 1, '[obj]', self.object_num, '[width]', self.width,
-                         '[height]', self.height, '[layer]', self.layer))
+            globals_.trans.string('levelitem.object.tooltip', ('[tileset]', self.tileset + 1), ('[obj]', self.object_num),
+                                      ('[width]', self.width), ('[height]', self.height), ('[layer]', self.layer)))
 
     def updateObjCache(self) -> None:
         """
