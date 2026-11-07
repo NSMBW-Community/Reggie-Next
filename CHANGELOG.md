@@ -77,6 +77,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Zones can now be extended along the edges, not just the corners.
 - LZ-compressed levels can no longer be padded, due to the in-game instability caused by it.
 - The external database viewer now uses a proper table for cleanliness and ease-of-use.
+- The indicator showing where entrances can safely be placed within a zone has been improved and added to the right end of a zone as well.
+  - The indicator now also shows up in all zones.
+  - The diagnostic tool has been updated accordingly as well.
+- The zone templates have been improved to reduce the risk of the camera showing things that are out of bounds.
 - Improved the way translations are structured, now using only string keys instead of a string key and a numeric ID.
   - Older translations are no longer supported and will not be automatically upgraded.
 
