@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<backgrounds>
+<backgrounds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../src/resources/schema/background.xsd">
     <background id="0CA2" name="Rocky Hills (Blue Sky)" />
     <background id="1003" name="Sunset Beach" />
     <background id="3FE2" name="Mossdeep Greens" />
