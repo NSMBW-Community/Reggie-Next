@@ -1,7 +1,6 @@
 import functools
 import importlib.util
 import os
-import re
 import sys
 from xml.etree import ElementTree as etree
 
@@ -35,7 +34,7 @@ class GameDefinitionFile:
     A class that defines a filepath, and some options
     """
 
-    def __init__(self, path: str | None, patch: bool):
+    def __init__(self, path: str | None, patch: bool) -> None:
         """
         Initializes the GameDefinitionFile
         """
@@ -48,7 +47,7 @@ class ReggieGameDefinition:
     A class that defines a NSMBW hack: songs, tilesets, sprites, etc.
     """
 
-    def __init__(self, name: str | None = None):
+    def __init__(self, name: str | None = None) -> None:
         """
         Initializes the ReggieGameDefinition
         """
@@ -64,14 +63,14 @@ class ReggieGameDefinition:
             self.InitAsEmpty()
             setSetting('LastGameDef', None)
 
-    def InitAsEmpty(self):
+    def InitAsEmpty(self) -> None:
         """
         Sets all properties to their default values
         """
         gdf = GameDefinitionFile
 
         self.custom = False
-        self.base = None  # gamedef to use as a base
+        self.base: ReggieGameDefinition | None = None  # gamedef to use as a base
         self.gamepath = None
         self.name = globals_.trans.string('game_patch.default_info.name')
         self.description = globals_.trans.string('game_patch.default_info.description')
@@ -101,7 +100,7 @@ class ReggieGameDefinition:
             'external': gdf(None, False),
         }
 
-    def InitFromName(self, name: str):
+    def InitFromName(self, name: str) -> bool:
         """
         Attempts to open/load a Game Definition from a name string. Just loads
         the name and description to avoid referring to other game definitions.
@@ -133,7 +132,7 @@ class ReggieGameDefinition:
         self.version = root.get('version')
         return True
 
-    def __init2__(self):
+    def __init2__(self) -> None:
         """
         Finishes up initialisation of custom gamedefs. This avoids infinite
         recursion with gamedefs referring to other gamedefs.
@@ -202,7 +201,7 @@ class ReggieGameDefinition:
                 sys.modules[new_module.__name__] = new_module
                 self.sprites = new_module
 
-    def bgFile(self, name: str, layer: str):
+    def bgFile(self, name: str, layer: str) -> str:
         """
         Returns the folder to a bg image. Layer must be 'a' or 'b'
         """
@@ -229,7 +228,7 @@ class ReggieGameDefinition:
         # If not, return fallback
         return fallback
 
-    def externalFile(self, name):
+    def externalFile(self, name: str) -> str:
         """
         Returns the filename to the external xml.
         """
@@ -256,7 +255,7 @@ class ReggieGameDefinition:
         # Use the fallback
         return fallback
 
-    def GetTextureGamePath(self):
+    def GetTextureGamePath(self) -> str | None:
         """
         Returns the texture game path
         """
@@ -272,7 +271,7 @@ class ReggieGameDefinition:
         else:
             return str(setname)
 
-    def SetTextureGamePath(self, path: str):
+    def SetTextureGamePath(self, path: str) -> None:
         """
         Sets the texture game path
         """
@@ -282,7 +281,7 @@ class ReggieGameDefinition:
             name = f'TextureGamePath_{self.name}'
             setSetting(name, path)
 
-    def GetStageGamePath(self):
+    def GetStageGamePath(self) -> str | None:
         """
         Returns the stage game path
         """
@@ -298,7 +297,7 @@ class ReggieGameDefinition:
         else:
             return str(setname)
 
-    def SetStageGamePath(self, path: str):
+    def SetStageGamePath(self, path: str) -> None:
         """
         Sets the stage game path
         """
@@ -308,11 +307,11 @@ class ReggieGameDefinition:
             name = f'StageGamePath_{self.name}'
             setSetting(name, path)
 
-    def GetTexturePaths(self):
+    def GetTexturePaths(self) -> list[str | None]:
         """
         Returns the texture game paths of this globals_.gamedef and its bases
         """
-        paths = [setting('TextureGamePath')]
+        paths: list[str | None] = [setting('TextureGamePath')]
 
         if not self.custom:
             return paths
@@ -326,7 +325,7 @@ class ReggieGameDefinition:
 
         return paths
 
-    def GetLastLevel(self):
+    def GetLastLevel(self) -> str | None:
         """
         Returns the last loaded level
         """
@@ -342,7 +341,7 @@ class ReggieGameDefinition:
 
         return stg
 
-    def SetLastLevel(self, path: str):
+    def SetLastLevel(self, path: str) -> None:
         """
         Sets the last loaded level
         """
@@ -355,7 +354,7 @@ class ReggieGameDefinition:
             name = f'LastLevel_{self.name}'
             setSetting(name, path)
 
-    def recursiveFiles(self, name: str, is_folder=False):
+    def recursiveFiles(self, name: str, is_folder: bool = False) -> tuple[list[str], bool, list[str | None]]:
         """
         Checks each base of this globals_.gamedef and returns a list of successive file paths
         """
@@ -369,10 +368,10 @@ class ReggieGameDefinition:
             # file ourselves.
             was_patch = False
 
-            if entry.path is None:
-                current_list = []
-                names = []
-            else:
+
+            current_list = []
+            names = []
+            if entry.path is not None:
                 current_list = [entry.path]
                 names = [self.name]
 
@@ -391,7 +390,7 @@ class ReggieGameDefinition:
 
         return current_list, was_patch, names
 
-    def file(self, name: str):
+    def file(self, name: str) -> str | None:
         """
         Returns a file by recursively checking successive globals_.gamedef bases
         """
@@ -406,7 +405,7 @@ class ReggieGameDefinition:
 
             return self.base.file(name)  # It can recursively check its base, too
 
-    def getImageClasses(self):
+    def getImageClasses(self) -> dict[int, type[SLib.SpriteImage]]:
         """
         Gets all image classes
         """
@@ -423,7 +422,7 @@ class ReggieGameDefinition:
         return images
 
 
-def getAvailableGameDefs():
+def getAvailableGameDefs() -> list[str | None]:
     game_defs: list[tuple[str | None, str]] = []
 
     # Add them
@@ -443,7 +442,7 @@ def getAvailableGameDefs():
 
 
 # Game Definitions
-def LoadGameDef(name: str | None = None):
+def LoadGameDef(name: str | None = None) -> bool:
     """
     Loads a game definition
     """
@@ -585,7 +584,7 @@ def LoadGameDef(name: str | None = None):
     return True
 
 @functools.cache
-def FindGameDef(name: str, skip: str | None = None):
+def FindGameDef(name: str, skip: str | None = None) -> "ReggieGameDefinition | None":
     """
     Helper function to find a game def with a specific name.
     Skip will be skipped
