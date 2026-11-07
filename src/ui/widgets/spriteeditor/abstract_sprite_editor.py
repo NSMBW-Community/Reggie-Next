@@ -3,7 +3,7 @@ from PyQt6 import QtWidgets
 
 class AbstractSpriteEditorWidget(QtWidgets.QWidget):
     """Abstract base class for the Sprite Editor Widget. Provides basic properties for required instance checks and usages."""
-    def __init__(self, defaultmode=False) -> None:
+    def __init__(self, defaultmode: bool = False) -> None:
         super().__init__()
         self.AutoFlag = False
         self.DefaultMode = defaultmode
@@ -15,8 +15,8 @@ class AbstractSpriteEditorWidget(QtWidgets.QWidget):
         self.com_dep = QtWidgets.QPushButton()
         self.com_extra = QtWidgets.QTextEdit()
 
-    def ShowMoreComments(self):
+    def ShowMoreComments(self) -> None:
         pass
 
-    def DependencyToggle(self):
+    def DependencyToggle(self) -> None:
         pass

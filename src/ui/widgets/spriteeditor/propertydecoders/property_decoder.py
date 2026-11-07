@@ -2,10 +2,10 @@ from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
 from data.sprite.spritefield.sprite_field import SpriteField
+from ui.theme.reggie_theme import GetIcon
 from ui.widgets.spriteeditor.abstract_sprite_editor import (
     AbstractSpriteEditorWidget,
 )
-from ui.theme.reggie_theme import GetIcon
 
 
 class PropertyDecoder[T: SpriteField](QtCore.QObject):
@@ -50,6 +50,9 @@ class PropertyDecoder[T: SpriteField](QtCore.QObject):
             self.button_adv.setStyleSheet("border-radius: 50%")
             self.button_adv.clicked.connect(lambda: self.show_comment(self.field.advanced_comment))
             self.button_adv.setAutoRaise(True)
+
+    def assign(self, data: bytes) -> bytes:
+        return data
 
     def init_comment_buttons(self):
         col = 3

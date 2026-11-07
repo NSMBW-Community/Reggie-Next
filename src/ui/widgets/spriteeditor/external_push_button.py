@@ -1,5 +1,7 @@
 from PyQt6 import QtWidgets
+
 from data.sprite.external_note import ExternalNote
+
 
 class ExternalPushButtonWidget(QtWidgets.QPushButton):
     """

@@ -1,12 +1,14 @@
-from PyQt6 import QtCore, QtGui, QtWidgets
+from collections.abc import Callable
 from typing import cast
 
+from PyQt6 import QtCore, QtGui, QtWidgets
+
 from data import globals_
+from data.common.list_property import ListPropertyModel
+from data.common.translation import Translation
 from data.level.dirty import SetDirty
 from data.level.items.sprite import SpriteItem
 from data.level.sprite_definition import SpriteDefinition
-from data.common.list_property import ListPropertyModel
-from data.common.translation import Translation
 from data.sprite.spritefield.check_box import CheckBoxSpriteField
 from data.sprite.spritefield.dual_box import DualBoxSpriteField
 from data.sprite.spritefield.external import ExternalSpriteField
@@ -15,6 +17,8 @@ from data.sprite.spritefield.multi_dual_box import MultiDualBoxSpriteField
 from data.sprite.spritefield.sprite_tex import SpriteTexSpriteField
 from data.sprite.spritefield.value import ValueSpriteField
 from ui.dialogs.spriteeditor.resize_choice import ResizeChoiceDialog
+from ui.theme.reggie_theme import GetIcon
+from ui.widgets.item_editor_dock import ItemEditorDockWidget
 from ui.widgets.spriteeditor.abstract_sprite_editor import (
     AbstractSpriteEditorWidget,
 )
@@ -29,12 +33,13 @@ from ui.widgets.spriteeditor.propertydecoders.list import ListPropertyDecoder
 from ui.widgets.spriteeditor.propertydecoders.multi_dual_box import (
     MultiDualboxPropertyDecoder,
 )
+from ui.widgets.spriteeditor.propertydecoders.property_decoder import (
+    PropertyDecoder,
+)
 from ui.widgets.spriteeditor.propertydecoders.sprite_tex import (
     SpriteTexPropertyDecoder,
 )
 from ui.widgets.spriteeditor.propertydecoders.value import ValuePropertyDecoder
-from ui.theme.reggie_theme import GetIcon
-from ui.widgets.item_editor_dock import ItemEditorDockWidget
 
 
 class SpriteEditorWidget(AbstractSpriteEditorWidget):
@@ -43,7 +48,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
     """
     DataUpdate: QtCore.pyqtSignal = QtCore.pyqtSignal('PyQt_PyObject')
 
-    def __init__(self, defaultmode=False):
+    def __init__(self, defaultmode: bool = False) -> None:
         super().__init__(defaultmode)
         self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred))
         self.DataUpdate.connect(self.data_updated)
@@ -185,7 +190,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         self.relatedObjFiles = None
         self.dependencyNotes = None
 
-    def setSprite(self, type_: int, reset=False, initial_data: bytes | None = None):
+    def setSprite(self, type_: int, reset: bool = False, initial_data: bytes | None = None) -> None:
         """
         Change the sprite type used by the data editor
         """
@@ -204,7 +209,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         # remove all the existing widgets in the layout
         self.clearMessages()
 
-        def _clear_layout(layout: QtWidgets.QLayout | None):
+        def _clear_layout(layout: QtWidgets.QLayout | None) -> None:
             if layout is None:
                 return
 
@@ -376,12 +381,11 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
                 self.ShowDependencies()
 
         # yoshi info
+        image = None
         if sprite.noyoshi is True:
             image = 'yoshi-egg-cross'
         elif sprite.noyoshi is not None:
             image = 'yoshi-egg'
-        else:
-            image = None
 
         if sprite.yoshiNotes is not None:
             if image is None:
@@ -475,7 +479,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
         self.updateFields(True)
 
-    def addMessage(self, text, action = None, level = 0, close: str | None = "x"):
+    def addMessage(self, text: str, action: Callable[[], None] | None = None, level: int = 0, close: str | None = "x") -> QtWidgets.QWidget:
         """
         Adds a message to the message layout which can be removed
         """
@@ -533,7 +537,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
         return message
 
-    def clearMessages(self):
+    def clearMessages(self) -> None:
         """
         Clears all messages
         """
@@ -549,23 +553,23 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
             l.removeWidget(widget)
             widget.setParent(None)
 
-    def closeMessageCallback(self, message_, action_):
+    def closeMessageCallback(self, message: QtWidgets.QWidget, action_: Callable[[], None] | None) -> Callable[[QtWidgets.QAbstractButton], None]:
         """
         Gets callback for the close button of messages
         """
         layout_ = self.msg_layout
 
-        def callback(e):
+        def callback(_e: QtWidgets.QAbstractButton) -> None:
             if action_ is not None:
                 action_()
 
             # remove message from layout
-            layout_.removeWidget(message_)
-            message_.setParent(None)
+            layout_.removeWidget(message)
+            message.setParent(None)
 
         return callback
 
-    def addCallbackToMessage(self, message, callback):
+    def addCallbackToMessage(self, message: QtWidgets.QWidget, callback: Callable[[QtWidgets.QAbstractButton], None]) -> None:
         """
         Adds a callback to the clicked attribute of the button of a message
         """
@@ -575,11 +579,19 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
             w = l.itemAt(row)
             if w is not None and w.widget() == message:
                 layout = message.layout()
-                close = layout.itemAt(layout.count() - 1).widget()
-                close.clicked.connect(callback)
+                if layout is None:
+                    continue
+                item = layout.itemAt(layout.count() - 1)
+                if item is None:
+                    continue
+                close = item.widget()
+                if close is None:
+                    continue
+
+                cast(QtWidgets.QAbstractButton, close).clicked.connect(callback)
                 break
 
-    def updateFields(self, first=False):
+    def updateFields(self, first: bool = False) -> None:
         """
         Updates all the fields to display the appropriate info
         """
@@ -608,7 +620,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
             if window is not None:
                 window.resize(self.width(), 0)
 
-    def ShowNoteTooltip(self):
+    def ShowNoteTooltip(self) -> None:
         """
         Show notes
         """
@@ -619,7 +631,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         self.com_extra.setVisible(False)
         self.com_box.setVisible(True)
 
-    def ShowRelatedObjFilesTooltip(self):
+    def ShowRelatedObjFilesTooltip(self) -> None:
         """
         Show related obj files
         """
@@ -628,7 +640,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         self.com_more.setVisible(False)
         self.com_box.setVisible(True)
 
-    def ShowYoshiTooltip(self):
+    def ShowYoshiTooltip(self) -> None:
         """
         Show the Yoshi info
         """
@@ -637,7 +649,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         self.com_more.setVisible(False)
         self.com_box.setVisible(True)
 
-    def ShowAdvancedNoteTooltip(self):
+    def ShowAdvancedNoteTooltip(self) -> None:
         """
         Show the advanced notes
         """
@@ -646,7 +658,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         self.com_more.setVisible(False)
         self.com_box.setVisible(True)
 
-    def ShowMoreComments(self):
+    def ShowMoreComments(self) -> None:
         """
         Show or hide the extra comment
         """
@@ -662,7 +674,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
             self.com_more.setText(globals_.trans.string('dialog.sprite_data_editor.read_less'))
             self.com_main.setVisible(False)
 
-    def ShowDependencies(self):
+    def ShowDependencies(self) -> None:
         """
         Show dependencies
         """
@@ -674,7 +686,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         self.com_dep.setVisible(self.com_deplist.count() > 0)
         self.com_box.setVisible(True)
 
-    def DependencyToggle(self):
+    def DependencyToggle(self) -> None:
         """
         The button was clicked
         """
@@ -688,7 +700,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
             self.com_main.setVisible(False)
             self.com_deplist_w.setVisible(True)
 
-    def HandleFieldUpdate(self, field):
+    def HandleFieldUpdate(self, field: PropertyDecoder) -> None:
         """
         Triggered when a field's data is updated
         """
@@ -704,7 +716,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
         self.UpdateData(data, exclude_update_field=field, do_update=False, was_automatic=False)
 
-    def HandleResetData(self):
+    def HandleResetData(self) -> None:
         """
         Handles the reset data button being clicked
         """
@@ -713,7 +725,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         self.raweditor.setText("0000 0000 0000 0000 0000")
         self.raweditor.setStyleSheet('')
 
-    def UpdateData(self, new_data, exclude_update_field = None, do_update = True, was_automatic = True):
+    def UpdateData(self, new_data: bytes, exclude_update_field: PropertyDecoder | None = None, do_update: bool = True, was_automatic: bool = True) -> None:
         """
         Updates all fields (optionally excluding one field) with the new sprite
         data. If do_update is not set, the UpdateFlag is not changed. If was_automatic
@@ -745,7 +757,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
             if window is not None:
                 window.resize(self.width(), 0)
 
-    def HandleRawDataEdited(self, text):
+    def HandleRawDataEdited(self, text: str) -> None:
         """
         Triggered when the raw data textbox is edited
         """
@@ -770,8 +782,8 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         self.raweditor.setStyleSheet('')
         self.UpdateData(data, was_automatic=False)
 
-    def HandleSpritePlaced(self, id_, button_):
-        def placeSprite():
+    def HandleSpritePlaced(self, id_: int, button_: QtWidgets.QAbstractButton) -> Callable[[], None]:
+        def placeSprite() -> None:
             mw = globals_.mainWindow
             if mw is None or mw.selObj is None or not isinstance(mw.selObj, SpriteItem):
                 return
@@ -800,8 +812,8 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
         return placeSprite
 
-    def HandleAppendToLoadList(self, id_, button_):
-        def addToLoadList():
+    def HandleAppendToLoadList(self, id_: int, button_: QtWidgets.QAbstractButton) -> Callable[[], None]:
+        def addToLoadList() -> None:
             globals_.Area.force_loaded_sprites.add(id_)
             SetDirty()
 
@@ -825,14 +837,14 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
         return addToLoadList
 
-    def HandleSizeButtonClicked(self, e):
+    def HandleSizeButtonClicked(self, _e: QtWidgets.QAbstractButton) -> None:
         """
         Handles the 'resize' button being clicked
         """
         # In the event that the user somehow is able to click this when SizeHacks are disabled,
         # show a generic message saying the feature is unavailable.
         if not globals_.AllowSizeHacks:
-            QtWidgets.QMessageBox.warning(None, globals_.trans.string('ResizeChoiceDlg', 11), globals_.trans.string('ResizeChoiceDlg', 12))
+            QtWidgets.QMessageBox.warning(None, globals_.trans.string('dialog.sprite_resize.title'), globals_.trans.string('dialog.sprite_resize.not_available'))
             return
 
         dlg = ResizeChoiceDialog(self.spritetype)
