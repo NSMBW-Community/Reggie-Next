@@ -4,8 +4,8 @@ from PyQt6 import QtWidgets
 
 from data import globals_
 from data.level.items.location import LocationItem
-from src.ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
 from ui.widgets.generic.list_with_tool_tip_signal import ListWidgetWithToolTipSignal
+from ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
 
 
 class LocationTab(QtWidgets.QWidget):

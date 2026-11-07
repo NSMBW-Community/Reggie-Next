@@ -4,8 +4,8 @@ from PyQt6 import QtWidgets
 
 from data import globals_
 from data.level.items.entrance import EntranceItem
-from src.ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
 from ui.widgets.generic.list_with_tool_tip_signal import ListWidgetWithToolTipSignal
+from ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
 
 
 class EntranceTab(QtWidgets.QWidget):
