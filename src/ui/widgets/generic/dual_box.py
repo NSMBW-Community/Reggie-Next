@@ -7,7 +7,7 @@ class DualBox(QtWidgets.QWidget):
     """
     toggled = QtCore.pyqtSignal('PyQt_PyObject')
 
-    def __init__(self, text1: str | None = None, text2: str | None = None, initial = 0, direction = 0):
+    def __init__(self, text1: str | None = None, text2: str | None = None, initial: int = 0, direction: int = 0) -> None:
         """
         Inits the dualbox with text to the left/above and text to the right/below
         """
@@ -59,7 +59,7 @@ class DualBox(QtWidgets.QWidget):
     def isSet(self):
         return self.value == 1
 
-    def setValue(self, value):
+    def setValue(self, value: int) -> None:
         """
         Sets the value and updates the UI
         """
@@ -78,15 +78,15 @@ class DualBox(QtWidgets.QWidget):
         # TODO: Make this a nice animation
         self.updateUI()
 
-    def getValue(self):
+    def getValue(self) -> int:
         return self.value
 
-    def updateUI(self):
+    def updateUI(self) -> None:
         colour = ['red', 'green'][self.value]
         self.qss = self.qsstemplate % (colour, colour)
         self.slider.setStyleSheet(self.qss)
 
-    def toggle(self):
+    def toggle(self) -> None:
         """
         The slider was toggled, so update UI and emit the signal
         """

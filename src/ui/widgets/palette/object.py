@@ -1,16 +1,16 @@
 from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
-from ui.theme.reggie_theme import GetIcon
-
 from data.level.items.object import ObjectItem
+from ui.theme.reggie_theme import GetIcon
 from ui.widgets.sidelists.object_picker import ObjectPickerWidget
+
 
 class ObjectTab(QtWidgets.QTabWidget):
     """
     Represents the Objects tab (and its child tabs) in the palette
     """
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(None)
         self.currentChanged.connect(self.slot_tab_changed)
 
@@ -66,7 +66,7 @@ class ObjectTab(QtWidgets.QTabWidget):
         # Used to set the layout later
         self.tab_layout = main_layout
 
-    def reset(self, is_new_level: bool, set_layer_1 = True):
+    def reset(self, is_new_level: bool, set_layer_1: bool = True) -> None:
         """
         Reset the Object Tab
         """
@@ -84,7 +84,7 @@ class ObjectTab(QtWidgets.QTabWidget):
 
         self.setCurrentIndex(0)
 
-    def slot_tab_changed(self, new_tab):
+    def slot_tab_changed(self, new_tab: int) -> None:
         """
         Handles the selected slot tab changing
         """
@@ -97,13 +97,13 @@ class ObjectTab(QtWidgets.QTabWidget):
 
         globals_.CurrentPaintType = new_tab
 
-    def change_selection_layer(self, checked):
+    def change_selection_layer(self, _button: QtWidgets.QAbstractButton) -> None:
         """
         Changes the layer of the selection to the current layer
         """
         ObjectItem.change_layer(globals_.CurrentLayer)
 
-    def layer_changed(self, new_layer):
+    def layer_changed(self, new_layer: int) -> None:
         """
         Handles the selected layer changing
         """
@@ -113,8 +113,8 @@ class ObjectTab(QtWidgets.QTabWidget):
         if QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.KeyboardModifier.AltModifier:
             ObjectItem.change_layer(new_layer)
 
-    def object_selected(self, type_):
+    def object_selected(self, object_id: int) -> None:
         """
         Handles a new object being chosen
         """
-        globals_.CurrentObject = type_
+        globals_.CurrentObject = object_id

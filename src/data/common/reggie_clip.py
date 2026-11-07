@@ -18,7 +18,7 @@ class ReggieClip:
     """
 
     @staticmethod
-    def get_reggie_clip(items: list[LevelEditorItem]) -> str:
+    def get_reggie_clip(items: list[QtWidgets.QGraphicsItem]) -> str:
         """
         Generates a ReggieClip from a list of items and returns it
         """

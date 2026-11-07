@@ -9,7 +9,7 @@ class CustomSortableListWidgetItem(QtWidgets.QListWidgetItem):
     """
     sort_key = 0
 
-    def __lt__(self, other):
+    def __lt__(self, other: QtWidgets.QListWidgetItem) -> bool:
         if hasattr(self, 'sort_key') and hasattr(other, 'sort_key'):
             other = cast(CustomSortableListWidgetItem, other)
             return self.sort_key < other.sort_key

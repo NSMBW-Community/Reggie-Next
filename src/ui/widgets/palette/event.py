@@ -1,16 +1,16 @@
-from PyQt6 import QtWidgets, QtCore
-Qt = QtCore.Qt
+import struct
+
+from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
 from data.level.dirty import SetDirty
 
-import struct
 
 class EventTab(QtWidgets.QWidget):
     """
     Represents the Events tab in the palette
     """
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(None)
         label = QtWidgets.QLabel(globals_.trans.string('palette.event.info'))
         note_field_label = QtWidgets.QLabel(globals_.trans.string('palette.event.note'))
@@ -20,15 +20,15 @@ class EventTab(QtWidgets.QWidget):
 
         self.event_tree = QtWidgets.QTreeWidget()
         self.event_tree.setColumnCount(2)
-        self.event_tree.setHeaderLabels((globals_.trans.string_list('palette.event.header')))
+        self.event_tree.setHeaderLabels(globals_.trans.string_list('palette.event.header'))
         self.event_tree.itemClicked.connect(self.event_selected)
         self.event_tree_items: list[QtWidgets.QTreeWidgetItem] = []
 
-        flags = Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsUserCheckable | Qt.ItemFlag.ItemIsEnabled
+        flags = QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsUserCheckable | QtCore.Qt.ItemFlag.ItemIsEnabled
         for id in range(64):
             itm = QtWidgets.QTreeWidgetItem()
             itm.setFlags(flags)
-            itm.setCheckState(0, Qt.CheckState.Unchecked)
+            itm.setCheckState(0, QtCore.Qt.CheckState.Unchecked)
             itm.setText(0, globals_.trans.string('palette.event.event_id', ('[id]', str(id + 1))))
             itm.setText(1, '')
 
@@ -43,7 +43,7 @@ class EventTab(QtWidgets.QWidget):
         main_layout.addWidget(self.note_editor, 1, 1)
         main_layout.addWidget(self.event_tree, 2, 0, 1, 2)
 
-    def event_selected(self, item: QtWidgets.QTreeWidgetItem):
+    def event_selected(self, item: QtWidgets.QTreeWidgetItem) -> None:
         """
         Handles an item being clicked in the Events tab
         """
@@ -53,16 +53,16 @@ class EventTab(QtWidgets.QWidget):
 
         selIdx = self.event_tree_items.index(item)
         isOn = (globals_.Area.default_events & 1 << selIdx) == 1 << selIdx
-        if item.checkState(0) == Qt.CheckState.Checked and not isOn:
+        if item.checkState(0) == QtCore.Qt.CheckState.Checked and not isOn:
             # Turn a bit on
             globals_.Area.default_events |= 1 << selIdx
             SetDirty()
-        elif item.checkState(0) == Qt.CheckState.Unchecked and isOn:
+        elif item.checkState(0) == QtCore.Qt.CheckState.Unchecked and isOn:
             # Turn a bit off (mask out 1 bit)
             globals_.Area.default_events &= ~(1 << selIdx)
             SetDirty()
 
-    def edit_event_note(self):
+    def edit_event_note(self) -> None:
         """
         Handles the notes text changing
         """
@@ -75,13 +75,13 @@ class EventTab(QtWidgets.QWidget):
         self.save_event_notes()
         SetDirty()
 
-    def load_event_data(self):
+    def load_event_data(self) -> None:
         """
         Configures the Events tab from the default events
         """
         default_events = globals_.Area.default_events
-        checked = Qt.CheckState.Checked
-        unchecked = Qt.CheckState.Unchecked
+        checked = QtCore.Qt.CheckState.Checked
+        unchecked = QtCore.Qt.CheckState.Unchecked
 
         data = None
         event_notes = {}

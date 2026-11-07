@@ -10,7 +10,7 @@ class ListWidgetWithToolTipSignal(QtWidgets.QListWidget):
     """
     toolTipAboutToShow = QtCore.pyqtSignal(QtWidgets.QListWidgetItem)
 
-    def viewportEvent(self, e):
+    def viewportEvent(self, e: QtCore.QEvent | None) -> bool:
         """
         Handles viewport events
         """

@@ -1,15 +1,18 @@
+from typing import cast
+
 from PyQt6 import QtWidgets
 
 from data import globals_
-
 from data.level.items.path import PathItem
+from src.ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
 from ui.widgets.generic.list_with_tool_tip_signal import ListWidgetWithToolTipSignal
+
 
 class PathTab(QtWidgets.QWidget):
     """
     Represents the Paths tab in the palette
     """
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(None)
         label = QtWidgets.QLabel(globals_.trans.string('palette.path.info'))
         label.setWordWrap(True)
@@ -27,7 +30,7 @@ class PathTab(QtWidgets.QWidget):
         main_layout.addWidget(deselect_button)
         main_layout.addWidget(self.path_list)
 
-    def deselect_path(self, checked):
+    def deselect_path(self, _button: QtWidgets.QAbstractButton) -> None:
         """
         Deselects selected path nodes in the list
         """
@@ -39,16 +42,16 @@ class PathTab(QtWidgets.QWidget):
             if isinstance(item, PathItem):
                 item.setSelected(False)
 
-    def path_selected(self, item):
+    def path_selected(self, item: ListWidgetItem_SortsByOther) -> None:
         """
         Handle a path node being selected
         """
-        path_item: PathItem = item.reference
+        path_item: PathItem = cast(PathItem, item.reference)
         path_item.ensureVisible(xMargin=192, yMargin=192)
         globals_.mainWindow.scene.clearSelection()
         path_item.setSelected(True)
 
-    def path_hovered(self, item):
+    def path_hovered(self, item: ListWidgetItem_SortsByOther) -> None:
         """
         Handle a path node being hovered in the list
         """

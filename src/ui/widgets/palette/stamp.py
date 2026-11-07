@@ -1,18 +1,19 @@
-from PyQt6 import QtWidgets, QtCore
-
-from data import globals_
 from typing import cast
 
-from ui.widgets.sidelists.stamp_picker import StampPickerWidget
+from PyQt6 import QtWidgets
+
+from data import globals_
+from data.common.reggie_clip import ReggieClip
 from data.stamp.stamp import Stamp
 from data.stamp.stamp_list import StampListModel
-from data.common.reggie_clip import ReggieClip
+from ui.widgets.sidelists.stamp_picker import StampPickerWidget
+
 
 class StampTab(QtWidgets.QWidget):
     """
     Represents the Stamps tab in the palette
     """
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(None)
         label = QtWidgets.QLabel(globals_.trans.string('palette.stamp.info'))
 
@@ -60,7 +61,7 @@ class StampTab(QtWidgets.QWidget):
         main_layout.addLayout(name_layout, 3, 0, 1, 3)
         main_layout.addWidget(self.stamp_picker, 4, 0, 1, 3)
 
-    def add_stamp(self):
+    def add_stamp(self) -> None:
         """
         Handles the "Add Stamp" btn being clicked
         """
@@ -74,14 +75,14 @@ class StampTab(QtWidgets.QWidget):
         # Create a Stamp
         self.stamp_picker.addStamp(Stamp(clip, globals_.trans.string('palette.stamp.new_stamp')))
 
-    def remove_stamp(self):
+    def remove_stamp(self) -> None:
         """
         Handles the "Remove Stamp" btn being clicked
         """
         self.stamp_picker.removeStamp(self.stamp_picker.currentlySelectedStamp())
         self.stamp_selected()
 
-    def copy_stamp(self):
+    def copy_stamp(self) -> None:
         """
         Handles the "Copy Selected to Clipboard" btn being clicked
         """
@@ -91,7 +92,7 @@ class StampTab(QtWidgets.QWidget):
 
         globals_.mainWindow.systemClipboard.setText(stamp.ReggieClip)
 
-    def open_stamps(self):
+    def open_stamps(self) -> None:
         """
         Handles the "Open Set..." btn being clicked
         """
@@ -121,7 +122,7 @@ class StampTab(QtWidgets.QWidget):
 
             self.stamp_picker.addStamp(Stamp(rc, name))
 
-    def save_stamps(self):
+    def save_stamps(self) -> None:
         """
         Handles the "Save Set As..." btn being clicked
         """
@@ -147,7 +148,7 @@ class StampTab(QtWidgets.QWidget):
         with open(fn, 'w', encoding='utf-8') as f:
             f.write(newdata)
 
-    def stamp_selected(self):
+    def stamp_selected(self) -> None:
         """
         Called when the stamp selection is changed
         """
@@ -161,7 +162,7 @@ class StampTab(QtWidgets.QWidget):
         new_name = '' if not stampSelected else new_stamp.Name
         self.name_edit.setText(new_name)
 
-    def stamp_name_edited(self):
+    def stamp_name_edited(self) -> None:
         """
         Called when the user edits the name of the current stamp
         """

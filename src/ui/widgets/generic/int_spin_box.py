@@ -17,7 +17,7 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
 
     valueChanged = QtCore.pyqtSignal('int')
 
-    def __init__(self, parent=None, start=0, increment=1, overrides=None):
+    def __init__(self, parent: QtWidgets.QWidget | None = None, start: int = 0, increment: int = 1, overrides: list[int] | None = None) -> None:
         QtWidgets.QAbstractSpinBox.__init__(self, parent)
         self.editingFinished.connect(self.interpretText)
 
@@ -30,7 +30,7 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
 
         self.setValue(self._start)
 
-    def interpretText(self):
+    def interpretText(self) -> None:
         """
         Reimplements interpretText.
         """
@@ -46,7 +46,7 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
 
         self.setValue(self.valueFromText(text))
 
-    def validate(self, input: str | None, pos: int):
+    def validate(self, input: str | None, pos: int) -> tuple[QtGui.QValidator.State, str, int]:
         """
         Checks whether the currently entered text is valid.
         """
@@ -67,7 +67,7 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
 
         return (QtGui.QValidator.State.Acceptable, input, pos)
 
-    def stepEnabled(self):
+    def stepEnabled(self) -> QtWidgets.QAbstractSpinBox.StepEnabledFlag:
         """
         Returns a flag indicating in which directions the value can be stepped.
         """
@@ -84,21 +84,21 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
     def value(self) -> int | None:
         return self._value
 
-    def setMaximum(self, val: int):
+    def setMaximum(self, val: int) -> None:
         self._maximum = val
     def maximum(self) -> int:
         return self._maximum
 
-    def setMinimum(self, val: int):
+    def setMinimum(self, val: int) -> None:
         self._minimum = val
     def minimum(self) -> int:
         return self._minimum
 
-    def setRange(self, min_: int, max_: int):
+    def setRange(self, min_: int, max_: int) -> None:
         self.setMinimum(min_)
         self.setMaximum(max_)
 
-    def stepBy(self, steps: int):
+    def stepBy(self, steps: int) -> None:
         """
         Add 'steps' to the current value.
         """
@@ -113,7 +113,7 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
     def textFromValue(self, val: int) -> str:
         return str(val)
 
-    def setValue(self, val: int | None):
+    def setValue(self, val: int | None) -> None:
         """
         Updates the value shown by the line edit and emits a signal when the
         value represented by the text of the line edit has changed.

@@ -1,15 +1,18 @@
+from typing import cast
+
 from PyQt6 import QtWidgets
 
 from data import globals_
-
 from data.level.items.entrance import EntranceItem
+from src.ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
 from ui.widgets.generic.list_with_tool_tip_signal import ListWidgetWithToolTipSignal
+
 
 class EntranceTab(QtWidgets.QWidget):
     """
     Represents the Entrances tab in the palette
     """
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(None)
         label = QtWidgets.QLabel(globals_.trans.string('palette.entrance.info'))
         label.setWordWrap(True)
@@ -23,19 +26,19 @@ class EntranceTab(QtWidgets.QWidget):
         main_layout.addWidget(label)
         main_layout.addWidget(self.entrance_list)
 
-    def entrance_selected(self, item):
+    def entrance_selected(self, item: ListWidgetItem_SortsByOther) -> None:
         """
         Handle an entrance being selected from the list
         """
         if globals_.mainWindow.UpdateFlag:
             return
 
-        ent: EntranceItem = item.reference
+        ent: EntranceItem = cast(EntranceItem, item.reference)
         ent.ensureVisible(xMargin=192, yMargin=192)
         globals_.mainWindow.scene.clearSelection()
         ent.setSelected(True)
 
-    def entrance_hovered(self, item: EntranceItem):
+    def entrance_hovered(self, item: EntranceItem) -> None:
         """
         Handle an entrance being hovered in the list
         """

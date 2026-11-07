@@ -1,24 +1,21 @@
-from PyQt6 import QtWidgets, QtCore
-Qt = QtCore.Qt
+from PyQt6 import QtWidgets
 
 from data import globals_
-
-from ui.theme.reggie_theme import GetIcon
 from data.common.loaders import LoadSpriteCategories
 from data.level.dirty import SetDirty
-
-from ui.widgets.sidelists.sprite_picker import SpritePickerWidget
-from ui.widgets.sidelists.sprite_list import SpriteList
-from ui.widgets.sidelists.sprite_order import SpriteOrderList
-
 from data.level.items.sprite import SpriteItem
 from spritelib import SpriteImage
+from ui.theme.reggie_theme import GetIcon
+from ui.widgets.sidelists.sprite_list import SpriteList
+from ui.widgets.sidelists.sprite_order import SpriteOrderList
+from ui.widgets.sidelists.sprite_picker import SpritePickerWidget
+
 
 class SpriteTab(QtWidgets.QTabWidget):
     """
     Represents the Sprites tab in the palette
     """
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(None)
         self.currentChanged.connect(self.tab_changed)
 
@@ -92,7 +89,7 @@ class SpriteTab(QtWidgets.QTabWidget):
         order_layout.addWidget(order_label)
         order_layout.addWidget(self.sprite_order_list)
 
-    def tab_changed(self, new_tab):
+    def tab_changed(self, new_tab: int) -> None:
         """
         Handles the selected tab changing
         """
@@ -103,7 +100,7 @@ class SpriteTab(QtWidgets.QTabWidget):
 
         globals_.CurrentPaintType = paint_type
 
-    def sprite_selected(self, sprite_num):
+    def sprite_selected(self, sprite_num: int) -> None:
         """
         Handles a new sprite being chosen
         """
@@ -117,7 +114,7 @@ class SpriteTab(QtWidgets.QTabWidget):
             globals_.mainWindow.defaultPropDock.setVisible(False)
             globals_.mainWindow.defaultDataEditor.updateFields()
 
-    def sprite_replaced(self, sprite_num):
+    def sprite_replaced(self, sprite_num: int) -> None:
         """
         Handles a new sprite type being chosen to replace the selected sprites
         """
@@ -146,7 +143,7 @@ class SpriteTab(QtWidgets.QTabWidget):
 
         globals_.mainWindow.scene.change_selection()
 
-    def curr_view_changed(self, type):
+    def curr_view_changed(self, type: int) -> None:
         """
         Handles a new sprite view being chosen
         """
@@ -169,33 +166,33 @@ class SpriteTab(QtWidgets.QTabWidget):
 
             widget.setVisible(isSearch)
 
-    def set_search_string(self, text):
+    def set_search_string(self, text: str) -> None:
         """
         Handles a new sprite search term being entered
         """
         self.sprite_picker.SetSearchString(text)
 
-    def show_default_props_dock(self):
+    def show_default_props_dock(self) -> None:
         """
         Handles the Show Default Properties button being clicked
         """
         globals_.mainWindow.defaultPropDock.setVisible(True)
 
-    def prepare_batch_add(self):
+    def prepare_batch_add(self) -> None:
         """
         Helper to prepare adding sprites in batch
         """
         self.sprite_list.prepareBatchAdd()
         self.sprite_order_list.prepareBatchAdd()
 
-    def add_sprite(self, sprite):
+    def add_sprite(self, sprite: SpriteItem) -> None:
         """
         Helper to add a sprite to the lists
         """
         self.sprite_list.addSprite(sprite)
         self.sprite_order_list.addSprite(sprite)
 
-    def end_batch_add(self):
+    def end_batch_add(self) -> None:
         """
         Helper to end batch-adding
         """

@@ -1,15 +1,15 @@
 from PyQt6 import QtWidgets
 
 from data import globals_
-
 from data.level.items.comment import CommentItem
 from ui.widgets.generic.list_with_tool_tip_signal import ListWidgetWithToolTipSignal
+
 
 class CommentTab(QtWidgets.QWidget):
     """
     Represents the Comments tab in the palette
     """
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(None)
         label = QtWidgets.QLabel(globals_.trans.string('palette.comment.info'))
         label.setWordWrap(True)
@@ -23,7 +23,7 @@ class CommentTab(QtWidgets.QWidget):
         main_layout.addWidget(label)
         main_layout.addWidget(self.comment_list)
 
-    def comment_selected(self, item):
+    def comment_selected(self, item: QtWidgets.QListWidget) -> None:
         """
         Handle a comment being selected
         """
@@ -35,7 +35,7 @@ class CommentTab(QtWidgets.QWidget):
                 comment.setSelected(True)
                 break
 
-    def comment_hovered(self, item):
+    def comment_hovered(self, item: QtWidgets.QListWidgetItem) -> None:
         """
         Handle a comment being hovered in the list
         """
