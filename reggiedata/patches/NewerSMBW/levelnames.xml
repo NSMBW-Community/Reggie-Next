@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<levels>
+<levels xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../src/resources/schema/levelnames.xsd">
 
     <category name="World 1: Yoshi's Island">
         <level file="01-01" name="World 1-1: Palm Beach" />
