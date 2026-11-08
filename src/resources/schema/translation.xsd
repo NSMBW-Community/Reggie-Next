@@ -8,10 +8,10 @@
         </xs:complexType>
     </xs:element>
     <xs:complexType name="section">
-        <xs:choice>
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
             <xs:element minOccurs="0" maxOccurs="unbounded" name="section" type="section" />
             <xs:element minOccurs="0" maxOccurs="unbounded" name="string" type="string" />
-        </xs:choice>
+        </xs:sequence>
         <xs:attribute name="id" type="ID" use="required" />
     </xs:complexType>
     <xs:complexType name="string">
