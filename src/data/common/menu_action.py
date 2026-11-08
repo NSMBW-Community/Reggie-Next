@@ -18,7 +18,7 @@ class MenuAction:
         self.shortname = shortname
         self.function = function
         self.icon = icon
-        self.label = strings.get("name", "")
+        self.label = strings.get("label", "")
         self.status_text = strings.get("tooltip")
         self.key_sequence = key_sequence
         self.is_checkable = checkable

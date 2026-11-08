@@ -45,19 +45,19 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.dest_entrance.setToolTip(globals_.trans.string('dialog.entrance_data_editor.dest_id.tooltip'))
         self.dest_entrance.valueChanged.connect(self.handle_dest_entrance_changed)
 
-        self.is_enterable_box = QtWidgets.QCheckBox(globals_.trans.string('dialog.entrance_data_editor.enterable.name'))
+        self.is_enterable_box = QtWidgets.QCheckBox(globals_.trans.string('dialog.entrance_data_editor.enterable.label'))
         self.is_enterable_box.setToolTip(globals_.trans.string('dialog.entrance_data_editor.enterable.tooltip'))
         self.is_enterable_box.clicked.connect(self.handle_is_enterable_clicked)
 
-        self.unk_flag_box = QtWidgets.QCheckBox(globals_.trans.string('dialog.entrance_data_editor.unknown_flag.name'))
+        self.unk_flag_box = QtWidgets.QCheckBox(globals_.trans.string('dialog.entrance_data_editor.unknown_flag.label'))
         self.unk_flag_box.setToolTip(globals_.trans.string('dialog.entrance_data_editor.unknown_flag.tooltip'))
         self.unk_flag_box.clicked.connect(self.handle_unk_flag_clicked)
 
-        self.connect_pipe_box = QtWidgets.QCheckBox(globals_.trans.string('dialog.entrance_data_editor.connected_pipe.name'))
+        self.connect_pipe_box = QtWidgets.QCheckBox(globals_.trans.string('dialog.entrance_data_editor.connected_pipe.label'))
         self.connect_pipe_box.setToolTip(globals_.trans.string('dialog.entrance_data_editor.connected_pipe.tooltip'))
         self.connect_pipe_box.clicked.connect(self.handle_connect_pipe_clicked)
 
-        self.connect_pipe_reverse_box = QtWidgets.QCheckBox(globals_.trans.string('dialog.entrance_data_editor.reverse_path.name'))
+        self.connect_pipe_reverse_box = QtWidgets.QCheckBox(globals_.trans.string('dialog.entrance_data_editor.reverse_path.label'))
         self.connect_pipe_reverse_box.setToolTip(globals_.trans.string('dialog.entrance_data_editor.reverse_path.tooltip'))
         self.connect_pipe_reverse_box.clicked.connect(self.handle_connect_pipe_reverse_clicked)
 
@@ -66,7 +66,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.path_id.setToolTip(globals_.trans.string('dialog.entrance_data_editor.path_id.tooltip'))
         self.path_id.valueChanged.connect(self.handle_path_id_changed)
 
-        self.forward_pipe_box = QtWidgets.QCheckBox(globals_.trans.string('dialog.entrance_data_editor.link_to_forward.name'))
+        self.forward_pipe_box = QtWidgets.QCheckBox(globals_.trans.string('dialog.entrance_data_editor.link_to_forward.label'))
         self.forward_pipe_box.setToolTip(globals_.trans.string('dialog.entrance_data_editor.link_to_forward.tooltip'))
         self.forward_pipe_box.clicked.connect(self.handle_forward_pipe_clicked)
 
@@ -75,11 +75,11 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.layer_id.setToolTip(globals_.trans.string('dialog.entrance_data_editor.layer.tooltip'))
         self.layer_id.activated.connect(self.handle_layer_id_changed)
 
-        self.exit_level_box = QtWidgets.QCheckBox(globals_.trans.string('dialog.entrance_data_editor.send_to_world_map.name'))
+        self.exit_level_box = QtWidgets.QCheckBox(globals_.trans.string('dialog.entrance_data_editor.send_to_world_map.label'))
         self.exit_level_box.setToolTip(globals_.trans.string('dialog.entrance_data_editor.send_to_world_map.tooltip'))
         self.exit_level_box.clicked.connect(self.handle_exit_level_clicked)
 
-        self.shift_left_box = QtWidgets.QCheckBox(globals_.trans.string('dialog.entrance_data_editor.shift_left.name'))
+        self.shift_left_box = QtWidgets.QCheckBox(globals_.trans.string('dialog.entrance_data_editor.shift_left.label'))
         self.shift_left_box.setToolTip(globals_.trans.string('dialog.entrance_data_editor.shift_left.tooltip'))
         self.shift_left_box.clicked.connect(self.handle_shift_left_clicked)
 
@@ -98,17 +98,17 @@ class EntranceEditorWidget(QtWidgets.QWidget):
 
         # add labels
         layout.addWidget(QtWidgets.QLabel(globals_.trans.string('common.id_colon')), 3, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.entrance_data_editor.type.name')), 1, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
+        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.entrance_data_editor.type.label')), 1, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
 
         layout.addWidget(createHorzLine(), 2, 0, 1, 4)
 
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.entrance_data_editor.dest_id.name')), 3, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.entrance_data_editor.dest_area.name')), 4, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
+        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.entrance_data_editor.dest_id.label')), 3, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
+        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.entrance_data_editor.dest_area.label')), 4, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
 
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.entrance_data_editor.layer.name')), 4, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
+        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.entrance_data_editor.layer.label')), 4, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
 
-        self.path_id_label = QtWidgets.QLabel(globals_.trans.string('dialog.entrance_data_editor.path_id.name'))
-        self.pipe_exit_dir_label = QtWidgets.QLabel(globals_.trans.string('dialog.entrance_data_editor.exit_direction.name'))
+        self.path_id_label = QtWidgets.QLabel(globals_.trans.string('dialog.entrance_data_editor.path_id.label'))
+        self.pipe_exit_dir_label = QtWidgets.QLabel(globals_.trans.string('dialog.entrance_data_editor.exit_direction.label'))
 
         # Add the widgets
         layout.addWidget(self.entrance_id, 3, 1, 1, 1)

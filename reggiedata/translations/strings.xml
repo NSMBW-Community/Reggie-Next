@@ -197,56 +197,56 @@
                 <string id="tooltip">[b]ID:[/b][br]Must be different from all other IDs</string>
             </section>
             <section id="type">
-                <string id="name">Type:</string>
+                <string id="label">Type:</string>
                 <string id="tooltip">[b]Type:[/b][br]Sets how the entrance behaves</string>
             </section>
             <section id="dest_id">
-                <string id="name">Dest. ID:</string>
+                <string id="label">Dest. ID:</string>
                 <string id="tooltip">[b]Dest. ID:[/b][br]If this entrance leads nowhere, set this to 0.</string>
             </section>
             <section id="dest_area">
-                <string id="name">Dest. Area:</string>
+                <string id="label">Dest. Area:</string>
                 <string id="tooltip">[b]Dest. Area:[/b][br]If this entrance leads nowhere or the destination is in this area, set this to 0.</string>
             </section>
             <section id="enterable">
-                <string id="name">Enterable</string>
+                <string id="label">Enterable</string>
                 <string id="tooltip">[b]Enterable:[/b][br]If this box is checked on a pipe or door entrance, Mario will be able to enter the pipe/door. If it's not checked, he won't be able to enter it. Behaviour on other types of entrances is unknown/undefined.</string>
             </section>
             <section id="unknown_flag">
-                <string id="name">Unknown Flag</string>
+                <string id="label">Unknown Flag</string>
                 <string id="tooltip">[b]Unknown Flag:[/b][br]This box is checked on a few entrances in the game, but we haven't managed to figure out what it does (or if it does anything).</string>
             </section>
             <section id="connected_pipe">
-                <string id="name">Connected Pipe</string>
+                <string id="label">Connected Pipe</string>
                 <string id="tooltip">[b]Connected Pipe:[/b][br]This box allows you to enable an unused/broken feature in the game. It allows the pipe to function like the pipes in SMB3 where Mario simply goes through the pipe. However, it doesn't work correctly.</string>
             </section>
             <section id="reverse_path">
-                <string id="name">Reverse Path</string>
+                <string id="label">Reverse Path</string>
                 <string id="tooltip">[b]Reverse Path:[/b][br]This box tells the connected pipe whether or not it should follow its path in reverse (backwards).</string>
             </section>
             <section id="path_id">
-                <string id="name">Path ID:</string>
+                <string id="label">Path ID:</string>
                 <string id="tooltip">[b]Path ID:[/b][br]Use this option to set the path number that the connected pipe will follow.</string>
             </section>
             <section id="link_to_forward">
-                <string id="name">Links to Forward Pipe</string>
+                <string id="label">Links to Forward Pipe</string>
                 <string id="tooltip">[b]Links to Forward Pipe:[/b][br]If this option is set on a pipe, the destination entrance/area values will be ignored - Mario will pass through the pipe and then reappear several tiles ahead, coming out of a forward-facing pipe.</string>
             </section>
             <section id="layer">
-                <string id="name">Layer:</string>
+                <string id="label">Layer:</string>
                 <string id="tooltip">[b]Layer:[/b][br]Allows you to change the collision layer which this entrance is active on. This option is very glitchy and not used in the default levels - for almost all normal cases, you will want to use layer 1.</string>
             </section>
             <section id="send_to_world_map">
-                <string id="name">Send to World Map</string>
+                <string id="label">Send to World Map</string>
                 <string id="tooltip">[b]Send to World Map:[/b][br]If this is checked, the player will be sent to the world map when entering this entrance, and the level will be cleared.</string>
             </section>
             <section id="shift_left">
-                <string id="name">Spawn Half a Tile Left</string>
+                <string id="label">Spawn Half a Tile Left</string>
                 <string id="tooltip">[b]Spawn Half a Tile Left:[/b][br]If this is checked, the entrance will spawn Mario half a tile to the left.</string>
             </section>
             <string id="none_selected">[i]No Entrance Selected[/i]</string>
             <section id="exit_direction">
-                <string id="name">Exit Direction:</string>
+                <string id="label">Exit Direction:</string>
                 <string id="tooltip">[b]Exit Direction:[/b][br]Set the direction the player will exit out of a connected pipe.</string>
                 <section id="direction">
                     <string id="up">Up</string>
@@ -296,19 +296,19 @@
                 <string id="tooltip">[b]ID:[/b][br]Must be different from all other IDs</string>
             </section>
             <section id="pos_x">
-                <string id="name">X Pos:</string>
+                <string id="label">X Pos:</string>
                 <string id="tooltip">[b]X Pos:[/b][br]Specifies the X position of the location</string>
             </section>
             <section id="pos_y">
-                <string id="name">Y Pos:</string>
+                <string id="label">Y Pos:</string>
                 <string id="tooltip">[b]Y Pos:[/b][br]Specifies the Y position of the location</string>
             </section>
             <section id="width">
-                <string id="name">Width:</string>
+                <string id="label">Width:</string>
                 <string id="tooltip">[b]Width:[/b][br]Specifies the width of the location</string>
             </section>
             <section id="height">
-                <string id="name">Height:</string>
+                <string id="label">Height:</string>
                 <string id="tooltip">[b]Height:[/b][br]Specifies the height of the location</string>
             </section>
             <string id="none_selected">[i]No Location Selected[/i]</string>
@@ -340,19 +340,19 @@
                 <string id="node">[b]Node [id][/b]</string>
             </section>
             <section id="loops">
-                <string id="name">Loops:</string>
+                <string id="label">Loops:</string>
                 <string id="tooltip">[b]Loops:[/b][br]Anything following this path will wait for any delay set at the last node and then proceed back in a straight line to the first node, and continue.</string>
             </section>
             <section id="speed">
-                <string id="name">Speed:</string>
+                <string id="label">Speed:</string>
                 <string id="tooltip">[b]Speed:[/b][br]Unknown unit. Mess around and report your findings!</string>
             </section>
             <section id="accel">
-                <string id="name">Accel:</string>
+                <string id="label">Accel:</string>
                 <string id="tooltip">[b]Accel:[/b][br]Unknown unit. Mess around and report your findings!</string>
             </section>
             <section id="delay">
-                <string id="name">Delay:</string>
+                <string id="label">Delay:</string>
                 <string id="tooltip">[b]Delay:[/b][br]Amount of time to stop here (at this node) before continuing to next node. Unit is 1/60 of a second (60 for 1 second)</string>
             </section>
             <section id="placement_mode">
@@ -530,15 +530,15 @@
             <string id="reset_all">Reset all settings</string>
             <string id="modify_raw_data">Modify Raw Data:</string>
             <section id="notes">
-                <string id="name">Notes</string>
+                <string id="label">Notes</string>
                 <string id="text">[b]Sprite Notes:[/b] [notes]</string>
             </section>
             <section id="advanced_notes">
-                <string id="name">Advanced Notes</string>
+                <string id="label">Advanced Notes</string>
                 <string id="text">[b]Advanced Notes:[/b] [notes]</string>
             </section>
             <section id="object_files">
-                <string id="name">Object Files</string>
+                <string id="label">Object Files</string>
                 <string id="text">[b]This sprite loads:[/b][br]* [list]</string>
             </section>
             <section id="yoshi_notes">
@@ -559,7 +559,7 @@
                     <string id="undefined">[id]: Undefined Entry</string>
                 </section>
                 <section id="layer_default">
-                    <string id="name">Layer</string>
+                    <string id="label">Layer</string>
                     <string id="comment">[b]Layer[/b]: This determines what layer the sprite will be active on. In almost all cases, you'll want to use Layer 1.</string>
                 </section>
             </section>
@@ -994,55 +994,55 @@
             <string id="name">&amp;File</string>
             <section id="item">
                 <section id="new_level">
-                    <string id="name">New Level</string>
+                    <string id="label">New Level</string>
                     <string id="tooltip">Create a new, blank level</string>
                 </section>
                 <section id="open_by_name">
-                    <string id="name">Open Level by Name...</string>
+                    <string id="label">Open Level by Name...</string>
                     <string id="tooltip">Open a level based on its in-game world/number</string>
                 </section>
                 <section id="open_by_file">
-                    <string id="name">Open Level by File...</string>
+                    <string id="label">Open Level by File...</string>
                     <string id="tooltip">Open a level based on its filename</string>
                 </section>
                 <section id="recent_files">
-                    <string id="name">Recent Files</string>
+                    <string id="label">Recent Files</string>
                     <string id="tooltip">Open a level from a list of recently opened levels</string>
                 </section>
                 <section id="save">
-                    <string id="name">Save Level</string>
+                    <string id="label">Save Level</string>
                     <string id="tooltip">Save the level back to the archive file</string>
                 </section>
                 <section id="save_as">
-                    <string id="name">Save Level As...</string>
+                    <string id="label">Save Level As...</string>
                     <string id="tooltip">Save a level with a new filename</string>
                 </section>
                 <section id="save_copy_as">
-                    <string id="name">Save Copy of Level As...</string>
+                    <string id="label">Save Copy of Level As...</string>
                     <string id="tooltip">Save a copy of level with a new filename but keeps the current file open for editing</string>
                 </section>
                 <section id="level_info">
-                    <string id="name">Level Information...</string>
+                    <string id="label">Level Information...</string>
                     <string id="tooltip">Add title and author information to the level's metadata</string>
                 </section>
-                <section id="change_gamedef">
-                    <string id="name">Change Game</string>
+                <section id="change_game_def">
+                    <string id="label">Change Game</string>
                     <string id="tooltip">Change the currently loaded Reggie Next game patch</string>
                 </section>
                 <section id="screenshot">
-                    <string id="name">Level Screenshot...</string>
+                    <string id="label">Level Screenshot...</string>
                     <string id="tooltip">Take a full size screenshot of your level for you to share</string>
                 </section>
                 <section id="change_game_path">
-                    <string id="name">Change Game Path...</string>
+                    <string id="label">Change Game Path...</string>
                     <string id="tooltip">Set a different folder to load the game files from</string>
                 </section>
                 <section id="preferences">
-                    <string id="name">Reggie Next Preferences...</string>
+                    <string id="label">Reggie Next Preferences...</string>
                     <string id="tooltip">Change important Reggie Next settings</string>
                 </section>
                 <section id="exit">
-                    <string id="name">Exit Reggie Next</string>
+                    <string id="label">Exit Reggie Next</string>
                     <string id="tooltip">Exit the editor</string>
                 </section>
             </section>
@@ -1051,79 +1051,79 @@
             <string id="name">&amp;Edit</string>
             <section id="item">
                 <section id="select_all">
-                    <string id="name">Select All</string>
+                    <string id="label">Select All</string>
                     <string id="tooltip">Select all items in this area</string>
                 </section>
                 <section id="deselect">
-                    <string id="name">Deselect</string>
+                    <string id="label">Deselect</string>
                     <string id="tooltip">Deselect all currently selected items</string>
                 </section>
                 <section id="undo">
-                    <string id="name">Undo</string>
+                    <string id="label">Undo</string>
                     <string id="tooltip">Undoes the last action</string>
                 </section>
                 <section id="redo">
-                    <string id="name">Redo</string>
+                    <string id="label">Redo</string>
                     <string id="tooltip">Redoes the last action that was undone</string>
                 </section>
                 <section id="cut">
-                    <string id="name">Cut</string>
+                    <string id="label">Cut</string>
                     <string id="tooltip">Cut out the current selection to the clipboard</string>
                 </section>
                 <section id="copy">
-                    <string id="name">Copy</string>
+                    <string id="label">Copy</string>
                     <string id="tooltip">Copy the current selection to the clipboard</string>
                 </section>
                 <section id="paste">
-                    <string id="name">Paste</string>
+                    <string id="label">Paste</string>
                     <string id="tooltip">Paste items from the clipboard</string>
                 </section>
                 <section id="shift_items">
-                    <string id="name">Shift Items...</string>
+                    <string id="label">Shift Items...</string>
                     <string id="tooltip">Move all selected items by an offset</string>
                 </section>
                 <section id="merge_locations">
-                    <string id="name">Merge Locations</string>
+                    <string id="label">Merge Locations</string>
                     <string id="tooltip">Merge selected locations into a single large location</string>
                 </section>
                 <section id="swap_tilesets">
-                    <string id="name">Swap Tilesets...</string>
+                    <string id="label">Swap Tilesets...</string>
                     <string id="tooltip">Swaps all objects of a certain tileset to another</string>
                 </section>
                 <section id="swap_objects">
-                    <string id="name">Swap Objects...</string>
+                    <string id="label">Swap Objects...</string>
                     <string id="tooltip">Swaps all objects of a certain type to another</string>
                 </section>
                 <section id="switch_sprites">
-                    <string id="name">Switch Sprite IDs...</string>
+                    <string id="label">Switch Sprite IDs...</string>
                     <string id="tooltip">Switches all sprites of one ID to another</string>
                 </section>
                 <section id="freeze_objects">
-                    <string id="name">Freeze Objects</string>
+                    <string id="label">Freeze Objects</string>
                     <string id="tooltip">Make objects non-selectable</string>
                 </section>
                 <section id="freeze_sprites">
-                    <string id="name">Freeze Sprites</string>
+                    <string id="label">Freeze Sprites</string>
                     <string id="tooltip">Make sprites non-selectable</string>
                 </section>
                 <section id="freeze_entrances">
-                    <string id="name">Freeze Entrances</string>
+                    <string id="label">Freeze Entrances</string>
                     <string id="tooltip">Make entrances non-selectable</string>
                 </section>
                 <section id="freeze_locations">
-                    <string id="name">Freeze Locations</string>
+                    <string id="label">Freeze Locations</string>
                     <string id="tooltip">Make locations non-selectable</string>
                 </section>
                 <section id="freeze_paths">
-                    <string id="name">Freeze Paths</string>
+                    <string id="label">Freeze Paths</string>
                     <string id="tooltip">Make paths non-selectable</string>
                 </section>
                 <section id="freeze_comments">
-                    <string id="name">Freeze Comments</string>
+                    <string id="label">Freeze Comments</string>
                     <string id="tooltip">Make comments non-selectable</string>
                 </section>
                 <section id="diagnostic_tool">
-                    <string id="name">Level Diagnostics Tool...</string>
+                    <string id="label">Level Diagnostics Tool...</string>
                     <string id="tooltip">Find and fix problems with the level</string>
                 </section>
             </section>
@@ -1132,83 +1132,83 @@
             <string id="name">&amp;View</string>
             <section id="item">
                 <section id="zoom_max">
-                    <string id="name">Zoom to Maximum</string>
+                    <string id="label">Zoom to Maximum</string>
                     <string id="tooltip">Zoom in all the way</string>
                 </section>
                 <section id="zoom_in">
-                    <string id="name">Zoom In</string>
+                    <string id="label">Zoom In</string>
                     <string id="tooltip">Zoom into the main level view</string>
                 </section>
                 <section id="zoom_actual">
-                    <string id="name">Zoom 100%</string>
+                    <string id="label">Zoom 100%</string>
                     <string id="tooltip">Show the level at the default zoom</string>
                 </section>
                 <section id="zoom_out">
-                    <string id="name">Zoom Out</string>
+                    <string id="label">Zoom Out</string>
                     <string id="tooltip">Zoom out of the main level view</string>
                 </section>
                 <section id="zoom_min">
-                    <string id="name">Zoom to Minimum</string>
+                    <string id="label">Zoom to Minimum</string>
                     <string id="tooltip">Zoom out all the way</string>
                 </section>
                 <section id="switch_grid">
-                    <string id="name">Switch Grid</string>
+                    <string id="label">Switch Grid</string>
                     <string id="tooltip">Cycle through available grid views</string>
                 </section>
                 <section id="layer0">
-                    <string id="name">Show Layer 0</string>
+                    <string id="label">Show Layer 0</string>
                     <string id="tooltip">Toggle viewing of object layer 0</string>
                 </section>
                 <section id="layer1">
-                    <string id="name">Show Layer 1</string>
+                    <string id="label">Show Layer 1</string>
                     <string id="tooltip">Toggle viewing of object layer 1</string>
                 </section>
                 <section id="layer2">
-                    <string id="name">Show Layer 2</string>
+                    <string id="label">Show Layer 2</string>
                     <string id="tooltip">Toggle viewing of object layer 2</string>
                 </section>
                 <section id="tile_animations">
-                    <string id="name">Tileset Animations</string>
+                    <string id="label">Tileset Animations</string>
                     <string id="tooltip">Play tileset animations if they exist (may cause a slowdown)</string>
                 </section>
                 <section id="tile_collisions">
-                    <string id="name">Tileset Collisions</string>
+                    <string id="label">Tileset Collisions</string>
                     <string id="tooltip">View tileset collisions for existing objects</string>
                 </section>
                 <section id="real_view">
-                    <string id="name">Real View</string>
+                    <string id="label">Real View</string>
                     <string id="tooltip">Show special effects present in the level</string>
                 </section>
                 <section id="sprites">
-                    <string id="name">Show Sprites</string>
+                    <string id="label">Show Sprites</string>
                     <string id="tooltip">Toggle viewing of sprites</string>
                 </section>
                 <section id="sprite_images">
-                    <string id="name">Show Sprite Images</string>
+                    <string id="label">Show Sprite Images</string>
                     <string id="tooltip">Toggle viewing of sprite images</string>
                 </section>
                 <section id="entrances">
-                    <string id="name">Show Entrances</string>
+                    <string id="label">Show Entrances</string>
                     <string id="tooltip">Toggle viewing of entrances</string>
                 </section>
                 <section id="locations">
-                    <string id="name">Show Locations</string>
+                    <string id="label">Show Locations</string>
                     <string id="tooltip">Toggle viewing of locations</string>
                 </section>
                 <section id="paths">
-                    <string id="name">Show Paths</string>
+                    <string id="label">Show Paths</string>
                     <string id="tooltip">Toggle viewing of paths</string>
                 </section>
                 <section id="comments">
-                    <string id="name">Show Comments</string>
+                    <string id="label">Show Comments</string>
                     <string id="tooltip">Toggle viewing of comments</string>
                 </section>
                 <section id="level_overview">
-                    <string id="name">Level Overview</string>
+                    <string id="label">Level Overview</string>
                     <string id="tooltip">Show or hide the Level Overview window</string>
                 </section>
                 <section id="palette">
-                    <string id="name">Palette</string>
+                    <string id="label">Palette</string>
                     <string id="tooltip">Show or hide the Palette window</string>
                 </section>
             </section>
@@ -1217,39 +1217,39 @@
             <string id="name">&amp;Settings</string>
             <section id="item">
                 <section id="area_options">
-                    <string id="name">Area Options...</string>
+                    <string id="label">Area Options...</string>
                     <string id="tooltip">Control tileset swapping, stage timer, entrance on load, and stage wrap</string>
                 </section>
                 <section id="camera_profiles">
-                    <string id="name">Camera Profiles...</string>
+                    <string id="label">Camera Profiles...</string>
                     <string id="tooltip">Edit event-activated camera settings</string>
                 </section>
                 <section id="zone_settings">
-                    <string id="name">Zone Settings...</string>
+                    <string id="label">Zone Settings...</string>
                     <string id="tooltip">Zone creation, deletion, and preference editing</string>
                 </section>
                 <section id="backgrounds">
-                    <string id="name">Backgrounds...</string>
+                    <string id="label">Backgrounds...</string>
                     <string id="tooltip">Apply backgrounds to individual zones in the current area</string>
                 </section>
                 <section id="add_area">
-                    <string id="name">Add New Area</string>
+                    <string id="label">Add New Area</string>
                     <string id="tooltip">Add a new area (sublevel) to this level</string>
                 </section>
                 <section id="import_area">
-                    <string id="name">Import Area from Level...</string>
+                    <string id="label">Import Area from Level...</string>
                     <string id="tooltip">Import an area (sublevel) from another level file</string>
                 </section>
                 <section id="delete_area">
-                    <string id="name">Delete Current Area...</string>
+                    <string id="label">Delete Current Area...</string>
                     <string id="tooltip">Delete the area (sublevel) currently open from the level</string>
                 </section>
                 <section id="reload_tilesets">
-                    <string id="name">Reload Tilesets</string>
+                    <string id="label">Reload Tilesets</string>
                     <string id="tooltip">Reload the tileset data files, including any changes made since the level was loaded</string>
                 </section>
                 <section id="reload_spritedata">
-                    <string id="name">Reload Spritedata</string>
+                    <string id="label">Reload Spritedata</string>
                     <string id="tooltip">Reload the spritedata file, including any changes made since the level was loaded</string>
                 </section>
             </section>
@@ -1258,19 +1258,19 @@
             <string id="name">&amp;Help</string>
             <section id="item">
                 <section id="about_reggie">
-                    <string id="name">About Reggie Next...</string>
+                    <string id="label">About Reggie Next...</string>
                     <string id="tooltip">Info about the program, and the team behind it</string>
                 </section>
                 <section id="help_contents">
-                    <string id="name">Help Contents...</string>
+                    <string id="label">Help Contents...</string>
                     <string id="tooltip">Help documentation for the needy newbie</string>
                 </section>
                 <section id="tips">
-                    <string id="name">Reggie Next Tips...</string>
+                    <string id="label">Reggie Next Tips...</string>
                     <string id="tooltip">Tips and controls for beginners and power users</string>
                 </section>
                 <section id="about_qt">
-                    <string id="name">About PyQt...</string>
+                    <string id="label">About PyQt...</string>
                     <string id="tooltip">About the Qt library Reggie Next is based on</string>
                 </section>
                 <section id="module_info">
@@ -1280,7 +1280,7 @@
             </section>
         </section>
         <section id="editor_toolbar">
-            <string id="name">Editor Toolbar</string>
+            <string id="label">Editor Toolbar</string>
         </section>
     </section>
     <section id="palette">

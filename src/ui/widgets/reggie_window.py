@@ -546,7 +546,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             toggled = new_toggled
 
         if not hasattr(self, 'toolbar'):
-            self.toolbar = self.addToolBar(globals_.trans.string('menu_bar.editor_toolbar.name'))
+            self.toolbar = self.addToolBar(globals_.trans.string('menu_bar.editor_toolbar.label'))
         else:
             if self.toolbar is not None:
                 self.toolbar.clear()
@@ -586,7 +586,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                    QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable | \
                    QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable
 
-        overview_dock = self.create_dock_widget(globals_.trans.string('menu_bar.view.item.level_overview.name'), 'leveloverview', self.level_overview,
+        overview_dock = self.create_dock_widget(globals_.trans.string('menu_bar.view.item.level_overview.label'), 'leveloverview', self.level_overview,
                                               features, Qt.DockWidgetArea.RightDockWidgetArea, None, True, False)
         self.level_overview_dock = overview_dock
 
@@ -631,7 +631,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                    QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable | \
                    QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable
 
-        palette_dock = self.create_dock_widget(globals_.trans.string('menu_bar.view.item.palette.name'), 'palette', None, features,
+        palette_dock = self.create_dock_widget(globals_.trans.string('menu_bar.view.item.palette.label'), 'palette', None, features,
                                              Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, True, False, True)
         self.palette_dock = cast(PaletteDock, palette_dock)
 

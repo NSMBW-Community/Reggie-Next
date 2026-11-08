@@ -73,15 +73,15 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
 
         # Add labels
         layout.addRow(globals_.trans.string('common.id_colon'), self.path_id)
-        layout.addRow(globals_.trans.string('dialog.path_data_editor.loops.name'), self.loops)
+        layout.addRow(globals_.trans.string('dialog.path_data_editor.loops.label'), self.loops)
         layout.addRow(self.mode_button)
         layout.addRow(createHorzLine())
 
         layout.addRow(self.editing_label)
         layout.addRow(globals_.trans.string('common.id_colon'), self.node_id)
-        layout.addRow(globals_.trans.string('dialog.path_data_editor.speed.name'), self.speed)
-        layout.addRow(globals_.trans.string('dialog.path_data_editor.accel.name'), self.accel)
-        layout.addRow(globals_.trans.string('dialog.path_data_editor.delay.name'), self.delay)
+        layout.addRow(globals_.trans.string('dialog.path_data_editor.speed.label'), self.speed)
+        layout.addRow(globals_.trans.string('dialog.path_data_editor.accel.label'), self.accel)
+        layout.addRow(globals_.trans.string('dialog.path_data_editor.delay.label'), self.delay)
 
         self.set_dummy()
 

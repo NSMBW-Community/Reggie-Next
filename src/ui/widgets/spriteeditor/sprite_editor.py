@@ -80,28 +80,28 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
         self.noteButton = QtWidgets.QToolButton()
         self.noteButton.setIcon(GetIcon('sticky-note-text'))
-        self.noteButton.setText(globals_.trans.string('dialog.sprite_data_editor.notes.name'))
+        self.noteButton.setText(globals_.trans.string('dialog.sprite_data_editor.notes.label'))
         self.noteButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.noteButton.setAutoRaise(True)
         self.noteButton.clicked.connect(self.ShowNoteTooltip)
 
         self.depButton = QtWidgets.QToolButton()
         self.depButton.setIcon(GetIcon('node-select-child'))
-        self.depButton.setText(globals_.trans.string('dialog.sprite_data_editor.notes.name'))
+        self.depButton.setText(globals_.trans.string('dialog.sprite_data_editor.notes.label'))
         self.depButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.depButton.setAutoRaise(True)
         self.depButton.clicked.connect(self.ShowDependencies)
 
         self.relatedObjFilesButton = QtWidgets.QToolButton()
         self.relatedObjFilesButton.setIcon(GetIcon('documents-stack'))
-        self.relatedObjFilesButton.setText(globals_.trans.string('dialog.sprite_data_editor.object_files.name'))
+        self.relatedObjFilesButton.setText(globals_.trans.string('dialog.sprite_data_editor.object_files.label'))
         self.relatedObjFilesButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.relatedObjFilesButton.setAutoRaise(True)
         self.relatedObjFilesButton.clicked.connect(self.ShowRelatedObjFilesTooltip)
 
         self.advNoteButton = QtWidgets.QToolButton()
         self.advNoteButton.setIcon(GetIcon('sticky-note-text-advanced'))
-        self.advNoteButton.setText(globals_.trans.string('dialog.sprite_data_editor.advanced_notes.name'))
+        self.advNoteButton.setText(globals_.trans.string('dialog.sprite_data_editor.advanced_notes.label'))
         self.advNoteButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.advNoteButton.setAutoRaise(True)
         self.advNoteButton.clicked.connect(self.ShowAdvancedNoteTooltip)
@@ -110,7 +110,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
         self.yoshiInfo = QtWidgets.QToolButton()
         self.yoshiInfo.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
-        self.yoshiInfo.setText(globals_.trans.string('dialog.sprite_data_editor.notes.name'))
+        self.yoshiInfo.setText(globals_.trans.string('dialog.sprite_data_editor.notes.label'))
         self.yoshiInfo.setAutoRaise(True)
         self.yoshiInfo.clicked.connect(self.ShowYoshiTooltip)
 
@@ -449,7 +449,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
             if hasattr(sprite, 'layer_title'):
                 title = sprite.layer_title
             else:
-                title = globals_.trans.string('dialog.sprite_data_editor.property_decoder.layer_default.name')
+                title = globals_.trans.string('dialog.sprite_data_editor.property_decoder.layer_default.label')
 
             if hasattr(sprite, 'layer_comment'):
                 comment = sprite.layer_comment
