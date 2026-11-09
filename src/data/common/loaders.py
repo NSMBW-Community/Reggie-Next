@@ -29,7 +29,7 @@ from data.tileset.tile.tile_def import TileDef
 from data.tileset.tile.tileset_tile import TilesetTile
 from data.tileset.tileset_category import TilesetCategory, TilesetFileEntry
 from libs import lh, lib_versions, lz77, tpl
-from data.common.translation_section import TranslationSection
+from data.common.translation import Translation
 from ui.dialogs.about import AboutDialog
 from ui.dialogs.diagnostic_tool import DiagnosticToolDialog
 from ui.dialogs.object_swap import ObjectTypeSwapDialog
@@ -1952,7 +1952,7 @@ def LoadTranslation() -> None:
     if name in (None, 'None', 'English', '', 0):
         return
 
-    globals_.trans |= TranslationSection.from_xml(name)
+    globals_.trans |= Translation.from_xml(name)
 
 def DecompressLevel(data: bytes, name: str) -> bytes | None:
     """

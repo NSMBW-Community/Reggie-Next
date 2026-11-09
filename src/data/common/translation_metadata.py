@@ -8,7 +8,7 @@ class TranslationMetadata:
 
     def __or__(self, other: "TranslationMetadata") -> "TranslationMetadata":
         self.name = other.name if other.name else self.name
-        self.versin = other.versin if other.versin else self.versin
+        self.version = other.version if other.version else self.version
         self.translator = other.translator if other.translator else self.translator
         self.files = other.files if other.files else self.files
         self.strings = other.strings if other.strings else self.strings
