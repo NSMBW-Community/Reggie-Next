@@ -143,6 +143,11 @@ class NSMBWLevel(AbstractLevel):
 
             course, L0, L1, L2, area_meta = area.save()
 
+            # Prevent an empty Layer 1 from crashing the game
+            # (0xFFFF indicates the end of file)
+            if L1 is None:
+                L1 = bytes([0xFF, 0xFF])
+
             # Layers 0 and 2 are optional, but the game assumes that the course
             # file and layer 1 will always exist (see dBg_c::CheckExistLayer())
             newArchive[f'course/course{area.areanum}.bin'] = course
