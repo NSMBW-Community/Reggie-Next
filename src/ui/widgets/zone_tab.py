@@ -471,16 +471,16 @@ class ZoneTab(QtWidgets.QWidget):
         if self.preset_chooser.currentText() == globals_.trans.string('common.none_paren'):
             return
 
+        # Since a preset is now chosen, remove the None option from the list
+        if self.preset_chooser.itemText(0) == globals_.trans.string('common.none_paren'):
+            self.preset_chooser.removeItem(0)
+
         w, h = self.size_presets[self.preset_chooser.currentIndex()]
 
         self.auto_change_size = True
         self.zone_width.setValue(w)
         self.zone_height.setValue(h)
         self.auto_change_size = False
-
-        # Since a preset is now chosen, remove the None option from the list
-        if self.preset_chooser.itemText(0) == globals_.trans.string('common.none_paren'):
-            self.preset_chooser.removeItem(0)
 
     def preset_changed(self, _i: int | None = None) -> None:
         """
