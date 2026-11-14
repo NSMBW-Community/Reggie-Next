@@ -61,6 +61,9 @@ class DiagnosticWidget(QtWidgets.QWidget):
         """
         Checks for errors and updates the widget accordingly
         """
+        if not globals_.Area._is_loaded:
+            return
+
         result, error_num = self.diag_tool.populate_list()
 
         icons = [
