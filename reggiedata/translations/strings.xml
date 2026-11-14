@@ -379,6 +379,7 @@
                     <string id="place_objects_at_full_size">Place objects at their full size</string>
                     <string id="display_zone_bounds">Display rectangles indicating the zone bounds</string>
                     <string id="show_unknown_sprite_warning">Display warnings when unknown sprites are present in the level</string>
+                    <string id="show_unknown_tileset_warning">Display warnings when tilesets cannot be found</string>
                     <section id="translation_info">
                         <string id="title">Translation Info</string>
                         <string id="info">[b][name][/b] - Version [version][br]Translators: [translator]</string>

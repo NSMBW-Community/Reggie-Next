@@ -88,6 +88,9 @@ class GeneralTab(PreferenceTabWidget):
         # Display unknown sprite warnings
         self.show_unk_sprite_msg = QtWidgets.QCheckBox(globals_.trans.string('dialog.preferences.tab.general.show_unknown_sprite_warning'))
 
+        # Display unknown tileset warnings
+        self.show_unk_tileset_msg = QtWidgets.QCheckBox(globals_.trans.string('dialog.preferences.tab.general.show_unknown_tileset_warning'))
+
         main_layout = QtWidgets.QFormLayout()
         main_layout.addRow(globals_.trans.string('dialog.preferences.tab.general.translation_info.title'), self.trans_combo)
         main_layout.addWidget(trans_info_box)
@@ -100,6 +103,7 @@ class GeneralTab(PreferenceTabWidget):
         main_layout.addWidget(self.reset_data_hide)
         main_layout.addWidget(self.full_object_size)
         main_layout.addWidget(self.show_unk_sprite_msg)
+        main_layout.addWidget(self.show_unk_tileset_msg)
         main_layout.addWidget(auto_diag_box)
         self.setLayout(main_layout)
 
@@ -137,6 +141,7 @@ class GeneralTab(PreferenceTabWidget):
 
         self.full_object_size.setChecked(globals_.PlaceObjectsAtFullSize)
         self.show_unk_sprite_msg.setChecked(globals_.ShowUnknownSpriteWarning)
+        self.show_unk_tileset_msg.setChecked(globals_.ShowUnknownTilesetWarning)
 
         self.auto_diag.setChecked(globals_.AutoDiagEnabled)
         self.diag_freq.setEnabled(globals_.AutoDiagEnabled)
@@ -182,6 +187,9 @@ class GeneralTab(PreferenceTabWidget):
 
         globals_.ShowUnknownSpriteWarning = self.show_unk_sprite_msg.isChecked()
         setSetting('ShowUnknownSpriteWarning', globals_.ShowUnknownSpriteWarning)
+
+        globals_.ShowUnknownTilesetWarning = self.show_unk_tileset_msg.isChecked()
+        setSetting('ShowUnknownTilesetWarning', globals_.ShowUnknownTilesetWarning)
 
         # Update diagnostic widget
         globals_.mainWindow.diagnostic.update_widget()

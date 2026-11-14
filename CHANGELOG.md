@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added support for editing the two padding bytes present in all sprites.
 - Added a viewer for resource lists in the Area Options' Loaded Sprites tab.
 - Added new "Limit" ID type for sprites.
+- Added a toggle to ignore unknown tileset warnings.
 
 ### Changed
 
