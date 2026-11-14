@@ -156,9 +156,8 @@ class GeneralTab(PreferenceTabWidget):
         # Get the translation's folder name
         name = self.translations[self.trans_combo.currentIndex()][0]
         if setting('Translation', 'English') not in ('None', name):
-            print(setting('Translation', 'English'))
-            print(name)
             show_restart_warning = True
+
         setSetting('Translation', name)
 
         globals_.DrawEntIndicators = self.zone_entrance_line.isChecked()

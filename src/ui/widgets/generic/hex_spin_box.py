@@ -9,8 +9,7 @@ class HexSpinBox(QtWidgets.QSpinBox):
             self.min = min
             self.max = max
 
-        def validate(self, a0: str, a1: int) -> tuple[QtGui.QValidator.State, str, int]:
-            print(type(a0), type(a1))
+        def validate(self, a0: str | None, a1: int) -> tuple[QtGui.QValidator.State, str, int]:
             if not a0:
                 # The empty string is a prefix of a valid input
                 return (QtGui.QValidator.State.Intermediate, '', a1)
@@ -55,11 +54,11 @@ class HexSpinBox(QtWidgets.QSpinBox):
         QtWidgets.QSpinBox.setMinimum(self, min)
         QtWidgets.QSpinBox.setMaximum(self, max)
 
-    def validate(self, input: str, pos: int) -> tuple[QtGui.QValidator.State, str, int]:
+    def validate(self, input: str | None, pos: int) -> tuple[QtGui.QValidator.State, str, int]:
         return self.validator.validate(input, pos)
 
     def textFromValue(self, v: int) -> str:
         return self.format % v
 
-    def valueFromText(self, text: str) -> int:
+    def valueFromText(self, text: str | None) -> int:
         return int(str(text), 16)
