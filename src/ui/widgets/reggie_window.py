@@ -841,7 +841,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         dlg = ItemShiftDialog()
         if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
-            dlg.shift_items()
+            self.view.shift_items(dlg.offset_x.value(), dlg.offset_y.value(), False)
 
     def exec_tileset_swap(self) -> None:
         """

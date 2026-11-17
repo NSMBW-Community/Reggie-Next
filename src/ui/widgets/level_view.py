@@ -574,29 +574,26 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             super().keyPressEvent(event)
             return
 
-        stepX = 0
-        stepY = 0
-        stepAmt = 16 # This doesn't matter much since we don't override snapping
+        step_x = 0
+        step_y = 0
+        step_amt = 16 # This doesn't matter much since we don't override snapping
         if event.modifiers() & QtCore.Qt.KeyboardModifier.AltModifier:
-            stepAmt = 1
+            step_amt = 1
 
         if event.key() == QtCore.Qt.Key.Key_Left:
-            stepX = -stepAmt
-            stepY = 0
+            step_x = -step_amt
+            step_y = 0
         elif event.key() == QtCore.Qt.Key.Key_Right:
-            stepX = stepAmt
-            stepY = 0
+            step_x = step_amt
+            step_y = 0
         elif event.key() == QtCore.Qt.Key.Key_Up:
-            stepX = 0
-            stepY = -stepAmt
+            step_x = 0
+            step_y = -step_amt
         elif event.key() == QtCore.Qt.Key.Key_Down:
-            stepX = 0
-            stepY = stepAmt
+            step_x = 0
+            step_y = step_amt
 
-        for item in scene.selectedItems():
-            curX = item.pos().x()
-            curY = item.pos().y()
-            item.setPos(curX + stepX, curY + stepY)
+        self.shift_items(step_x, step_y, True)
 
     def position_hovered(self, x: float, y: float) -> None:
         """
@@ -644,3 +641,52 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             globals_.trans.string('widget.status_bar.cursor_pos', ('[objx]', int(x / 24)), ('[objy]', int(y / 24)), ('[sprx]', int(x / 1.5)),
                             ('[spry]', int(y / 1.5))))
         globals_.mainWindow.hoverLabel.setText(info)
+
+    @staticmethod
+    def shift_items(offs_x: int, offs_y: int, is_key_movement: bool) -> None:
+        """
+        Shifts selected items by the specified amount
+        """
+        items = globals_.mainWindow.scene.selectedItems()
+        if not items:
+            return
+
+        if ((offs_x % 16) != 0) or ((offs_y % 16) != 0):
+            # Warn if any objects exist
+            objects_exist = False
+            type_obj = ObjectItem
+
+            for obj in items:
+                if isinstance(obj, type_obj):
+                    objects_exist = True
+                    break
+
+            if objects_exist:
+                # Objects are selected and the offset is not a multiple of 16.
+                # We should warn the user that we will round the offset to the
+                # nearest multiple of 16, because objects can only be placed on
+                # the grid.
+                if not is_key_movement:
+                    result = QtWidgets.QMessageBox.warning(None, globals_.trans.string('common.warning'), globals_.trans.string('dialog.shift_item.object_warn'),
+                                                            QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
+                    if result == QtWidgets.QMessageBox.StandardButton.No:
+                        return
+
+                # Round the offset to the nearest multiple of 16
+                offs_x = 16 * round(offs_x / 16)
+                offs_y = 16 * round(offs_y / 16)
+
+        # Do we need to do anything?
+        if offs_x == 0 and offs_y == 0:
+            return
+
+        pos_offs_x = offs_x * 1.5
+        pos_offs_y = offs_y * 1.5
+
+        globals_.OverrideSnapping = True
+
+        for obj in items:
+            obj.setPos(obj.x() + pos_offs_x, obj.y() + pos_offs_y)
+
+        globals_.OverrideSnapping = False
+        SetDirty()
