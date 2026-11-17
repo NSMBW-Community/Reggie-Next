@@ -15,10 +15,11 @@ class Path:
         """
         A simple class to store the data belonging to a node.
         """
-        def __init__(self, speed: float, accel: float, delay: int) -> None:
+        def __init__(self, speed: float, accel: float, delay: int, hana_dist: int) -> None:
             self.speed = speed
             self.accel = accel
             self.delay = delay
+            self.hana_dist = hana_dist
 
     def __init__(self, path_id: int, scene: LevelScene, loops: bool = False) -> None:
         self._id = path_id
@@ -55,7 +56,8 @@ class Path:
 
         return True
 
-    def set_node_data(self, node: PathItem, speed: float | None = None, accel: float | None = None, delay: int | None = None) -> bool:
+    def set_node_data(self, node: PathItem, speed: float | None = None, accel: float | None = None,
+                      delay: int | None = None, hana_dist: int | None = None) -> bool:
         """
         This function can change the speed, accel and delay values associated
         with a specific node. It only changes the parameters that are given, and
@@ -63,7 +65,7 @@ class Path:
         """
         data = self._node_data[self.get_index(node)]
 
-        old_data = (data.speed, data.accel, data.delay)
+        old_data = (data.speed, data.accel, data.delay, data.hana_dist)
 
         if speed is not None:
             data.speed = speed
@@ -71,8 +73,10 @@ class Path:
             data.accel = accel
         if delay is not None:
             data.delay = delay
+        if hana_dist is not None:
+            data.hana_dist = hana_dist
 
-        return (data.speed, data.accel, data.delay) != old_data
+        return (data.speed, data.accel, data.delay, data.hana_dist) != old_data
 
     def set_loops(self, value: bool) -> bool:
         """
@@ -114,15 +118,15 @@ class Path:
     def get_index(self, node: PathItem) -> int:
         return self._nodes.index(node)
 
-    def get_node_data(self, index: int) -> tuple[int, int, float, float, float]:
+    def get_node_data(self, index: int) -> tuple[int, int, float, float, int, int]:
         """
         Returns a tuple containing the data required for the binary representation
-        of the node at the specified index: x, y, speed, accel, delay.
+        of the node at the specified index: x, y, speed, accel, delay, hana_dist.
         """
         node = self._nodes[index]
         data = self._node_data[index]
 
-        return node.objx, node.objy, data.speed, data.accel, data.delay
+        return node.objx, node.objy, data.speed, data.accel, data.delay, data.hana_dist
 
     def get_points(self) -> list[QtCore.QPointF]:
         """
@@ -139,9 +143,9 @@ class Path:
 
         return points
 
-    def get_data_for_node(self, node_id: int) -> tuple[float, float, int]:
+    def get_data_for_node(self, node_id: int) -> tuple[float, float, int, int]:
         data = self._node_data[node_id]
-        return data.speed, data.accel, data.delay
+        return data.speed, data.accel, data.delay, data.hana_dist
 
     def add_node(
         self,
@@ -150,6 +154,7 @@ class Path:
         speed: float = 0.5,
         accel: float = 0.00498,
         delay: int = 0,
+        hana_dist: int = 0,
         index: int | None = None,
         add_to_list: bool = True,
         add_to_scene: bool = True,
@@ -164,7 +169,7 @@ class Path:
         node = PathItem(x, y, self._id, index, self)
 
         self._nodes.insert(index, node)
-        self._node_data.insert(index, Path.NodeData(speed, accel, delay))
+        self._node_data.insert(index, Path.NodeData(speed, accel, delay, hana_dist))
 
         if add_to_scene:
             self._scene.addItem(node)

@@ -97,8 +97,8 @@ class ReggieClip:
                     output.append(f'4:{path._id}:{int(path._loops)}')
                     curr_path_id = item.pathid
 
-                x, y, speed, accel, delay = path.get_node_data(item.nodeid)
-                output.append(f'5:{item.pathid}:{item.nodeid}:{x}:{y}:{speed}:{accel}:{delay}')
+                x, y, speed, accel, delay, hana_dist = path.get_node_data(item.nodeid)
+                output.append(f'5:{item.pathid}:{item.nodeid}:{x}:{y}:{speed}:{accel}:{delay}:{hana_dist}')
 
         # Comments
         for com in comments:
@@ -406,8 +406,15 @@ class ReggieClip:
 
                 # Path Node
                 elif split[0] == '5':
-                    if len(split) != 8:
+                    if len(split) not in (8, 9):
                         continue
+
+                    # Hana distance is a new field
+                    # so old clips may not have it
+                    try:
+                        hana_dist = int(split[8])
+                    except IndexError:
+                        hana_dist = 0
 
                     pathID = int(split[1])
                     nodeID = int(split[2])
@@ -418,6 +425,7 @@ class ReggieClip:
                     delay = int(split[7])
 
                     # Make sure the clip has the parent path
+                    path: Path
                     if paths is not None:
                         path = paths[0]
                         for p in paths:
@@ -425,7 +433,7 @@ class ReggieClip:
                                 path = p
                                 break
 
-                        node = path.add_node(objx, objy, speed, accel, delay, nodeID, add_to_scene, add_to_scene)
+                        node = path.add_node(objx, objy, speed, accel, delay, nodeID, hana_dist, add_to_scene, add_to_scene)
                         path_nodes.append(node)
 
                 elif split[0] == '6':

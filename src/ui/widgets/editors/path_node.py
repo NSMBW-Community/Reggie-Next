@@ -26,16 +26,18 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         FLT_DIG = 6
         FLT_MAX = 3.402823466e+38
 
+        speed_accel_comp = globals_.trans.string('dialog.path_data_editor.speed_accel_compat')
+
         # Create widgets
         self.speed = QtWidgets.QDoubleSpinBox()
         self.speed.setRange(-FLT_MAX, FLT_MAX)
-        self.speed.setToolTip(globals_.trans.string('dialog.path_data_editor.speed.tooltip'))
+        self.speed.setToolTip(f'{globals_.trans.string('dialog.path_data_editor.speed.tooltip')}{speed_accel_comp}')
         self.speed.setDecimals(FLT_DIG)
         self.speed.valueChanged.connect(self.handle_speed_changed)
 
         self.accel = QtWidgets.QDoubleSpinBox()
-        self.accel.setRange(-FLT_MAX, FLT_MAX)
-        self.accel.setToolTip(globals_.trans.string('dialog.path_data_editor.accel.tooltip'))
+        self.accel.setRange(0.0001, FLT_MAX)
+        self.accel.setToolTip(f'{globals_.trans.string('dialog.path_data_editor.accel.tooltip')}{speed_accel_comp}')
         self.accel.setDecimals(FLT_DIG)
         self.accel.valueChanged.connect(self.handle_accel_changed)
 
@@ -43,6 +45,11 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         self.delay.setRange(0, 65535)
         self.delay.setToolTip(globals_.trans.string('dialog.path_data_editor.delay.tooltip'))
         self.delay.valueChanged.connect(self.handle_delay_changed)
+
+        self.hana_dist = QtWidgets.QSpinBox()
+        self.hana_dist.setRange(0, 65535)
+        self.hana_dist.setToolTip(globals_.trans.string('dialog.path_data_editor.hana_dist.tooltip'))
+        self.hana_dist.valueChanged.connect(self.handle_hana_dist_changed)
 
         self.loops = QtWidgets.QCheckBox()
         self.loops.setToolTip(globals_.trans.string('dialog.path_data_editor.loops.tooltip'))
@@ -82,6 +89,7 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         layout.addRow(globals_.trans.string('dialog.path_data_editor.speed.label'), self.speed)
         layout.addRow(globals_.trans.string('dialog.path_data_editor.accel.label'), self.accel)
         layout.addRow(globals_.trans.string('dialog.path_data_editor.delay.label'), self.delay)
+        layout.addRow(globals_.trans.string('dialog.path_data_editor.hana_dist.label'), self.hana_dist)
 
         self.set_dummy()
 
@@ -127,7 +135,7 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         self.editing_label.setText(globals_.trans.string('dialog.path_data_editor.info.node', ('[id]', path_item.nodeid)))
 
         path: Path = path_item.path
-        speed, accel, delay = path.get_data_for_node(path_item.nodeid)
+        speed, accel, delay, hana_dist = path.get_data_for_node(path_item.nodeid)
         loops = path.get_loops()
         path_len = len(path)
 
@@ -140,6 +148,7 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         self.speed.setValue(speed)
         self.accel.setValue(accel)
         self.delay.setValue(delay)
+        self.hana_dist.setValue(hana_dist)
         self.loops.setChecked(loops)
 
         self.update_flag = False
@@ -178,7 +187,17 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         if self.update_flag:
             return
 
-        if self.path_node is not None and  self.path_node.path.set_node_data(self.path_node, delay=i):
+        if self.path_node is not None and self.path_node.path.set_node_data(self.path_node, delay=i):
+            SetDirty()
+
+    def handle_hana_dist_changed(self, i: int) -> None:
+        """
+        Handler for the hana_dist changing
+        """
+        if self.update_flag:
+            return
+
+        if self.path_node is not None and self.path_node.path.set_node_data(self.path_node, hana_dist=i):
             SetDirty()
 
     def handle_loops_changed(self, checked: bool) -> None:

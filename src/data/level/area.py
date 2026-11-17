@@ -557,7 +557,7 @@ class Area:
             path = Path(int(data[0]), main_window.scene, data[3] == 2)
 
             for node in nodes:
-                path.add_node(node['x'], node['y'], node['speed'], node['accel'], node['delay'], add_to_scene=False)
+                path.add_node(node['x'], node['y'], node['speed'], node['accel'], node['delay'], node['hana_dist'], add_to_scene=False)
 
             paths.append(path)
 
@@ -569,7 +569,7 @@ class Area:
         """
         nodes = []
         nodedata = self.blocks[13]
-        nodestruct = struct.Struct('>HHffhxx')
+        nodestruct = struct.Struct('>HHffhh')
         unpack = nodestruct.unpack_from
 
         for offset in range(startindex * 16, (startindex + count) * 16, 16):
@@ -580,7 +580,8 @@ class Area:
                 'y': int(data[1]),
                 'speed': float(data[2]),
                 'accel': float(data[3]),
-                'delay': int(data[4])
+                'delay': int(data[4]),
+                'hana_dist': int(data[5])
             })
 
         return nodes
@@ -784,7 +785,7 @@ class Area:
         """
         Writes the path node data to the block 14 bytearray
         """
-        nodestruct = struct.Struct('>HHffhxx')
+        nodestruct = struct.Struct('>HHffhh')
 
         for i in range(len(path)):
             nodestruct.pack_into(buffer, offset, *path.get_node_data(i))

@@ -346,16 +346,21 @@
             </section>
             <section id="speed">
                 <string id="label">Speed:</string>
-                <string id="tooltip">[b]Speed:[/b][br]Unknown unit. Mess around and report your findings!</string>
+                <string id="tooltip">[b]Speed:[/b][br]This controls the speed of the sprite following this path.</string>
             </section>
             <section id="accel">
-                <string id="label">Accel:</string>
-                <string id="tooltip">[b]Accel:[/b][br]Unknown unit. Mess around and report your findings!</string>
+                <string id="label">Acceleration:</string>
+                <string id="tooltip">[b]Acceleration:[/b][br]This controls how fast the sprite steps to this node's speed.</string>
             </section>
             <section id="delay">
                 <string id="label">Delay:</string>
-                <string id="tooltip">[b]Delay:[/b][br]Amount of time to stop here (at this node) before continuing to next node. Unit is one frame (60 for one second).</string>
+                <string id="tooltip">[b]Delay:[/b][br]Amount of time to stop at this node before continuing to next node. Unit is one frame (60 for one second).[br][br]Note: This only applies to the following sprites:[br]* [368] Lighting - Path Controlled Flashlight Raft[br]* [475] Path Controlled Ice Floe[br]* Sprites linked to [159] Movement Controller - Uses Paths[br][br]When using with [241] (Unused) Big Wiggler Spawner, setting this to an odd value will result in the Wiggler moving slightly faster.</string>
             </section>
+            <section id="hana_dist">
+                <string id="label">Wiggler Distance:</string>
+                <string id="tooltip">[b]Wiggler Distance:[/b][br]This controls the distance (in tiles) between each Wiggler spawned by [241] (Unused) Big Wiggler Spawner.</string>
+            </section>
+            <string id="speed_accel_compat">[br][br]Note: This only applies to the following sprites:[br]* [91] Auto-Scrolling Controller[br]* [132] (Unused) Path Controlled Platform[br]* [287] (Unused) Path Controlled Ice Block[br]* Sprites linked to [159] Movement Controller - Uses Paths</string>
             <section id="placement_mode">
                 <section id="names">
                     <string id="append">Append Node to End of Path</string>
