@@ -32,6 +32,8 @@
         <string id="layer0">Layer 0</string>
         <string id="layer1">Layer 1</string>
         <string id="layer2">Layer 2</string>
+        <string id="width_colon">Width:</string>
+        <string id="height_colon">Height:</string>
     </section>
     <section id="dialog">
         <section id="about">
@@ -127,6 +129,7 @@
         </section>
         <section id="camera_profile">
             <string id="title">Camera Profiles</string>
+            <string id="list_title">Profiles in this Area:</string>
             <string id="editor_title">Modify Selected Camera Profile Properties</string>
             <string id="info">Camera Profiles can only be used with the "Event-Controlled" camera mode in the Zones dialog.[br]Transitions between zoom levels are instant, but can be hidden through careful use of zoom sprites (206).</string>
             <section id="event_id">
@@ -172,7 +175,7 @@
                 <string id="no_start_entrance">There is no start entrance in this area.</string>
                 <string id="start_entrance_left_edge">The start entrance is too close to the left edge of the zone.</string>
                 <string id="entrance_outside_zone">An entrance is outside of a zone.</string>
-                <string id="zone_max">There are more than 6 zones in this area.</string>
+                <string id="zone_max">There are more than six zones in this area.</string>
                 <string id="no_zones">There are no zones in this area.</string>
                 <string id="zones_too_close">Some zones are positioned too close together.</string>
                 <string id="zone_area_edge">A zone is positioned too close to the edges of this area.</string>
@@ -304,11 +307,9 @@
                 <string id="tooltip">[b]Y Pos:[/b][br]Specifies the Y position of the location</string>
             </section>
             <section id="width">
-                <string id="label">Width:</string>
                 <string id="tooltip">[b]Width:[/b][br]Specifies the width of the location</string>
             </section>
             <section id="height">
-                <string id="label">Height:</string>
                 <string id="tooltip">[b]Height:[/b][br]Specifies the height of the location</string>
             </section>
             <string id="none_selected">[i]No Location Selected[/i]</string>
@@ -353,7 +354,7 @@
             </section>
             <section id="delay">
                 <string id="label">Delay:</string>
-                <string id="tooltip">[b]Delay:[/b][br]Amount of time to stop here (at this node) before continuing to next node. Unit is 1/60 of a second (60 for 1 second)</string>
+                <string id="tooltip">[b]Delay:[/b][br]Amount of time to stop here (at this node) before continuing to next node. Unit is one frame (60 for one second).</string>
             </section>
             <section id="placement_mode">
                 <section id="names">
@@ -603,26 +604,24 @@
             <string id="new">New</string>
             <string id="duplicate">Duplicate</string>
             <string id="delete">Delete</string>
-            <string id="warning_max">You are trying to add more than 6 zones to a level - keep in mind that without the proper fix to the game, this will cause your level to [b]crash[/b] or have other strange issues![br][br]Are you sure you want to do this?</string>
+            <string id="warning_max">You are trying to add more than six zones to a level - keep in mind that without the proper fix to the game, this will cause your level to [b]crash[/b] or have other strange issues![br][br]Are you sure you want to do this?</string>
             <section id="dimensions">
                 <string id="title">Dimensions</string>
                 <string id="snap_8">Snap to 8x8 Grid</string>
                 <string id="snap_16">Snap to 16x16 Grid</string>
                 <section id="position_x">
                     <string id="text">X position:</string>
-                    <string id="tooltip">[b]X position:[/b][br]Sets the X Position of the upper left corner</string>
+                    <string id="tooltip">[b]X position:[/b][br]Sets the X position of the upper left corner</string>
                 </section>
                 <section id="position_y">
                     <string id="text">Y position:</string>
-                    <string id="tooltip">[b]Y position:[/b][br]Sets the Y Position of the upper left corner</string>
+                    <string id="tooltip">[b]Y position:[/b][br]Sets the Y position of the upper left corner</string>
                 </section>
-                <section id="size_x">
-                    <string id="text">X size:</string>
-                    <string id="tooltip">[b]X size:[/b][br]Sets the width of the zone</string>
+                <section id="width">
+                    <string id="tooltip">[b]Width:[/b][br]Sets the width of the zone</string>
                 </section>
-                <section id="size_y">
-                    <string id="text">Y size:</string>
-                    <string id="tooltip">[b]Y size:[/b][br]Sets the height of the zone</string>
+                <section id="height">
+                    <string id="tooltip">[b]Height:[/b][br]Sets the height of the zone</string>
                 </section>
                 <section id="preset">
                     <string id="text">Preset:</string>
@@ -648,16 +647,16 @@
                 </section>
                 <section id="visibility">
                     <section id="normal">
-                        <string id="list_tooltip">[b]Visibility:[/b][br]Hidden - Mario is hidden when moving behind objects on Layer 0[br]On Top - Mario is displayed above Layer 0 at all times.[br][br]Note: Entities behind layer 0 other than Mario are never visible</string>
+                        <string id="list_tooltip">[b]Visibility:[/b][br]Above Player - Mario is hidden when moving behind objects on Layer 0.[br]Below Player - Mario is displayed above Layer 0 at all times.[br][br]Note: Entities behind Layer 0 other than players are never visible.</string>
                         <section id="options">
-                            <string id="hidden">Layer 0: Hidden</string>
-                            <string id="on_top">Layer 0: On Top</string>
+                            <string id="hidden">Layer 0: Above Player</string>
+                            <string id="on_top">Layer 0: Below Player</string>
                         </section>
                     </section>
                     <section id="spotlight">
                         <string id="text">Layer 0 Spotlight</string>
-                        <string id="tooltip">[b]Visibility - Layer 0 Spotlight:[/b][br]Sets the visibility mode to spotlight. In Spotlight mode, moving behind layer 0 objects enables a spotlight that follows Mario around.</string>
-                        <string id="list_tooltip">[b]Visibility:[/b][br]Small - A small, centered spotlight affords visibility through layer 0.[br]Large - A large, centered spotlight affords visibility through layer 0[br]Extremely Large - An extremely large, centered spotlight, which spans the whole screen at all but the largest zoom levels, affords visibility through layer 0</string>
+                        <string id="tooltip">[b]Visibility - Layer 0 Spotlight:[/b][br]Sets the visibility mode to spotlight. In Spotlight mode, moving behind layer 0 objects enables a spotlight that cuts through the terrain and follows players around.</string>
+                        <string id="list_tooltip">[b]Visibility:[/b][br]Small - A small, centered spotlight affords visibility through layer 0.[br]Large - A large, centered spotlight affords visibility through layer 0.[br]Extremely Large - An extremely large, centered spotlight, which spans the whole screen at all but the largest zoom levels, affords visibility through layer 0.</string>
                         <section id="options">
                             <string id="small">Spotlight: Small</string>
                             <string id="large">Spotlight: Large</string>
@@ -667,7 +666,7 @@
                     <section id="darkness">
                         <string id="text">Full Darkness</string>
                         <string id="tooltip">[b]Visibility - Full Darkness:[/b][br]Sets the visibility mode to full darkness. In full dark mode, the screen is completely black and visibility is only provided by the available spotlight effect. Stars and some sprites can enhance the default visibility.</string>
-                        <string id="list_tooltip">[b]Visibility:[/b][br]Large Foglight - A large, organic lightsource surrounds Mario[br]Lightbeam - Mario is able to aim a conical lightbeam through use of the Wiimote[br]Large Focus Light - A large spotlight which changes size based upon player movement[br]Small Foglight - A small, organic lightsource surrounds Mario[br]Small Focuslight - A small spotlight which changes size based on player movement[br]Absolute Black - Visibility is provided only by fireballs, stars, and certain sprites</string>
+                        <string id="list_tooltip">[b]Visibility:[/b][br]Large Foglight - A large, organic lightsource surrounds Mario.[br]Lightbeam - Mario is able to aim a conical lightbeam through use of the Wiimote.[br]Large Focus Light - A large spotlight which changes size based upon player movement.[br]Small Foglight - A small, organic lightsource surrounds Mario.[br]Small Focuslight - A small spotlight which changes size based on player movement.[br]Absolute Black - Visibility is provided only by fireballs, stars, and certain sprites.</string>
                         <section id="options">
                             <string id="fog_large">Darkness: Large Foglight</string>
                             <string id="lightbeam">Darkness: Lightbeam</string>
@@ -678,7 +677,7 @@
                         </section>
                     </section>
                     <section id="spotlight_darkness">
-                        <string id="list_tooltip">[b]Visibility[/b][br]Small Spotlight and Small Focus Light - A small, centered spotlight affords visibility through layer 0, and a small spotlight which changes size based on player movement provides visibility through darkness</string>
+                        <string id="list_tooltip">[b]Visibility[/b][br]Small Spotlight and Small Focus Light - A small, centered spotlight affords visibility through layer 0, and a small spotlight which changes size based on player movement provides visibility through darkness.</string>
                         <section id="options">
                             <string id="spotlight_focus">Small Spotlight and Small Focus Light</string>
                         </section>
@@ -720,7 +719,7 @@
                 </section>
                 <section id="boss_flag">
                     <string id="text">Boss Flag:</string>
-                    <string id="tooltip">[b]Boss Flag:[/b][br]Set for bosses to allow proper music switching by sprites</string>
+                    <string id="tooltip">[b]Boss Flag:[/b][br]Set for bosses to allow for proper music switching</string>
                 </section>
             </section>
             <section id="camera">
@@ -794,13 +793,11 @@
         <section id="broken_spritedata">
             <string id="description">The sprite data file didn't load correctly. The following sprites have incorrect and/or broken data in them, and may not be editable correctly in the editor: [sprites]</string>
         </section>
-        <section id="corrupted_tileset_data">
-        </section>
         <section id="decompress">
             <string id="lh">Failed to decompress the LH-compressed file [file].</string>
             <string id="lz">Failed to decompress the LZ-compressed file [file].</string>
         </section>
-        <section id="game_patch">
+        <section id="game_def">
             <string id="no_name">The "[folder]" game patch has no 'name' attribute on the XML root node. The default game patch will instead be loaded.</string>
             <string id="restore_old">Restoring the previous game patch ([real_gamedef]) failed after failing to load [name]! The default game patch will instead be loaded.</string>
         </section>
@@ -813,7 +810,7 @@
         </section>
         <section id="missing_game_files">
             <string id="retail">This folder doesn't have all of the files from the extracted New Super Mario Bros. Wii Stage folder.</string>
-            <string id="game_patch">This folder doesn't seem to have the required files. In order to use the [game] game patch, you need the Stage folder, including the Texture folder and the level files contained within it.</string>
+            <string id="game_def">This folder doesn't seem to have the required files. In order to use the [game] game patch, you need the Stage folder, including the Texture folder and the level files contained within it.</string>
         </section>
         <section id="paste_many_files">
             <string id="description">You're trying to paste over 300 items at once.[br]This may take a while (depending on your computer speed), are you sure you want to continue?</string>
@@ -828,7 +825,7 @@
             <string id="multiple">This level contains sprite IDs ([ids]) which are not defined in the current game patch. These sprites will be displayed as "UNKNOWN" but can still be edited and saved.</string>
         </section>
     </section>
-    <section id="game_patch">
+    <section id="game_def">
         <section id="default_info">
             <string id="name">New Super Mario Bros. Wii</string>
             <string id="description">A new Mario adventure![br]Published by Nintendo in November 2009.</string>
@@ -1206,11 +1203,11 @@
                 </section>
                 <section id="level_overview">
                     <string id="label">Level Overview</string>
-                    <string id="tooltip">Show or hide the Level Overview window</string>
+                    <string id="tooltip">Show or hide the Level Overview dock</string>
                 </section>
                 <section id="palette">
                     <string id="label">Palette</string>
-                    <string id="tooltip">Show or hide the Palette window</string>
+                    <string id="tooltip">Show or hide the Palette dock</string>
                 </section>
             </section>
         </section>
@@ -1271,7 +1268,7 @@
                     <string id="tooltip">Tips and controls for beginners and power users</string>
                 </section>
                 <section id="about_qt">
-                    <string id="label">About PyQt...</string>
+                    <string id="label">About Qt...</string>
                     <string id="tooltip">About the Qt library Reggie Next is based on</string>
                 </section>
                 <section id="module_info">
@@ -1406,10 +1403,10 @@
                 <string id="error_none">No errors found.</string>
             </section>
         </section>
-        <section id="game_patch_menu">
+        <section id="game_def_menu">
             <string id="refresh_list">Refresh List</string>
         </section>
-        <section id="game_patch_viewer">
+        <section id="game_def_viewer">
             <section id="tooltip">
                 <string id="sprite_image">This game has custom sprite images</string>
             </section>

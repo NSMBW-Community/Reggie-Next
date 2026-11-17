@@ -72,8 +72,8 @@ class ReggieGameDefinition:
         self.custom = False
         self.base: ReggieGameDefinition | None = None  # gamedef to use as a base
         self.gamepath = None
-        self.name = globals_.trans.string('game_patch.default_info.name')
-        self.description = globals_.trans.string('game_patch.default_info.description')
+        self.name = globals_.trans.string('game_def.default_info.name')
+        self.description = globals_.trans.string('game_def.default_info.description')
         self.version = '2'
 
         self.sprites = sprites
@@ -123,10 +123,10 @@ class ReggieGameDefinition:
         self.name = root.get('name')
 
         if self.name is None:
-            QtWidgets.QMessageBox.warning(None, globals_.trans.string('error.title.warning'), globals_.trans.string('error.game_patch.no_name', ('[folder]', name)))
+            QtWidgets.QMessageBox.warning(None, globals_.trans.string('error.title.warning'), globals_.trans.string('error.game_def.no_name', ('[folder]', name)))
             return False
 
-        desc = root.get('description', globals_.trans.string('game_patch.unknown_info.description'))
+        desc = root.get('description', globals_.trans.string('game_def.unknown_info.description'))
         if desc is not None:
             self.description = desc.replace('[', '<').replace(']', '>')
         self.version = root.get('version')
@@ -166,7 +166,7 @@ class ReggieGameDefinition:
                 game = node.get('game')
                 if game is None:
                     path = os.path.join(addpath, node_path)
-                elif game == globals_.trans.string('game_patch.default_info.name'):  # 'New Super Mario Bros. Wii'
+                elif game == globals_.trans.string('game_def.default_info.name'):  # 'New Super Mario Bros. Wii'
                     path = os.path.join(get_reggiedata_folder(), node_path)
                 else:
                     def_ = FindGameDef(game, self.gamepath)
@@ -457,8 +457,8 @@ def LoadGameDef(name: str | None = None) -> bool:
         # user pick a stage folder so we can load stages
         # and tilesets from there
         pressed_button = QtWidgets.QMessageBox.information(None,
-            globals_.trans.string('game_patch.first_load.title'),
-            globals_.trans.string('game_patch.first_load.text', ('[game]', globals_.gamedef.name)),
+            globals_.trans.string('game_def.first_load.title'),
+            globals_.trans.string('game_def.first_load.text', ('[game]', globals_.gamedef.name)),
             QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.Cancel
         )
 
@@ -479,8 +479,8 @@ def LoadGameDef(name: str | None = None) -> bool:
             message_type = 'aborted'
 
         QtWidgets.QMessageBox.information(None,
-            globals_.trans.string(f'game_patch.{message_type}.title'),
-            globals_.trans.string(f'game_patch.{message_type}.text', ('[game]', globals_.gamedef.name)),
+            globals_.trans.string(f'game_def.{message_type}.title'),
+            globals_.trans.string(f'game_def.{message_type}.text', ('[game]', globals_.gamedef.name)),
             QtWidgets.QMessageBox.StandardButton.Ok
         )
 

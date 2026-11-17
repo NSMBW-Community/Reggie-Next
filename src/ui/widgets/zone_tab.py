@@ -63,13 +63,13 @@ class ZoneTab(QtWidgets.QWidget):
 
         self.zone_width = QtWidgets.QSpinBox()
         self.zone_width.setRange(204, 65535)
-        self.zone_width.setToolTip(globals_.trans.string('dialog.zone.dimensions.size_x.tooltip'))
+        self.zone_width.setToolTip(globals_.trans.string('dialog.zone.dimensions.width.tooltip'))
         self.zone_width.setValue(zone.width)
         self.zone_width.valueChanged.connect(self.preset_changed)
 
         self.zone_height = QtWidgets.QSpinBox()
         self.zone_height.setRange(112, 65535)
-        self.zone_height.setToolTip(globals_.trans.string('dialog.zone.dimensions.size_y.tooltip'))
+        self.zone_height.setToolTip(globals_.trans.string('dialog.zone.dimensions.height.tooltip'))
         self.zone_height.setValue(zone.height)
         self.zone_height.valueChanged.connect(self.preset_changed)
 
@@ -100,8 +100,8 @@ class ZoneTab(QtWidgets.QWidget):
         pos_layout.addRow(globals_.trans.string('dialog.zone.dimensions.position_y.text'), self.pos_y)
 
         size_layout = QtWidgets.QFormLayout()
-        size_layout.addRow(globals_.trans.string('dialog.zone.dimensions.size_x.text'), self.zone_width)
-        size_layout.addRow(globals_.trans.string('dialog.zone.dimensions.size_y.text'), self.zone_height)
+        size_layout.addRow(globals_.trans.string('common.width_colon'), self.zone_width)
+        size_layout.addRow(globals_.trans.string('common.height_colon'), self.zone_height)
         size_layout.addRow(globals_.trans.string('dialog.zone.dimensions.preset.text'), self.preset_chooser)
 
         snap_layout = QtWidgets.QHBoxLayout()

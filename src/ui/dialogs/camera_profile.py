@@ -37,6 +37,9 @@ class CameraProfilesDialog(QtWidgets.QDialog):
         list_layout.addWidget(self.add_button, 1, 0)
         list_layout.addWidget(self.remove_button, 1, 1)
 
+        list_box = QtWidgets.QGroupBox(globals_.trans.string('dialog.camera_profile.list_title'))
+        list_box.setLayout(list_layout)
+
         self.event_id = QtWidgets.QSpinBox()
         self.event_id.setRange(0, 255)
         self.event_id.setToolTip(globals_.trans.string('dialog.camera_profile.event_id.tooltip'))
@@ -63,7 +66,7 @@ class CameraProfilesDialog(QtWidgets.QDialog):
 
         main_layout = QtWidgets.QGridLayout()
         main_layout.addWidget(info_label, 0, 0, 1, 2)
-        main_layout.addLayout(list_layout, 1, 0)
+        main_layout.addWidget(list_box, 1, 0)
         main_layout.addWidget(self.profile_box, 1, 1)
         main_layout.addWidget(button_box, 2, 0, 1, 2)
         self.setLayout(main_layout)

@@ -306,7 +306,7 @@ def main():
             break
 
         if globals_.gamedef.custom:
-            msg = globals_.trans.string('error.missing_game_files.game_patch', ('[game]', globals_.gamedef.name))
+            msg = globals_.trans.string('error.missing_game_files.game_def', ('[game]', globals_.gamedef.name))
         else:
             msg = globals_.trans.string('error.missing_game_files.retail')
         QtWidgets.QMessageBox.information(None, globals_.trans.string('error.title.error'), msg)

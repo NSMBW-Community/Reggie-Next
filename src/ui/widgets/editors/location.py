@@ -63,8 +63,8 @@ class LocationEditorWidget(QtWidgets.QWidget):
         layout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.location_data_editor.pos_x.label')), 3, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
         layout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.location_data_editor.pos_y.label')), 4, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
 
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.location_data_editor.width.label')), 3, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('dialog.location_data_editor.height.label')), 4, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
+        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('common.width_colon')), 3, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
+        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('common.height_colon')), 4, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
 
         # Add the widgets
         layout.addWidget(self.location_id, 1, 1, 1, 1)
