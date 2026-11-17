@@ -39,9 +39,9 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         # check_functions: (icons, function, is_critical)
         self.check_functions: tuple[tuple[str, Callable[[str], bool | None], bool], ...] = (
             ('block',   self.check_invalid_obj,        True),
-            ('sprites', self.check_crash_sprite,       False),
-            ('sprites', self.check_sprite_param,       True),
-            ('sprites', self.check_sprite_max,         False),
+            ('rocket', self.check_crash_sprite,       False),
+            ('rocket', self.check_sprite_param,       True),
+            ('rocket', self.check_sprite_max,         False),
             ('door',    self.check_duplicate_entrance, True),
             ('door',    self.check_start_entrance,     True),
             ('door',    self.check_entrance_near_edge, False),
