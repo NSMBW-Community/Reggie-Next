@@ -3046,9 +3046,9 @@
     <checkbox nybble="12.4" title="Moves Slightly Faster" comment="When enabled, the Wiggler will move slightly faster than normal."/>
   </sprite> <!-- #240: Big Wiggler -->
 
-  <sprite id="241" name="(Unused) Big Wiggler Spawner" notes="&lt;font color=&quot;red&quot;&gt;Currently non-functioning.&lt;/font&gt;" advancednotes="Appears to need a corresponding Path, and the sprite must be placed to the left of the player's Entrance. Even still, the Sprite doesn't seem to function, possibly due to missing Node ID related functions." files="hanachan_head.arc;hanachan_body.arc">
-    <value nybble="11-12" title="Path ID" advancedcomment="This is intended to pair the Mega Wiggler to a Path." idtype="Path"/>
-  </sprite> <!-- #241: (Unused) Big Wiggler Spawner -->
+  <sprite id="241" name="(Unused) (Incomplete) Big Wiggler Spawner" notes="This sprite was never finished, and as such does not work in-game." advancednotes="Requirements are as follows:[br]* It must be linked to a Path.[br]* The sprite must never initially spawn by coming on-screen from the left edge, this deletes the sprite.[br]* The player must pass its X position at least once for it to trigger.[br]Even then, the actor is not complete, so it cannot spawn any Wigglers." files="hanachan_head.arc;hanachan_body.arc">
+    <value nybble="11-12" title="Path ID" comment="This determines what Path the Wigglers will spawn at, however the game never does anything with it." idtype="Path"/>
+  </sprite> <!-- #241: (Unused) (Incomplete) Big Wiggler Spawner -->
 
   <sprite id="242" name="Donut Ledge" noyoshi="True" notes="A cliff-walking donut-style platform that will fall if a player stands on it for too long." files="lift_rakka_ashiba.arc">
   </sprite> <!-- #242: Donut Ledge -->
