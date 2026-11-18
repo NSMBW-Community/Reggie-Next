@@ -117,6 +117,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed discarded changes still being saved when adding/importing a new area.
 - Fixed various minor issues with the Objects palette in Areas with no tilesets.
 - Fixed a small visual bug when opening the Level Information in levels with a password set.
+- Fixed the Current Sprites list not updating sprite names when changing game patches.
 
 ## [4.10.0] - 2026-07-25
 
