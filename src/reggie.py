@@ -202,7 +202,7 @@ def main():
     # 4.0 -> Oldest version with settings.ini compatible with the current version
     reggie_ver = setting("ReggieVersion")
     if reggie_ver is not None and reggie_ver < 4.0:
-        QtWidgets.QMessageBox.critical(None, 'Unsupported settings file', 'Your settings.ini file is not supported by this version of Reggie Next.<br' \
+        QtWidgets.QMessageBox.critical(None, 'Unsupported settings file', 'Your settings.ini file is not supported by this version of Reggie Next.<br>' \
                                        'Please remove it and run Reggie again.')
         sys.exit(1)
 
