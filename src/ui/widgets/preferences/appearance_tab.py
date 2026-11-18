@@ -12,7 +12,7 @@ from data.level.items.location import LocationItem
 from data.level.items.sprite import SpriteItem
 from data.level.items.zone import ZoneItem
 from data.level.path import Path
-from ui.theme.reggie_theme import ReggieTheme, SetColorScheme
+from ui.theme.reggie_theme import ReggieTheme, SetColorScheme, SetAppStyle
 from ui.widgets.level_scene import LevelScene
 from ui.widgets.level_view import LevelViewWidget
 from ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
@@ -269,8 +269,6 @@ class AppearanceTab(PreferenceTabWidget):
 
         if setting('Theme') != theme:
             show_restart_warning = True
-        if setting('uiStyle') != style:
-            show_restart_warning = True
 
         setSetting('Theme', theme)
         setSetting('uiStyle', style)
@@ -301,8 +299,9 @@ class AppearanceTab(PreferenceTabWidget):
 
         setSetting('IgnoreWinScale', globals_.IgnoreWinScale)
 
-        # Switch light/dark mode
+        # Update the app theme and style
         SetColorScheme()
+        SetAppStyle()
 
         # Update window title
         globals_.mainWindow.set_window_title()

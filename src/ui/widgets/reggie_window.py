@@ -556,6 +556,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.toolbar.setObjectName('MainToolbar')
 
+        # We need to explicitly set this or else changing
+        # the app style will set the icons to 24x24
+        self.toolbar.setIconSize(QtCore.QSize(16, 16))
+
         # Add each to the toolbar if toggled[key]
         for group in toolbar_groups:
             added_buttons = False

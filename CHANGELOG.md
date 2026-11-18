@@ -85,6 +85,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The zone templates have been improved to reduce the risk of the camera showing things that are out of bounds.
 - Improved the way translations are structured, now using only string keys instead of a string key and a numeric ID.
   - Older translations are no longer supported and will not be automatically upgraded.
+- The window style will now automatically update instead of requiring a restart.
 
 ### Removed
 
