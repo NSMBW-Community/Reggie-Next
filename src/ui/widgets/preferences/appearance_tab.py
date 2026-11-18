@@ -23,7 +23,7 @@ class AppearanceTab(PreferenceTabWidget):
     Appearance Tab
     """
 
-    def __init__(self, info_text: None) -> None:
+    def __init__(self, info_text: str) -> None:
         """
         Initializes the Appearance Tab
         """

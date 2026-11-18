@@ -14,7 +14,6 @@ class GeneralTab(PreferenceTabWidget):
     """
     General Tab
     """
-    info: str | None = None
 
     def __init__(self, info_text: str) -> None:
         """
