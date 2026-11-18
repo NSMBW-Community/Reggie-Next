@@ -79,6 +79,10 @@ class ExternalDatabaseDialog(QtWidgets.QDialog):
         tree = ElementTree.parse(filename)
         root = tree.getroot()
 
+        # We have an old database to upgrade
+        if root.tag == 'options':
+            root = self.update_database(filename, root)
+
         # Get the window title
         if 'title' in root.attrib:
             self.setWindowTitle(root.attrib['title'])
@@ -118,6 +122,44 @@ class ExternalDatabaseDialog(QtWidgets.QDialog):
 
             # Now add the data as an entry
             self.entries[entry_id] = entry
+
+    def update_database(self, path: str, root_old: ElementTree.Element) -> ElementTree.Element:
+        """
+        Updates a database to the new format. Returns the new root element.
+        """
+        secondary_name = ''
+        root = ElementTree.Element('database', name_column='0')
+
+        for node in root_old:
+            if node.tag.lower() == 'option':
+                opt_id = node.attrib['value']
+
+                # Get the headers from the first option entry
+                if opt_id == '0':
+                    for prop in node:
+                        _ = ElementTree.SubElement(root, 'header', name = prop.attrib['name'])
+
+                    # Name for the drop-down info blurbs
+                    if 'secondary' in root_old.attrib:
+                        secondary_name = root_old.attrib['secondary']
+                        _ = ElementTree.SubElement(root, 'header', name = secondary_name)
+
+                entry = ElementTree.SubElement(root, 'entry', id = opt_id)
+
+                # Get the column data
+                for i, prop in enumerate(node):
+                    # This should be converted into notes
+                    if prop.attrib['name'] == secondary_name:
+                        column = ElementTree.SubElement(entry, 'column', id = str(i))
+                        column.text = prop.attrib['value']
+                    else:
+                        _ = ElementTree.SubElement(entry, 'column', id = str(i), text = prop.attrib['value'])
+
+        # Write the file
+        ElementTree.indent(root, space='    ')
+        tree = ElementTree.ElementTree(root)
+        tree.write(path, encoding='utf-8', xml_declaration=True)
+        return root
 
     def get_note(self, entry_id: int, column_id: int) -> ExternalNote | None:
         """
