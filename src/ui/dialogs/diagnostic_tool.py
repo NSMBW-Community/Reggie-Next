@@ -39,9 +39,9 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         # check_functions: (icons, function, is_critical)
         self.check_functions: tuple[tuple[str, Callable[[str], bool | None], bool], ...] = (
             ('block',   self.check_invalid_obj,        True),
-            ('rocket', self.check_crash_sprite,       False),
-            ('rocket', self.check_sprite_param,       True),
-            ('rocket', self.check_sprite_max,         False),
+            ('rocket',  self.check_crash_sprite,       False),
+            ('rocket',  self.check_sprite_param,       True),
+            ('rocket',  self.check_sprite_max,         False),
             ('door',    self.check_duplicate_entrance, True),
             ('door',    self.check_start_entrance,     True),
             ('door',    self.check_entrance_near_edge, False),
@@ -271,6 +271,10 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         sprite: SpriteItem
         for sprite in globals_.Area.sprites:
+            # Invalid Layer ID
+            if sprite.spritedata[7] > 2:
+                problem = True
+
             # Snake Block, end-of-path behavior is above 3
             if sprite.sprite_num == 166 and ((sprite.spritedata[2] & 0xF0) >> 4) > 3:
                 problem = True
@@ -338,40 +342,47 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         elif problem:
             add_sprites = []
             for sprite in globals_.Area.sprites:
-                if sprite.sprite_num == 166 and (sprite.spritedata[2] & 0xF0) >> 4 > 3:
-                    sprite.spritedata = sprite.spritedata[0:2] + ' ' + sprite.spritedata[3:]
+                sdata = bytearray(sprite.spritedata)
 
-                if sprite.sprite_num == 171 and sprite.spritedata[4] & 0xF != 1:
-                    sprite.spritedata = sprite.spritedata[0:4] + chr(1) + sprite.spritedata[5:]
+                if sdata[7] > 2:
+                    sdata = sdata[0:7] + b'\0' + sdata[8:]
 
-                if sprite.sprite_num == 203 and sprite.spritedata[4] & 0xF == 1:
+                if sprite.sprite_num == 166 and (sdata[2] & 0xF0) >> 4 > 3:
+                    sdata = sdata[0:2] + b' ' + sdata[3:]
+
+                if sprite.sprite_num == 171 and sdata[4] & 0xF != 1:
+                    sdata = sdata[0:4] + b'\1' + sdata[5:]
+
+                if sprite.sprite_num == 203 and sdata[4] & 0xF == 1:
                     if [454, 432] in check_list:
                         add_sprites.append((454, sprite.objx - 128, sprite.objy - 128))
 
-                if sprite.sprite_num == 247 and sprite.spritedata[5] & 0xF == 1:
-                    sprite.spritedata = sprite.spritedata[0:5] + chr(0) + sprite.spritedata[6:]
+                if sprite.sprite_num == 247 and sdata[5] & 0xF == 1:
+                    sdata = sdata[0:5] + b'\0' + sdata[6:]
 
                 if sprite.sprite_num == 323:
-                    if sprite.spritedata[4] & 0xF == 4:
-                        sprite.spritedata = sprite.spritedata[0:4] + chr(1) + sprite.spritedata[5:]
+                    if sdata[4] & 0xF == 4:
+                        sdata = sdata[0:4] + b'\1' + sdata[5:]
 
-                    if sprite.spritedata[2] & 0xF < (sprite.spritedata[3] & 0xF0) >> 4:
-                        sprite.spritedata = sprite.spritedata[0:2] + chr((sprite.spritedata[3] & 0xF0) >> 4) + sprite.spritedata[3:]
+                    if sdata[2] & 0xF < (sdata[3] & 0xF0) >> 4:
+                        sdata = sdata[0:2] + bytes((sdata[3] & 0xF0) >> 4) + sdata[3:]
 
-                if sprite.sprite_num == 449 and (sprite.spritedata[5] & 0xF0) >> 4 == 1:
-                    sprite.spritedata = sprite.spritedata[0:5] + chr(0) + sprite.spritedata[6:]
+                if sprite.sprite_num == 449 and (sdata[5] & 0xF0) >> 4 == 1:
+                    sdata = sdata[0:5] + b'\0' + sdata[6:]
 
-                if sprite.sprite_num == 479 and sprite.spritedata[4] & 0xF == 1:
-                    if (sprite.spritedata[4] & 0xF0) >> 4 == 1:
-                        sprite.spritedata = sprite.spritedata[0:4] + chr(0x10) + sprite.spritedata[5:]
+                if sprite.sprite_num == 479 and sdata[4] & 0xF == 1:
+                    if (sdata[4] & 0xF0) >> 4 == 1:
+                        sdata = sdata[0:4] + b'\0x10' + sdata[5:]
                     else:
-                        sprite.spritedata = sprite.spritedata[0:4] + chr(0) + sprite.spritedata[5:]
+                        sdata = sdata[0:4] + b'\0' + sdata[5:]
 
                 if sprite.sprite_num == 481:
-                    if sprite.spritedata[5] & 0xF > 2:
-                        sprite.spritedata = sprite.spritedata[0:5] + chr(2) + sprite.spritedata[6:]
+                    if sdata[5] & 0xF > 2:
+                        sdata = sdata[0:5] + b'\2' + sdata[6:]
 
                     add_sprites.append((419, sprite.objx - 128, sprite.objy - 128))
+
+                sprite.spritedata = bytes(sdata)
 
             for id_, x, y in add_sprites:
                 SpriteItem.create(x, y, id_, bytes(10))
