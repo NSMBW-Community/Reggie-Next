@@ -23,6 +23,7 @@ from data.level.items.path_editor_line import PathEditorLineItem
 from data.level.sprite_definition import SpriteDefinition
 from data.level.zone_theme import ZoneThemeEntry
 from data.sprite.sprite_category import SpriteCategory, SpriteSubCategory
+from data.sprite.sprite_id_type import SpriteIDType
 from data.tileset.object.object_def import ObjectDef
 from data.tileset.object.renderers import IncrementTilesetFrame
 from data.tileset.tile.rand_tile_selection import RandTileSelection
@@ -1998,3 +1999,39 @@ def DecompressLevel(data: bytes, name: str) -> bytes | None:
             return None
 
     return data
+
+def LoadSpriteIDTypes(reload_: bool = False) -> None:
+    """
+    Loads the Sprite ID-Type information
+    """
+    if globals_.SpriteIDTypes and not reload_:
+        return
+
+    paths = getResourcePaths('spriteidtypes')
+    types = []
+
+    for path in paths:
+        if path is None:
+            continue
+
+        tree = ElementTree.parse(path)
+
+        for node in tree.getroot():
+            if node.tag.lower() == 'idtype':
+                id_type = node.attrib['id']
+                name = ''
+                data_type = ''
+
+                for sub in node:
+                    if sub.tag.lower() == 'name':
+                        name = str(sub.text)
+                    elif sub.tag.lower() == 'type':
+                        data_type = str(sub.text)
+
+                # The data type can only be these two things
+                if data_type not in ('value', 'text'):
+                    data_type = 'value'
+
+                types.append(SpriteIDType(id_type, name, data_type))
+
+    globals_.SpriteIDTypes = types

@@ -4,6 +4,7 @@ from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
 from data.level.items.sprite import SpriteItem
+from data.sprite.sprite_id_type import SpriteIDType
 from data.sprite.spritefield.list import ListSpriteField
 from data.sprite.spritefield.sprite_field import SpriteField
 from data.sprite.spritefield.value import ValueSpriteField
@@ -17,16 +18,6 @@ class SpriteList(QtWidgets.QWidget):
     """
     Sprite list viewer
     """
-
-    # These are straight from the spritedata xml
-    # Don't translate these
-    idtypes = (
-        "Rotation", "Two Way Line", "Water Ball", "Mushroom",
-        "Group", "Bolt", "Target Event", "Triggering Event", "Collection",
-        "Location", "Message", "Path", "Path Movement", "Red Coin",
-        "Hill", "Stretch", "Ray", "Coaster", "Bubble Cannon", "Burner",
-        "Wiggling", "Panel", "Colony", "Entrance", "Path Node", "Limit"
-    )
 
     def __init__(self) -> None:
         super().__init__()
@@ -42,11 +33,9 @@ class SpriteList(QtWidgets.QWidget):
         # Set of row ids
         self.SearchResults = set()
 
-        idtypes_list = globals_.trans.string_list('palette.sprite.current.id_types')
+        self.table = SpriteTableWidget()
+        self.set_table_columns()
 
-        self.table = SpriteTableWidget(0, len(idtypes_list if idtypes_list is not None else []) + 1)
-        headers = [globals_.trans.string('common.id'), globals_.trans.string('common.name')] + list(idtypes_list[1:] if idtypes_list is not None else [])
-        self.table.setHorizontalHeaderLabels(headers)
         vertical_header = self.table.verticalHeader()
         if vertical_header is not None:
             vertical_header.setVisible(False) # hide row numbers
@@ -63,9 +52,6 @@ class SpriteList(QtWidgets.QWidget):
 
         self.table.itemDoubleClicked.connect(SpriteItem.moveToSprite)
         self.table.itemEntered.connect(self.toolTip)
-
-        # populate filter box
-        self.filterbox.addItems(idtypes_list)
 
         # Make a layout
         search_label_text = globals_.trans.string('common.search_colon')
@@ -87,6 +73,27 @@ class SpriteList(QtWidgets.QWidget):
         layout.addWidget(self.table, 2, 0, 1, 2)
 
         self.setLayout(layout)
+
+    def set_table_columns(self) -> None:
+        """
+        Sets the table columns and headers based on the Sprite ID-Type info
+        """
+        idtypes_list: list[str] = [globals_.trans.string('palette.sprite.current.any')]
+        for type in globals_.SpriteIDTypes:
+            idtypes_list.append(type.name)
+
+        self.table.setColumnCount(len(idtypes_list if idtypes_list is not None else []) + 1)
+
+        headers = [globals_.trans.string('common.id'), globals_.trans.string('common.name')] + idtypes_list[1:]
+        self.table.setHorizontalHeaderLabels(headers)
+
+        # Populate filter box
+        self.filterbox.clear()
+        self.filterbox.addItems(idtypes_list)
+
+        # Update each sprite to make sure it gets an ID
+        for sprite in globals_.Area.sprites:
+            self.updateSprite(sprite)
 
     def search(self, text: str) -> None:
         """
@@ -132,7 +139,7 @@ class SpriteList(QtWidgets.QWidget):
             return
 
         # Get the sprite defintion and the id type that is filtered by.
-        filtertype = self.idtypes[filteridx - 1]
+        filtertype = globals_.SpriteIDTypes[filteridx - 1].id_type
         row_item = self.table.item(row, 0)
         if row_item is None:
             return
@@ -214,7 +221,7 @@ class SpriteList(QtWidgets.QWidget):
         self.table.setItem(row, 0, id_item)
 
         # Also add the sprite name
-        name_item = QtWidgets.QTableWidgetItem(sprite.name)
+        name_item = QtWidgets.QTableWidgetItem(globals_.Sprites[sprite.sprite_num].name)
         name_item.setData(QtCore.Qt.ItemDataRole.UserRole, sprite)
         name_item.setFlags(name_item.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)
         self.table.setItem(row, 1, name_item)
@@ -229,29 +236,32 @@ class SpriteList(QtWidgets.QWidget):
         mask = ~(QtCore.Qt.ItemFlag.ItemIsEditable | QtCore.Qt.ItemFlag.ItemIsSelectable)
         ids = self.getIDsFor(sprite)
 
-        for col, idtype in enumerate(self.idtypes):
-            id_values = ids.get(idtype, "")
+        for col, idtype in enumerate(globals_.SpriteIDTypes):
+            id_values = ids.get(idtype.id_type, '')
 
             if len(id_values) == 1:
                 id_values = id_values[0]
 
             entry_item = QtWidgets.QTableWidgetItem()
-            if idtype == 'Mushroom':
+            if idtype.data_type == 'text':
                 entry_item.setText(str(id_values))
             else:
+                if isinstance(id_values, list):
+                    id_values = id_values[0]
                 entry_item.setData(QtCore.Qt.ItemDataRole.EditRole, id_values)
+
             entry_item.setFlags(entry_item.flags() & mask)
 
             self.table.setItem(row, 2 + col, entry_item)
 
-        # re-enable sorting
+        # Re-enable sorting
         if not self.is_batch_add:
             self.table.setSortingEnabled(True)
             self.updateItems()
 
     def updateSprite(self, sprite: SpriteItem) -> None:
         """
-        Updates the IDs of the given sprite
+        Updates the data of the given sprite
         """
         ids = self.getIDsFor(sprite)
 
@@ -259,23 +269,40 @@ class SpriteList(QtWidgets.QWidget):
         self.table.setSortingEnabled(False)
         row = self.getRowFor(sprite)
 
+        # Add the sprite ID
+        id_item = QtWidgets.QTableWidgetItem()
+        id_item.setData(QtCore.Qt.ItemDataRole.DisplayRole, sprite.sprite_num)
+        id_item.setData(QtCore.Qt.ItemDataRole.UserRole, sprite)
+        id_item.setFlags(id_item.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)
+        self.table.setItem(row, 0, id_item)
+
+        # Also add the sprite name
+        name_item = QtWidgets.QTableWidgetItem(globals_.Sprites[sprite.sprite_num].name)
+        name_item.setData(QtCore.Qt.ItemDataRole.UserRole, sprite)
+        name_item.setFlags(name_item.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)
+        self.table.setItem(row, 1, name_item)
+
         # Skip the first columns (the id and name)
         for i in range(2, self.table.columnCount()):
-            id_values = ids.get(self.idtypes[i - 2], [""])
+            id_values = ids.get(globals_.SpriteIDTypes[i - 2].id_type, [''])
 
             if len(id_values) == 1:
                 id_values = id_values[0]
 
             item = self.table.item(row, i)
             if item is None:
-                continue
+                item = QtWidgets.QTableWidgetItem()
+                self.table.setItem(row, i, item)
 
-            if self.idtypes[i - 2] == 'Mushroom':
+            if globals_.SpriteIDTypes[i - 2].data_type == 'text':
                 item.setText(str(id_values))
             else:
-                item.setData(QtCore.Qt.ItemDataRole.EditRole, id_values)
+                if isinstance(id_values, list):
+                    id_values = int(id_values[0])
 
-        # re-enable sorting
+                item.setData(QtCore.Qt.ItemDataRole.EditRole, str(id_values))
+
+        # Re-enable sorting
         self.table.setSortingEnabled(True)
 
     def takeSprite(self, sprite: SpriteItem) -> None:

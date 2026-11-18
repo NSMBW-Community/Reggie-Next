@@ -1343,35 +1343,7 @@
                 <string id="title">Current</string>
                 <string id="info">Sprites currently in this area:[br](Double-click one to jump to it instantly)</string>
                 <string id="filter">Filter:</string>
-                <section id="id_types">
-                    <string id="any">Any</string>
-                    <string id="rotation">Rotation ID</string>
-                    <string id="two_way_line">Two Way Line ID</string>
-                    <string id="water_ball">Water Ball ID</string>
-                    <string id="mushroom">Mushroom ID</string>
-                    <string id="group">Group ID</string>
-                    <string id="bolt">Bolt ID</string>
-                    <string id="target">Target Event ID</string>
-                    <string id="triggering">Triggering Event ID</string>
-                    <string id="collection">Collection ID</string>
-                    <string id="location">Location ID</string>
-                    <string id="message">Message ID</string>
-                    <string id="path">Path ID</string>
-                    <string id="path_movement">Path Movement ID</string>
-                    <string id="red_coin">Red Coin ID</string>
-                    <string id="hill">Hill ID</string>
-                    <string id="stretch">Stretch ID</string>
-                    <string id="ray">Ray ID</string>
-                    <string id="coaster">Coaster ID</string>
-                    <string id="bubble">Bubble Cannon ID</string>
-                    <string id="burner">Burner ID</string>
-                    <string id="wiggling">Wiggling ID</string>
-                    <string id="panel">Panel ID</string>
-                    <string id="colony">Colony ID</string>
-                    <string id="entrance">Entrance ID</string>
-                    <string id="path_node">Path Node ID</string>
-                    <string id="limit">Limit ID</string>
-                </section>
+                <string id="any">Any</string>
             </section>
             <section id="order">
                 <string id="title">Sprite Order</string>

@@ -14,6 +14,7 @@ from data.level.background_file import BackgroundFileEntry
 from data.level.sprite_definition import SpriteDefinition
 from data.level.zone_theme import ZoneThemeEntry
 from data.sprite.sprite_category import SpriteCategory
+from data.sprite.sprite_id_type import SpriteIDType
 from data.tileset.object.object_def import ObjectDef
 from data.tileset.tile.rand_tile_selection import RandTileSelection
 from data.tileset.tile.tileset_tile import TilesetTile
@@ -135,6 +136,7 @@ ResetDataWhenHiding: bool = False
 ShowUnknownSpriteWarning: bool = True
 SpriteCategories: list[SpriteCategory] = []
 Sprites: list[SpriteDefinition] = []
+SpriteIDTypes: list[SpriteIDType] = []
 
 # Game patch config settings
 DispConnectedPipeDir: bool = False

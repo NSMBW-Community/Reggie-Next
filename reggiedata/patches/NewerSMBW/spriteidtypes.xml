@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<idtypes>
+    <idtype id="Message">
+        <name>Message ID</name>
+        <type>value</type>
+    </idtype>
+</idtypes>

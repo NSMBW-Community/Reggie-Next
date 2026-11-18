@@ -72,7 +72,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The README view in the About dialog now uses markdown formatting.
 - The music list now uses the track order in music.xml instead of sorting by numerical ID.
 - Overhauled the level metadata system to be cleaner and easier to use.
-- Backgrounds, music, Pa0 object descriptions, and zone themes now load from XMLs file instead of text files.
+- Backgrounds, music, Pa0 object descriptions, and zone themes now load from XML files instead of text files.
 - If docked, the property editors now stay visible but disabled when an item is de-selected.
 - Level opening/saving file dialogs now always open in the directory of the current level.
 - The screenshot dialog can now control the margins around the edges of zones. 
@@ -86,6 +86,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved the way translations are structured, now using only string keys instead of a string key and a numeric ID.
   - Older translations are no longer supported and will not be automatically upgraded.
 - Themes and window styles will now automatically update instead of requiring a restart.
+- The Sprite ID-Types are now loaded from an XML instead of being hardcoded.
 
 ### Removed
 

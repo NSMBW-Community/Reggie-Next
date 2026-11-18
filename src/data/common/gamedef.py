@@ -17,6 +17,7 @@ from data.common.loaders import (
     LoadMusicInfo,
     LoadObjDescriptions,
     LoadSpriteCategories,
+    LoadSpriteIDTypes,
     LoadSpriteData,
     LoadTilesetInfo,
     LoadTilesetNames,
@@ -88,6 +89,7 @@ class ReggieGameDefinition:
             'music': gdf(os.path.join(reggiedata_folder, 'music.xml'), False),
             'spritecategories': gdf(os.path.join(reggiedata_folder, 'spritecategories.xml'), False),
             'spritedata': gdf(os.path.join(reggiedata_folder, 'spritedata.xml'), False),
+            'spriteidtypes': gdf(os.path.join(reggiedata_folder, 'spriteidtypes.xml'), False),
             'tilesetinfo': gdf(os.path.join(reggiedata_folder, 'tilesetinfo.xml'), False),
             'tilesets': gdf(os.path.join(reggiedata_folder, 'tilesets.xml'), False),
             'ts1_descriptions': gdf(os.path.join(reggiedata_folder, 'ts1_descriptions.xml'), False),
@@ -491,6 +493,7 @@ def LoadGameDef(name: str | None = None) -> bool:
 
     LoadSpriteData()
     LoadSpriteCategories(True)
+    LoadSpriteIDTypes(True)
 
     # Reload all of the spritedata ID types in the area
     # Fixes bugs related to these being outdated when switching game patches
@@ -504,6 +507,7 @@ def LoadGameDef(name: str | None = None) -> bool:
 
         globals_.mainWindow.palette_dock.sprite_tab.sprite_picker.LoadItems()  # Reloads the sprite picker list items
         globals_.mainWindow.palette_dock.sprite_tab.view_picker.setCurrentIndex(0)  # Sets the sprite picker to category 0 (enemies)
+        globals_.mainWindow.palette_dock.sprite_tab.sprite_list.set_table_columns()
         globals_.mainWindow.spriteDataEditor.setSprite(globals_.mainWindow.spriteDataEditor.spritetype,
                                                 True)  # Reloads the sprite data editor fields
 
