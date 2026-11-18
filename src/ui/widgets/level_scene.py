@@ -22,9 +22,15 @@ class LevelScene(QtWidgets.QGraphicsScene):
 
     def __init__(self, x: float, y: float, width: float, height: float, /, parent: QtCore.QObject|None = None) -> None:
         QtWidgets.QGraphicsScene.__init__(self, x, y, width, height, parent)
-        self.setBackgroundBrush(QtGui.QBrush(globals_.theme.color('bg')))
+        self.set_bg_brush_color(globals_.theme.color('bg'))
         self.is_screenshot = False
         self.selectionChanged.connect(self.change_selection)
+
+    def set_bg_brush_color(self, color: QtGui.QColor | None) -> None:
+        """
+        Updates the color of the background brush
+        """
+        self.setBackgroundBrush(QtGui.QBrush(color))
 
     def drawForeground(self, painter: QtGui.QPainter | None, rect: QtCore.QRectF) -> None:
         """

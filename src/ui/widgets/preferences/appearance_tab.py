@@ -4,6 +4,7 @@ from typing import cast
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data import globals_
+from data.common.loaders import LoadTheme
 from data.common.settings import setSetting, setting
 from data.common.utils import get_reggiedata_folder
 from data.level.items.comment import CommentItem
@@ -236,7 +237,9 @@ class AppearanceTab(PreferenceTabWidget):
 
         # Take a screenshot
         pixmap = QtGui.QPixmap(32 * 16, 17 * 16)
-        pixmap.fill(theme.color('bg'))
+        bg_color = theme.color('bg')
+        if bg_color is not None:
+            pixmap.fill(bg_color)
 
         rect = QtCore.QRectF(0, 0, 32 * 16, 17 * 16)
 
@@ -266,9 +269,6 @@ class AppearanceTab(PreferenceTabWidget):
         # Get the theme settings
         theme = self.themes[self.theme_combo.currentIndex()][0]
         style = self.window_style.currentText()
-
-        if setting('Theme') != theme:
-            show_restart_warning = True
 
         setSetting('Theme', theme)
         setSetting('uiStyle', style)
@@ -301,6 +301,7 @@ class AppearanceTab(PreferenceTabWidget):
 
         # Update the app theme and style
         SetColorScheme()
+        LoadTheme()
         SetAppStyle()
 
         # Update window title

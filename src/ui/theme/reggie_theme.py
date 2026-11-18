@@ -287,6 +287,8 @@ def SetAppStyle(styleKey: str = '') -> None:
     # Change the color if applicable
     if globals_.theme.color('ui') is not None and not globals_.theme.forceStyleSheet:
         globals_.app.setPalette(QtGui.QPalette(globals_.theme.color('ui')))
+    else:
+        globals_.app.setPalette(QtGui.QPalette())
 
     # Change the style
     if not styleKey:

@@ -19,6 +19,7 @@ from data.common.toolbar_action import ToolbarAction
 from data.common.utils import get_main_path, get_reggiedata_folder
 from data.level.background_file import BackgroundFileEntry
 from data.level.items.location import LocationItem
+from data.level.items.path_editor_line import PathEditorLineItem
 from data.level.sprite_definition import SpriteDefinition
 from data.level.zone_theme import ZoneThemeEntry
 from data.sprite.sprite_category import SpriteCategory, SpriteSubCategory
@@ -1939,7 +1940,25 @@ def LoadTheme() -> None:
     """
     Loads the theme
     """
-    globals_.theme = ReggieTheme(setting("Theme", "Classic"))
+    theme = ReggieTheme(setting("Theme", "Classic"))
+    globals_.theme = theme
+    if not hasattr(globals_, 'mainWindow') or theme is None:
+        return
+
+    # Update all of the colors that don't auto-update
+    SLib.OutlineColor = theme.color('smi')
+    globals_.mainWindow.scene.set_bg_brush_color(globals_.theme.color('bg'))
+
+    func_ii = isinstance
+    type_path_line = PathEditorLineItem
+    for item in globals_.mainWindow.scene.items():
+        if func_ii(item, type_path_line):
+            item.color = theme.color('path_connector')
+            item.update_path()
+
+    # Update the Level Overview
+    globals_.mainWindow.level_overview.set_brush_colors()
+    globals_.mainWindow.level_overview.update()
 
 
 def LoadTranslation() -> None:

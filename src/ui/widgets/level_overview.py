@@ -17,15 +17,7 @@ class LevelOverviewWidget(QtWidgets.QWidget):
         self.setSizePolicy(
             QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.MinimumExpanding))
 
-        self.bg_brush = QtGui.QBrush(globals_.theme.color('bg'))
-        self.obj_brush = QtGui.QBrush(globals_.theme.color('overview_object'))
-        self.view_brush = QtGui.QBrush(globals_.theme.color('overview_zone_fill'))
-        self.view = QtCore.QRectF()
-        self.sprite_brush = QtGui.QBrush(globals_.theme.color('overview_sprite'))
-        self.entrance_brush = QtGui.QBrush(globals_.theme.color('overview_entrance'))
-        self.location_brush = QtGui.QBrush(globals_.theme.color('overview_location_fill'))
-        self.path_brush = QtGui.QBrush(globals_.theme.color('overview_path'))
-
+        self.set_brush_colors()
         self.reset()
 
         self.pos_x_locator = 0
@@ -40,6 +32,19 @@ class LevelOverviewWidget(QtWidgets.QWidget):
         globals_.mainWindow.view.XScrollBar.valueChanged.connect(self.scroll_x_change)
         globals_.mainWindow.view.YScrollBar.valueChanged.connect(self.scroll_y_change)
         globals_.mainWindow.view.FrameSize.connect(self.size_change)
+
+    def set_brush_colors(self) -> None:
+        """
+        Sets all of the brushes and their theme colors
+        """
+        self.bg_brush = QtGui.QBrush(globals_.theme.color('bg'))
+        self.obj_brush = QtGui.QBrush(globals_.theme.color('overview_object'))
+        self.view_brush = QtGui.QBrush(globals_.theme.color('overview_zone_fill'))
+        self.view = QtCore.QRectF()
+        self.sprite_brush = QtGui.QBrush(globals_.theme.color('overview_sprite'))
+        self.entrance_brush = QtGui.QBrush(globals_.theme.color('overview_entrance'))
+        self.location_brush = QtGui.QBrush(globals_.theme.color('overview_location_fill'))
+        self.path_brush = QtGui.QBrush(globals_.theme.color('overview_path'))
 
     def reset(self) -> None:
         """

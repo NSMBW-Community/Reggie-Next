@@ -25,9 +25,7 @@ class PathEditorLineItem(QtWidgets.QGraphicsPathItem):
         self.setFlag(self.GraphicsItemFlag.ItemIsMovable, False)
         self.setFlag(self.GraphicsItemFlag.ItemIsSelectable, False)
 
-        color = globals_.theme.color('path_connector')
-        if color is not None:
-            self.setPen(QtGui.QPen(color, 3, join=QtCore.Qt.PenJoinStyle.RoundJoin, cap=QtCore.Qt.PenCapStyle.RoundCap))
+        self.color = globals_.theme.color('path_connector')
 
         self.update_path()
         self.setZValue(25002)
@@ -37,6 +35,9 @@ class PathEditorLineItem(QtWidgets.QGraphicsPathItem):
         Updates the path. This should be called whenever at least one of the
         nodes of the path moves, is added or is deleted.
         """
+        if self.color is not None:
+            self.setPen(QtGui.QPen(self.color, 3, join=QtCore.Qt.PenJoinStyle.RoundJoin, cap=QtCore.Qt.PenCapStyle.RoundCap))
+
         points = self._path.get_points()
 
         line_path = QtGui.QPainterPath()
