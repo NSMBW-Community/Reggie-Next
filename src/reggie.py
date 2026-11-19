@@ -314,7 +314,7 @@ def main():
     # Check to see if we have anything saved
     name = setting('AutoSaveFilePath')
     auto_save_data: QtCore.QByteArray | None = setting('AutoSaveFileData')
-    if name is not None and auto_save_data is not None:
+    if name is not None and auto_save_data not in (None, 'x'):
         result = AutoSaveDialog(name).exec()
         if result == QtWidgets.QDialog.DialogCode.Accepted:
             globals_.RestoredFromAutoSave = True
