@@ -312,14 +312,14 @@ def main():
         QtWidgets.QMessageBox.information(None, globals_.trans.string('error.title.error'), msg)
 
     # Check to see if we have anything saved
-    auto_file = setting('AutoSaveFilePath')
-    auto_file_data = setting('AutoSaveFileData', 'x')
-    if auto_file is not None and auto_file_data not in (None, 'x'):
-        result = AutoSaveDialog(auto_file).exec()
+    name = setting('AutoSaveFilePath')
+    auto_save_data: QtCore.QByteArray | None = setting('AutoSaveFileData')
+    if name is not None and auto_save_data is not None:
+        result = AutoSaveDialog(name).exec()
         if result == QtWidgets.QDialog.DialogCode.Accepted:
             globals_.RestoredFromAutoSave = True
-            globals_.AutoSavePath = auto_file
-            globals_.AutoSaveData = bytes(auto_file_data)
+            globals_.AutoSavePath = name
+            globals_.AutoSaveData = bytes(auto_save_data)
         else:
             setSetting('AutoSaveFilePath', None)
             setSetting('AutoSaveFileData', 'x')
