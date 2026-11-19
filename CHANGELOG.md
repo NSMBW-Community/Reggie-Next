@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated spritedata for (Newer) sprites:
   - 441
 
+### Fixed
+
+- Fixed the "Zoom to Minimum" menu action showing the translation strings for "Zoom In".
+
 ## [5.0.0] - 2026-11-18
 
 ### Added

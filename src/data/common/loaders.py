@@ -888,7 +888,7 @@ def LoadMenuActions(mw: "ReggieWindow") -> None:
             'zoomout', mw.zoom_out, GetIcon('magnifier-zoom-out'), globals_.trans.string_dict('menu_bar.view.item.zoom_out'), GetKeybind('zoomout')
         ),
         MenuAction(
-            'zoommin', mw.zoom_min, GetIcon('magnifier-zoom-minimum'), globals_.trans.string_dict('menu_bar.view.item.zoom_in'), GetKeybind('zoommin')
+            'zoommin', mw.zoom_min, GetIcon('magnifier-zoom-minimum'), globals_.trans.string_dict('menu_bar.view.item.zoom_min'), GetKeybind('zoommin')
         ),
         MenuAction(
             'areaoptions', mw.exec_area_options, GetIcon('wooden-box'), globals_.trans.string_dict('menu_bar.settings.item.area_options'), GetKeybind('areaoptions')
@@ -986,7 +986,7 @@ def LoadToolbarActionsLists() -> None:
         ToolbarAction('zoomin', globals_.trans.string('menu_bar.view.item.zoom_in.label'), True),
         ToolbarAction('zoomactual', globals_.trans.string('menu_bar.view.item.zoom_actual.label'), True),
         ToolbarAction('zoomout', globals_.trans.string('menu_bar.view.item.zoom_out.label'), True),
-        ToolbarAction('zoommin', globals_.trans.string('menu_bar.view.item.zoom_in.label'), True),
+        ToolbarAction('zoommin', globals_.trans.string('menu_bar.view.item.zoom_min.label'), True),
     )
     globals_.SettingsActions = (
         ToolbarAction('areaoptions', globals_.trans.string('menu_bar.settings.item.area_options.label'), True),
