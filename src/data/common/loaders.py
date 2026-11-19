@@ -101,6 +101,10 @@ def LoadTilesetNames(reload_: bool = False) -> None:
     # Get paths
     paths = getResourcePaths('tilesets')
 
+    # Reset the overrides
+    for override in globals_.OverriddenTilesets.values():
+        override.clear()
+
     # Read each file
     globals_.TilesetNames = [TilesetCategory() for _ in range(4)]
     for path in paths:
@@ -151,12 +155,11 @@ def LoadTilesetNames_Category(node: ElementTree.Element) -> list[TilesetCategory
             fname = str(child.attrib['filename'])
             cat.append(TilesetFileEntry(fname, str(child.attrib['name'])))
 
-            # read override attribute
+            # Read override attribute
             if 'override' not in child.attrib:
                 continue
 
-            # override present, add it to the correct type
-
+            # Override(s) present, add it to the correct type
             types = str(child.attrib['override']).split(',')
 
             for type_ in types:

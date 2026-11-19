@@ -517,9 +517,8 @@ def LoadGameDef(name: str | None = None) -> bool:
     LoadMusicInfo(True)
 
     LoadObjDescriptions(True)
-    ReloadTilesets(True)
     LoadTilesetNames(True)
-    LoadTilesetInfo(True)
+    ReloadTilesets(True)
 
     # Always load the sprites folders so the correct sprite images can be
     # loaded when Reggie is started. This avoids loading all sprite images
