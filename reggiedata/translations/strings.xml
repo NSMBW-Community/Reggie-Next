@@ -71,7 +71,7 @@
                         <string id="tooltip">[b]Entrance ID:[/b][br]Sets the entrance ID to load into when entering the level from the World Map or the course select.</string>
                     </section>
                     <section id="credits">
-                        <string id="text">Credits:</string>
+                        <string id="text">Credits</string>
                         <string id="tooltip">[b]Credits:[/b][br]Activates the game's Credits mode for this area.</string>
                     </section>
                     <section id="useless1">
@@ -95,7 +95,7 @@
                         <string id="tooltip">[b]Spawn Facing Left:[/b][br]Spawns all players facing left instead of right. Enabled in all Ambush stages.</string>
                     </section>
                     <section id="screen_wrap">
-                        <string id="text">Wrap across Edges:</string>
+                        <string id="text">Wrap across Edges</string>
                         <string id="tooltip">[b]Wrap across Edges:[/b][br]Makes the stage edges wrap.[br]Warning: This option may cause the game to crash or behave weirdly. Wrapping only works correctly when the area is set up properly; see Coin Battle 1 for an example.</string>
                     </section>
                     <string id="toad_house_type">Toad House Type:</string>
