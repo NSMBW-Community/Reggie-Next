@@ -129,7 +129,7 @@ class SpriteTab(QtWidgets.QTabWidget):
                 spr.update()
 
                 # Assign the new sprite image class
-                image_classes = globals_.gamedef.getImageClasses()
+                image_classes = globals_.game_def.getImageClasses()
                 if sprite_num in image_classes:
                     spr.setImageObj(image_classes[sprite_num])
                 else:

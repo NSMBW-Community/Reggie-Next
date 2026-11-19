@@ -11,7 +11,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 import spritelib as SLib
 from data import globals_
 from data.common import archive
-from data.common.gamedef_update import convert_txt_to_xml
+from data.common.game_def_update import convert_txt_to_xml
 from data.common.keybind import Keybind
 from data.common.menu_action import MenuAction
 from data.common.settings import delSetting, setSetting, setting
@@ -49,7 +49,7 @@ def getResourcePaths(res_name: str) -> list[str]:
     """
     # To make sure that the gamedef is translatable as well, we first need to
     # figure out what paths the gamedef loads its files from
-    gamedef_files, _is_patch, gamedef_names = globals_.gamedef.recursiveFiles(res_name)
+    gamedef_files, _is_patch, gamedef_names = globals_.game_def.recursiveFiles(res_name)
 
     # Then, we ask the current translation to give a path for each of those
     # gamedefs. If there is no translation for a specific resource and gamedef,
@@ -1289,7 +1289,7 @@ def LoadTileset(idx: int, name: str, reload_: bool = False) -> None:
         return
 
     # find the tileset path
-    tileset_paths = reversed(globals_.gamedef.GetTexturePaths())
+    tileset_paths = reversed(globals_.game_def.GetTexturePaths())
 
     found = False
     compressed = False

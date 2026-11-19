@@ -1,7 +1,7 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data import globals_
-from data.common.gamedef import LoadGameDef, ReggieGameDefinition, getAvailableGameDefs
+from data.common.game_def import LoadGameDef, ReggieGameDefinition, getAvailableGameDefs
 from data.common.settings import setting
 from ui.theme.reggie_theme import GetIcon
 from ui.widgets.game_def_viewer import GameDefViewer

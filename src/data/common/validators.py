@@ -67,10 +67,10 @@ def areValidGamePaths(stage_check: str = 'ug', texture_check: str = 'ug') -> boo
     Checks to see if the path for NSMBW contains a valid game
     """
     if stage_check == 'ug':
-        stage_check = globals_.gamedef.GetStageGamePath()
+        stage_check = globals_.game_def.GetStageGamePath()
 
     if texture_check == 'ug':
-        texture_check = globals_.gamedef.GetTextureGamePath()
+        texture_check = globals_.game_def.GetTextureGamePath()
 
     if not stage_check or not texture_check:
         return False

@@ -202,7 +202,7 @@ class SpriteItem(LevelEditorItem):
         self.name = globals_.Sprites[sprite_num].name
         self.setToolTip(globals_.trans.string('levelitem.sprite.tooltip', ('[type]', self.sprite_num), ('[name]', self.name)))
 
-        imgs = globals_.gamedef.getImageClasses()
+        imgs = globals_.game_def.getImageClasses()
         if sprite_num in imgs:
             self.setImageObj(imgs[sprite_num])
 
@@ -220,8 +220,8 @@ class SpriteItem(LevelEditorItem):
         self.setZValue(26000)
         self.resetTransform()
 
-        if (self.sprite_num in globals_.gamedef.getImageClasses()) and (self.sprite_num not in SLib.SpriteImagesLoaded):
-            globals_.gamedef.getImageClasses()[self.sprite_num].loadImages()
+        if (self.sprite_num in globals_.game_def.getImageClasses()) and (self.sprite_num not in SLib.SpriteImagesLoaded):
+            globals_.game_def.getImageClasses()[self.sprite_num].loadImages()
             SLib.SpriteImagesLoaded.add(self.sprite_num)
 
         self.ImageObj = obj(self) if obj else SLib.SpriteImage(self)

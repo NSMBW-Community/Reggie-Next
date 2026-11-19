@@ -56,20 +56,20 @@ class GameDefViewer(QtWidgets.QWidget):
         """
         Updates all info
         """
-        sprite_folders = globals_.gamedef.recursiveFiles('sprites', is_folder=True)[0]
+        sprite_folders = globals_.game_def.recursiveFiles('sprites', is_folder=True)[0]
 
-        if not globals_.gamedef.custom or sprite_folders:
+        if not globals_.game_def.custom or sprite_folders:
             img = GetIcon('rocket').pixmap(16, 16)
         else:
             img = QtGui.QPixmap(16, 16)
             img.fill(QtGui.QColor(0, 0, 0, 0))
 
-        if globals_.gamedef.version is None:
+        if globals_.game_def.version is None:
             ver = ''
         else:
-            ver = f'<p style="font-size:10px;">v{globals_.gamedef.version}</p>'
-        title = f'<b>{globals_.gamedef.name}</b>'
-        desc = str(globals_.gamedef.description)
+            ver = f'<p style="font-size:10px;">v{globals_.game_def.version}</p>'
+        title = f'<b>{globals_.game_def.name}</b>'
+        desc = str(globals_.game_def.description)
 
         self.sprite_img_label.setPixmap(img)
         self.version_label.setText(ver)

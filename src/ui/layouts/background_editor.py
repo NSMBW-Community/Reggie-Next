@@ -228,7 +228,7 @@ class BackgroundEditorLayout(QtWidgets.QHBoxLayout):
                 if file.bg_id == img_name:
                     img_name = file.image
 
-            filename = globals_.gamedef.bgFile(img_name + '.png', 'ab'[self.is_bgb])
+            filename = globals_.game_def.bgFile(img_name + '.png', 'ab'[self.is_bgb])
             if not os.path.isfile(filename):
                 filename = os.path.join(get_reggiedata_folder(), ['bga', 'bgb'][self.is_bgb], 'no_preview.png')
 

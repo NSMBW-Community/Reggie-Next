@@ -226,7 +226,7 @@ class TilesetsTab(QtWidgets.QWidget):
         """
         Prepares a tileset preview
         """
-        tileset_paths = reversed(globals_.gamedef.GetTexturePaths())
+        tileset_paths = reversed(globals_.game_def.GetTexturePaths())
 
         found = False
         compressed = False

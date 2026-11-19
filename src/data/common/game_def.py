@@ -9,7 +9,7 @@ from PyQt6 import QtWidgets
 import spritelib as SLib
 import sprites
 from data import globals_
-from data.common.gamedef_update import update_main, update_sprites_module
+from data.common.game_def_update import update_main, update_sprites_module
 from data.common.loaders import (
     LoadBgFiles,
     LoadConfig,
@@ -311,7 +311,7 @@ class ReggieGameDefinition:
 
     def GetTexturePaths(self) -> list[str | None]:
         """
-        Returns the texture game paths of this globals_.gamedef and its bases
+        Returns the texture game paths of this globals_.game_def and its bases
         """
         paths: list[str | None] = [setting('TextureGamePath')]
 
@@ -358,7 +358,7 @@ class ReggieGameDefinition:
 
     def recursiveFiles(self, name: str, is_folder: bool = False) -> tuple[list[str], bool, list[str | None]]:
         """
-        Checks each base of this globals_.gamedef and returns a list of successive file paths
+        Checks each base of this globals_.game_def and returns a list of successive file paths
         """
         if is_folder:
             entry = self.folders[name]
@@ -394,7 +394,7 @@ class ReggieGameDefinition:
 
     def file(self, name: str) -> str | None:
         """
-        Returns a file by recursively checking successive globals_.gamedef bases
+        Returns a file by recursively checking successive globals_.game_def bases
         """
         if name not in self.files:
             return
@@ -448,19 +448,19 @@ def LoadGameDef(name: str | None = None) -> bool:
     """
     Loads a game definition
     """
-    # Load the globals_.gamedef
-    globals_.gamedef = ReggieGameDefinition(name)
-    globals_.gamedef.__init2__()
+    # Load the globals_.game_def
+    globals_.game_def = ReggieGameDefinition(name)
+    globals_.game_def.__init2__()
 
     LoadConfig()
 
-    if globals_.gamedef.custom and (not globals_.settings.contains(f'StageGamePath_{globals_.gamedef.name}')):
-        # First-time usage of this globals_.gamedef. Have the
+    if globals_.game_def.custom and (not globals_.settings.contains(f'StageGamePath_{globals_.game_def.name}')):
+        # First-time usage of this globals_.game_def. Have the
         # user pick a stage folder so we can load stages
         # and tilesets from there
         pressed_button = QtWidgets.QMessageBox.information(None,
             globals_.trans.string('game_def.first_load.title'),
-            globals_.trans.string('game_def.first_load.text', ('[game]', globals_.gamedef.name)),
+            globals_.trans.string('game_def.first_load.text', ('[game]', globals_.game_def.name)),
             QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.Cancel
         )
 
@@ -482,7 +482,7 @@ def LoadGameDef(name: str | None = None) -> bool:
 
         QtWidgets.QMessageBox.information(None,
             globals_.trans.string(f'game_def.{message_type}.title'),
-            globals_.trans.string(f'game_def.{message_type}.text', ('[game]', globals_.gamedef.name)),
+            globals_.trans.string(f'game_def.{message_type}.text', ('[game]', globals_.game_def.name)),
             QtWidgets.QMessageBox.StandardButton.Ok
         )
 
@@ -524,14 +524,14 @@ def LoadGameDef(name: str | None = None) -> bool:
     # Always load the sprites folders so the correct sprite images can be
     # loaded when Reggie is started. This avoids loading all sprite images
     # again and also simplifies the sprite image code.
-    SLib.SpritesFolders = globals_.gamedef.recursiveFiles('sprites', is_folder=True)[0]
+    SLib.SpritesFolders = globals_.game_def.recursiveFiles('sprites', is_folder=True)[0]
 
     if globals_.Area.areanum != -1:
         SLib.ImageCache.clear()
         SLib.SpriteImagesLoaded.clear()
         LoadBasics()
 
-        spriteClasses = globals_.gamedef.getImageClasses()
+        spriteClasses = globals_.game_def.getImageClasses()
 
         for s in globals_.Area.sprites:
             if s.sprite_num in SLib.SpriteImagesLoaded:

@@ -186,7 +186,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             loaded = self.load_level(sys.argv[1], True, 1)
         else:
             # Try the last level loaded with this game patch
-            last_level = globals_.gamedef.GetLastLevel()
+            last_level = globals_.game_def.GetLastLevel()
             if last_level is not None:
                 loaded = self.load_level(last_level, True, 1)
 
@@ -907,7 +907,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         while True:
             stage_path = QtWidgets.QFileDialog.getExistingDirectory(
                 None,
-                globals_.trans.string('dialog.file_prompt.choose_stage_folder', ('[game]', globals_.gamedef.name))
+                globals_.trans.string('dialog.file_prompt.choose_stage_folder', ('[game]', globals_.game_def.name))
             )
 
             if stage_path == '':
@@ -919,13 +919,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
             while not os.path.isdir(texture_path):
                 texture_path = QtWidgets.QFileDialog.getExistingDirectory(
                     None,
-                    globals_.trans.string('dialog.file_prompt.choose_texture_folder', ('[game]', globals_.gamedef.name))
+                    globals_.trans.string('dialog.file_prompt.choose_texture_folder', ('[game]', globals_.game_def.name))
                 )
 
                 if texture_path == "":
                     return False
 
-            if (not areValidGamePaths(stage_path, texture_path)) and (not globals_.gamedef.custom):  # custom gamedefs can use incomplete folders
+            if (not areValidGamePaths(stage_path, texture_path)) and (not globals_.game_def.custom):  # custom gamedefs can use incomplete folders
                 QtWidgets.QMessageBox.information(
                     None, globals_.trans.string('error.title.error'),
                     globals_.trans.string('error.missing_game_files.retail')
@@ -1225,7 +1225,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('MainWindowState', self.saveState(0))
         setSetting('MainWindowGeometry', self.saveGeometry())
 
-        globals_.gamedef.SetLastLevel(str(self.fileSavePath))
+        globals_.game_def.SetLastLevel(str(self.fileSavePath))
 
         # Save some other settings not handled by Preferences
         setSetting('ZoomLevel', self.ZoomLevel)
@@ -1251,7 +1251,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             else:
                 # Get this name with all possible archive extensions
                 for ext in globals_.FileExtentions:
-                    check_names.append(os.path.join(str(globals_.gamedef.GetStageGamePath()), name + ext))
+                    check_names.append(os.path.join(str(globals_.game_def.GetStageGamePath()), name + ext))
 
             for check_name in check_names:
                 if os.path.isfile(check_name):

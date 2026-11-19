@@ -93,7 +93,7 @@ class SpriteSwitchDialog(QtWidgets.QDialog):
                 sprite.SetType(new_type)
 
                 # Fixes sprite image issues
-                image_classes = globals_.gamedef.getImageClasses()
+                image_classes = globals_.game_def.getImageClasses()
                 if sprite.sprite_num in image_classes:
                     sprite.setImageObj(image_classes[sprite.sprite_num])
                 else:

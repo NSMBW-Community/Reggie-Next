@@ -67,7 +67,7 @@ class ExternalDatabaseDialog(QtWidgets.QDialog):
         Reads the XML and stores all of the item data
         """
         # Find the correct XML
-        filename = globals_.gamedef.externalFile(f'{self.name}.xml')
+        filename = globals_.game_def.externalFile(f'{self.name}.xml')
         if not os.path.isfile(filename):
             raise FileNotFoundError
 

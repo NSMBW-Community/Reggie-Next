@@ -92,8 +92,8 @@ def SetGamePaths(new_stage_path: str, new_texture_path: str) -> None:
     """
     # os.path.join crashes if QStrings are used, so we must change the paths to
     # a Python string manually
-    globals_.gamedef.SetStageGamePath(str(new_stage_path))
-    globals_.gamedef.SetTextureGamePath(str(new_texture_path))
+    globals_.game_def.SetStageGamePath(str(new_stage_path))
+    globals_.game_def.SetTextureGamePath(str(new_texture_path))
 
 def get_main_path() -> str:
     """

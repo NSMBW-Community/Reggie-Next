@@ -92,7 +92,7 @@ from data.common.utils import SetGamePaths, get_root_path
 from data.common.validators import FilesAreMissing, areValidGamePaths
 
 from data.common.settings import setting, setSetting
-from data.common.gamedef import LoadGameDef
+from data.common.game_def import LoadGameDef
 
 from data.common.loaders import LoadOverrides
 
@@ -283,7 +283,7 @@ def main():
     while not areValidGamePaths():
         stage_path = QtWidgets.QFileDialog.getExistingDirectory(
             None,
-            globals_.trans.string('dialog.file_prompt.choose_stage_folder', ('[game]', globals_.gamedef.name))
+            globals_.trans.string('dialog.file_prompt.choose_stage_folder', ('[game]', globals_.game_def.name))
         )
 
         if stage_path == '':
@@ -295,7 +295,7 @@ def main():
         while not os.path.isdir(texture_path):
             texture_path = QtWidgets.QFileDialog.getExistingDirectory(
                 None,
-                globals_.trans.string('dialog.file_prompt.choose_texture_folder', ('[game]', globals_.gamedef.name))
+                globals_.trans.string('dialog.file_prompt.choose_texture_folder', ('[game]', globals_.game_def.name))
             )
 
             if texture_path == "":
@@ -305,8 +305,8 @@ def main():
         if areValidGamePaths():
             break
 
-        if globals_.gamedef.custom:
-            msg = globals_.trans.string('error.missing_game_files.game_def', ('[game]', globals_.gamedef.name))
+        if globals_.game_def.custom:
+            msg = globals_.trans.string('error.missing_game_files.game_def', ('[game]', globals_.game_def.name))
         else:
             msg = globals_.trans.string('error.missing_game_files.retail')
         QtWidgets.QMessageBox.information(None, globals_.trans.string('error.title.error'), msg)

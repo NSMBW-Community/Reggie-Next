@@ -3,7 +3,7 @@ from typing import Literal
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from data.common.gamedef import ReggieGameDefinition
+from data.common.game_def import ReggieGameDefinition
 from data.common.keybind import Keybind
 from data.common.menu_action import MenuAction
 from data.common.toolbar_action import ToolbarAction
@@ -146,7 +146,7 @@ AllowSizeHacks: bool = False
 app: QtWidgets.QApplication | None = None
 firstLoad: bool = True
 trans: Translation = Translation.init_as_english()
-gamedef: ReggieGameDefinition = ReggieGameDefinition()
+game_def: ReggieGameDefinition = ReggieGameDefinition()
 # uninitialized
 mainWindow: ReggieWindow
 settings: QtCore.QSettings
