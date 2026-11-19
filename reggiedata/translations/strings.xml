@@ -183,7 +183,7 @@
                 <string id="zone_size_max">Some zones are too large.</string>
             </section>
             <section id="fix_selected">
-                <string id="text">Fix Selected Items...</string>
+                <string id="text">Fix Selected Items</string>
                 <string id="tooltip">You can select multiple items at once</string>
             </section>
             <string id="warning_fix">Are you sure you want fix these items? This [b]cannot[/b] be undone!</string>
