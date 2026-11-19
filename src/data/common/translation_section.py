@@ -1,7 +1,7 @@
 class TranslationSection:
     """
     A basic translation section that contains sub-sections or translation
-    strings as well as methods to extract said sub-sections and strings.
+    strings.
     """
 
     def __init__(

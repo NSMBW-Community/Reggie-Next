@@ -24,7 +24,7 @@ class Translation:
         section.
         :return: A translation string whose ID matches the structure of the
         given id. If no string with the given ID was found, a warning will be
-        logged and said ID will be returned instead.
+        logged and the given ID will be returned instead.
         """
         result, stack_trace = self._fetch(id)
 
