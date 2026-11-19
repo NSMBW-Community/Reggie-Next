@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Updated spritedata for (Newer) sprites:
+  - 441
+
 ## [5.0.0] - 2026-11-18
 
 ### Added

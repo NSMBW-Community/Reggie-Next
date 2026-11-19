@@ -2442,6 +2442,9 @@
   </sprite> <!-- #433: Floating ? Block -->
 
   <sprite id="441" name="Mushroom Platform" notes="A mushroom platform with a solid-on-top collision representing the top segment of a large mushroom. The stem portion must be painted with tileset objects." files="obj_kinoko.arc">
+    <spritetex nybble="7" title="Style" comment="While this sprite supports SpriteTex, it does not include any styles other than the default.">
+      <entry value="0">Original</entry>
+    </spritetex>
     <dualbox nybble="11.4" title1="Skinny" title2="Thick" comment="This determines the thickness (style) of the mushroom platform."/>
     <dualbox nybble="10.4" title1="Orange" title2="Blue" comment="This determines the color of the Skinny mushroom platform." requirednybble="11.4" requiredval="0"/> <!-- Appears if Skinny is set -->
     <dualbox nybble="10.4" title1="Red" title2="Green" comment="This determines the color of the Thick mushroom platform." requirednybble="11.4"/> <!-- Appears if Thick is set -->
@@ -2468,17 +2471,6 @@
       <entry value="6">78.75°</entry>
       <entry value="7">90.00°</entry>
     </list> <!-- Appears only if Angled + Right is enabled -->
-    <checkbox nybble="9.4" title="Place In Front Of Other Sprites" comment="When enabled, this changes the relative Z-Order of the platform placing it in front of other sprites." comment2="The player will jump behind the mushroom platform when passing through from underneath."/>
-  </sprite> <!-- #441: Mushroom Platform -->
-
-  <sprite id="441" name="Mushroom Platform" notes="A mushroom platform with a solid-on-top collision representing the top segment of a large mushroom. The stem portion must be painted with tileset objects." files="obj_kinoko.arc">
-    <spritetex nybble="7" title="Style" comment="While this sprite supports SpriteTex, it does not include any styles other than the default.">
-      <entry value="0">Original</entry>
-    </spritetex>
-    <dualbox nybble="11.4" title1="Skinny" title2="Thick" comment="This determines the thickness (style) of the mushroom platform."/>
-    <dualbox nybble="10.4" title1="Orange" title2="Blue" comment="This determines the color of the Skinny mushroom platform." requirednybble="11.4" requiredval="0"/> <!-- Appears if Skinny is set -->
-    <dualbox nybble="10.4" title1="Red" title2="Green" comment="This determines the color of the Thick mushroom platform." requirednybble="11.4"/> <!-- Appears if Thick is set -->
-    <value nybble="12" title="Width" comment="This determines the width of the mushroom platform."/>
     <checkbox nybble="9.4" title="Place In Front Of Other Sprites" comment="When enabled, this changes the relative Z-Order of the platform placing it in front of other sprites." comment2="The player will jump behind the mushroom platform when passing through from underneath."/>
   </sprite> <!-- #441: Mushroom Platform -->
 
