@@ -114,7 +114,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 if scene is not None:
                     scene.update()
 
-            elif globals_.CurrentPaintType == 5:
+            elif globals_.CurrentPaintType == 5 and globals_.EntrancesShown:
                 # paint an entrance
                 clickedx = int((clicked.x() - 12) / 1.5)
                 clickedy = int((clicked.y() - 12) / 1.5)

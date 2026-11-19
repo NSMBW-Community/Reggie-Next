@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Fixed the "Zoom to Minimum" menu action showing the translation strings for "Zoom In".
+- Entrances can no longer be painted when "Show Entrances" is disabled.
 
 ## [5.0.0] - 2026-11-18
 
