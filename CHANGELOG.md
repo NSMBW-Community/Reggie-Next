@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated spritedata for (Newer) sprites:
   - 441
 
+### Removed
+
+- Removed the refresh button from the game patch list in favor of automatic refreshing.
+
 ### Fixed
 
 - Fixed the "Zoom to Minimum" menu action showing the translation strings for "Zoom In".

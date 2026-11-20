@@ -18,7 +18,8 @@ class GameDefMenu(QtWidgets.QMenu):
         """
         Creates and initializes the menu
         """
-        QtWidgets.QMenu.__init__(self)
+        super().__init__()
+        self.aboutToShow.connect(self.setup_game_defs)
         self.createActions()
 
     def createActions(self) -> None:
@@ -54,20 +55,6 @@ class GameDefMenu(QtWidgets.QMenu):
 
             self.addAction(act)
 
-        self.addSeparator()
-
-        # Add the reload button
-        act = QtGui.QAction(self)
-        act.setText(globals_.trans.string('widget.game_def_menu.refresh_list'))
-        act.setData('reload_gamedef')
-        act.setActionGroup(self.actGroup)
-        act.setIcon(GetIcon('drive-disc'))
-        act.setCheckable(False)
-        act.setChecked(False)
-        act.triggered.connect(self.handleReloadClicked)
-
-        self.addAction(act)
-
     def handleGameDefClicked(self, checked: bool) -> None:
         """
         Handles the user clicking a gamedef
@@ -98,22 +85,9 @@ class GameDefMenu(QtWidgets.QMenu):
             act.setChecked(act.data() == real_gamedef)
         self.update_flag = False
 
-    def handleReloadClicked(self) -> None:
+    def setup_game_defs(self) -> None:
         """
-        Handles the user clicking the Reload button
+        Handles setting up the game defs when the menu opens
         """
         self.clear()
         self.createActions()
-
-    def mouseReleaseEvent(self, a0: QtGui.QMouseEvent) -> None:
-        """
-        Handles mouse press events
-        """
-        action = self.actionAt(a0.pos())
-
-        # If this is the Reload button, don't close the menu when clicked
-        if action and action.data() == 'reload_gamedef':
-            action.trigger()
-            a0.accept()
-        else:
-            super().mouseReleaseEvent(a0)
