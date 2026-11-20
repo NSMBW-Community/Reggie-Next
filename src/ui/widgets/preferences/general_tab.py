@@ -190,7 +190,7 @@ class GeneralTab(PreferenceTabWidget):
         setSetting('ShowUnknownTilesetWarning', globals_.ShowUnknownTilesetWarning)
 
         # Update diagnostic widget
-        globals_.mainWindow.diagnostic.update_widget()
+        globals_.mainWindow.auto_diag.update_widget()
 
         return show_restart_warning
 

@@ -42,7 +42,7 @@ from ui.dialogs.zone import ZonesDialog
 from ui.menus.game_def_menu import GameDefMenu
 from ui.menus.recent_files_menu import RecentFilesMenu
 from ui.theme.reggie_theme import GetAppIcon, GetIcon
-from ui.widgets.diagnostic import DiagnosticWidget
+from ui.widgets.auto_diagnostic import AutoDiagnosticWidget
 from ui.widgets.editors.entrance import EntranceEditorWidget
 from ui.widgets.editors.location import LocationEditorWidget
 from ui.widgets.editors.path_node import PathNodeEditorWidget
@@ -227,7 +227,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Calling this while the auto-diag is initing
         # will cause the 'no zones' check to always fail
         if globals_.AutoDiagEnabled:
-            self.diagnostic.update_status()
+            self.auto_diag.update_status()
 
         globals_.Initializing = False
 
@@ -252,10 +252,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         status_bar.addWidget(self.selectionLabel)
         status_bar.addWidget(self.hoverLabel)
 
-        self.diagnostic = DiagnosticWidget()
+        self.auto_diag = AutoDiagnosticWidget()
         if globals_.AutoDiagEnabled:
-            self.diagnostic.set_timer()
-            status_bar.addPermanentWidget(self.diagnostic)
+            self.auto_diag.set_timer()
+            status_bar.addPermanentWidget(self.auto_diag)
 
         self.ZoomWidget = ZoomWidget()
         self.ZoomStatusWidget = ZoomStatusWidget()

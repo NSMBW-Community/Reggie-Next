@@ -205,8 +205,8 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         # Update the widget
         if globals_.AutoDiagEnabled:
-            globals_.mainWindow.diagnostic.update_status()
-            globals_.mainWindow.diagnostic.set_timer()
+            globals_.mainWindow.auto_diag.update_status()
+            globals_.mainWindow.auto_diag.set_timer()
 
         # Gray out the Fix button if there are no more problems
         if self.error_list.count() == 0:

@@ -5,7 +5,7 @@ from ui.dialogs.diagnostic_tool import DiagnosticToolDialog
 from ui.theme.reggie_theme import GetIcon
 
 
-class DiagnosticWidget(QtWidgets.QWidget):
+class AutoDiagnosticWidget(QtWidgets.QWidget):
     """
     Widget for the auto-diagnostic tool
     """
