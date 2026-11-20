@@ -92,7 +92,7 @@
                     </section>
                     <section id="face_left">
                         <string id="text">Spawn Facing Left</string>
-                        <string id="tooltip">[b]Spawn Facing Left:[/b][br]When enabled, all Entrances with the "Normal", "Normal?", or "Boss Entrance (Standing)" types will spawn players facing left instead of right. Enabled in all Ambush stages.</string>
+                        <string id="tooltip">[b]Spawn Facing Left:[/b][br]When enabled, all Entrances with the "Normal", "Normal?", or "Boss Entrance (Standing)" types will spawn players facing left instead of right. This is enabled in most Enemy Ambush stages.</string>
                     </section>
                     <section id="screen_wrap">
                         <string id="text">Wrap across Edges</string>
