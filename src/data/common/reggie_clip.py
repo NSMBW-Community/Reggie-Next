@@ -114,13 +114,13 @@ class ReggieClip:
         select: bool = True,
         xOverride: int | None = None,
         yOverride: int | None = None,
-    ) -> list[LevelEditorItem]:
+    ) -> list[LevelEditorItem | Path]:
         """
         Decode and place a set of items
         """
         globals_.mainWindow.SelectionUpdateFlag = True
         globals_.mainWindow.scene.clearSelection()
-        added: list[LevelEditorItem] = []
+        added: list[LevelEditorItem | Path] = []
 
         # Remove leading and trailing whitespace
         reggie_clip = reggie_clip.strip()
@@ -338,7 +338,7 @@ class ReggieClip:
                     zone = int(split[7])
                     settings = int(split[8])
                     layer = int(split[9])
-                    path = int(split[10])
+                    path_id = int(split[10])
                     exitLvl = int(split[11])
                     cPipeDir = int(split[12])
 
@@ -351,7 +351,7 @@ class ReggieClip:
                         continue
                     if layer < 0 or layer > 2:
                         continue
-                    if path < 0 or path > 255:
+                    if path_id < 0 or path_id > 255:
                         continue
                     if cPipeDir < 0 or cPipeDir > 3:
                         continue
@@ -367,7 +367,7 @@ class ReggieClip:
                     newitem.entzone = zone
                     newitem.entsettings = settings
                     newitem.entlayer = layer
-                    newitem.entpath = path
+                    newitem.entpath = path_id
                     newitem.leave_level = exitLvl != 0
                     newitem.cpdirection = cPipeDir
 
@@ -433,7 +433,7 @@ class ReggieClip:
                                 path = p
                                 break
 
-                        node = path.add_node(objx, objy, speed, accel, delay, nodeID, hana_dist, add_to_scene, add_to_scene)
+                        node = path.add_node(objx, objy, speed, accel, delay, hana_dist, nodeID, add_to_scene, add_to_scene)
                         path_nodes.append(node)
 
                 elif split[0] == '6':
