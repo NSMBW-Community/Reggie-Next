@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - Removed the refresh button from the game patch list in favor of automatic refreshing.
+- Removed the data type specifier from the sprite ID-types XML, the list now automatically determines which type to use.
 
 ### Fixed
 
@@ -31,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed the Auto-Diagnostic Tool becoming blank when saving the Preferences.
 - Fixed the comments list so that it no longer sorts alphabetically.
 - Fixed comments being moved by the arrow keys when the textbox is focused.
+- Fixed a bug that broke ID-type sorting in the Current Sprites list.
 
 ## [5.0.0] - 2026-11-18
 

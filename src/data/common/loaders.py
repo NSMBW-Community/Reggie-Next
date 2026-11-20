@@ -2025,18 +2025,11 @@ def LoadSpriteIDTypes(reload_: bool = False) -> None:
             if node.tag.lower() == 'idtype':
                 id_type = node.attrib['id']
                 name = ''
-                data_type = ''
 
                 for sub in node:
                     if sub.tag.lower() == 'name':
                         name = str(sub.text)
-                    elif sub.tag.lower() == 'type':
-                        data_type = str(sub.text)
 
-                # The data type can only be these two things
-                if data_type not in ('value', 'text'):
-                    data_type = 'value'
-
-                types.append(SpriteIDType(id_type, name, data_type))
+                types.append(SpriteIDType(id_type, name))
 
     globals_.SpriteIDTypes = types

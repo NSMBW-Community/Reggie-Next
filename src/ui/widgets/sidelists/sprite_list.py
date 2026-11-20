@@ -238,20 +238,20 @@ class SpriteList(QtWidgets.QWidget):
 
         for col, idtype in enumerate(globals_.SpriteIDTypes):
             id_values = ids.get(idtype.id_type, '')
+            id_value = -1
+            has_multiple_ids = True
 
-            if len(id_values) == 1:
-                id_values = id_values[0]
+            if isinstance(id_values, list) and len(id_values) == 1:
+                has_multiple_ids = False
+                id_value = int(id_values[0])
 
             entry_item = QtWidgets.QTableWidgetItem()
-            if idtype.data_type == 'text':
+            if has_multiple_ids:
                 entry_item.setText(str(id_values))
             else:
-                if isinstance(id_values, list):
-                    id_values = id_values[0]
-                entry_item.setData(QtCore.Qt.ItemDataRole.EditRole, id_values)
+                entry_item.setData(QtCore.Qt.ItemDataRole.EditRole, id_value)
 
             entry_item.setFlags(entry_item.flags() & mask)
-
             self.table.setItem(row, 2 + col, entry_item)
 
         # Re-enable sorting
@@ -282,25 +282,28 @@ class SpriteList(QtWidgets.QWidget):
         name_item.setFlags(name_item.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)
         self.table.setItem(row, 1, name_item)
 
+        item_mask = ~(QtCore.Qt.ItemFlag.ItemIsEditable | QtCore.Qt.ItemFlag.ItemIsSelectable)
+
         # Skip the first columns (the id and name)
         for i in range(2, self.table.columnCount()):
-            id_values = ids.get(globals_.SpriteIDTypes[i - 2].id_type, [''])
+            id_values = ids.get(globals_.SpriteIDTypes[i - 2].id_type, '')
+            id_value = -1
+            has_multiple_ids = True
 
-            if len(id_values) == 1:
-                id_values = id_values[0]
+            if isinstance(id_values, list) and len(id_values) == 1:
+                has_multiple_ids = False
+                id_value = int(id_values[0])
 
             item = self.table.item(row, i)
             if item is None:
                 item = QtWidgets.QTableWidgetItem()
+                item.setFlags(item.flags() & item_mask)
                 self.table.setItem(row, i, item)
 
-            if globals_.SpriteIDTypes[i - 2].data_type == 'text':
+            if has_multiple_ids:
                 item.setText(str(id_values))
             else:
-                if isinstance(id_values, list):
-                    id_values = int(id_values[0])
-
-                item.setData(QtCore.Qt.ItemDataRole.EditRole, str(id_values))
+                item.setData(QtCore.Qt.ItemDataRole.EditRole, id_value)
 
         # Re-enable sorting
         self.table.setSortingEnabled(True)

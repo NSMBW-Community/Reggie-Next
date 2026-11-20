@@ -2,102 +2,77 @@
 <idtypes>
     <idtype id="Rotation">
         <name>Rotation ID</name>
-        <type>value</type>
     </idtype>
     <idtype id="Two Way Line">
         <name>Two Way Line ID</name>
-        <type>value</type>
     </idtype>
     <idtype id="Water Ball">
         <name>Water Ball ID</name>
-        <type>value</type>
     </idtype>
     <idtype id="Mushroom">
         <name>Mushroom ID</name>
-        <type>value</type>
     </idtype>
     <idtype id="Group">
         <name>Group ID</name>
-        <type>value</type>
     </idtype>
     <idtype id="Bolt">
         <name>Bolt ID</name>
-        <type>value</type>
     </idtype>
     <idtype id="Target Event">
         <name>Target Event ID</name>
-        <type>text</type>
     </idtype>
     <idtype id="Triggering Event">
         <name>Triggering Event ID</name>
-        <type>text</type>
     </idtype>
     <idtype id="Collection">
         <name>Collection ID</name>
-        <type>value</type>
     </idtype>
     <idtype id="Location">
         <name>Location ID</name>
-        <type>value</type>
     </idtype>
     <idtype id="Path">
         <name>Path ID</name>
-        <type>value</type>
     </idtype>
     <idtype id="Path Node">
         <name>Path Node ID</name>
-        <type>value</type>
     </idtype>
     <idtype id="Path Movement">
         <name>Path Movement ID</name>
-        <type>value</type>
     </idtype>
     <idtype id="Red Coin">
         <name>Red Coin ID</name>
-        <type>value</type>
     </idtype>
     <idtype id="Hill">
         <name>Hill ID</name>
-        <type>value</type>
     </idtype>
     <idtype id="Stretch">
         <name>Stretch ID</name>
-        <type>value</type>
     </idtype>
     <idtype id="Ray">
         <name>Ray ID</name>
-        <type>value</type>
     </idtype>
     <idtype id="Coaster">
         <name>Coaster ID</name>
-        <type>value</type>
     </idtype>
     <idtype id="Bubble Cannon">
         <name>Bubble Cannon ID</name>
-        <type>value</type>
     </idtype>
     <idtype id="Burner">
         <name>Burner ID</name>
-        <type>value</type>
     </idtype>
     <idtype id="Wiggling">
         <name>Wiggling ID</name>
-        <type>value</type>
     </idtype>
     <idtype id="Panel">
         <name>Panel ID</name>
-        <type>value</type>
     </idtype>
     <idtype id="Colony">
         <name>Colony ID</name>
-        <type>value</type>
     </idtype>
     <idtype id="Entrance">
         <name>Entrance ID</name>
-        <type>value</type>
     </idtype>
     <idtype id="Limit">
         <name>Limit ID</name>
-        <type>value</type>
     </idtype>
 </idtypes>
