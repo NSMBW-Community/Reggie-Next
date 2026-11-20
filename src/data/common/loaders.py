@@ -1542,10 +1542,12 @@ def ReloadTilesets(soft=False):
     """
     Reloads all the tilesets. If soft is True, they will not be reloaded if the filepaths have not changed.
     """
+    LoadObjDescriptions(True)
+    LoadTilesetNames(True)
+    LoadTilesetInfo(True)
+
     if not hasattr(globals_, 'mainWindow'):
         return
-
-    LoadTilesetInfo(True)
 
     for idx, name in enumerate(globals_.Area.tilesets):
         if (name is not None) and (name != ''):

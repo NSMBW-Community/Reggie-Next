@@ -15,12 +15,9 @@ from data.common.loaders import (
     LoadConfig,
     LoadEntranceNames,
     LoadMusicInfo,
-    LoadObjDescriptions,
     LoadSpriteCategories,
     LoadSpriteIDTypes,
     LoadSpriteData,
-    LoadTilesetInfo,
-    LoadTilesetNames,
     LoadZoneThemes,
     ReloadTilesets,
 )
@@ -516,8 +513,7 @@ def LoadGameDef(name: str | None = None) -> bool:
     LoadZoneThemes(True)
     LoadMusicInfo(True)
 
-    LoadObjDescriptions(True)
-    LoadTilesetNames(True)
+    # Handles Pa0 descriptions, tileset names, and randomization
     ReloadTilesets(True)
 
     # Always load the sprites folders so the correct sprite images can be
