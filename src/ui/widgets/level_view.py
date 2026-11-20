@@ -574,6 +574,21 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             super().keyPressEvent(event)
             return
 
+        item_list = []
+        type_com = CommentItem
+
+        for item in scene.selectedItems():
+            # Don't move comments that have the textbox selected
+            if isinstance(item, type_com):
+                if item.TextEdit.hasFocus() and globals_.app is not None:
+                    globals_.app.sendEvent(item.TextEdit, event)
+                    continue
+
+            item_list.append(item)
+
+        if len(item_list) < 1:
+            return
+
         step_x = 0
         step_y = 0
         step_amt = 16 # This doesn't matter much since we don't override snapping
@@ -593,7 +608,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             step_x = 0
             step_y = step_amt
 
-        self.shift_items(step_x, step_y, True)
+        self.shift_items(step_x, step_y, True, item_list)
 
     def position_hovered(self, x: float, y: float) -> None:
         """
@@ -643,13 +658,14 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         globals_.mainWindow.hoverLabel.setText(info)
 
     @staticmethod
-    def shift_items(offs_x: int, offs_y: int, is_key_movement: bool) -> None:
+    def shift_items(offs_x: int, offs_y: int, is_key_movement: bool, items: list[QtWidgets.QGraphicsItem] | None = None) -> None:
         """
         Shifts selected items by the specified amount
         """
-        items = globals_.mainWindow.scene.selectedItems()
-        if not items:
-            return
+        if items is None:
+            items = globals_.mainWindow.scene.selectedItems()
+            if not items:
+                return
 
         if ((offs_x % 16) != 0) or ((offs_y % 16) != 0):
             # Warn if any objects exist
