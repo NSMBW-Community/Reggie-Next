@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated spritedata for (Newer) sprites:
   - 441
 - The unsaved changes warning message now displays a proper window title.
+- When using the "Only while selected" cursor mode, cursors now change on mouse press instead of when released.
 
 ### Removed
 
@@ -24,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed tilesets not being reloaded when switching game patches (may fix some visual issues).
 - Fixed an issue where tileset overrides wouldn't be cleared upon switching game patches.
 - Fixed a bug where entrances wouldn't be centered on startup with any zoom level other than 100%.
-- Fixed Path Nodes being messed up when pasted from a ReggieClip.
+- Fixed Path Nodes being in the wrong order when pasted from a ReggieClip.
 
 ## [5.0.0] - 2026-11-18
 

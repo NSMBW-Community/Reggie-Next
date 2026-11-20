@@ -510,6 +510,9 @@ class SpriteItem(LevelEditorItem):
         if event.button() != QtCore.Qt.MouseButton.LeftButton or QtWidgets.QApplication.keyboardModifiers() != QtCore.Qt.KeyboardModifier.ControlModifier:
             old_pos = (self.objx, self.objy)
 
+            if not self.isSelected() and not globals_.SpritesFrozen and globals_.CursorMode == 1:
+                setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
+
             LevelEditorItem.mousePressEvent(self, event)
 
             if not globals_.SpriteImagesShown:

@@ -627,6 +627,9 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
         self.MBGrabbed = self.GrabberRectMB_.contains(event.pos())
         self.MRGrabbed = self.GrabberRectMR_.contains(event.pos())
 
+        if not self.isSelected() and not globals_.ObjectsFrozen and globals_.CursorMode == 1:
+            setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
+
         if self.isSelected() and (
             self.TLGrabbed
             or self.TRGrabbed

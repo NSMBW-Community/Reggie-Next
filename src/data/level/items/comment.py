@@ -136,6 +136,9 @@ class CommentItem(LevelEditorItem):
             event.ignore()
             return
 
+        if not self.isSelected() and not globals_.CommentsFrozen and globals_.CursorMode == 1:
+            setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
+
         # We're not selected yet. Pass the event to the base class so we get
         # selected properly.
         LevelEditorItem.mousePressEvent(self, event)

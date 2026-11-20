@@ -437,3 +437,9 @@ class EntranceItem(LevelEditorItem):
     def hoverLeaveEvent(self, event: QtWidgets.QGraphicsSceneHoverEvent) -> None:
         LevelEditorItem.hoverLeaveEvent(self, event)
         setOverrideCursor(None)
+
+    def mousePressEvent(self, event: QtWidgets.QGraphicsSceneMouseEvent | None) -> None:
+        if not self.isSelected() and not globals_.EntrancesFrozen and globals_.CursorMode == 1:
+            setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
+
+        super().mousePressEvent(event)

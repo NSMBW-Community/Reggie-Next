@@ -292,6 +292,9 @@ class LocationItem(LevelEditorItem):
             self.dragstarty = self.objy
             event.accept()
         else:
+            if not self.isSelected() and not globals_.LocationsFrozen and globals_.CursorMode == 1:
+                setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
+
             LevelEditorItem.mousePressEvent(self, event)
             self.dragging = False
 
