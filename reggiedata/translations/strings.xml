@@ -68,7 +68,7 @@
                     </section>
                     <section id="entrance_id">
                         <string id="text">Entrance ID:</string>
-                        <string id="tooltip">[b]Entrance ID:[/b][br]Sets the entrance ID to load into when entering the level from the World Map or the course select.</string>
+                        <string id="tooltip">[b]Entrance ID:[/b][br]Sets the entrance ID to load into when entering the level from the World Map or the multiplayer course select.</string>
                     </section>
                     <section id="credits">
                         <string id="text">Credits</string>
@@ -80,7 +80,7 @@
                     </section>
                     <section id="useless2">
                         <string id="text">Useless Option 2</string>
-                        <string id="tooltip">[b]Useless Option 2:[/b] This serves no purpose in-game, and is usually turned off in most retail levels.</string>
+                        <string id="tooltip">[b]Useless Option 2:[/b] This serves no purpose in-game, and is usually turned on in most retail levels.</string>
                     </section>
                     <section id="useless3">
                         <string id="text">Useless Option 3</string>
@@ -96,7 +96,7 @@
                     </section>
                     <section id="screen_wrap">
                         <string id="text">Wrap across Edges</string>
-                        <string id="tooltip">[b]Wrap across Edges:[/b][br]Makes the stage edges wrap.[br]Warning: This option may cause the game to crash or behave weirdly. Wrapping only works correctly when the area is set up properly; see Coin Battle 1 for an example.</string>
+                        <string id="tooltip">[b]Wrap across Edges:[/b][br]Makes the edges of zones wrap around.[br]Warning: This option may cause the game to crash or behave weirdly. Wrapping only works correctly when the area is set up properly; see Coin Battle 1 for an example.</string>
                     </section>
                     <string id="toad_house_type">Toad House Type:</string>
                     <section id="toad_house_types">
