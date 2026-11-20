@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - When using the "Only while selected" cursor mode, cursors now change on mouse press instead of when released.
 - The "Reload Tilesets" menu action now reloads the Pa0 object descriptions and the tileset lists.
 - Revised a few translation strings.
+- Updated the name of Porcupuffers in the retail level list to be consistent with the sprite name.
 
 ### Removed
 

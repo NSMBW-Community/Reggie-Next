@@ -73,9 +73,9 @@
         <level file="04-27" name="Toad House - Powerup Panels" />
         <level file="04-28" name="Toad House - Star Chest (1)" />
         <level file="04-29" name="Toad House - Star Chest (2)" />
-        <level file="04-33" name="Porcu-puffer Ambush 1" />
-        <level file="04-34" name="Porcu-puffer Ambush 2" />
-        <level file="04-35" name="Porcu-puffer Ambush 3" />
+        <level file="04-33" name="Porcupuffer Ambush 1" />
+        <level file="04-34" name="Porcupuffer Ambush 2" />
+        <level file="04-35" name="Porcupuffer Ambush 3" />
     </category>
 
     <category name="World 5">
