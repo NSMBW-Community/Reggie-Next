@@ -1408,7 +1408,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # For some reason, there's a noticeable offset when launching
         # Reggie, so we need to manually adjust the position here
         if found_ent and globals_.Initializing:
-            offset_fix = QtCore.QPointF(492, 179)
+            offset_fix = QtCore.QPointF(492 / (self.ZoomLevel / 100.0), 179 / (self.ZoomLevel / 100.0))
             center_pos -= offset_fix
 
         self.view.centerOn(center_pos)

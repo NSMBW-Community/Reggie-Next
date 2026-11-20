@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Entrances can no longer be painted when "Show Entrances" is disabled.
 - Fixed tilesets not being reloaded when switching game patches (may fix some visual issues).
 - Fixed an issue where tileset overrides wouldn't be cleared upon switching game patches.
+- Fixed a bug where entrances wouldn't be centered on startup with any zoom level other than 100%.
 
 ## [5.0.0] - 2026-11-18
 
