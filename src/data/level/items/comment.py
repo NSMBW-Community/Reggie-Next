@@ -6,6 +6,7 @@ from data import globals_
 from data.level.dirty import SetDirty
 from data.level.items.basic import InstanceDefinition, LevelEditorItem
 from ui.theme.reggie_theme import GetIcon, clipStr, setOverrideCursor
+from ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
 
 
 class InstanceDefinition_CommentItem(InstanceDefinition):
@@ -48,8 +49,9 @@ class CommentItem(LevelEditorItem):
 
         self.objx = x
         self.objy = y
-        self.listitem = None
         self.LevelRect = (QtCore.QRectF(self.objx / 16, self.objy / 16, 2.25, 2.25))
+
+        self.listitem = ListWidgetItem_SortsByOther(self, self.ListString())
 
         self.setFlag(self.GraphicsItemFlag.ItemIsMovable, not globals_.CommentsFrozen)
         self.setFlag(self.GraphicsItemFlag.ItemIsSelectable, not globals_.CommentsFrozen)
@@ -83,7 +85,6 @@ class CommentItem(LevelEditorItem):
         com = CommentItem(x, y, text)
         com.positionChanged = CommentItem.position_changed
         com.textChanged = CommentItem.text_changed
-        com.listitem = QtWidgets.QListWidgetItem()
 
         if add_to_scene:
             globals_.mainWindow.palette_dock.comment_tab.comment_list.addItem(com.listitem)
@@ -149,7 +150,7 @@ class CommentItem(LevelEditorItem):
         """
         self.setToolTip(globals_.trans.string('levelitem.comment.tooltip',('[x]', self.objx), ('[y]', self.objy)))
 
-    def ListString(self) -> str | None:
+    def ListString(self) -> str:
         """
         Returns a string that can be used to describe the comment in a list
         """

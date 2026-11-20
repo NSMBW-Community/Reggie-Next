@@ -604,7 +604,6 @@ class Area:
                 text = com['text']
 
                 com = CommentItem(pos_x, pos_y, text)
-                com.listitem = QtWidgets.QListWidgetItem()
 
                 self.comments.append(com)
                 com.UpdateListItem()
@@ -648,8 +647,6 @@ class Area:
                         idx = null_idx
 
                 com = CommentItem(xpos, ypos, text)
-                com.listitem = QtWidgets.QListWidgetItem()
-
                 self.comments.append(com)
 
                 com.UpdateListItem()

@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed a bug where entrances wouldn't be centered on startup with any zoom level other than 100%.
 - Fixed Path Nodes being in the wrong order when pasted from a ReggieClip.
 - Fixed the Auto-Diagnostic Tool becoming blank when saving the Preferences.
+- Fixed the comments list so that it no longer sorts alphabetically.
 
 ## [5.0.0] - 2026-11-18
 

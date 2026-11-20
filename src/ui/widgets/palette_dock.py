@@ -126,7 +126,6 @@ class PaletteDock(QtWidgets.QDockWidget):
         for com in globals_.Area.comments:
             com.positionChanged = pos_change
             com.textChanged = text_change
-            com.listitem = QtWidgets.QListWidgetItem()
             self.comment_tab.comment_list.addItem(com.listitem)
             globals_.mainWindow.scene.addItem(com)
             com.UpdateListItem()
