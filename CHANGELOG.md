@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated spritedata for (Newer) sprites:
   - 441
+- The unsaved changes warning message now displays a proper window title.
 
 ### Removed
 

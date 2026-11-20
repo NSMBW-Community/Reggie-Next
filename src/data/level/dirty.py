@@ -24,6 +24,7 @@ def CheckDirty() -> bool:
         return False
 
     msg = QtWidgets.QMessageBox()
+    msg.setWindowTitle(globals_.trans.string('error.title.warning'))
     msg.setText(globals_.trans.string('dialog.dirty.info'))
     msg.setInformativeText(globals_.trans.string('dialog.dirty.info_2'))
     msg.setStandardButtons(
