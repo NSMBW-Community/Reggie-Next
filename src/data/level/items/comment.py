@@ -103,7 +103,7 @@ class CommentItem(LevelEditorItem):
         """
         Handle the comment being dragged
         """
-        if oldx == x and oldy == y or globals_.mainWindow is None:
+        if oldx == x and oldy == y:
             return
 
         self.UpdateTooltip()
@@ -189,7 +189,7 @@ class CommentItem(LevelEditorItem):
         """
         Paints the comment
         """
-        if not painter or not option or not globals_.mainWindow:
+        if not painter or not option:
             return
 
         painter.setClipRect(option.exposedRect)

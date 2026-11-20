@@ -29,10 +29,8 @@ class AreaDeleteDialog(QtWidgets.QDialog):
         """
         Deletes the current area
         """
-        mw = globals_.mainWindow
-
         # Save the current area in case something goes wrong.
-        if not mw.save():
+        if not globals_.mainWindow.save():
             return
 
         area_to_delete = globals_.Area.areanum
@@ -40,19 +38,19 @@ class AreaDeleteDialog(QtWidgets.QDialog):
 
         # Load the new area 1 before deleting the old area to avoid glitches
         # when the old area was area 1.
-        mw.load_level(mw.fileSavePath, True, new_area_one)
+        globals_.mainWindow.load_level(globals_.mainWindow.fileSavePath, True, new_area_one)
 
         # Actually delete the area
         globals_.Level.deleteArea(area_to_delete)
 
-        mw.action_list['deletearea'].setEnabled(len(globals_.Level.areas) > 1)
+        globals_.mainWindow.action_list['deletearea'].setEnabled(len(globals_.Level.areas) > 1)
 
         # Update the area selection combobox
-        mw.area_combo_box.clear()
+        globals_.mainWindow.area_combo_box.clear()
         for area in globals_.Level.areas:
-            mw.area_combo_box.addItem(globals_.trans.string('common.area_num', ('[num]', area.areanum)))
+            globals_.mainWindow.area_combo_box.addItem(globals_.trans.string('common.area_num', ('[num]', area.areanum)))
 
-        mw.area_combo_box.setCurrentIndex(0)
+        globals_.mainWindow.area_combo_box.setCurrentIndex(0)
 
         # Save the level without the area as promised
-        mw.save()
+        globals_.mainWindow.save()

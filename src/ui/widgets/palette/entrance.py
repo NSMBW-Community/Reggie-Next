@@ -52,9 +52,8 @@ class EntranceTab(QtWidgets.QWidget):
         """
         Set the selected item
         """
-        main_window = globals_.mainWindow
-        main_window.palette_dock.set_tab(2)
+        globals_.mainWindow.palette_dock.set_tab(2)
 
-        main_window.UpdateFlag = True
+        globals_.mainWindow.UpdateFlag = True
         self.entrance_list.setCurrentItem(item.listitem)
-        main_window.UpdateFlag = False
+        globals_.mainWindow.UpdateFlag = False

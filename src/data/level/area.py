@@ -551,10 +551,7 @@ class Area:
             data = unpack(pathdata, offset)
             nodes = self.LoadPathNodes(data[1], data[2])
 
-            main_window = globals_.mainWindow
-            if not main_window:
-                continue
-            path = Path(int(data[0]), main_window.scene, data[3] == 2)
+            path = Path(int(data[0]), globals_.mainWindow.scene, data[3] == 2)
 
             for node in nodes:
                 path.add_node(node['x'], node['y'], node['speed'], node['accel'], node['delay'], node['hana_dist'], add_to_scene=False)

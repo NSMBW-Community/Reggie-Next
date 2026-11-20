@@ -250,10 +250,8 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             QtWidgets.QGraphicsView.mousePressEvent(self, event)
 
         elif (event.button() == QtCore.Qt.MouseButton.LeftButton) and (QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.KeyboardModifier.ShiftModifier):
-            mw = globals_.mainWindow
-
-            pos = mw.view.mapToScene(event.pos().x(), event.pos().y())
-            addsel = mw.scene.items(pos)
+            pos = globals_.mainWindow.view.mapToScene(event.pos().x(), event.pos().y())
+            addsel = globals_.mainWindow.scene.items(pos)
             for i in addsel:
                 if i.flags() & i.GraphicsItemFlag.ItemIsSelectable:
                     i.setSelected(not i.isSelected())

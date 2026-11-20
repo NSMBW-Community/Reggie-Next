@@ -459,7 +459,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         if mode == 'c':
             return problem
-        elif problem and globals_.mainWindow is not None:
+        elif problem:
             # TODO: Maybe place it 6 blocks right, 3 blocks up from Zone 1's bottom-left corner?
             EntranceItem.create(1024, 512, globals_.Area.start_entrance)
 

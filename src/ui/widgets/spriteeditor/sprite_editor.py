@@ -784,12 +784,11 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
     def HandleSpritePlaced(self, id_: int, button_: QtWidgets.QAbstractButton) -> Callable[[], None]:
         def placeSprite() -> None:
-            mw = globals_.mainWindow
-            if mw is None or mw.selObj is None or not isinstance(mw.selObj, SpriteItem):
+            if globals_.mainWindow.selObj is None or not isinstance(globals_.mainWindow.selObj, SpriteItem):
                 return
 
-            x_ = mw.selObj.objx + 16 if mw.selObj.objx is not None else 16
-            y_ = mw.selObj.objy if mw.selObj.objy is not None else 0
+            x_ = globals_.mainWindow.selObj.objx + 16 if globals_.mainWindow.selObj.objx is not None else 16
+            y_ = globals_.mainWindow.selObj.objy if globals_.mainWindow.selObj.objy is not None else 0
             SpriteItem.create(x_, y_, id_, data=bytes(10))
 
             # remove this dependency, because it is now fulfilled.

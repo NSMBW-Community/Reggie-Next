@@ -53,8 +53,6 @@ class MoveItemUndoAction(UndoAction):
         from data.level.items.path import PathItem
         from data.level.items.sprite import SpriteItem
 
-        main_window = globals_.mainWindow
-
         if isinstance(obj, SpriteItem):
             # Sprites are weird so they handle this themselves
             obj.setNewObjPos(newX, newY)
@@ -69,9 +67,8 @@ class MoveItemUndoAction(UndoAction):
 
             newBR = obj.getFullRect()
 
-            if main_window is not None:
-                main_window.scene.update(oldBR)
-                main_window.scene.update(newBR)
+            globals_.mainWindow.scene.update(oldBR)
+            globals_.mainWindow.scene.update(newBR)
 
         elif isinstance(obj, PathItem):
             obj.objx, obj.objy = newX, newY
@@ -85,8 +82,7 @@ class MoveItemUndoAction(UndoAction):
             obj.objx, obj.objy = newX, newY
             obj.setPos(newX * 1.5, newY * 1.5)
 
-        if main_window is not None:
-            main_window.level_overview.update()
+        globals_.mainWindow.level_overview.update()
 
     def isExtentionOf(self, other: 'MoveItemUndoAction') -> bool:
         """

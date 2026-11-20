@@ -186,12 +186,11 @@ class LevelScene(QtWidgets.QGraphicsScene):
         """
         Update visible docks whenever the selected item(s) change
         """
-        main_window = globals_.mainWindow
-        if main_window.SelectionUpdateFlag:
+        if globals_.mainWindow.SelectionUpdateFlag:
             return
 
         try:
-            selitems = main_window.scene.selectedItems()
+            selitems = globals_.mainWindow.scene.selectedItems()
         except RuntimeError:
             # Must catch this error: If you close the app while something is selected,
             # you get a RuntimeError about the 'underlying C++ object being deleted'
@@ -205,12 +204,12 @@ class LevelScene(QtWidgets.QGraphicsScene):
         update_docks = False
 
         # Clear our variables
-        main_window.selObj = None
+        globals_.mainWindow.selObj = None
 
-        main_window.palette_dock.entrance_tab.entrance_list.setCurrentItem(None)
-        main_window.palette_dock.location_tab.location_list.setCurrentItem(None)
-        main_window.palette_dock.path_tab.path_list.setCurrentItem(None)
-        main_window.palette_dock.comment_tab.comment_list.setCurrentItem(None)
+        globals_.mainWindow.palette_dock.entrance_tab.entrance_list.setCurrentItem(None)
+        globals_.mainWindow.palette_dock.location_tab.location_list.setCurrentItem(None)
+        globals_.mainWindow.palette_dock.path_tab.path_list.setCurrentItem(None)
+        globals_.mainWindow.palette_dock.comment_tab.comment_list.setCurrentItem(None)
 
         # possibly a small optimization
         func_ii = isinstance
@@ -222,7 +221,7 @@ class LevelScene(QtWidgets.QGraphicsScene):
         type_com = CommentItem
 
         allow_stamp = True
-        action_list = main_window.action_list
+        action_list = globals_.mainWindow.action_list
 
         # Nothing is selected
         if not selitems:
@@ -240,7 +239,7 @@ class LevelScene(QtWidgets.QGraphicsScene):
             update_docks = True
 
             item = selitems[0]
-            main_window.selObj = cast(LevelEditorItem, item)
+            globals_.mainWindow.selObj = cast(LevelEditorItem, item)
 
             if func_ii(item, type_obj):
                 allow_stamp = True
@@ -302,7 +301,7 @@ class LevelScene(QtWidgets.QGraphicsScene):
                 com += 1
 
         action_list['mergelocations'].setEnabled(loc >= 2)
-        main_window.palette_dock.object_tab.layer_change_button.setEnabled(obj != 0)
+        globals_.mainWindow.palette_dock.object_tab.layer_change_button.setEnabled(obj != 0)
 
         # Write the statusbar label text
         # TODO: This should be all cleaned up in the future, not exactly
@@ -364,8 +363,8 @@ class LevelScene(QtWidgets.QGraphicsScene):
 
                     text += str(globals_.trans.string('common.paren_close'))  # ')'
 
-        main_window.selectionLabel.setText(text)
-        main_window.CurrentSelection = selitems
+        globals_.mainWindow.selectionLabel.setText(text)
+        globals_.mainWindow.CurrentSelection = selitems
 
         for item in selitems:
             # This helps sync non-objects with objects while dragging
@@ -374,14 +373,14 @@ class LevelScene(QtWidgets.QGraphicsScene):
                 item.dragoffsetx = int((((item.objx // 16) * 16) - item.objx) * 1.5)
                 item.dragoffsety = int((((item.objy // 16) * 16) - item.objy) * 1.5)
 
-        main_window.spriteEditorDock.set_active(show_sprite_dock)
-        main_window.entrance_editor_dock.set_active(show_entrance_dock)
-        main_window.location_editor_dock.set_active(show_location_dock)
-        main_window.path_editor_dock.set_active(show_path_dock)
+        globals_.mainWindow.spriteEditorDock.set_active(show_sprite_dock)
+        globals_.mainWindow.entrance_editor_dock.set_active(show_entrance_dock)
+        globals_.mainWindow.location_editor_dock.set_active(show_location_dock)
+        globals_.mainWindow.path_editor_dock.set_active(show_path_dock)
 
         action_list['deselect'].setEnabled(bool(selitems))
 
         if update_docks:
             globals_.DirtyOverride += 1
-            main_window.update_dock()
+            globals_.mainWindow.update_dock()
             globals_.DirtyOverride -= 1

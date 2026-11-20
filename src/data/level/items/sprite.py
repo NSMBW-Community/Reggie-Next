@@ -366,7 +366,7 @@ class SpriteItem(LevelEditorItem):
 
         if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionChange:
             scene = self.scene()
-            if scene is None or globals_.mainWindow is None:
+            if scene is None:
                 return value
 
             if self.ChangingPos:
@@ -504,7 +504,7 @@ class SpriteItem(LevelEditorItem):
         """
         Overrides mouse pressing events if needed for cloning
         """
-        if not event or not globals_.mainWindow:
+        if not event:
             return
 
         if event.button() != QtCore.Qt.MouseButton.LeftButton or QtWidgets.QApplication.keyboardModifiers() != QtCore.Qt.KeyboardModifier.ControlModifier:

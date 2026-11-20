@@ -164,9 +164,6 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
         """
         Makes sure positions don't go out of bounds and updates them as necessary
         """
-        if not globals_.mainWindow:
-            return
-
         if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionChange:
             # Snap to 24x24
             newpos = value

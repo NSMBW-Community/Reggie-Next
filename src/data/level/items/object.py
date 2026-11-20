@@ -507,7 +507,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
         """
         if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionChange:
             scene = self.scene()
-            if scene is None or globals_.mainWindow is None:
+            if scene is None:
                 return value
 
             # Snap to 24x24
@@ -596,7 +596,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
         """
         Overrides mouse pressing events if needed for resizing
         """
-        if not event or not globals_.mainWindow:
+        if not event:
             return
 
         if event.buttons() & QtCore.Qt.MouseButton.MiddleButton:

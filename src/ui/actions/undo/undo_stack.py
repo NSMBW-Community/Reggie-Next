@@ -68,7 +68,5 @@ class UndoStack:
         """
         Enables or disables the menu items of mainWindow
         """
-        main_window = globals_.mainWindow
-        if main_window is not None:
-            main_window.action_list['undo'].setEnabled(bool(self.pastActions))
-            main_window.action_list['redo'].setEnabled(bool(self.futureActions))
+        globals_.mainWindow.action_list['undo'].setEnabled(bool(self.pastActions))
+        globals_.mainWindow.action_list['redo'].setEnabled(bool(self.futureActions))

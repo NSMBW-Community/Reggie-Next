@@ -263,7 +263,7 @@ class LocationItem(LevelEditorItem):
         """
         Overrides mouse pressing events if needed for resizing
         """
-        if not event or not globals_.mainWindow:
+        if not event:
             return
 
         if event.buttons() & QtCore.Qt.MouseButton.MiddleButton:
@@ -302,7 +302,7 @@ class LocationItem(LevelEditorItem):
         """
         Overrides mouse movement events if needed for resizing
         """
-        if not event or not globals_.mainWindow:
+        if not event:
             return
 
         if event.buttons() & QtCore.Qt.MouseButton.MiddleButton:

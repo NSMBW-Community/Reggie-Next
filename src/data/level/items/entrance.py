@@ -239,7 +239,7 @@ class EntranceItem(LevelEditorItem):
         """
         Handle the entrance being dragged
         """
-        if oldx == x and oldy == y or globals_.mainWindow is None:
+        if oldx == x and oldy == y:
             return
 
         self.UpdateListItem()

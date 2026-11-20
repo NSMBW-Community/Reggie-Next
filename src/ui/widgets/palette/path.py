@@ -61,9 +61,8 @@ class PathTab(QtWidgets.QWidget):
         """
         Set the selected item
         """
-        main_window = globals_.mainWindow
-        main_window.palette_dock.set_tab(4)
+        globals_.mainWindow.palette_dock.set_tab(4)
 
-        main_window.UpdateFlag = True
+        globals_.mainWindow.UpdateFlag = True
         self.path_list.setCurrentItem(item.listitem)
-        main_window.UpdateFlag = False
+        globals_.mainWindow.UpdateFlag = False

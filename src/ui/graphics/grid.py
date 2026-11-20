@@ -8,7 +8,7 @@ def draw_foreground_grid(painter: QtGui.QPainter | None, rect: QtCore.QRectF, ig
     Draw the foreground grid. This is separate so both
     the LevelScene and LevelView can access it.
     """
-    if globals_.GridType is None or globals_.mainWindow is None or painter is None:
+    if globals_.GridType is None or painter is None:
         return
 
     if ignore_zoom:

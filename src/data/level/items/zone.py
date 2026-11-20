@@ -420,7 +420,7 @@ class ZoneItem(LevelEditorItem):
         """
         Overrides mouse movement events if needed for resizing
         """
-        if not event or not globals_.mainWindow:
+        if not event:
             return
 
         if event.buttons() & QtCore.Qt.MouseButton.MiddleButton:

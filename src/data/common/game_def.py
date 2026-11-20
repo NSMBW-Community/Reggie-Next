@@ -465,10 +465,8 @@ def LoadGameDef(name: str | None = None) -> bool:
             return False
 
         if not hasattr(globals_, 'mainWindow'):
-            # This check avoids an error because globals_.mainWindow is None
-            # when first loading the editor. Returning False here avoids a
-            # loop where the user cannot open the editor because the program
-            # closes after returning the error.
+            # This check avoids an error because globals_.mainWindow
+            # isn't initialized when first loading the editor.
             return False
 
         result = globals_.mainWindow.change_game_path(True)

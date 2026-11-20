@@ -49,9 +49,8 @@ class LocationTab(QtWidgets.QWidget):
         """
         Set the selected item
         """
-        main_window = globals_.mainWindow
-        main_window.palette_dock.set_tab(3)
+        globals_.mainWindow.palette_dock.set_tab(3)
 
-        main_window.UpdateFlag = True
+        globals_.mainWindow.UpdateFlag = True
         self.location_list.setCurrentItem(item.listitem)
-        main_window.UpdateFlag = False
+        globals_.mainWindow.UpdateFlag = False

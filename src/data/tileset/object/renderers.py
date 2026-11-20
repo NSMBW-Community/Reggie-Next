@@ -269,7 +269,5 @@ def IncrementTilesetFrame() -> None:
     #     for obj in layer:
     #         obj.update()
 
-    main_window = globals_.mainWindow
-    if main_window is not None:
-        main_window.scene.update()
-        main_window.palette_dock.object_tab.object_picker.update()
+    globals_.mainWindow.scene.update()
+    globals_.mainWindow.palette_dock.object_tab.object_picker.update()
