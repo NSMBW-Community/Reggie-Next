@@ -104,19 +104,21 @@ class AutoDiagnosticWidget(QtWidgets.QWidget):
         else:
             self.update_status()
 
-    def update_widget(self) -> None:
+    @staticmethod
+    def update_widget() -> None:
         """
         Updates the widget after (possibly) being modifed in the Preferences
         """
         # Update diagnostic widget
-        self.set_timer()
         if globals_.AutoDiagEnabled:
             # Need to remake the entire bar, or else
             # auto-diag will appear after the zoom stuff
             globals_.mainWindow.setup_status_bar()
 
-            self.update_status()
+            globals_.mainWindow.auto_diag.update_status()
         else:
             status_bar = globals_.mainWindow.statusBar()
             if status_bar is not None:
-                status_bar.removeWidget(self)
+                status_bar.removeWidget(globals_.mainWindow.auto_diag)
+
+        globals_.mainWindow.auto_diag.set_timer()

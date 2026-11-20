@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed an issue where tileset overrides wouldn't be cleared upon switching game patches.
 - Fixed a bug where entrances wouldn't be centered on startup with any zoom level other than 100%.
 - Fixed Path Nodes being in the wrong order when pasted from a ReggieClip.
+- Fixed the Auto-Diagnostic Tool becoming blank when saving the Preferences.
 
 ## [5.0.0] - 2026-11-18
 
