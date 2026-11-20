@@ -276,7 +276,7 @@ class LevelScene(QtWidgets.QGraphicsScene):
             action_list['shiftitems'].setEnabled(True)
 
         # Turn on the Stamp Add button if applicable
-        main_window.palette_dock.stamp_tab.add_button.setEnabled(bool(selitems) and allow_stamp)
+        globals_.mainWindow.palette_dock.stamp_tab.add_button.setEnabled(bool(selitems) and allow_stamp)
 
         # Count how many of each item we have
         spr = 0
