@@ -3,11 +3,18 @@
 # By Kamek64, MalStar1000, RoadrunnerWMC
 
 
+from typing import TYPE_CHECKING
+
 from PyQt6 import QtCore, QtGui
 
-import data.common.sprite_images as common
-import spritelib as SLib
-from data import globals_
+if TYPE_CHECKING:
+    import src.data.common.sprite_images as common
+    import src.spritelib as SLib
+    from src.data import globals_
+else:
+    import data.common.sprite_images as common
+    import spritelib as SLib
+    from data import globals_
 
 Qt = QtCore.Qt
 ImageCache = SLib.ImageCache
