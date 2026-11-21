@@ -2064,7 +2064,7 @@ class SpriteImage_SpinningFirebar(SLib.SpriteImage):  # 62
         wide_base = (self.parent.spritedata[3] >> 4) & 1
 
         # Set the width of the circle
-        width = (((length - 0.5) * 2)) * 12
+        width = ((length - 0.5) * 2) * 12
         self.aux[-1].setSize(width)
 
         if wide_base:
@@ -2072,14 +2072,14 @@ class SpriteImage_SpinningFirebar(SLib.SpriteImage):  # 62
 
         # Position the first fireball
         offs_x = 8 if wide_base else 0
-        self.aux[-2].setPos(offs_x * 1.5, 2)
+        self.aux[-2].setPos((offs_x * 1.5) + 1, 2)
 
         for i in range(len(self.aux) - 2):
             self.aux[i].alpha = 0.0
 
         # Now handle the rest
-        offs = (12 + offs_x) * 1.5
-        neg_offs = (12 - offs_x) * 1.5
+        offs = ((12 + offs_x) * 1.5) + 1
+        neg_offs = ((12 - offs_x) * 1.5) - 1
 
         for i in range(length - 1):
             _cos = math.cos(0.00390625)
