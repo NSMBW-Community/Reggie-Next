@@ -663,13 +663,14 @@
     <checkbox nybble="11.4" title="Always Despawn" comment="When disabled, the Big Boo will only despawn if it's off-screen and not moving. When enabled, it will despawn when it's off screen regardless of whether it's moving."/>
   </sprite> <!-- #61: Big Boo -->
 
-  <sprite id="62" name="Spinning Fire Bar" notes="A Spinning Fire Bar like one you would find in a Castle stage." files="center_firebar.arc">
-    <dualbox nybble="7.4" title1="1x1 Block Base" title2="2x1 Block Base" comment="This determines the size of the Block Base. The Fire Bar will emerge from the center of the base. The base also has no collision, so you will need to place Invisible Collision Blocks or other Tileset pieces behind it to create collision."/>
-    <value nybble="12" start="2" title="Length" comment="This determines how many fireballs make up one arm of the Fire Bar. One fireball adds approximately 0.75 blocks to the length."/>
-    <checkbox nybble="11.4" title="Double Fire Bar" comment="When enabled, the Fire Bar will extend from both ends of the Block Base."/>
+  <sprite id="62" name="Spinning Fire Bar" notes="A bar of fire that spins around its base. Keep in mind that the base itself has no collision, so you will need to place tiles underneath it." files="center_firebar.arc">
+    <dualbox nybble="7.4" title1="1x1 Base" title2="2x1 Base" comment="This determines the size of the base."/>
+    <value nybble="12" start="1" title="Length" comment="This determines how many fireballs will be present on the Fire Bar." requirednybble="11.4" requiredval="0"/>
+    <value nybble="12" start="1" increment="2" title="Length" comment="This determines how many fireballs will be present on the Fire Bar." requirednybble="11.4"/>
+    <checkbox nybble="11.4" title="Double Fire Bar" comment="When enabled, the Fire Bar will extend from both ends of the base."/>
     <dualbox nybble="9.4" title1="Rotates Counter-Clockwise" title2="Rotates Clockwise" comment="This determines which direction the Fire Bar will rotate."/>
     <dualbox nybble="10.4" title1="Slow" title2="Fast" comment="This determines how fast the Fire Bar will rotate."/>
-    <checkbox nybble="8.4" title="Place Behind Chainlink Fence" comment="When enabled, any Chainlink Fence object will cover the Fire Bar, protecting the player from it unless they are also behind the fence. Exposed Fire Bars without fence in front of it will still hurt the player. The Block Base will also be hidden by Chainlink Fence."/>
+    <checkbox nybble="8.4" title="Place Behind Chainlink Fence" comment="When enabled, any Chainlink Fence object will cover the Fire Bar, protecting the player from it unless they are also behind the fence. Exposed Fire Bars without fence in front of it will still hurt the player."/>
   </sprite> <!-- #62: Spinning Fire Bar -->
 
   <sprite id="63" name="Spiked Ball" notes="A loose Spiked Ball that will also destroy certain types of blocks." files="iron_ball.arc">

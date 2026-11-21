@@ -2030,35 +2030,79 @@ class SpriteImage_SpinningFirebar(SLib.SpriteImage):  # 62
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.spritebox.shown = False
+
+        # Get all of the fireballs
+        # (This sprite supports up to 40, but only 31 are used)
+        for i in range(31):
+            fireball_aux = SLib.AuxiliaryImage(parent, 22, 22)
+            fireball_aux.image = ImageCache['Fireball']
+            fireball_aux.alpha = 0.0
+            fireball_aux.setIsBehindSprite(False)
+            self.aux.append(fireball_aux)
+
+        center_fireball_aux = SLib.AuxiliaryImage(parent, 22, 22)
+        center_fireball_aux.setPos(0.0, 2.0)
+        center_fireball_aux.image = ImageCache['Fireball']
+        center_fireball_aux.setIsBehindSprite(False)
+        self.aux.append(center_fireball_aux)
+
+        # Circle to represent the entire rotation radius
         self.aux.append(SLib.AuxiliaryCircleOutline(parent, 12, Qt.AlignmentFlag.AlignCenter))
 
     @staticmethod
     def loadImages():
+        SLib.loadIfNotInImageCache('Fireball', 'fire_ball.png')
         SLib.loadIfNotInImageCache('FirebarBase', 'firebar_base_0.png')
         SLib.loadIfNotInImageCache('FirebarBaseWide', 'firebar_base_1.png')
 
     def dataChanged(self):
-        if not isinstance(self.aux[0], SLib.AuxiliaryCircleOutline):
+        if not isinstance(self.aux[-1], SLib.AuxiliaryCircleOutline):
             return
 
-        size = self.parent.spritedata[5] & 0xF
-        wideBase = (self.parent.spritedata[3] >> 4) & 1
+        length = (self.parent.spritedata[5] & 0xF) + 1
+        is_double = (self.parent.spritedata[5] >> 4) & 1
+        wide_base = (self.parent.spritedata[3] >> 4) & 1
 
-        width = ((size * 2) + 1) * 12
-        self.aux[0].setSize(width)
+        # Set the width of the circle
+        width = (((length - 0.5) * 2)) * 12
+        self.aux[-1].setSize(width)
 
-        currentAuxX = self.aux[0].x()
-        currentAuxY = self.aux[0].y()
-        if wideBase:
-            self.aux[0].setPos(currentAuxX + 12, currentAuxY)
+        if wide_base:
+            self.aux[-1].setPos(self.aux[-1].x() + 12, self.aux[-1].y())
 
-        self.image = ImageCache['FirebarBase'] if not wideBase else ImageCache['FirebarBaseWide']
-        self.xOffset = 0 if not wideBase else -8
-        self.width = 16 if not wideBase else 32
+        # Position the first fireball
+        offs_x = 8 if wide_base else 0
+        self.aux[-2].setPos(offs_x * 1.5, 2)
+
+        for i in range(len(self.aux) - 2):
+            self.aux[i].alpha = 0.0
+
+        # Now handle the rest
+        offs = (12 + offs_x) * 1.5
+        neg_offs = (12 - offs_x) * 1.5
+
+        for i in range(length - 1):
+            _cos = math.cos(0.00390625)
+            if i < length:
+                self.aux[i].alpha = 1.0
+                self.aux[i].setPos(offs * _cos, 2)
+                if is_double:
+                    self.aux[i + length].alpha = 1.0
+                    self.aux[i + length].setPos(-(neg_offs * _cos), 2)
+
+            offs += 12 * 1.5
+            neg_offs += 12 * 1.5
+
+        self.image = ImageCache['FirebarBase'] if not wide_base else ImageCache['FirebarBaseWide']
+        self.xOffset = 0 if not wide_base else -8
+        self.width = 16 if not wide_base else 32
 
     def paint(self, painter):
         if self.image is None:
             return
+
+        for i in range(len(self.aux) - 1):
+            self.aux[i].setVisible(globals_.RealViewEnabled)
 
         painter.drawPixmap(0, 0, self.image)
 

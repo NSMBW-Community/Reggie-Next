@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Updated spritedata of sprites:
+  - 62
+- Added/updated image previews for sprites:
+  - 62
 - Levels now save dummy files for each layer in order to prevent occasional crashes that may occur in-game.
 
 ## [5.0.1] - 2026-11-20
