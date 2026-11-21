@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Levels now save dummy files for each layer in order to prevent occasional crashes that may occur in-game.
+
 ## [5.0.1] - 2026-11-20
 
 ### Changed
