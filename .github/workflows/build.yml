@@ -91,7 +91,9 @@ jobs:
         make_latest: false
         generate_release_notes: false
         body: 'Automated builds created from the [most recent commit](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}).'
-        files: [distrib/*.zip, distrib/*.tar.gz]
+        files: |
+          distrib/*.zip
+          distrib/*.tar.gz
 
     - name: Publish release
       env:
