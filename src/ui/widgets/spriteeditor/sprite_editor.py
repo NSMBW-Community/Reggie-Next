@@ -858,11 +858,11 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         """
         dock = cast(ItemEditorDockWidget, self.parent())
         if dock.is_active():
-            obj = globals_.mainWindow.selObj
-            if isinstance(obj, SpriteItem):
-                obj.spritedata = data
-                obj.UpdateListItem()
-                SetDirty()
+            for obj in globals_.mainWindow.scene.selectedItems():
+                if isinstance(obj, SpriteItem):
+                    obj.spritedata = data
+                    obj.UpdateListItem()
+                    SetDirty()
 
-                obj.UpdateDynamicSizing()
-                globals_.mainWindow.palette_dock.sprite_tab.sprite_list.updateSprite(obj)
+                    obj.UpdateDynamicSizing()
+                    globals_.mainWindow.palette_dock.sprite_tab.sprite_list.updateSprite(obj)

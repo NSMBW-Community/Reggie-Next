@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Selecting multiple sprites of the same ID now allows for them to be edited in batch.
+
 ### Changed
 
 - The "Unsupported Settings" error message is now translatable.

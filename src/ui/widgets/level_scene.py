@@ -266,10 +266,25 @@ class LevelScene(QtWidgets.QGraphicsScene):
         # Multiple items selected
         else:
             update_docks = True
+            sprite_ids: set[int] = set()
+            show_sprite_dock = True
 
             for item in selitems:
                 if not func_ii(item, (type_obj, type_spr)):
                     allow_stamp = False
+
+                if func_ii(item, type_spr):
+                    sprite_ids.add(item.sprite_num)
+                else:
+                    show_sprite_dock = False
+
+            # Ensure only one unique sprite ID is selected
+            if len(sprite_ids) != 1:
+                show_sprite_dock = False
+
+            # The scene's selected items list is not in order of selection,
+            # so it doesn't matter which item we set as the 'current' one
+            globals_.mainWindow.selObj = cast(LevelEditorItem, globals_.mainWindow.scene.selectedItems()[0])
 
             action_list['cut'].setEnabled(True)
             action_list['copy'].setEnabled(True)
