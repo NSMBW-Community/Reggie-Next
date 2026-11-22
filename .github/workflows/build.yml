@@ -80,6 +80,8 @@ jobs:
       with:
         path: _artifacts
         merge-multiple: true
+    
+    - name: Print artifact names
       run: ls -lh _artifacts/
 
     - name: Prepare nightly release
