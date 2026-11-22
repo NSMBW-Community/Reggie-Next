@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - The "Unsupported Settings" error message is now translatable.
 - Added/updated image previews for sprites:
-  - 471
+  - 362, 471
 
 ## [5.0.2] - 2026-11-21
 

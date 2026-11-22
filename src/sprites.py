@@ -7577,6 +7577,7 @@ class SpriteImage_ColoredBox(SLib.SpriteImage):  # 362
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.spritebox.shown = False
+        self.offset = (-1 / 1.5, -1 / 1.5)
 
     @staticmethod
     def loadImages():
@@ -7593,8 +7594,8 @@ class SpriteImage_ColoredBox(SLib.SpriteImage):  # 362
         width = size >> 4
         height = size & 0xF
 
-        self.width = (width + 3) * 16
-        self.height = (height + 3) * 16
+        self.width = ((width + 3) * 16) + (2 / 1.5)
+        self.height = ((height + 3) * 16) + (2 / 1.5)
 
     def paint(self, painter):
         prefix = f'CBox{self.color}'
@@ -7606,10 +7607,10 @@ class SpriteImage_ColoredBox(SLib.SpriteImage):  # 362
         painter.drawPixmap(0, ysize - 25, ImageCache[prefix + 'BL'])
         painter.drawPixmap(xsize - 25, ysize - 25, ImageCache[prefix + 'BR'])
 
-        painter.drawTiledPixmap(25, 0, xsize - 50, 25, ImageCache[prefix + 'T'])
-        painter.drawTiledPixmap(25, ysize - 25, xsize - 50, 25, ImageCache[prefix + 'B'])
-        painter.drawTiledPixmap(0, 25, 25, ysize - 50, ImageCache[prefix + 'L'])
-        painter.drawTiledPixmap(xsize - 25, 25, 25, ysize - 50, ImageCache[prefix + 'R'])
+        painter.drawTiledPixmap(25, 1, xsize - 50, 24, ImageCache[prefix + 'T'])
+        painter.drawTiledPixmap(25, ysize - 25, xsize - 50, 24, ImageCache[prefix + 'B'])
+        painter.drawTiledPixmap(1, 25, 24, ysize - 50, ImageCache[prefix + 'L'])
+        painter.drawTiledPixmap(xsize - 25, 25, 24, ysize - 50, ImageCache[prefix + 'R'])
 
         painter.drawTiledPixmap(25, 25, xsize - 50, ysize - 50, ImageCache[prefix + 'M'])
 
