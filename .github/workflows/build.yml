@@ -61,7 +61,6 @@ jobs:
       if: ${{ runner.os == 'macOS' || runner.os == 'Linux' }}
       uses: actions/upload-artifact@v7
       with:
-        name: build-${{ matrix.platform }}
         path: build-${{ matrix.platform }}.tar.gz
         archive: false
 
@@ -79,7 +78,7 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v8
       with:
-        path: distrib
+        path: _artifacts
 
     - name: Prepare nightly release
       uses: softprops/action-gh-release@v3
@@ -91,9 +90,7 @@ jobs:
         make_latest: false
         generate_release_notes: false
         body: 'Automated builds created from the [most recent commit](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}).'
-        files: |
-          distrib/*.zip
-          distrib/*.tar.gz
+        files: _artifacts/*
 
     - name: Publish release
       env:
