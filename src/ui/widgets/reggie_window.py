@@ -116,7 +116,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Set up the window
         QtWidgets.QMainWindow.__init__(self, None)
-        self.setWindowTitle(f'Reggie! Next {globals_.ReggieVersionShort}')
         self.setWindowIcon(GetAppIcon())
         self.setIconSize(QtCore.QSize(16, 16))
         self.setUnifiedTitleAndToolBarOnMac(True)

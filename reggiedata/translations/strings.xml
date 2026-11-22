@@ -786,6 +786,7 @@
             <string id="error">Error</string>
             <string id="exception">Unhandled Exception</string>
             <string id="warning">Warning</string>
+            <string id="unsupported_settings">Unsupported Settings</string>
         </section>
         <string id="common">An unhandled exception occurred. Please report the problem in the Horizon Discord server.\nA log will be written to "[log]".\n\nError information:\n</string>
         <section id="file_not_found">
@@ -828,6 +829,9 @@
         <section id="unknown_sprite">
             <string id="single">This level contains sprite ID [id], which is not defined in the current game patch. The sprite will be displayed as "UNKNOWN" but can still be edited and saved.</string>
             <string id="multiple">This level contains sprite IDs ([ids]) which are not defined in the current game patch. These sprites will be displayed as "UNKNOWN" but can still be edited and saved.</string>
+        </section>
+        <section id="unsupported_settings">
+            <string id="description">Your settings.ini file is not supported by this version of Reggie Next.[br]Please remove it and run Reggie again.</string>
         </section>
     </section>
     <section id="game_def">

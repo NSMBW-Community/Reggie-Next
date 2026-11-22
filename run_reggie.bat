@@ -8,7 +8,8 @@ REM This only works if:
 REM - you have Python 3.12+
 REM - you have Python added to PATH
 REM - you installed all the other prerequisites (see README.md)
-REM - this file is in the same folder as reggie.py
+REM - this file is the parent directory of `src`
+REM - the `src` directory contains reggie.py
 REM - you're on Windows
 REM
 REM Usage: Double-click this to run Reggie from source.

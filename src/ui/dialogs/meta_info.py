@@ -212,7 +212,8 @@ class MetaInfoDialog(QtWidgets.QDialog):
         Saves the info back to the metadata system
         """
         metadata = cast(NSMBWLevel, globals_.Level).metadata
-        metadata.set_meta_data('creator', f'Reggie! Next {globals_.ReggieVersionShort}')
+        if globals_.app is not None:
+            metadata.set_meta_data('creator', globals_.app.applicationDisplayName())
         metadata.set_meta_data('title', self.name_field.text())
         metadata.set_meta_data('author', self.author_field.text())
         metadata.set_meta_data('group', self.group_field.text())

@@ -23,9 +23,26 @@ import json
 import os, os.path
 import shutil
 import sys
+import ast
+import re
 
 import PyInstaller.__main__
 
+# Get the ReggieVersion from globals_.py
+app_version = ''
+globals_path = os.path.join(os.getcwd(), 'src', 'data', 'globals_.py')
+
+# Importing the module causes many ImportErrors, so we need
+# to parse it as an AST to get the ReggieVersion global
+with open(globals_path, 'r', encoding='utf-8') as f:
+    tree = ast.parse(f.read(), filename=globals_path)
+
+    for node in tree.body:
+        if isinstance(node, ast.AnnAssign):
+            if isinstance(node.target, ast.Name) and node.target.id == 'ReggieVersion':
+                if node.value is not None:
+                    app_version = ast.literal_eval(node.value)
+                    break
 
 ########################################################################
 ############################### Constants ##############################
@@ -38,14 +55,18 @@ import PyInstaller.__main__
 
 PROJECT_NAME = 'Reggie! Next'
 FULL_PROJECT_NAME = 'Reggie! Next Level Editor'
-PROJECT_VERSION = '5.1.0'
+
+# Get the raw version number
+match = re.search(r'\d\.\d\.\d', app_version)
+PROJECT_VERSION = match.group(0) if match else ''
 
 WIN_ICON = os.path.join('reggiedata', 'win_icon.ico')
 MAC_ICON = os.path.join('reggiedata', 'reggie.icns')
 MAC_BUNDLE_IDENTIFIER = 'ca.chronometry.reggie'
 
-SCRIPT_PATH = 'src/reggie.py'
-SCRIPT_FILE = SCRIPT_PATH[4:-3] # Drops 'src/' and the .py extension
+SCRIPT_PATH = os.path.join('src', 'reggie.py')
+SCRIPT_FILE = os.path.basename(SCRIPT_PATH).split('.')[0]
+
 DATA_FOLDERS = ['reggiedata', 'reggieextras']
 DATA_FILES = ['README.md', 'CHANGELOG.md', 'license.txt']
 

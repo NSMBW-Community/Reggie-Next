@@ -31,6 +31,7 @@
 ################################################################
 
 import sys
+import re
 
 # Check the version of Python we're running
 min_py_version = (3, 12)
@@ -166,7 +167,7 @@ def main():
     # from the default Python interpreter
     if sys.platform == 'win32':
         import ctypes
-        app_id = f'reggie.next.{globals_.ReggieVersionShort}'
+        app_id = f'reggie.next.{globals_.ReggieVersion}'
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app_id)
         del ctypes
 
@@ -178,36 +179,40 @@ def main():
     if path is not None:
         os.chdir(path)
 
+    # Check the version and set the UI style to Fusion by default
+    if setting("ReggieVersion") is None:
+        setSetting('uiStyle', "Fusion")
+
+        # Convert the version number into a float-compatible string
+        match = re.search(r'\d\.\d', globals_.ReggieVersion)
+        if match is not None:
+            setSetting("ReggieVersion", float(match.group(0)))
+
     # Try to get the last commit ID, and append it to the version ID
     # (Only works when the repository's ".git" folder is present)
     import subprocess
 
     try:
         commit_id = subprocess.check_output(["git", "describe", "--always"], stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL).decode('utf-8').strip()
-        globals_.ReggieVersionShort += f'-{commit_id}'
+        globals_.ReggieVersion += f'-{commit_id}'
     except (FileNotFoundError, subprocess.CalledProcessError):
         pass
 
     del subprocess
 
-    # Check the version and set the UI style to Fusion by default
-    if setting("ReggieVersion") is None:
-        setSetting("ReggieVersion", globals_.ReggieVersionFloat)
-        setSetting('uiStyle', "Fusion")
-
     # Set the default window name/icon (used for random popups and stuff)
     globals_.app.setWindowIcon(GetAppIcon())
-    globals_.app.setApplicationDisplayName('Reggie! Next %s' % globals_.ReggieVersionShort)
+    globals_.app.setApplicationDisplayName(f'Reggie! Next {globals_.ReggieVersion}')
+
+    # Load the translation (needs to happen first)
+    LoadTranslation()
 
     # 4.0 -> Oldest version with settings.ini compatible with the current version
     reggie_ver = setting("ReggieVersion")
     if reggie_ver is not None and reggie_ver < 4.0:
-        QtWidgets.QMessageBox.critical(None, 'Unsupported settings file', 'Your settings.ini file is not supported by this version of Reggie Next.<br>' \
-                                       'Please remove it and run Reggie again.')
+        QtWidgets.QMessageBox.critical(None, globals_.trans.string('error.title.unsupported_settings'),
+                                       globals_.trans.string('error.unsupported_settings.description'))
         sys.exit(1)
-
-    # Load the translation (needs to happen first)
-    LoadTranslation()
 
     # Check if required files are missing
     if FilesAreMissing():
