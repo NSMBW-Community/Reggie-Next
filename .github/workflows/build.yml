@@ -55,12 +55,45 @@ jobs:
       if: ${{ runner.os == 'Windows' }}
       uses: actions/upload-artifact@v7
       with:
-        name: build-${{ matrix.platform }}-${{ matrix.arch }}
+        name: build-${{ matrix.platform }}
         path: distrib/*
     - name: Upload artifacts (macOS/Linux)
       if: ${{ runner.os == 'macOS' || runner.os == 'Linux' }}
       uses: actions/upload-artifact@v7
       with:
-        name: build-${{ matrix.platform }}-${{ matrix.arch }}
+        name: build-${{ matrix.platform }}
         path: build-${{ matrix.platform }}.tar.gz
         archive: false
+
+  release:
+    name: Publish nightly release
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v6
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v8
+      with:
+        path: distrib
+
+    - name: Prepare nightly release
+      uses: softprops/action-gh-release@v3
+      with:
+        name: 'Nightly Build'
+        tag_name: nightly
+        draft: true
+        prerelease: true
+        make_latest: false
+        generate_release_notes: false
+        body: 'Automated builds created from the [most recent commit](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}).'
+        files: distrib/*
+
+    - name: Publish release
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: gh release edit "nightly" --draft=false
