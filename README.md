@@ -22,9 +22,10 @@ https://github.com/NSMBW-Community/Reggie-Next/
 
 ### Getting Started
 
-If you're on Windows or Mac and don't care about having the bleeding-edge latest features, you can use the official release. This is by far the easiest setup method.
+If you don't care about having the bleeding-edge latest features or would rather a more stable experience, you can use the official release.
+This is by far the easiest setup method.
 
-If you are not on those systems or you want the very latest features, you'll need to run Reggie! from source.
+If you want the very latest features, you can either download the Nightly Build or run Reggie from source.
 
 
 ### How to Run Reggie! from Source
