@@ -9327,7 +9327,7 @@ class SpriteImage_PotPlatform(SLib.SpriteImage_Static):  # 471
             parent,
             1.5,
             ImageCache['PotPlatform'],
-            (-9, -3),
+            (-14 / 1.5, -2),
         )
 
     @staticmethod
