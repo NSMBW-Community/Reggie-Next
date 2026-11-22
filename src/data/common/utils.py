@@ -113,7 +113,7 @@ def get_root_path() -> Path:
         if sys.platform == 'darwin':  # macOS
             # sys.executable is /x/y/z/reggie.app/Contents/MacOS/reggie
             # We need to return /x/y/z/reggie.app/Contents/Resources/
-            macos = Path(os.path.dirname(sys.executable)).parent.absolute()
+            macos = Path(os.path.dirname(sys.executable)).absolute()
             if os.path.basename(macos) != 'MacOS':
                 return None
 
