@@ -62,7 +62,7 @@ jobs:
       uses: actions/upload-artifact@v7
       with:
         name: build-${{ matrix.platform }}
-        path: build-${{ matrix.platform }}.tar.gz
+        path: distrib/*
         archive: false
 
   release:
@@ -91,7 +91,7 @@ jobs:
         make_latest: false
         generate_release_notes: false
         body: 'Automated builds created from the [most recent commit](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}).'
-        files: distrib/*
+        files: [distrib/*.zip, distrib/*.tar.gz]
 
     - name: Publish release
       env:
