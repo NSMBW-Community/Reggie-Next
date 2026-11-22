@@ -79,6 +79,8 @@ jobs:
       uses: actions/download-artifact@v8
       with:
         path: _artifacts
+        merge-multiple: true
+      run: ls -lh _artifacts/
 
     - name: Prepare nightly release
       uses: softprops/action-gh-release@v3
