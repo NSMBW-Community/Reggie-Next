@@ -101,7 +101,7 @@ class PaletteDock(QtWidgets.QDockWidget):
         for ent in globals_.Area.entrances:
             ent.positionChanged = pos_change
             ent.listitem = ListWidgetItem_SortsByOther(ent)
-            ent.listitem.entid = ent.entid
+            ent.listitem.ent_id = ent.ent_id
             self.entrance_tab.entrance_list.addItem(ent.listitem)
             globals_.mainWindow.scene.addItem(ent)
             ent.UpdateListItem()

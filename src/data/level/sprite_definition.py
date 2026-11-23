@@ -17,7 +17,7 @@ class SpriteDefinition:
     Stores and manages the data info for a specific sprite
     """
 
-    def __init__(self) -> None:
+    def __init__(self, max_bit: int = 81) -> None:
         self.id: int = -1
         self.name: str | None = None
         self.notes: str | None = None
@@ -31,6 +31,7 @@ class SpriteDefinition:
         self.dependencies: list[tuple[int, int]] = []
         self.dependencynotes: str | None = None
         self.fields: list[SpriteField] = []
+        self.max_bit = max_bit
 
 
     def loadFrom(self, elem: Element) -> None:
@@ -236,7 +237,7 @@ class SpriteDefinition:
             b = 4 * (nybble - 1) + bits
 
             # Check if the resulting range would be valid.
-            if not 1 <= a < b + 1 <= 81:
+            if not 1 <= a < b + 1 <= self.max_bit:
                 raise ValueError("Indexed bits out of bounds: " + str(range_) + "->" + str((a, b + 1)))
 
             bit_length += b - a + 1

@@ -67,21 +67,21 @@ class EntranceItem(LevelEditorItem):
             """
             Handles type changes to the entrance
             """
-            if self.parent.enttype == 20:
+            if self.parent.ent_type == 20:
                 # Jumping facing right
                 self.setPos(0, -276)
                 self.BoundingRect = QtCore.QRectF(0, 0, 98, 300)
-            elif self.parent.enttype == 21:
+            elif self.parent.ent_type == 21:
                 # Vine
                 self.setPos(-12, -240)
                 self.BoundingRect = QtCore.QRectF(0, 0, 48, 696)
-            elif self.parent.enttype == 24:
+            elif self.parent.ent_type == 24:
                 # Jumping facing left
                 self.setPos(-74, -276)
                 self.BoundingRect = QtCore.QRectF(0, 0, 98, 300)
-            elif self.parent.enttype in (3, 4, 5, 6) and ((self.parent.entsettings & 4) != 0):
+            elif self.parent.ent_type in (3, 4, 5, 6): # and ((self.parent.entsettings & 4) != 0):
                 # Forward pipe
-                idx = self.parent.enttype - 3
+                idx = self.parent.ent_type - 3
                 exit_pos = [
                     (0, 144), # Up
                     (0, -144), # Down
@@ -104,7 +104,7 @@ class EntranceItem(LevelEditorItem):
             painter.setClipRect(option.exposedRect)
             painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
-            if self.parent.enttype == 20:
+            if self.parent.ent_type == 20:
                 # Jumping facing right
 
                 path = QtGui.QPainterPath(QtCore.QPointF(12, 276))
@@ -114,7 +114,7 @@ class EntranceItem(LevelEditorItem):
                 painter.setPen(SLib.OutlinePen)
                 painter.drawPath(path)
 
-            elif self.parent.enttype == 21:
+            elif self.parent.ent_type == 21:
                 # Vine
 
                 # Draw the top half
@@ -127,7 +127,7 @@ class EntranceItem(LevelEditorItem):
                 painter.drawTiledPixmap(12, 216, 24, 456, SLib.ImageCache['VineMid'])
                 painter.drawPixmap(12, 672, SLib.ImageCache['VineBtm'])
 
-            elif self.parent.enttype == 24:
+            elif self.parent.ent_type == 24:
                 # Jumping facing left
 
                 path = QtGui.QPainterPath(QtCore.QPointF(86, 276))
@@ -137,7 +137,7 @@ class EntranceItem(LevelEditorItem):
                 painter.setPen(SLib.OutlinePen)
                 painter.drawPath(path)
 
-            elif self.parent.enttype in (3, 4, 5, 6) and ((self.parent.entsettings & 4) != 0):
+            elif self.parent.ent_type in (3, 4, 5, 6): #and ((self.parent.entsettings & 4) != 0):
                 # Forward pipe
                 painter.setBrush(QtGui.QBrush(globals_.theme.color('entrance_fill')))
                 color = globals_.theme.color('entrance_lines')
@@ -152,7 +152,7 @@ class EntranceItem(LevelEditorItem):
             """
             return self.BoundingRect
 
-    def __init__(self, x: int, y: int, id: int, destarea: int, destentrance: int, type: int, zone: int, layer: int, path: int, settings: int, leave_level_val: int, cpd: int) -> None:
+    def __init__(self, x: int, y: int, data: bytes) -> None:
         """
         Creates an entrance with specific data
         """
@@ -168,19 +168,15 @@ class EntranceItem(LevelEditorItem):
             self.setAcceptHoverEvents(True)
 
         self.font = globals_.NumberFont
-        self.objx = x or 0
-        self.objy = y or 0
-        self.entid = id
-        self.destarea = destarea
-        self.destentrance = destentrance
-        self.enttype = type
-        self.entzone = zone
-        self.entsettings = settings
-        self.entlayer = layer
-        self.entpath = path
+        self.objx = x
+        self.objy = y
+        self.entrance_data = data
+
+        # TODO: These need to be dynamically pulled from the entrance data
+        self.ent_type = 0
+        self.ent_id = 0
+
         self.listitem = None
-        self.leave_level = (leave_level_val != 0)
-        self.cpdirection = cpd
         self.LevelRect = QtCore.QRectF(self.objx / 16, self.objy / 16, 1.5, 1.5)
 
         self.setFlag(self.GraphicsItemFlag.ItemIsMovable, not globals_.EntrancesFrozen)
@@ -203,7 +199,7 @@ class EntranceItem(LevelEditorItem):
         right lists. This function returns None if this entrance could not be
         created.
         """
-        all_ids = {ent.entid for ent in globals_.Area.entrances}
+        all_ids = {ent.ent_type for ent in globals_.Area.entrances}
         if id_ is None:
             id_ = find_first_available_id({id for id in all_ids if id is not None}, 256)
 
@@ -217,7 +213,8 @@ class EntranceItem(LevelEditorItem):
             print(f"EntranceItem#create: Given entrance id ({id_}) already in use")
             return None
 
-        ent = EntranceItem(x, y, id_, 0, 0, 0, 0, 0, 0, 0x80, 0, 0)
+        data = bytes(16)
+        ent = EntranceItem(x, y, data)
         ent.positionChanged = EntranceItem.position_changed
         ent.listitem = ListWidgetItem_SortsByOther(ent)
 
@@ -250,28 +247,31 @@ class EntranceItem(LevelEditorItem):
         """
         Updates the entrance object's tooltip
         """
-        if self.enttype >= len(globals_.EntranceTypeNames):
-            name = globals_.trans.string('levelitem.entrance.unknown_type', ('[type]', self.enttype))
-        else:
-            name = globals_.EntranceTypeNames[self.enttype]
+        name = ''
+        destination = ''
+        # if self.enttype >= len(globals_.EntranceTypeNames):
+        #     name = globals_.trans.string('levelitem.entrance.unknown_type', ('[type]', self.enttype))
+        # else:
+        #     name = globals_.EntranceTypeNames[self.enttype]
 
-        if self.leave_level:
-            destination = globals_.trans.string('levelitem.entrance.info.goes_to_world_map')
-        elif (self.entsettings & 0x80) != 0:
-            destination = globals_.trans.string('levelitem.entrance.info.cannot_enter')
-        elif self.destarea == 0:
-            destination = globals_.trans.string('levelitem.entrance.dest_id_this_area', ('[id]', self.destentrance))
-        else:
-            destination = globals_.trans.string('levelitem.entrance.dest_id_other_area', ('[id]', self.destentrance), ('[area]', self.destarea))
+        # if self.leave_level:
+        #     destination = globals_.trans.string('levelitem.entrance.info.goes_to_world_map')
+        # elif (self.entsettings & 0x80) != 0:
+        #     destination = globals_.trans.string('levelitem.entrance.info.cannot_enter')
+        # elif self.destarea == 0:
+        #     destination = globals_.trans.string('levelitem.entrance.dest_id_this_area', ('[id]', self.destentrance))
+        # else:
+        #     destination = globals_.trans.string('levelitem.entrance.dest_id_other_area', ('[id]', self.destentrance), ('[area]', self.destarea))
 
         self.name = name
         self.destination = destination
-        self.setToolTip(globals_.trans.string('levelitem.entrance.tooltip', ('[ent]', self.entid), ('[type]', name), ('[dest]', destination)))
+        self.setToolTip(globals_.trans.string('levelitem.entrance.tooltip', ('[ent]', self.ent_id), ('[type]', name), ('[dest]', destination)))
 
     def ListString(self) -> str | None:
         """
         Returns a string that can be used to describe the entrance in a list
         """
+        return 'uh'
         if self.enttype >= len(globals_.EntranceTypeNames):
             name = globals_.trans.string('levelitem.entrance.unknown_type', ('[type]', self.enttype))
         else:
@@ -288,6 +288,7 @@ class EntranceItem(LevelEditorItem):
                                          ('[info]', info), ('[x]', self.objx), ('[y]', self.objy))
 
     def __lt__(self, other: 'EntranceItem') -> bool:
+        return False
         return self.entid < other.entid
 
     def UpdateRects(self) -> None:
@@ -296,13 +297,13 @@ class EntranceItem(LevelEditorItem):
         """
         # Determine the size and position of the entrance
         x, y, w, h = 0, 0, 1, 1
-        if self.enttype in (0, 1):
+        if self.ent_type in (0, 1):
             # Standing entrance
             x, w = -2.25, 5.5
-        elif self.enttype in (3, 4):
+        elif self.ent_type in (3, 4):
             # Vertical pipe
             w = 2
-        elif self.enttype in (5, 6):
+        elif self.ent_type in (5, 6):
             # Horizontal pipe
             h = 2
 
@@ -350,7 +351,7 @@ class EntranceItem(LevelEditorItem):
             painter.drawRect(self.RoundedRect)
 
         icon_type = 0
-        ent_type = self.enttype
+        ent_type = self.ent_type
 
         ent_types = [
             1,  # 0: Normal
@@ -385,7 +386,7 @@ class EntranceItem(LevelEditorItem):
             painter.drawPixmap(0, 0, imgs[icon_type])
 
         painter.setFont(self.font)
-        painter.drawText(3, 12, str(self.entid))
+        painter.drawText(3, 12, str(self.ent_id))
 
     def delete(self) -> None:
         """

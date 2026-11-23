@@ -13,6 +13,7 @@ from data.common.game_def_update import update_main, update_sprites_module
 from data.common.loaders import (
     LoadBgFiles,
     LoadConfig,
+    LoadEntranceData,
     LoadEntranceNames,
     LoadMusicInfo,
     LoadSpriteCategories,
@@ -81,6 +82,7 @@ class ReggieGameDefinition:
             'bga': gdf(os.path.join(reggiedata_folder, 'bga.xml'), False),
             'bgb': gdf(os.path.join(reggiedata_folder, 'bgb.xml'), False),
             'config': gdf(os.path.join(reggiedata_folder, 'config.xml'), False),
+            'entrancedata': gdf(os.path.join(reggiedata_folder, 'entrancedata.xml'), False),
             'entrancetypes': gdf(os.path.join(reggiedata_folder, 'entrancetypes.txt'), False),
             'levelnames': gdf(os.path.join(reggiedata_folder, 'levelnames.xml'), False),
             'music': gdf(os.path.join(reggiedata_folder, 'music.xml'), False),
@@ -568,6 +570,7 @@ def LoadGameDef(name: str | None = None) -> bool:
         for spr in globals_.Area.sprites:
             spr.UpdateListItem()
 
+    LoadEntranceData()
     LoadEntranceNames(True)
 
     # Reload current entrance since the config can change entrance settings

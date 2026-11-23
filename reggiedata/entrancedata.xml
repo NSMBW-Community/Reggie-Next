@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entrances>
+    <entrance type="0" name="Normal" icon="???" notes="stuff">
+        <value nybble="9-10" target="id" title="Entrance ID" comment="This determines the ID used to reference this entrance."/>
+        <value nybble="15-16" target="type" title="Entrance Type" comment="This determines the type (behavior) of the entrance."/>
+        <checkbox nybble="28.3" title="Useless Flag" comment="This flag is checked on a few retail entrances, however it does nothing."/>
+    </entrance>
+</entrances>

@@ -43,7 +43,7 @@ from ui.menus.game_def_menu import GameDefMenu
 from ui.menus.recent_files_menu import RecentFilesMenu
 from ui.theme.reggie_theme import GetAppIcon, GetIcon
 from ui.widgets.auto_diagnostic import AutoDiagnosticWidget
-from ui.widgets.editors.entrance import EntranceEditorWidget
+from ui.widgets.editors.entranceeditor import EntranceEditorWidget
 from ui.widgets.editors.location import LocationEditorWidget
 from ui.widgets.editors.path_node import PathNodeEditorWidget
 from ui.widgets.item_editor_dock import ItemEditorDockWidget
@@ -1394,7 +1394,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         start_ent_id = globals_.Area.start_entrance
 
         for ent in globals_.Area.entrances:
-            if area_num == 1 and ent.entid == start_ent_id:
+            if area_num == 1 and ent.ent_id == start_ent_id:
                 center_pos = ent.pos()
                 found_ent = True
                 break

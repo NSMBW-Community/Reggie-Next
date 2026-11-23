@@ -32,7 +32,6 @@ BgAFiles: list[BackgroundFileEntry] = []
 BgBFiles: list[BackgroundFileEntry] = []
 CursorMode: int = 0
 DarkMode: bool = False
-EntranceTypeNames: OrderedDict[int, str] = OrderedDict()
 ErrMsg: str = ''
 FirstStageFilename: str | None = None
 IgnoreWinScale: bool = False
@@ -135,6 +134,11 @@ ShowUnknownSpriteWarning: bool = True
 SpriteCategories: list[SpriteCategory] = []
 Sprites: list[SpriteDefinition] = []
 SpriteIDTypes: list[SpriteIDType] = []
+
+# Entrances
+EntranceTypeNames: OrderedDict[int, str] = OrderedDict()
+Entrances: list[SpriteDefinition] = []
+NumEntrances: int = 0
 
 # Game patch config settings
 DispConnectedPipeDir: bool = False

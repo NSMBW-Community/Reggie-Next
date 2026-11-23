@@ -421,22 +421,22 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         ent: EntranceItem
         for ent in globals_.Area.entrances:
-            if ent.entid in ids:
+            if ent.ent_id in ids:
                 if mode == 'c':
                     return True
 
                 # Find the lowest available ID
                 getids = [False for _ in range(256)]
                 for check in globals_.Area.entrances:
-                    getids[check.entid] = True
+                    getids[check.ent_id] = True
 
                 minimumID = getids.index(False)
 
-                ent.entid = minimumID
+                ent.ent_id = minimumID
                 ent.UpdateTooltip()
                 ent.UpdateListItem()
 
-            ids.append(ent.entid)
+            ids.append(ent.ent_id)
 
         return False
 
@@ -450,7 +450,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         start: EntranceItem | None = None
         for ent in globals_.Area.entrances:
-            if ent.entid == globals_.Area.start_entrance:
+            if ent.ent_id == globals_.Area.start_entrance:
                 start = ent
             else:
                 problem = False
@@ -479,7 +479,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         start: EntranceItem | None = None
         ent: EntranceItem
         for ent in globals_.Area.entrances:
-            if ent.entid == globals_.Area.start_entrance:
+            if ent.ent_id == globals_.Area.start_entrance:
                 start = ent
 
         if start is None:
@@ -491,7 +491,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         first_zone: ZoneItem = globals_.Area.zones[first_zone_idx]
         offset = math.ceil(first_zone.get_min_entrance_offset(NSMBW_UNITS_PER_TILE) / 16) * 16
-        if ent.enttype in {0, 1, 23}:
+        if ent.ent_type in {0, 1, 23}:
             # additional safety offset of 2.5 tiles if entrance is wider due to multiplayer
             offset += 40
 

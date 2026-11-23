@@ -496,6 +496,79 @@ def LoadSpriteData() -> None:
         QtWidgets.QMessageBox.warning(None, globals_.trans.string('error.title.error'), repr(errortext))
 
 
+def LoadEntranceData() -> None:
+    """
+    Ensures that the entrance data info is loaded
+    """
+    errors = []
+    errortext = []
+    entrance_types = [-1]
+
+    # Convert the iterable to list, because we need to iterate over it twice
+    paths = list(getResourcePaths('entrancedata'))
+
+    for path in paths:
+        if path is None:
+            continue
+
+        # Add XML entrance data, if there is any
+        if not isinstance(path, str):
+            path = path.path
+
+        tree = ElementTree.parse(path)
+
+        for entrance in tree.iter('entrance'):
+            ent_type = entrance.get('type')
+            if ent_type is None:
+                continue
+
+            entrance_types.append(int(ent_type))
+
+    globals_.NumEntrances = max(entrance_types) + 1
+    globals_.Entrances = [SpriteDefinition()] * globals_.NumEntrances
+
+    for edpath in paths:
+        if edpath in (None, ''):
+            continue
+
+        path = edpath if isinstance(edpath, str) else edpath.path
+        tree = ElementTree.parse(path)
+
+        for entrance in tree.iter('entrance'):
+            type_from_ent = entrance.get('type')
+            if type_from_ent is None:
+                continue
+
+            ent_type = int(type_from_ent)
+            ent_name = entrance.get('name')
+            notes = None
+
+            attribs = entrance.keys()
+
+            if 'notes' in attribs:
+                notes = globals_.trans.string('dialog.sprite_data_editor.notes.text', ('[notes]', entrance.get('notes')))
+
+            ent_def = SpriteDefinition(129)
+            ent_def.id = ent_type
+            ent_def.name = ent_name
+            ent_def.notes = notes
+
+            try:
+                ent_def.loadFrom(entrance)
+            except ValueError as e:
+                errors.append(str(ent_type))
+                errortext.append(str(e))
+
+            globals_.Entrances[ent_type] = ent_def
+
+    # Warn the user if errors occurred
+    if errors:
+        QtWidgets.QMessageBox.warning(None, globals_.trans.string('error.title.warning'),
+                                      globals_.trans.string('error.broken_spritedata.description', ('[sprites]', ', '.join(errors))),
+                                      QtWidgets.QMessageBox.StandardButton.Ok)
+        QtWidgets.QMessageBox.warning(None, globals_.trans.string('error.title.error'), repr(errortext))
+
+
 def ReloadSpritedata():
     """
     Reload the entire spritedata

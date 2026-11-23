@@ -193,6 +193,10 @@
             <string id="info_2">Do you want to save them?</string>
         </section>
         <section id="entrance_data_editor">
+            <string id="info">[b]Entrance [id]: [name][/b]</string>
+            <string id="unknown_info">[b]Unknown Entrance ([id])[/b]</string>
+
+
             <string id="title">Modify Selected Entrance Properties</string>
             <string id="info">[b]Entrance [id]:[/b]</string>
             <string id="type_data">([id]) [name]</string>

@@ -379,7 +379,7 @@ class Area:
         Loads block 7, the entrances
         """
         entdata = self.blocks[6]
-        entstruct = struct.Struct('>HHxxxxBBBBxBBBHBB')
+        entstruct = struct.Struct('>HH16s')
 
         entrances = []
         for offset in range(0, len(entdata), 20):
