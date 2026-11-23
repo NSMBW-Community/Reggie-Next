@@ -1,12 +1,12 @@
 from PyQt6 import QtCore, QtWidgets
 
-from data.sprite.spritefield.multi_dual_box import MultiDualBoxSpriteField
-from ui.widgets.spriteeditor.propertydecoders.property_decoder import (
+from data.editorfield.multi_dual_box import MultiDualBoxEditorField
+from ui.widgets.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
 
 
-class MultiDualboxPropertyDecoder(PropertyDecoder[MultiDualBoxSpriteField]):
+class MultiDualboxPropertyDecoder(PropertyDecoder[MultiDualBoxEditorField]):
     """
     Class that decodes/encodes sprite data to/from a row of dualboxes
     """

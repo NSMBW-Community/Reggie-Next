@@ -43,7 +43,7 @@ from ui.menus.game_def_menu import GameDefMenu
 from ui.menus.recent_files_menu import RecentFilesMenu
 from ui.theme.reggie_theme import GetAppIcon, GetIcon
 from ui.widgets.auto_diagnostic import AutoDiagnosticWidget
-from ui.widgets.editors.entranceeditor import EntranceEditorWidget
+from ui.widgets.editors.entrance_editor import EntranceEditorWidget
 from ui.widgets.editors.location import LocationEditorWidget
 from ui.widgets.editors.path_node import PathNodeEditorWidget
 from ui.widgets.item_editor_dock import ItemEditorDockWidget
@@ -51,7 +51,7 @@ from ui.widgets.level_overview import LevelOverviewWidget
 from ui.widgets.level_scene import LevelScene
 from ui.widgets.level_view import LevelViewWidget
 from ui.widgets.palette_dock import PaletteDock
-from ui.widgets.spriteeditor.sprite_editor import SpriteEditorWidget
+from ui.widgets.editors.sprite_editor import SpriteEditorWidget
 from ui.widgets.zoom import ZoomWidget
 from ui.widgets.zoom_status import ZoomStatusWidget
 

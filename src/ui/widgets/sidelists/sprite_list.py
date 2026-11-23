@@ -5,11 +5,11 @@ from PyQt6 import QtCore, QtWidgets
 from data import globals_
 from data.level.items.sprite import SpriteItem
 from data.sprite.sprite_id_type import SpriteIDType
-from data.sprite.spritefield.list import ListSpriteField
-from data.sprite.spritefield.sprite_field import SpriteField
-from data.sprite.spritefield.value import ValueSpriteField
+from data.editorfield.list import ListEditorField
+from data.editorfield.editor_field import EditorField
+from data.editorfield.value import ValueEditorField
 from ui.widgets.sprite_table import SpriteTableWidget
-from ui.widgets.spriteeditor.propertydecoders.property_decoder import (
+from ui.widgets.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
 
@@ -157,7 +157,7 @@ class SpriteList(QtWidgets.QWidget):
         for field in sdef.fields:
             # Only values (1) and lists (2) have idtypes, so ignore the other
             # fields.
-            if not isinstance(field, (ListSpriteField, ValueSpriteField)):
+            if not isinstance(field, (ListEditorField, ValueEditorField)):
                 continue
 
             # The idtype is the last element in the field tuple.
@@ -369,13 +369,13 @@ class SpriteList(QtWidgets.QWidget):
 
         sdef = globals_.Sprites[sprite.sprite_num]
         res: dict[str, list[int]] = {}
-        decoder = PropertyDecoder(SpriteField())
+        decoder = PropertyDecoder(EditorField())
         data = sprite.spritedata
 
         for field in sdef.fields:
             # Only values (1) and fields (2) have idtypes, so ignore all other
             # fields.
-            if not isinstance(field, (ValueSpriteField, ListSpriteField)):
+            if not isinstance(field, (ValueEditorField, ListEditorField)):
                 continue
 
             # The idtype is the last element in the field tuple, bit is the

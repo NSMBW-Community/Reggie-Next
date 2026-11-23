@@ -20,7 +20,8 @@ from data.common.utils import get_main_path, get_reggiedata_folder
 from data.level.background_file import BackgroundFileEntry
 from data.level.items.location import LocationItem
 from data.level.items.path_editor_line import PathEditorLineItem
-from data.level.sprite_definition import SpriteDefinition
+from data.level.definition.sprite_definition import SpriteDefinition
+from data.level.definition.entrance_definition import EntranceDefinition
 from data.level.zone_theme import ZoneThemeEntry
 from data.sprite.sprite_category import SpriteCategory, SpriteSubCategory
 from data.sprite.sprite_id_type import SpriteIDType
@@ -525,7 +526,7 @@ def LoadEntranceData() -> None:
             entrance_types.append(int(ent_type))
 
     globals_.NumEntrances = max(entrance_types) + 1
-    globals_.Entrances = [SpriteDefinition()] * globals_.NumEntrances
+    globals_.Entrances = [EntranceDefinition()] * globals_.NumEntrances
 
     for edpath in paths:
         if edpath in (None, ''):
@@ -548,7 +549,7 @@ def LoadEntranceData() -> None:
             if 'notes' in attribs:
                 notes = globals_.trans.string('dialog.sprite_data_editor.notes.text', ('[notes]', entrance.get('notes')))
 
-            ent_def = SpriteDefinition(129)
+            ent_def = EntranceDefinition()
             ent_def.id = ent_type
             ent_def.name = ent_name
             ent_def.notes = notes

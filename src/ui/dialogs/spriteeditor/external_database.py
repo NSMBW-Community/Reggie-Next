@@ -1,5 +1,4 @@
 import os
-from typing import Literal
 from xml.etree import ElementTree
 
 from PyQt6 import QtCore, QtWidgets
@@ -7,7 +6,7 @@ from PyQt6 import QtCore, QtWidgets
 from data import globals_
 from data.sprite.external_note import ExternalNote
 from ui.dialogs.spriteeditor.external_note import ExternalNotesDialog
-from ui.widgets.spriteeditor.external_push_button import ExternalPushButtonWidget
+from ui.widgets.external_push_button import ExternalPushButtonWidget
 from ui.theme.reggie_theme import GetIcon
 
 class ExternalDatabaseDialog(QtWidgets.QDialog):

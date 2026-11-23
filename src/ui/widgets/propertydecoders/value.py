@@ -1,19 +1,20 @@
 from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
-from data.common.list_property import ListPropertyModel
-from data.sprite.spritefield.list import ListSpriteField
-from ui.widgets.spriteeditor.abstract_sprite_editor import (
-    AbstractSpriteEditorWidget,
+from data.common.utils import find_first_available_id
+from data.editorfield.value import ValueEditorField
+from ui.widgets.generic.int_spin_box import IntSpinBox
+from ui.widgets.editors.abstract_editor import (
+    AbstractEditorWidget,
 )
-from ui.widgets.spriteeditor.propertydecoders.property_decoder import (
+from ui.widgets.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
 
 
-class ListPropertyDecoder(PropertyDecoder[ListSpriteField]):
+class ValuePropertyDecoder(PropertyDecoder[ValueEditorField]):
     """
-    Class that decodes/encodes sprite data to/from a combobox
+    Class that decodes/encodes sprite data to/from a spinbox
     """
 
     def __init__(self, field, layout, row, parent_widget):
@@ -22,21 +23,18 @@ class ListPropertyDecoder(PropertyDecoder[ListSpriteField]):
         """
         super().__init__(field, layout, row, parent_widget)
 
-        self.prev_value = 0
+        self.widget = IntSpinBox(None, field.start, field.increment, field.overrides)
+        self.widget.setRange(0, field.max - 1)
+        self.widget.valueChanged.connect(self.HandleValueChanged)
 
-        self.widget = QtWidgets.QComboBox()
-        self.widget.setModel(field.model)
-        self.widget.currentIndexChanged.connect(self.HandleIndexChanged)
-
-        if isinstance(field.model, ListPropertyModel):
-            self.model = field.model
+        self.prev_value = None
 
         label = QtWidgets.QLabel(field.title + ':')
         # label.setWordWrap(True)
 
         self.layout.addWidget(label, self.row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
 
-        if self.field.idtype is not None:
+        if field.idtype is not None:
             next_free_button = QtWidgets.QPushButton(globals_.trans.string('dialog.sprite_data_editor.property_decoder.next_free'))
             next_free_button.clicked.connect(self.handle_next_free)
 
@@ -55,13 +53,7 @@ class ListPropertyDecoder(PropertyDecoder[ListSpriteField]):
         self.checkReq(data, first)
 
         value = self.retrieve(data)
-
-        for i, x in enumerate(self.model.entries):
-            if x[0] == value:
-                self.widget.setCurrentIndex(i)
-                break
-        else:
-            self.widget.setCurrentIndex(-1)
+        self.widget.setValue(value)
 
         if first:
             self.prev_value = value
@@ -70,18 +62,14 @@ class ListPropertyDecoder(PropertyDecoder[ListSpriteField]):
         """
         Assigns the selected value to the data
         """
-        return self.insertvalue(data, self.model.entries[self.widget.currentIndex()][0])
+        return self.insertvalue(data, self.widget.value())
 
-    def HandleIndexChanged(self, index):
+    def HandleValueChanged(self, value):
         """
-        Handle the current index changing in the combobox
+        Handle the value changing in the spinbox
         """
-        if index < 0:
-            return
-
         self.updateData.emit(self)
 
-        value = self.model.entries[index][0]
         old_value = self.prev_value
         self.prev_value = value
 
@@ -90,7 +78,7 @@ class ListPropertyDecoder(PropertyDecoder[ListSpriteField]):
         if (
             self.field.idtype is None
             or self.parent_widget is None
-            or not isinstance(self.parent_widget, AbstractSpriteEditorWidget)
+            or not isinstance(self.parent_widget, AbstractEditorWidget)
             or self.parent_widget.AutoFlag
             or self.parent_widget.DefaultMode
         ):
@@ -113,13 +101,6 @@ class ListPropertyDecoder(PropertyDecoder[ListSpriteField]):
         if self.field.idtype is None: return
 
         used_ids = globals_.Area.sprite_idtypes[self.field.idtype]
-        current_value = self.model.entries[self.widget.currentIndex()][0]
-        values = [value for value, text in self.model.entries]
+        next_id = find_first_available_id(used_ids, self.widget.maximum(), (self.widget.value() or 0) + 1)
 
-        for next_id, value in enumerate(values):
-            if value > current_value and value not in used_ids:
-                break
-        else:
-            return
-
-        self.widget.setCurrentIndex(next_id)
+        self.widget.setValue(next_id)

@@ -10,12 +10,12 @@ from data.level.dirty import SetDirty
 from data.level.items.basic import InstanceDefinition, LevelEditorItem
 from data.level.items.object import ObjectItem
 from data.level.items.zone import ZoneItem
-from data.sprite.spritefield.list import ListSpriteField
-from data.sprite.spritefield.sprite_field import SpriteField
-from data.sprite.spritefield.value import ValueSpriteField
+from data.editorfield.list import ListEditorField
+from data.editorfield.editor_field import EditorField
+from data.editorfield.value import ValueEditorField
 from ui.actions.undo.move_item import MoveItemUndoAction
 from ui.theme.reggie_theme import setOverrideCursor
-from ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
+from ui.widgets.propertydecoders.property_decoder import PropertyDecoder
 
 
 class InstanceDefinition_SpriteItem(InstanceDefinition):
@@ -122,12 +122,12 @@ class SpriteItem(LevelEditorItem):
             globals_.Area.sprites.append(spr)
 
             # Add the ids for the idtype count
-            decoder = PropertyDecoder(SpriteField())
+            decoder = PropertyDecoder(EditorField())
             sdef = globals_.Sprites[id_]
 
             # Find what values are used by this sprite
             for field in sdef.fields:
-                if not isinstance(field, (ListSpriteField, ValueSpriteField)):
+                if not isinstance(field, (ListEditorField, ValueEditorField)):
                     # Only values and lists can be idtypes
                     continue
 

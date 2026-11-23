@@ -1,5 +1,5 @@
-class SpriteField:
-    """Base class for all sprite editor fields."""
+class EditorField:
+    """Base class for all dynamic editor fields."""
 
     def __init__(
         self,

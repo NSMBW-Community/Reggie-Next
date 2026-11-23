@@ -11,7 +11,8 @@ from data.common.translation import Translation
 from data.level.abstract_level import AbstractLevel
 from data.level.area import Area as AreaType
 from data.level.background_file import BackgroundFileEntry
-from data.level.sprite_definition import SpriteDefinition
+from data.level.definition.sprite_definition import SpriteDefinition
+from data.level.definition.entrance_definition import EntranceDefinition
 from data.level.zone_theme import ZoneThemeEntry
 from data.sprite.sprite_category import SpriteCategory
 from data.sprite.sprite_id_type import SpriteIDType
@@ -137,7 +138,7 @@ SpriteIDTypes: list[SpriteIDType] = []
 
 # Entrances
 EntranceTypeNames: OrderedDict[int, str] = OrderedDict()
-Entrances: list[SpriteDefinition] = []
+Entrances: list[EntranceDefinition] = []
 NumEntrances: int = 0
 
 # Game patch config settings

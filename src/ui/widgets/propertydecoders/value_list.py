@@ -2,14 +2,14 @@ from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
 from data.common.list_property import ListPropertyModel
-from data.sprite.spritefield.value_list import ValueListSpriteField
+from data.editorfield.value_list import ValueListEditorField
 from ui.widgets.generic.int_spin_box import IntSpinBox
-from ui.widgets.spriteeditor.propertydecoders.property_decoder import (
+from ui.widgets.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
 
 
-class ValueListPropertyDecoder(PropertyDecoder[ValueListSpriteField]):
+class ValueListPropertyDecoder(PropertyDecoder[ValueListEditorField]):
     """
     Class that decodes/encodes sprite data to/from a valuebox + list combination element
     """

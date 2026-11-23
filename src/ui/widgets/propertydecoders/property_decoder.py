@@ -1,14 +1,14 @@
 from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
-from data.sprite.spritefield.sprite_field import SpriteField
+from data.editorfield.editor_field import EditorField
 from ui.theme.reggie_theme import GetIcon
-from ui.widgets.spriteeditor.abstract_sprite_editor import (
-    AbstractSpriteEditorWidget,
+from ui.widgets.editors.abstract_editor import (
+    AbstractEditorWidget,
 )
 
 
-class PropertyDecoder[T: SpriteField](QtCore.QObject):
+class PropertyDecoder[T: EditorField](QtCore.QObject):
     """
     Base class for all the sprite data decoder/encoders
     """
@@ -163,7 +163,7 @@ class PropertyDecoder[T: SpriteField](QtCore.QObject):
         """
         Sets the current comment text
         """
-        if self.parent_widget is None or not isinstance(self.parent_widget, AbstractSpriteEditorWidget):
+        if self.parent_widget is None or not isinstance(self.parent_widget, AbstractEditorWidget):
             return
 
         self.parent_widget.com_main.setText(comment)

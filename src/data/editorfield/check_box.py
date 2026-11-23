@@ -1,9 +1,7 @@
-from PyQt6 import QtCore
-
-from data.sprite.spritefield.sprite_field import SpriteField
+from data.editorfield.editor_field import EditorField
 
 
-class ListSpriteField(SpriteField):
+class CheckBoxEditorField(EditorField):
     def __init__(
         self,
         title: str | None,
@@ -12,9 +10,9 @@ class ListSpriteField(SpriteField):
         advanced_comment: str | None,
         required: list[tuple[list[tuple[int, int]], tuple[int, int]]] | None,
         bit: list[tuple[int, int]] | None,
-        model: QtCore.QAbstractItemModel,
-        idtype: str | None,
+        mask: int,
+        full_nybble: bool,
     ) -> None:
         super().__init__(title, comment, comment2, advanced_comment, required, bit)
-        self.model = model
-        self.idtype = idtype
+        self.mask = mask
+        self.full_nybble = full_nybble

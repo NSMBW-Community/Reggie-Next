@@ -8,41 +8,41 @@ from data.common.list_property import ListPropertyModel
 from data.common.translation import Translation
 from data.level.dirty import SetDirty
 from data.level.items.sprite import SpriteItem
-from data.level.sprite_definition import SpriteDefinition
-from data.sprite.spritefield.check_box import CheckBoxSpriteField
-from data.sprite.spritefield.dual_box import DualBoxSpriteField
-from data.sprite.spritefield.external import ExternalSpriteField
-from data.sprite.spritefield.list import ListSpriteField
-from data.sprite.spritefield.multi_dual_box import MultiDualBoxSpriteField
-from data.sprite.spritefield.value_list import ValueListSpriteField
-from data.sprite.spritefield.value import ValueSpriteField
+from data.level.definition.sprite_definition import SpriteDefinition
+from data.editorfield.check_box import CheckBoxEditorField
+from data.editorfield.dual_box import DualBoxEditorField
+from data.editorfield.external import ExternalEditorField
+from data.editorfield.list import ListEditorField
+from data.editorfield.multi_dual_box import MultiDualBoxEditorField
+from data.editorfield.value_list import ValueListEditorField
+from data.editorfield.value import ValueEditorField
 from ui.dialogs.spriteeditor.resize_choice import ResizeChoiceDialog
 from ui.theme.reggie_theme import GetIcon
 from ui.widgets.item_editor_dock import ItemEditorDockWidget
-from ui.widgets.spriteeditor.abstract_sprite_editor import (
-    AbstractSpriteEditorWidget,
+from ui.widgets.editors.abstract_editor import (
+    AbstractEditorWidget,
 )
-from ui.widgets.spriteeditor.propertydecoders.check_box import (
+from ui.widgets.propertydecoders.check_box import (
     CheckBoxPropertyDecoder,
 )
-from ui.widgets.spriteeditor.propertydecoders.dual_box import DualBoxPropertyDecoder
-from ui.widgets.spriteeditor.propertydecoders.external import (
+from ui.widgets.propertydecoders.dual_box import DualBoxPropertyDecoder
+from ui.widgets.propertydecoders.external import (
     ExternalPropertyDecoder,
 )
-from ui.widgets.spriteeditor.propertydecoders.list import ListPropertyDecoder
-from ui.widgets.spriteeditor.propertydecoders.multi_dual_box import (
+from ui.widgets.propertydecoders.list import ListPropertyDecoder
+from ui.widgets.propertydecoders.multi_dual_box import (
     MultiDualboxPropertyDecoder,
 )
-from ui.widgets.spriteeditor.propertydecoders.property_decoder import (
+from ui.widgets.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
-from ui.widgets.spriteeditor.propertydecoders.value_list import (
+from ui.widgets.propertydecoders.value_list import (
     ValueListPropertyDecoder,
 )
-from ui.widgets.spriteeditor.propertydecoders.value import ValuePropertyDecoder
+from ui.widgets.propertydecoders.value import ValuePropertyDecoder
 
 
-class SpriteEditorWidget(AbstractSpriteEditorWidget):
+class SpriteEditorWidget(AbstractEditorWidget):
     """
     Widget for editing sprite data
     """
@@ -411,25 +411,25 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
         for field in sprite.fields:
             nf = None
-            if isinstance(field, CheckBoxSpriteField):
+            if isinstance(field, CheckBoxEditorField):
                 nf = CheckBoxPropertyDecoder(field, layout, row, self)
 
-            elif isinstance(field, ListSpriteField):
+            elif isinstance(field, ListEditorField):
                 nf = ListPropertyDecoder(field, layout, row, self)
 
-            elif isinstance(field, ValueSpriteField):
+            elif isinstance(field, ValueEditorField):
                 nf = ValuePropertyDecoder(field, layout, row, self)
 
-            elif isinstance(field, DualBoxSpriteField):
+            elif isinstance(field, DualBoxEditorField):
                 nf = DualBoxPropertyDecoder(field, layout, row, self)
 
-            elif isinstance(field, ExternalSpriteField):
+            elif isinstance(field, ExternalEditorField):
                 nf = ExternalPropertyDecoder(field, layout, row, self)
 
-            elif isinstance(field, MultiDualBoxSpriteField):
+            elif isinstance(field, MultiDualBoxEditorField):
                 nf = MultiDualboxPropertyDecoder(field, layout, row, self)
 
-            elif isinstance(field, ValueListSpriteField):
+            elif isinstance(field, ValueListEditorField):
                 nf = ValueListPropertyDecoder(field, layout, row, self)
 
             if nf is None:
@@ -465,7 +465,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
             bit, _ = SpriteDefinition().parseBits('15-16')
             model = ListPropertyModel(itemList, True)
 
-            listField = ListSpriteField(title, comment, None, None, None, bit, model, None)
+            listField = ListEditorField(title, comment, None, None, None, bit, model, None)
 
             nf = ListPropertyDecoder(listField, layout, row, self)
             nf.updateData.connect(self.HandleFieldUpdate)

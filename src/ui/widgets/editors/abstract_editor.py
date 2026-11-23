@@ -1,8 +1,10 @@
 from PyQt6 import QtWidgets
 
 
-class AbstractSpriteEditorWidget(QtWidgets.QWidget):
-    """Abstract base class for the Sprite Editor Widget. Provides basic properties for required instance checks and usages."""
+class AbstractEditorWidget(QtWidgets.QWidget):
+    """
+    Abstract base class for the Editor Widget(s). Provides basic properties for required instance checks and usages.
+    """
     def __init__(self, defaultmode: bool = False) -> None:
         super().__init__()
         self.AutoFlag = False

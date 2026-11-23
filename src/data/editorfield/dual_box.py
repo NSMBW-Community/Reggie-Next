@@ -1,7 +1,7 @@
-from data.sprite.spritefield.sprite_field import SpriteField
+from data.editorfield.editor_field import EditorField
 
 
-class DualBoxSpriteField(SpriteField):
+class DualBoxEditorField(EditorField):
     def __init__(
         self,
         title: str | None,

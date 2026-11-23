@@ -1,7 +1,7 @@
-from data.sprite.spritefield.sprite_field import SpriteField
+from data.editorfield.editor_field import EditorField
 
 
-class MultiDualBoxSpriteField(SpriteField):
+class ValueEditorField(EditorField):
     def __init__(
         self,
         title: str | None,
@@ -10,7 +10,15 @@ class MultiDualBoxSpriteField(SpriteField):
         advanced_comment: str | None,
         required: list[tuple[list[tuple[int, int]], tuple[int, int]]] | None,
         bit: list[tuple[int, int]] | None,
-        title2: str | None,
+        max: int,
+        start: int,
+        increment: int,
+        overrides: list[tuple[int, int]],
+        idtype: str | None,
     ) -> None:
         super().__init__(title, comment, comment2, advanced_comment, required, bit)
-        self.title2 = title2
+        self.max = max
+        self.start = start
+        self.increment = increment
+        self.overrides = overrides
+        self.idtype = idtype

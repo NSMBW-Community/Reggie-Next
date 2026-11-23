@@ -16,10 +16,10 @@ from data.level.items.zone import ZoneItem
 from data.level.metadata import Metadata
 from data.level.legacy_metadata import LegacyMetadata
 from data.level.metadata import Metadata
-from data.sprite.spritefield.list import ListSpriteField
-from data.sprite.spritefield.sprite_field import SpriteField
-from data.sprite.spritefield.value import ValueSpriteField
-from ui.widgets.spriteeditor.propertydecoders.property_decoder import (
+from data.editorfield.list import ListEditorField
+from data.editorfield.editor_field import EditorField
+from data.editorfield.value import ValueEditorField
+from ui.widgets.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
 
@@ -942,7 +942,7 @@ class Area:
         """
 
         self.sprite_idtypes = {}
-        decoder = PropertyDecoder(SpriteField())
+        decoder = PropertyDecoder(EditorField())
 
         for sprite in self.sprites:
             # Check if sprite data exists for this type
@@ -956,7 +956,7 @@ class Area:
             data = sprite.spritedata
 
             for field in sdef.fields:
-                if not isinstance(field, (ListSpriteField, ValueSpriteField)):
+                if not isinstance(field, (ListEditorField, ValueEditorField)):
                     # Only values and lists can be idtypes
                     continue
 
@@ -988,12 +988,12 @@ class Area:
             return
 
         # Remove the ids the sprite used from the id list
-        decoder = PropertyDecoder(SpriteField())
+        decoder = PropertyDecoder(EditorField())
         sdef = globals_.Sprites[sprite.sprite_num]
 
         # Find what values are used by this sprite
         for field in sdef.fields:
-            if not isinstance(field, (ListSpriteField, ValueSpriteField)):
+            if not isinstance(field, (ListEditorField, ValueEditorField)):
                 # Only <value> and <list> tags can have id types
                 continue
 

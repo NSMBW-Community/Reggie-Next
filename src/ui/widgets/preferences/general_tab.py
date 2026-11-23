@@ -49,7 +49,7 @@ class GeneralTab(PreferenceTabWidget):
         self.zone_bound_indicators = QtWidgets.QCheckBox(globals_.trans.string('dialog.preferences.tab.general.display_zone_bounds'))
 
         # Reset data when hide checkbox
-        self.reset_data_hide = QtWidgets.QCheckBox(globals_.trans.string('dialog.preferences.tab.general.reset_hidden_sprite_fields'))
+        self.reset_data_hide = QtWidgets.QCheckBox(globals_.trans.string('dialog.preferences.tab.general.reset_hidden_editor_fields'))
 
         # Enable padding button
         self.enable_padding = QtWidgets.QCheckBox(globals_.trans.string('dialog.preferences.tab.general.pad_setting.title'))

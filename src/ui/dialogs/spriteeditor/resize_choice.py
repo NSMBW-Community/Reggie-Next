@@ -2,7 +2,7 @@ from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
 from data.level.items.basic import InstanceDefinition
-from data.level.items.sprite import SpriteItem, SpriteField
+from data.level.items.sprite import SpriteItem, EditorField
 from ui.theme.reggie_theme import GetIcon
 
 
@@ -173,7 +173,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
 
         self.setLayout(mainLayout)
 
-    def getNyb5And7Availability(self) -> dict[int, list[SpriteField]]:
+    def getNyb5And7Availability(self) -> dict[int, list[EditorField]]:
         """
         Gets whether nybbles 5 or 7 (or both/none) are occupied by spritedata or not
         """

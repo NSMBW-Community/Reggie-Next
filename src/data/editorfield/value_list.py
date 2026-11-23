@@ -1,9 +1,9 @@
 from PyQt6 import QtCore
 
-from data.sprite.spritefield.sprite_field import SpriteField
+from data.editorfield.editor_field import EditorField
 
 
-class ValueListSpriteField(SpriteField):
+class ValueListEditorField(EditorField):
     def __init__(
         self,
         title: str | None,

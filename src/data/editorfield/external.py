@@ -1,7 +1,7 @@
-from data.sprite.spritefield.sprite_field import SpriteField
+from data.editorfield.editor_field import EditorField
 
 
-class ExternalSpriteField(SpriteField):
+class ExternalEditorField(EditorField):
     def __init__(
         self,
         title: str | None,

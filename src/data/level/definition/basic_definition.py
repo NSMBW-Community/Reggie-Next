@@ -2,37 +2,28 @@ from xml.etree.ElementTree import Element
 
 from data import globals_
 from data.common.list_property import ListPropertyModel
-from data.sprite.spritefield.check_box import CheckBoxSpriteField
-from data.sprite.spritefield.dual_box import DualBoxSpriteField
-from data.sprite.spritefield.external import ExternalSpriteField
-from data.sprite.spritefield.list import ListSpriteField
-from data.sprite.spritefield.multi_dual_box import MultiDualBoxSpriteField
-from data.sprite.spritefield.sprite_field import SpriteField
-from data.sprite.spritefield.value_list import ValueListSpriteField
-from data.sprite.spritefield.value import ValueSpriteField
+from data.editorfield.check_box import CheckBoxEditorField
+from data.editorfield.dual_box import DualBoxEditorField
+from data.editorfield.external import ExternalEditorField
+from data.editorfield.list import ListEditorField
+from data.editorfield.multi_dual_box import MultiDualBoxEditorField
+from data.editorfield.editor_field import EditorField
+from data.editorfield.value_list import ValueListEditorField
+from data.editorfield.value import ValueEditorField
 
 
-class SpriteDefinition:
+class BasicDefinition:
     """
-    Stores and manages the data info for a specific sprite
+    Base class for an item definition
     """
 
-    def __init__(self, max_bit: int = 81) -> None:
+    def __init__(self) -> None:
         self.id: int = -1
         self.name: str | None = None
         self.notes: str | None = None
-        self.advNotes: str | None = None
-        self.relatedObjFiles: str | None = None
-        self.yoshiNotes: str | None = None
-        self.noyoshi: bool = False
-        self.asm: bool = False
-        self.size: bool = False
         self.noLayer: bool = False
-        self.dependencies: list[tuple[int, int]] = []
-        self.dependencynotes: str | None = None
-        self.fields: list[SpriteField] = []
-        self.max_bit = max_bit
-
+        self.fields: list[EditorField] = []
+        self.max_bit = -1
 
     def loadFrom(self, elem: Element) -> None:
         """
@@ -92,75 +83,57 @@ class SpriteDefinition:
 
                     required.append(((bit_range,), (a, b + 1)))
 
-            # NOTE: idtype must be the LAST field passed to a sprite
+            # NOTE: This must be the last member passed into a property field type
             if 'idtype' in attribs:
                 idtype = attribs['idtype']
 
                 if field.tag not in {'value', 'list'}:
                     raise ValueError("Only values and lists support idtypes.")
 
-            if 'start' in attribs:
-                start = int(attribs['start'])
-
-                if field.tag != 'value':
-                    raise ValueError("Only values support a start index.")
-
-            if 'increment' in attribs:
-                increment = int(attribs['increment'])
-
-                if field.tag != 'value':
-                    raise ValueError("Only values support an increment.")
-
-            # Parse the remaining type-specific attributes.
+            # Parse the remaining type-specific attributes
             if field.tag == 'checkbox':
                 bit, _ = self.parseBits(attribs.get("nybble"))
                 mask = int(attribs.get('mask', 1))
-                fullNybble = attribs.get('fullnybble', 'False') == "True"
+                full_nybble = attribs.get('fullnybble', 'False') == "True"
 
-                fields.append(CheckBoxSpriteField(attribs['title'], comment, comment2, advancedcomment, required, bit, mask, fullNybble))
+                fields.append(CheckBoxEditorField(attribs['title'], comment, comment2, advancedcomment, required, bit, mask, full_nybble))
 
             elif field.tag == 'list':
                 bit, _ = self.parseBits(attribs.get("nybble"))
 
                 entries = []
-                for e in field:
-                    if e.tag != 'entry': continue
+                for entry in field:
+                    if entry.tag != 'entry':
+                        continue
 
-                    entries.append((int(e.attrib['value']), e.text))
+                    entries.append((int(entry.attrib['value']), entry.text))
 
                 model = ListPropertyModel(entries)
-                fields.append(ListSpriteField(title, comment, comment2, advancedcomment, required, bit, model, idtype))
+                fields.append(ListEditorField(title, comment, comment2, advancedcomment, required, bit, model, idtype))
 
             elif field.tag == 'value':
                 bit, max_ = self.parseBits(attribs.get("nybble"))
 
+                if 'start' in attribs:
+                    start = int(attribs['start'])
+    
+                if 'increment' in attribs:
+                    increment = int(attribs['increment'])
+
                 overrides = []
-                for o in field:
-                    if o.tag != 'override': continue
+                for override in field:
+                    if override.tag != 'override':
+                        continue
 
-                    overrides.append((int(o.attrib['index']), int(o.attrib['value'])))
+                    overrides.append((int(override.attrib['index']), int(override.attrib['value'])))
 
-                fields.append(ValueSpriteField(attribs['title'], comment, comment2, advancedcomment, required, bit, max_, start, increment, overrides, idtype))
+                fields.append(ValueEditorField(attribs['title'], comment, comment2, advancedcomment, required, bit, max_, start, increment, overrides, idtype))
 
             elif field.tag == 'dualbox':
                 bit, _ = self.parseBits(attribs.get("nybble"))
                 fullNybble = attribs.get('fullnybble', 'False') == "True"
 
-                fields.append(DualBoxSpriteField(attribs['title1'], comment, comment2, advancedcomment, required, bit, attribs['title2'], fullNybble))
-
-            elif field.tag == 'dependency':
-                type_dict = {'required': 0, 'suggested': 1, 'resource': 2, 'suggestedresource': 3}
-
-                for entry in field:
-                    if entry.attrib['sprite'] == "":
-                        continue
-
-                    sprite_ids = str(entry.attrib['sprite']).split(',')
-
-                    for id in sprite_ids:
-                        self.dependencies.append((int(id), type_dict[entry.tag]))
-
-                self.dependencynotes = attribs.get('notes')
+                fields.append(DualBoxEditorField(attribs['title1'], comment, comment2, advancedcomment, required, bit, attribs['title2'], fullNybble))
 
             elif field.tag == 'external':
                 # Uses a list from an external resource. This is used for big
@@ -168,13 +141,12 @@ class SpriteDefinition:
                 bit, _ = self.parseBits(attribs.get("nybble"))
                 type_ = attribs['type']
 
-                fields.append(ExternalSpriteField(title, comment, comment2, advancedcomment, required, bit, type_))
+                fields.append(ExternalEditorField(title, comment, comment2, advancedcomment, required, bit, type_))
 
             elif field.tag == 'multidualbox':
-                # multibox but with dualboxes instead of checkboxes
                 bit, _ = self.parseBits(attribs.get("nybble"))
 
-                fields.append(MultiDualBoxSpriteField(attribs['title1'], comment, comment2, advancedcomment, required, bit, attribs['title2']))
+                fields.append(MultiDualBoxEditorField(attribs['title1'], comment, comment2, advancedcomment, required, bit, attribs['title2']))
 
             elif field.tag == 'valuelist':
                 bit, max_ = self.parseBits(attribs.get("nybble"))
@@ -187,7 +159,7 @@ class SpriteDefinition:
                     entries.append((int(entry.attrib['value']), entry.text))
 
                 model = ListPropertyModel(entries)
-                fields.append(ValueListSpriteField(title, comment, comment2, advancedcomment, required, bit, model, max_))
+                fields.append(ValueListEditorField(title, comment, comment2, advancedcomment, required, bit, model, max_))
 
             # Override name/comment for the default layer field
             elif field.tag == 'layer':

@@ -4,16 +4,16 @@ from xml.etree import ElementTree
 from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
-from data.sprite.spritefield.external import ExternalSpriteField
+from data.editorfield.external import ExternalEditorField
 from ui.dialogs.spriteeditor.external_database import (
     ExternalDatabaseDialog,
 )
-from ui.widgets.spriteeditor.propertydecoders.property_decoder import (
+from ui.widgets.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
 
 
-class ExternalPropertyDecoder(PropertyDecoder[ExternalSpriteField]):
+class ExternalPropertyDecoder(PropertyDecoder[ExternalEditorField]):
     """
     Class that decodes/encodes sprite data to/from an external database (valuebox + button)
     """

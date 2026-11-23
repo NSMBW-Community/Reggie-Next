@@ -1,12 +1,12 @@
 from PyQt6 import QtCore, QtWidgets
 
-from data.sprite.spritefield.check_box import CheckBoxSpriteField
-from ui.widgets.spriteeditor.propertydecoders.property_decoder import (
+from data.editorfield.check_box import CheckBoxEditorField
+from ui.widgets.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
 
 
-class CheckBoxPropertyDecoder(PropertyDecoder[CheckBoxSpriteField]):
+class CheckBoxPropertyDecoder(PropertyDecoder[CheckBoxEditorField]):
     """
     Class that decodes/encodes sprite data to/from a checkbox
     """

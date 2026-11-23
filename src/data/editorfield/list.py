@@ -1,7 +1,9 @@
-from data.sprite.spritefield.sprite_field import SpriteField
+from PyQt6 import QtCore
+
+from data.editorfield.editor_field import EditorField
 
 
-class ValueSpriteField(SpriteField):
+class ListEditorField(EditorField):
     def __init__(
         self,
         title: str | None,
@@ -10,15 +12,9 @@ class ValueSpriteField(SpriteField):
         advanced_comment: str | None,
         required: list[tuple[list[tuple[int, int]], tuple[int, int]]] | None,
         bit: list[tuple[int, int]] | None,
-        max: int,
-        start: int,
-        increment: int,
-        overrides: list[tuple[int, int]],
+        model: QtCore.QAbstractItemModel,
         idtype: str | None,
     ) -> None:
         super().__init__(title, comment, comment2, advanced_comment, required, bit)
-        self.max = max
-        self.start = start
-        self.increment = increment
-        self.overrides = overrides
+        self.model = model
         self.idtype = idtype
