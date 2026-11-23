@@ -8,7 +8,7 @@ from data.sprite.spritefield.external import ExternalSpriteField
 from data.sprite.spritefield.list import ListSpriteField
 from data.sprite.spritefield.multi_dual_box import MultiDualBoxSpriteField
 from data.sprite.spritefield.sprite_field import SpriteField
-from data.sprite.spritefield.sprite_tex import SpriteTexSpriteField
+from data.sprite.spritefield.value_list import ValueListSpriteField
 from data.sprite.spritefield.value import ValueSpriteField
 
 
@@ -38,7 +38,7 @@ class SpriteDefinition:
         Loads in all the field data from an XML node
         """
         fields = self.fields
-        allowed = ['checkbox', 'list', 'value', 'dualbox', 'dependency', 'external', 'multidualbox', 'spritetex', 'layer']
+        allowed = ['checkbox', 'list', 'value', 'dualbox', 'dependency', 'external', 'multidualbox', 'valuelist', 'layer']
 
         for field in elem:
             if field.tag not in allowed:
@@ -175,17 +175,18 @@ class SpriteDefinition:
 
                 fields.append(MultiDualBoxSpriteField(attribs['title1'], comment, comment2, advancedcomment, required, bit, attribs['title2']))
 
-            elif field.tag == 'spritetex':
+            elif field.tag == 'valuelist':
                 bit, max_ = self.parseBits(attribs.get("nybble"))
-
                 entries = []
-                for e in field:
-                    if e.tag != 'entry': continue
 
-                    entries.append((int(e.attrib['value']), e.text))
+                for entry in field:
+                    if entry.tag != 'entry':
+                        continue
+
+                    entries.append((int(entry.attrib['value']), entry.text))
 
                 model = ListPropertyModel(entries)
-                fields.append(SpriteTexSpriteField(title, comment, comment2, advancedcomment, required, bit, model, max_))
+                fields.append(ValueListSpriteField(title, comment, comment2, advancedcomment, required, bit, model, max_))
 
             # Override name/comment for the default layer field
             elif field.tag == 'layer':

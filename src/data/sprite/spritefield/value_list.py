@@ -3,7 +3,7 @@ from PyQt6 import QtCore
 from data.sprite.spritefield.sprite_field import SpriteField
 
 
-class SpriteTexSpriteField(SpriteField):
+class ValueListSpriteField(SpriteField):
     def __init__(
         self,
         title: str | None,

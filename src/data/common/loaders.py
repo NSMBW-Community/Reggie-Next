@@ -11,7 +11,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 import spritelib as SLib
 from data import globals_
 from data.common import archive
-from data.common.game_def_update import convert_txt_to_xml
+from data.common.game_def_update import convert_txt_to_xml, update_spritedata
 from data.common.keybind import Keybind
 from data.common.menu_action import MenuAction
 from data.common.settings import delSetting, setSetting, setting
@@ -398,6 +398,8 @@ def LoadSpriteData() -> None:
     for path in paths:
         if path is None:
             continue
+
+        update_spritedata(path)
 
         # Add XML sprite data, if there is any
         if not isinstance(path, str):

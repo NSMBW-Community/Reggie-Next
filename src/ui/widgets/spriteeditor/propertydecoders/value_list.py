@@ -2,16 +2,16 @@ from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
 from data.common.list_property import ListPropertyModel
-from data.sprite.spritefield.sprite_tex import SpriteTexSpriteField
+from data.sprite.spritefield.value_list import ValueListSpriteField
 from ui.widgets.generic.int_spin_box import IntSpinBox
 from ui.widgets.spriteeditor.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
 
 
-class SpriteTexPropertyDecoder(PropertyDecoder[SpriteTexSpriteField]):
+class ValueListPropertyDecoder(PropertyDecoder[ValueListSpriteField]):
     """
-    Class that decodes/encodes sprite data to/from a SpriteTex element (valuebox + list)
+    Class that decodes/encodes sprite data to/from a valuebox + list combination element
     """
 
     def __init__(self, field, layout, row, parent_widget):
@@ -92,7 +92,7 @@ class SpriteTexPropertyDecoder(PropertyDecoder[SpriteTexSpriteField]):
                 self.comboBox.setCurrentIndex(i)
                 break
         else:
-            self.comboBox.setPlaceholderText(globals_.trans.string('dialog.sprite_data_editor.property_decoder.spritetex.undefined', ('[id]', str(value))))
+            self.comboBox.setPlaceholderText(globals_.trans.string('dialog.sprite_data_editor.property_decoder.valuelist.undefined', ('[id]', str(value))))
             self.comboBox.setCurrentIndex(-1)
 
     def HandleValueChanged(self, value):

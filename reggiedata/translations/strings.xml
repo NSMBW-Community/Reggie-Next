@@ -562,7 +562,7 @@
                 <section id="external">
                     <string id="unknown">Unknown/Undefined</string>
                 </section>
-                <section id="spritetex">
+                <section id="valuelist">
                     <string id="undefined">[id]: Undefined Entry</string>
                 </section>
                 <section id="layer_default">

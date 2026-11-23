@@ -14,7 +14,7 @@ from data.sprite.spritefield.dual_box import DualBoxSpriteField
 from data.sprite.spritefield.external import ExternalSpriteField
 from data.sprite.spritefield.list import ListSpriteField
 from data.sprite.spritefield.multi_dual_box import MultiDualBoxSpriteField
-from data.sprite.spritefield.sprite_tex import SpriteTexSpriteField
+from data.sprite.spritefield.value_list import ValueListSpriteField
 from data.sprite.spritefield.value import ValueSpriteField
 from ui.dialogs.spriteeditor.resize_choice import ResizeChoiceDialog
 from ui.theme.reggie_theme import GetIcon
@@ -36,8 +36,8 @@ from ui.widgets.spriteeditor.propertydecoders.multi_dual_box import (
 from ui.widgets.spriteeditor.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
-from ui.widgets.spriteeditor.propertydecoders.sprite_tex import (
-    SpriteTexPropertyDecoder,
+from ui.widgets.spriteeditor.propertydecoders.value_list import (
+    ValueListPropertyDecoder,
 )
 from ui.widgets.spriteeditor.propertydecoders.value import ValuePropertyDecoder
 
@@ -429,8 +429,8 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
             elif isinstance(field, MultiDualBoxSpriteField):
                 nf = MultiDualboxPropertyDecoder(field, layout, row, self)
 
-            elif isinstance(field, SpriteTexSpriteField):
-                nf = SpriteTexPropertyDecoder(field, layout, row, self)
+            elif isinstance(field, ValueListSpriteField):
+                nf = ValueListPropertyDecoder(field, layout, row, self)
 
             if nf is None:
                 continue

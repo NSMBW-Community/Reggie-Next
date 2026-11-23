@@ -6,7 +6,7 @@ def update_main(path: str) -> None:
     """
     Updates a gamedef's main.xml
     """
-    with open(path, 'r', encoding='utf-8') as f:
+    with open(path, 'r', encoding='utf-8', newline='') as f:
         data = f.read()
 
     # Fix old references
@@ -20,7 +20,27 @@ def update_main(path: str) -> None:
     for pattern, replace in regex_strings:
         data = re.sub(pattern, replace, data)
 
-    with open(path, 'w', encoding='utf-8') as file_out:
+    with open(path, 'w', encoding='utf-8', newline='') as file_out:
+        file_out.write(data)
+
+
+def update_spritedata(path: str) -> None:
+    """
+    Updates a gamedef's spritedata.xml
+    """
+    with open(path, 'r', encoding='utf-8', newline='') as f:
+        data = f.read()
+
+    # Fix old references
+    strings = [
+        ("<spritetex",  "<valuelist"),
+        ("</spritetex", "</valuelist")
+    ]
+
+    for old, new in strings:
+        data = data.replace(old, new)
+
+    with open(path, 'w', encoding='utf-8', newline='') as file_out:
         file_out.write(data)
 
 
@@ -28,7 +48,7 @@ def update_sprites_module(filename: str) -> None:
     """
     Fixes compatibility issues with sprites.py modules made for older versions of Reggie Next
     """
-    with open(filename, "r", encoding="utf-8") as f:
+    with open(filename, 'r', encoding='utf-8', newline='') as f:
         orig_data = f.read()
 
     # Fix the import
@@ -67,7 +87,7 @@ def update_sprites_module(filename: str) -> None:
     new_data = new_data.replace("parent.type", "parent.sprite_num")
 
     # All done, save the file
-    with open(filename, 'w') as file_out:
+    with open(filename, 'w', encoding='utf-8', newline='') as file_out:
         file_out.write(new_data)
 
 
@@ -82,7 +102,7 @@ def convert_txt_to_xml(path: str, split: str, root_name: str, element_name: str,
     txt_path = path.replace('.xml', '.txt')
 
     try:
-        with open(txt_path, 'r', encoding='utf-8') as f:
+        with open(txt_path, 'r', encoding='utf-8', newline='') as f:
             raw = [x.strip() for x in f]
     except FileNotFoundError:
         return
