@@ -64,7 +64,7 @@ class EntranceEditorWidget(AbstractEditorWidget):
         self.raweditor = edit
 
         self.reset_button = QtWidgets.QPushButton(globals_.trans.string('dialog.sprite_data_editor.reset_all'))
-        self.reset_button.clicked.connect(self.HandleResetData)
+        self.reset_button.clicked.connect(self.reset_all_data)
 
         raw_data_layout = QtWidgets.QHBoxLayout()
         raw_data_layout.addWidget(self.reset_button)
@@ -107,6 +107,7 @@ class EntranceEditorWidget(AbstractEditorWidget):
 
         self.setLayout(mainLayout)
 
+        self.ent: EntranceItem | None = None
         self.entrance_type = -1
         self.data = bytes(16)
         self.fields = []
@@ -115,12 +116,18 @@ class EntranceEditorWidget(AbstractEditorWidget):
         self.relatedObjFiles = None
         self.dependencyNotes = None
 
-    def set_entrance(self, ent: EntranceItem, reset: bool = False) -> None:
+    def set_entrance(self, ent: EntranceItem, reset: bool = False, initial_data: bytes | None = None) -> None:
         """
         Change the sprite type used by the data editor
         """
+        self.ent = ent
         _type = ent.ent_type
+
         if self.entrance_type == _type and not reset:
+            if initial_data is not None:
+                self.data = initial_data
+                self.update_fields(True)
+
             return
 
         self.entrance_type = _type
@@ -252,13 +259,17 @@ class EntranceEditorWidget(AbstractEditorWidget):
 
         self.fields = fields
 
-        self.updateFields(True)
+        if initial_data is not None:
+            self.data = initial_data
 
-    def update_raw_data(self, reset: bool = False) -> None:
+        self.update_fields(True)
+
+    def update_raw_data(self, data: bytes | None = None, reset: bool = False) -> None:
         """
         Updates the raw data
         """
-        data = self.data
+        if not data:
+            data = self.data
 
         texts: list[str] = []
         for i in range(0, len(data), 2):
@@ -267,7 +278,7 @@ class EntranceEditorWidget(AbstractEditorWidget):
         self.raweditor.setText(' '.join(texts))
         self.raweditor.setStyleSheet('')
 
-    def updateFields(self, first: bool = False) -> None:
+    def update_fields(self, first: bool = False) -> None:
         """
         Updates all the fields to display the appropriate info
         """
@@ -298,18 +309,18 @@ class EntranceEditorWidget(AbstractEditorWidget):
             return
 
         data = field.assign(self.data)
-        self.update_raw_data()
+        self.update_raw_data(data)
 
-        self.UpdateData(data, exclude_update_field=field, do_update=False, was_automatic=False)
+        self.update_data(data, exclude_update_field=field, do_update=False, was_automatic=False)
 
-    def HandleResetData(self) -> None:
+    def reset_all_data(self) -> None:
         """
         Handles the reset data button being clicked
         """
-        self.UpdateData(bytes(10), was_automatic=False)
-        self.update_raw_data(True)
+        self.update_data(bytes(16), was_automatic=False)
+        self.update_raw_data(None, True)
 
-    def UpdateData(self, new_data: bytes, exclude_update_field: PropertyDecoder | None = None, do_update: bool = True, was_automatic: bool = True) -> None:
+    def update_data(self, new_data: bytes, exclude_update_field: PropertyDecoder | None = None, do_update: bool = True, was_automatic: bool = True) -> None:
         """
         Updates all fields (optionally excluding one field) with the new sprite
         data. If do_update is not set, the UpdateFlag is not changed. If was_automatic
@@ -362,7 +373,7 @@ class EntranceEditorWidget(AbstractEditorWidget):
 
         # If it's valid, let it go
         self.raweditor.setStyleSheet('')
-        self.UpdateData(data, was_automatic=False)
+        self.update_data(data, was_automatic=False)
 
     def data_updated(self, data: bytes) -> None:
         """
@@ -371,10 +382,7 @@ class EntranceEditorWidget(AbstractEditorWidget):
         dock = cast(ItemEditorDockWidget, self.parent())
         if dock.is_active():
             for obj in globals_.mainWindow.scene.selectedItems():
-                if isinstance(obj, SpriteItem):
-                    obj.spritedata = data
+                if isinstance(obj, EntranceItem):
+                    obj.entrance_data = data
                     obj.UpdateListItem()
                     SetDirty()
-
-                    obj.UpdateDynamicSizing()
-                    globals_.mainWindow.palette_dock.sprite_tab.sprite_list.updateSprite(obj)

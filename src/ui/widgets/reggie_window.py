@@ -1499,7 +1499,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
             obj = self.selObj
             self.spriteDataEditor.setSprite(obj.sprite_num, initial_data=obj.spritedata)
         elif isinstance(self.selObj, EntranceItem) and self.entrance_editor_dock.is_active():
-            self.entrance_editor.set_entrance(self.selObj)
+            obj = self.selObj
+            self.entrance_editor.set_entrance(obj, initial_data=obj.entrance_data)
         elif isinstance(self.selObj, PathItem) and self.path_editor_dock.is_active():
             self.path_editor.setPath(self.selObj)
         elif isinstance(self.selObj, LocationItem) and self.location_editor_dock.is_active():
