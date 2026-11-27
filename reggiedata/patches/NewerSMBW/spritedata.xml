@@ -1599,27 +1599,22 @@
   <sprite id="245" name="Newer Cutscene Controller - Ending" notes="This controller manages the ending cutscene shown after the Captain Bowser fight." advancednotes="This sprite is predominately hardcoded in how it functions. It requires a very specific level setup to work properly (see 08-41.arc).">
   </sprite> <!-- #245: Newer Cutscene Controller - Ending -->
 
-  <sprite id="246" name="Special Event" notes="This sprite can do all sorts of special functions, such as freezing sprites, changing the size of sprites, editing the game Timer, and changing the gravity. This function is restricted to the active Zone. The settings available to each type will appear when selecting that option. Be sure to reset the Sprite Settings when switching between different types in order to prevent any bugs.">
+  <sprite id="246" name="Special Event" notes="This sprite can do all sorts of special functions, such as changing the size of sprites, editing the game timer, and changing the gravity. This function is restricted to the active Zone. Be sure to reset the Sprite Settings when switching between different types in order to prevent any bugs." nolayer="True">
     <value nybble="5-6" title="Triggering Event ID" comment="The Special Event is on as long as this Event is activated." idtype="Triggering Event"/>
-    <list nybble="12" title="Type" comment="This determines the effect of the Special Event." comment2="Time Stop: Freezes some Sprites/Elements. &lt;br&gt;Pause Timer: Pauses the Level's Clock, different from Time Stop. &lt;br&gt;Set Timer: Changes the time on the Level's Clock. &lt;br&gt;Change Gravity: Changes player physics to simulate a different type of gravity. &lt;br&gt;Resizer: Changes the size of all sprites affected by this function. &lt;br&gt;Selective Resizer: Changes the size of sprites affected by this function to their specified sizes. &lt;br&gt;Background Resizer: Changes the Background settings. &lt;br&gt;Disable Z-Order Fixes: Deactivates all Z-Order modifications while the Special Event is activated. &lt;br&gt;Disable MP Bubbling: Deactivates the ability to 'bubble' yourself during Multiplayer.">
-      <entry value="0">None</entry>                  <!-- 0000 -->
-      <entry value="1">Time Stop</entry>             <!-- 0001 -->
-      <entry value="2">Pause Timer</entry>           <!-- 0010 -->
-      <entry value="4">Set Timer</entry>             <!-- 0100 -->
-      <entry value="3">Change Gravity</entry>        <!-- 0011 -->
-      <entry value="5">Global Resizer</entry>        <!-- 0101 -->
-      <entry value="6">Selective Resizer</entry>     <!-- 0110 -->
-      <entry value="9">Background Resizer</entry>    <!-- 1001 -->
-      <entry value="7">Disable Z-Order Fixes</entry> <!-- 0111 -->
-      <entry value="8">Disable MP Bubbling</entry>   <!-- 1000 --> <!-- 45-48 -->
+    <list nybble="12" title="Type" comment="This determines the effect of the Special Event." comment2="Pause Timer: Pauses the level's clock.[br]Set Timer: Changes the time on the level's clock.[br]Change Gravity: Changes player physics to simulate a different type of gravity.[br]Resizer: Changes the size of all sprites affected by this function.[br]Selective Resizer: Changes the size of sprites affected by this function to a specified size.[br]Background Resizer: Changes the background scaling.[br]Disable Z-Order Fixes: Deactivates all Z-Order modifications while the Special Event is activated.[br]Disable Multiplayer Bubbling: Deactivates the ability to 'bubble' yourself during Multiplayer.">
+      <entry value="0">None</entry>
+      <entry value="2">Pause Timer</entry>
+      <entry value="4">Set Timer</entry>
+      <entry value="3">Change Gravity</entry>
+      <entry value="5">Global Resizer</entry>
+      <entry value="6">Selective Resizer</entry>
+      <entry value="9">Background Resizer</entry>
+      <entry value="7">Disable Z-Order Fixes</entry>
+      <entry value="8">Disable Multiplayer Bubbling</entry>
     </list>
-    <checkbox nybble="11.4" title="Time Stop: Platforms &lt;font color=&quot;red&quot;&gt;(Disabled)&lt;/font&gt;" comment="When enabled, the Special Event will freeze all Platforms that support this function." requirednybble="12" requiredval="1"/> <!-- Appears if [Type] = 1 -->
-    <checkbox nybble="11.3" title="Time Stop: Players &lt;font color=&quot;red&quot;&gt;(Disabled)&lt;/font&gt;" comment="When enabled, the Special Event will freeze all Players." comment2="Remember to deactivate the Special Event or else Mario and the other Players will remain frozen. Forever~" requirednybble="12" requiredval="1"/> <!-- Appears if [Type] = 1 -->
-    <checkbox nybble="11.2" title="Time Stop: Terrain &lt;font color=&quot;red&quot;&gt;(Disabled)&lt;/font&gt;" comment="When enabled, the Special Event will freeze all Terrain Animations." requirednybble="12" requiredval="1"/> <!-- Appears if [Type] = 1 -->
-    <checkbox nybble="11.1" title="Time Stop: Enemies &lt;font color=&quot;red&quot;&gt;(Disabled)&lt;/font&gt;" comment="When enabled, the Special Event will freeze all Enemies that support this function." requirednybble="12" requiredval="1"/> <!-- Appears if [Type] = 1 -->
     <dualbox nybble="11" title1="Low Gravity" title2="Anti Gravity" comment="This determines what the altered state of gravity will be while the Special Event is activated." comment2="Anti Gravity is a little strange, not fully documented, and definitely not recommended for normal use." requirednybble="12" requiredval="3"/> <!-- Appears if [Type] = 3 -->
-    <value nybble="7-10" title="Set Time to..." comment="This determines what the Level's Clock will be set to when the Special Event is activated." comment2="Do not use a value higher than 999." requirednybble="12" requiredval="4"/> <!-- Appears if [Type] = 4 -->
-    <list nybble="11" title="Scale / Size (Global)" comment="The Special Event will resize all affected sprites in the Zone that support this function." requirednybble="12" requiredval="5"> <!-- Appears if [Type] = 5 -->
+    <value nybble="7-10" title="Time" comment="This determines what the level's clock will be set to when the Special Event is activated." comment2="Values above 999 are possible, however are not recommended for use due to visual glitches with the timer display." requirednybble="12" requiredval="4"/> <!-- Appears if [Type] = 4 -->
+    <list nybble="11" title="Size (Global)" comment="The Special Event will resize all affected sprites in the Zone that support this function." requirednybble="12" requiredval="5"> <!-- Appears if [Type] = 5 -->
       <entry value="0">x1.0 (normal)</entry>
       <entry value="1">x0.25</entry>
       <entry value="2">x0.5</entry>
@@ -1637,12 +1632,9 @@
       <entry value="14">x8.0</entry>
       <entry value="15">x10.0</entry>
     </list>
-    <list nybble="11" title="Scale / Size (Selective)" comment="The Special Event will resize all affected sprites in the Zone following the list below using nybble 5 or 7. Keep in mind that these nybbles may control other functions in the sprites themselves.&lt;br&gt;4 = x0.25&lt;br&gt;5 = x0.5&lt;br&gt;6 = x0.75&lt;br&gt;0-3 = x1.0&lt;br&gt;7 = x1.25&lt;br&gt;8 = x1.5&lt;br&gt;9 = x2.0&lt;br&gt;10 = x2.5&lt;br&gt;11 = x3.0&lt;br&gt;12 = x4.0&lt;br&gt;13 = x5.0&lt;br&gt;14 = x6.0&lt;br&gt;15 = x10.0" requirednybble="12" requiredval="6"> <!-- Appears if [Type] = 6 -->
-      <entry value="0">Use Nybble 5</entry>
-      <entry value="1">Use Nybble 7</entry>
-    </list>
+    <dualbox nybble="11" title1="Use Nybble 5" title2="Use Nybble 7" comment="This determines which nybble will contain the size on the sprite(s) you wish to resize. Keep in mind that these nybbles may control other functions in the sprites themselves." comment2="Sizes:[br]4 = x0.25[br]5 = x0.5[br]6 = x0.75[br]0-3 = x1.0[br]7 = x1.25[br]8 = x1.5[br]9 = x2.0[br]10 = x2.5[br]11 = x3.0[br]12 = x4.0[br]13 = x5.0[br]14 = x6.0[br]15 = x10.0" requirednybble="12" requiredval="6"/> <!-- Appears if [Type] = 6 -->
     <!-- 1001 -->
-    <list nybble="7" title="bgA (Scenery) X Size" comment="The Special Event will resize the 'Scenery' background picture horizontally. Higher Values = Bigger Size" requirednybble="12" requiredval="9"> <!-- Appears if [Type] = 9 -->
+    <list nybble="7" title="Scenery X Size" requirednybble="12" requiredval="9"> <!-- Appears if [Type] = 9 -->
       <entry value="0">x0.1</entry>
       <entry value="1">x0.15</entry>
       <entry value="2">x0.25</entry>
@@ -1656,11 +1648,11 @@
       <entry value="10">x1.25</entry>
       <entry value="11">x1.5</entry>
       <entry value="12">x1.75</entry>
-      <entry value="13">x2</entry>
+      <entry value="13">x2.0</entry>
       <entry value="14">x2.25</entry>
       <entry value="15">x2.5</entry>
     </list>
-    <list nybble="8" title="bgA (Scenery) Y Size" comment="The Special Event will resize the 'Scenery' background picture vertically. Higher Values = Bigger Size" requirednybble="12" requiredval="9"> <!-- Appears if [Type] = 9 -->
+    <list nybble="8" title="Scenery Y Size" requirednybble="12" requiredval="9"> <!-- Appears if [Type] = 9 -->
       <entry value="0">x0.1</entry>
       <entry value="1">x0.15</entry>
       <entry value="2">x0.25</entry>
@@ -1674,11 +1666,11 @@
       <entry value="10">x1.25</entry>
       <entry value="11">x1.5</entry>
       <entry value="12">x1.75</entry>
-      <entry value="13">x2</entry>
+      <entry value="13">x2.0</entry>
       <entry value="14">x2.25</entry>
       <entry value="15">x2.5</entry>
     </list>
-    <list nybble="9" title="bgB (Backdrop) X Size" comment="The Special Event will resize the 'Backdrop' background picture horizontally. Higher Values = Bigger Size" requirednybble="12" requiredval="9"> <!-- Appears if [Type] = 9 -->
+    <list nybble="9" title="Backdrop X Size" requirednybble="12" requiredval="9"> <!-- Appears if [Type] = 9 -->
       <entry value="0">x0.1</entry>
       <entry value="1">x0.15</entry>
       <entry value="2">x0.25</entry>
@@ -1692,11 +1684,11 @@
       <entry value="10">x1.25</entry>
       <entry value="11">x1.5</entry>
       <entry value="12">x1.75</entry>
-      <entry value="13">x2</entry>
+      <entry value="13">x2.0</entry>
       <entry value="14">x2.25</entry>
       <entry value="15">x2.5</entry>
     </list>
-    <list nybble="10" title="bgB (Backdrop) Y Size" comment="The Special Event will resize the 'Backdrop' background picture vertically. Higher Values = Bigger Size" requirednybble="12" requiredval="9"> <!-- Appears if [Type] = 9 -->
+    <list nybble="10" title="Backdrop Y Size" requirednybble="12" requiredval="9"> <!-- Appears if [Type] = 9 -->
       <entry value="0">x0.1</entry>
       <entry value="1">x0.15</entry>
       <entry value="2">x0.25</entry>
@@ -1710,7 +1702,7 @@
       <entry value="10">x1.25</entry>
       <entry value="11">x1.5</entry>
       <entry value="12">x1.75</entry>
-      <entry value="13">x2</entry>
+      <entry value="13">x2.0</entry>
       <entry value="14">x2.25</entry>
       <entry value="15">x2.5</entry>
     </list>
